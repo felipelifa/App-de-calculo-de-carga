@@ -1,0 +1,123 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    function isValidString(field, maxLen) {
+      return field is string && field.size() > 0 && field.size() <= maxLen;
+    }
+
+    function isValidNumber(field, minVal, maxVal) {
+      return field is number && field >= minVal && field <= maxVal;
+    }
+
+    // ────────────────────────────────────────────────────────────
+    // users/{uid}  →  profile document
+    // ────────────────────────────────────────────────────────────
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid)
+        && isValidString(request.resource.data.name, 100)
+        && isValidString(request.resource.data.email, 255);
+      allow update: if isOwner(uid)
+        && isValidString(request.resource.data.name, 100);
+      allow delete: if false; // soft-delete only via Cloud Functions
+
+      // ──────────────────────────────────────────────────────────
+      // users/{uid}/exercises/{exId}
+      // ──────────────────────────────────────────────────────────
+      match /exercises/{exId} {
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid)
+          && isValidString(request.resource.data.name, 100)
+          && isValidNumber(request.resource.data.seriesDefault, 1, 20)
+          && isValidNumber(request.resource.data.repMin, 1, 30)
+          && isValidNumber(request.resource.data.repMax, 1, 30)
+          && request.resource.data.repMin <= request.resource.data.repMax;
+        allow update: if isOwner(uid)
+          && isValidString(request.resource.data.name, 100)
+          && isValidNumber(request.resource.data.seriesDefault, 1, 20)
+          && isValidNumber(request.resource.data.repMin, 1, 30)
+          && isValidNumber(request.resource.data.repMax, 1, 30);
+        allow delete: if isOwner(uid);
+      }
+
+      // ──────────────────────────────────────────────────────────
+      // users/{uid}/workouts/{wId}
+      // ──────────────────────────────────────────────────────────
+      match /workouts/{wId} {
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid)
+          && isValidNumber(request.resource.data.weekNumber, 1, 9999)
+          && request.resource.data.date is timestamp;
+        allow update: if isOwner(uid);
+        allow delete: if isOwner(uid);
+
+        // users/{uid}/workouts/{wId}/exercises/{weId}
+        match /exercises/{weId} {
+          allow read: if isOwner(uid);
+          allow create: if isOwner(uid)
+            && isValidNumber(request.resource.data.series, 1, 20)
+            && isValidNumber(request.resource.data.reps, 1, 30)
+            && isValidNumber(request.resource.data.weight, 0.5, 1000)
+            && isValidNumber(request.resource.data.volume, 0, 500000);
+          allow update: if isOwner(uid);
+          allow delete: if isOwner(uid);
+        }
+      }
+
+      // ──────────────────────────────────────────────────────────
+      // users/{uid}/progressionWeeks/{pwId}
+      // ──────────────────────────────────────────────────────────
+      match /progressionWeeks/{pwId} {
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid)
+          && isValidNumber(request.resource.data.weekNumber, 1, 9999)
+          && isValidNumber(request.resource.data.progressionPercent, -50, 50)
+          && request.resource.data.type in ['base', 'progression', 'deload'];
+        allow update: if isOwner(uid);
+        allow delete: if isOwner(uid);
+      }
+
+      // ──────────────────────────────────────────────────────────
+      // users/{uid}/volumeHistory/{vhId}
+      // Written ONLY by Cloud Functions (backend validation)
+      // ──────────────────────────────────────────────────────────
+      match /volumeHistory/{vhId} {
+        allow read: if isOwner(uid);
+        allow write: if false; // Cloud Functions only
+      }
+
+      // ──────────────────────────────────────────────────────────
+      // users/{uid}/suggestedProgressions/{spId}
+      // Written ONLY by Cloud Functions
+      // ──────────────────────────────────────────────────────────
+      match /suggestedProgressions/{spId} {
+        allow read: if isOwner(uid);
+        allow write: if false; // Cloud Functions only
+      }
+    }
+
+    // ────────────────────────────────────────────────────────────
+    // config  →  global app config (APK version, etc.)
+    // Read-only for authenticated users, write only by admin SDK
+    // ────────────────────────────────────────────────────────────
+    match /config/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Admin SDK via Cloud Functions only
+    }
+
+    // Block everything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
