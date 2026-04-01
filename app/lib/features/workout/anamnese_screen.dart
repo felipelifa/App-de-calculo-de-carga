@@ -90,20 +90,53 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
     );
 
     try {
+      _showLoadingDialog(context);
+      
       final profileProvider = context.read<WorkoutProfileProvider>();
       final exerciseProvider = context.read<ExerciseProvider>();
 
       await profileProvider.saveProfile(profile);
       await profileProvider.generateAndSaveWorkout(exerciseProvider.filteredExercises);
       
-      if (mounted) context.go('/dashboard');
+      if (mounted) {
+        Navigator.pop(context); // Close loading
+        context.go('/prescribed');
+      }
     } catch (e) {
       if (mounted) {
+        Navigator.pop(context); // Close loading
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Erro ao salvar: $e')),
         );
       }
     }
+  }
+
+  void _showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.surface,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(color: AppTheme.accent),
+            const SizedBox(height: 20),
+            const Text(
+              'Gerando seu Mesociclo Científico...',
+              style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Aguarde enquanto calculamos volumes e intensidades ideais.',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: AppTheme.textSecondary, fontSize: 13),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
