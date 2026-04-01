@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../shared/theme/app_theme.dart';
+import 'exercise_model.dart';
 import 'exercise_provider.dart';
 
 // ─────────────────────────────────────────────
@@ -87,7 +88,8 @@ class ExerciseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = muscleColor(exercise.muscleGroup);
+    final primaryMuscle = exercise.primaryMuscles.isNotEmpty ? exercise.primaryMuscles.first : 'Geral';
+    final color = muscleColor(primaryMuscle);
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -120,9 +122,9 @@ class ExerciseCard extends StatelessWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      _Badge(label: exercise.muscleGroup, color: color),
+                      _Badge(label: primaryMuscle, color: color),
                       const SizedBox(width: 8),
-                      _EquipmentChip(label: exercise.equipment),
+                      if (exercise.equipment.isNotEmpty) _EquipmentChip(label: exercise.equipment.first),
                     ],
                   ),
                 ],
@@ -139,7 +141,8 @@ class ExerciseCard extends StatelessWidget {
 
     // No URL — show placeholder directly, no network attempt
     if (url == null || url.isEmpty) {
-      return _MuscleGroupPlaceholder(muscleGroup: exercise.muscleGroup);
+      final primaryMuscle = exercise.primaryMuscles.isNotEmpty ? exercise.primaryMuscles.first : 'Geral';
+      return _MuscleGroupPlaceholder(muscleGroup: primaryMuscle);
     }
 
     // URL present — use CachedNetworkImage with all three states
@@ -159,8 +162,10 @@ class ExerciseCard extends StatelessWidget {
         ),
       ),
       // Error state — same placeholder as no-URL
-      errorWidget: (context, url, error) =>
-          _MuscleGroupPlaceholder(muscleGroup: exercise.muscleGroup),
+      errorWidget: (context, url, error) {
+        final primaryMuscle = exercise.primaryMuscles.isNotEmpty ? exercise.primaryMuscles.first : 'Geral';
+        return _MuscleGroupPlaceholder(muscleGroup: primaryMuscle);
+      },
     );
   }
 }

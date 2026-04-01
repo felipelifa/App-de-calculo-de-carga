@@ -2,7 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import '../../shared/theme/app_theme.dart';
+import '../workout/pr_model.dart';
+import '../workout/pr_service.dart';
+import 'exercise_model.dart';
 import 'exercise_provider.dart';
 import 'exercise_card.dart';
 
@@ -34,9 +40,9 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
 
   void _populateFields(ExerciseModel ex) {
     if (_exercise?.id != ex.id) {
-      _seriesCtrl.text = ex.seriesDefault.toString();
-      _repMinCtrl.text = ex.repMin.toString();
-      _repMaxCtrl.text = ex.repMax.toString();
+      _seriesCtrl.text = '3';
+      _repMinCtrl.text = ex.repRangeMin.toString();
+      _repMaxCtrl.text = ex.repRangeMax.toString();
     }
     _exercise = ex;
   }
@@ -47,11 +53,15 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
     final repMax = int.tryParse(_repMaxCtrl.text.trim());
 
     if (series == null || repMin == null || repMax == null) {
-      setState(() => _saveError = 'Preencha todos os campos com números válidos.');
+      setState(() {
+        _saveError = 'Preencha todos os campos com números válidos.';
+      });
       return;
     }
     if (repMin > repMax) {
-      setState(() => _saveError = 'Rep mínimo não pode ser maior que o máximo.');
+      setState(() {
+        _saveError = 'Rep mínimo não pode ser maior que o máximo.';
+      });
       return;
     }
 
@@ -61,24 +71,28 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
     });
 
     try {
-      await provider.updateExercise(widget.exerciseId, {
-        'seriesDefault': series,
-        'repMin': repMin,
-        'repMax': repMax,
-      });
+      // Biblioteca global, edição local desabilitada na nova arquitetura
+      await Future.delayed(const Duration(milliseconds: 500));
+      
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Exercício atualizado!'),
+            content: Text('Apenas leitura: Biblioteca Científica Protegida'),
             backgroundColor: AppTheme.success,
             behavior: SnackBarBehavior.floating,
           ),
         );
       }
     } catch (e) {
-      setState(() => _saveError = 'Erro ao salvar: $e');
+      setState(() {
+        _saveError = 'Erro ao salvar: $e';
+      });
     } finally {
-      if (mounted) setState(() => _isSaving = false);
+      if (mounted) {
+        setState(() {
+          _isSaving = false;
+        });
+      }
     }
   }
 
@@ -130,7 +144,8 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
 
     if (ex != null) _populateFields(ex);
 
-    final color = ex != null ? muscleColor(ex.muscleGroup) : AppTheme.accent;
+    final primaryMuscle = ex != null && ex.primaryMuscles.isNotEmpty ? ex.primaryMuscles.first : 'Geral';
+    final color = ex != null ? muscleColor(primaryMuscle) : AppTheme.accent;
 
     return Scaffold(
       backgroundColor: AppTheme.background,
@@ -179,15 +194,17 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
 
   Widget _buildHeroImage(ExerciseModel ex) {
     final url = ex.gifUrl;
+    final primaryMuscle = ex.primaryMuscles.isNotEmpty ? ex.primaryMuscles.first : 'Geral';
+    
     if (url == null || url.isEmpty) {
-      return _placeholderHero(ex.muscleGroup);
+      return _placeholderHero(primaryMuscle);
     }
     return CachedNetworkImage(
       imageUrl: url,
       fit: BoxFit.cover,
       width: double.infinity,
       placeholder: (context, url) => _shimmerBox(),
-      errorWidget: (context, url, error) => _placeholderHero(ex.muscleGroup),
+      errorWidget: (context, url, error) => _placeholderHero(primaryMuscle),
     );
   }
 
@@ -239,16 +256,18 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
         Row(
           children: [
             _InfoChip(
-              label: ex.muscleGroup,
+              label: ex.primaryMuscles.isNotEmpty ? ex.primaryMuscles.first : 'Geral',
               color: color,
               icon: Icons.sports_gymnastics_rounded,
             ),
-            const SizedBox(width: 8),
-            _InfoChip(
-              label: ex.equipment,
-              color: AppTheme.textSecondary,
-              icon: Icons.hardware_rounded,
-            ),
+            if (ex.equipment.isNotEmpty) ...[
+              const SizedBox(width: 8),
+              _InfoChip(
+                label: ex.equipment.first,
+                color: AppTheme.textSecondary,
+                icon: Icons.hardware_rounded,
+              ),
+            ],
           ],
         ),
 
@@ -334,6 +353,13 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
             ),
           ),
         ),
+
+        const SizedBox(height: 32),
+
+        // ── PR do exercício ─────────────────────
+        _sectionTitle('Recorde pessoal (PR)'),
+        const SizedBox(height: 14),
+        _PrSection(exerciseId: ex.id),
 
         const SizedBox(height: 32),
 
@@ -467,6 +493,188 @@ class _HistoryTile extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 15,
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────
+// PR Section
+// ─────────────────────────────────────────────
+
+class _PrSection extends StatefulWidget {
+  final String exerciseId;
+  const _PrSection({required this.exerciseId});
+
+  @override
+  State<_PrSection> createState() => _PrSectionState();
+}
+
+class _PrSectionState extends State<_PrSection> {
+  Future<PersonalRecord?>? _future;
+
+  @override
+  void initState() {
+    super.initState();
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid != null) {
+      _future = PrService(db: FirebaseFirestore.instance, uid: uid)
+          .loadForExercise(widget.exerciseId);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<PersonalRecord?>(
+      future: _future,
+      builder: (context, snap) {
+        if (snap.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(
+                color: AppTheme.accent, strokeWidth: 2),
+          );
+        }
+
+        final pr = snap.data;
+
+        if (pr == null) {
+          return Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppTheme.surfaceHighlight,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+            ),
+            child: const Text(
+              'Nenhum PR ainda. Complete um treino com este exercício!',
+              style: TextStyle(color: AppTheme.textSecondary, fontSize: 13),
+              textAlign: TextAlign.center,
+            ),
+          );
+        }
+
+        return Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0xFFF59E0B).withValues(alpha: 0.10),
+                AppTheme.surface,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: const Color(0xFFF59E0B).withValues(alpha: 0.25),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.emoji_events_rounded,
+                      color: Color(0xFFF59E0B), size: 18),
+                  const SizedBox(width: 8),
+                  const Expanded(
+                    child: Text(
+                      'Melhores marcas',
+                      style: TextStyle(
+                        color: Color(0xFFF59E0B),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    DateFormat('dd/MM/yy').format(pr.updatedAt),
+                    style: const TextStyle(
+                      color: AppTheme.textSecondary,
+                      fontSize: 11,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Row(
+                children: [
+                  Expanded(
+                    child: _PrStat(
+                      icon: Icons.fitness_center_rounded,
+                      label: 'Carga máx.',
+                      value: '${pr.maxWeight.toStringAsFixed(1)} kg',
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _PrStat(
+                      icon: Icons.repeat_rounded,
+                      label: 'Reps máx.',
+                      value: '${pr.maxReps}',
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _PrStat(
+                      icon: Icons.bolt_rounded,
+                      label: 'Vol. máx.',
+                      value: '${pr.maxVolume.toStringAsFixed(0)} kg',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _PrStat extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+
+  const _PrStat({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF59E0B).withValues(alpha: 0.06),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: const Color(0xFFF59E0B).withValues(alpha: 0.15),
+        ),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: const Color(0xFFF59E0B), size: 16),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: const TextStyle(
+              color: Color(0xFFF59E0B),
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+            ),
+          ),
+          Text(
+            label,
+            style: const TextStyle(
+              color: AppTheme.textSecondary,
+              fontSize: 10,
+            ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

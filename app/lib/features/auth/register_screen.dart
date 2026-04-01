@@ -20,7 +20,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _handleRegister() async {
     if (_nameCtrl.text.isEmpty || _emailCtrl.text.isEmpty || _passCtrl.text.length < 6) {
-      setState(() => _errorMessage = 'Preencha todos os campos. Senha min. 6 chars.');
+      setState(() {
+        _errorMessage = 'Preencha todos os campos. Senha min. 6 chars.';
+      });
       return;
     }
 

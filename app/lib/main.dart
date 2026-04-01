@@ -8,6 +8,8 @@ import 'firebase_options.dart';
 import 'core/router/app_router.dart';
 import 'core/services/auth_service.dart';
 import 'features/exercises/exercise_provider.dart';
+import 'features/workout/workout_provider.dart';
+import 'features/workout/workout_profile_provider.dart';
 import 'shared/theme/app_theme.dart';
 
 void main() async {
@@ -17,15 +19,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  const String host = 'localhost';
-
-  FirebaseFirestore.instance.settings = const Settings(
-    host: '$host:8080',
-    sslEnabled: false,
-    persistenceEnabled: false,
-  );
-
-  await FirebaseAuth.instance.useAuthEmulator(host, 9099);
+  // const String host = '127.0.0.1';
+  // FirebaseFirestore.instance.useFirestoreEmulator(host, 8080);
+  // FirebaseAuth.instance.useAuthEmulator(host, 9099);
 
   runApp(const WorkoutApp());
 }
@@ -40,6 +36,12 @@ class WorkoutApp extends StatelessWidget {
         ChangeNotifierProvider<AuthService>(create: (_) => AuthService()),
         ChangeNotifierProvider<ExerciseProvider>(
           create: (_) => ExerciseProvider(),
+        ),
+        ChangeNotifierProvider<WorkoutProvider>(
+          create: (_) => WorkoutProvider(),
+        ),
+        ChangeNotifierProvider<WorkoutProfileProvider>(
+          create: (_) => WorkoutProfileProvider(),
         ),
         Provider.value(value: FirebaseFirestore.instance),
       ],
@@ -56,4 +58,3 @@ class WorkoutApp extends StatelessWidget {
     );
   }
 }
-

@@ -93,9 +93,17 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
         context.pop();
       }
     } catch (e) {
-      setState(() => _error = 'Erro ao salvar: $e');
+      if (mounted) {
+        setState(() {
+          _error = 'Erro ao salvar: $e';
+        });
+      }
     } finally {
-      if (mounted) setState(() => _isSaving = false);
+      if (mounted) {
+        setState(() {
+          _isSaving = false;
+        });
+      }
     }
   }
 
@@ -192,7 +200,11 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
                     ),
                   );
                 }).toList(),
-                onChanged: (v) => setState(() => _selectedMuscle = v),
+                onChanged: (v) {
+                  setState(() {
+                    _selectedMuscle = v;
+                  });
+                },
                 validator: (v) =>
                     v == null ? 'Selecione um grupo muscular' : null,
               ),
@@ -216,7 +228,11 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
                 items: _equipments
                     .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                     .toList(),
-                onChanged: (v) => setState(() => _selectedEquipment = v),
+                onChanged: (v) {
+                  setState(() {
+                    _selectedEquipment = v;
+                  });
+                },
                 validator: (v) =>
                     v == null ? 'Selecione um equipamento' : null,
               ),

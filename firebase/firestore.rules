@@ -104,6 +104,20 @@ service cloud.firestore {
         allow read: if isOwner(uid);
         allow write: if false; // Cloud Functions only
       }
+
+      // ──────────────────────────────────────────────────────────
+      // users/{uid}/profile/{docId}
+      // ──────────────────────────────────────────────────────────
+      match /profile/{docId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ──────────────────────────────────────────────────────────
+      // users/{uid}/generated_workouts/{docId}
+      // ──────────────────────────────────────────────────────────
+      match /generated_workouts/{docId} {
+        allow read, write: if isOwner(uid);
+      }
     }
 
     // ────────────────────────────────────────────────────────────
@@ -113,6 +127,15 @@ service cloud.firestore {
     match /config/{docId} {
       allow read: if isAuthenticated();
       allow write: if false; // Admin SDK via Cloud Functions only
+    }
+
+    // ────────────────────────────────────────────────────────────
+    // exercises  →  global exercise library
+    // Read-only for authenticated users, write only by admin SDK
+    // ────────────────────────────────────────────────────────────
+    match /exercises/{exId} {
+      allow read: if isAuthenticated();
+      allow write: if false; 
     }
 
     // Block everything else
