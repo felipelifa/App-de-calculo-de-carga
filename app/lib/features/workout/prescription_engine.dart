@@ -57,9 +57,10 @@ class WorkoutPrescriptionEngine {
 
   // ── Step 2: Selecionar Periodização ──────────────────────────
   String _selectPeriodization(String level) {
-    if (level == 'beginner') return 'linear';
-    if (level == 'intermediate') return 'dup'; // Ondulatória
-    return 'block'; // Bloco
+    // Modelo Linear recomendado pelo CREF para ganho de base
+    if (level == 'beginner') return 'linear_hypertrophy';
+    if (level == 'intermediate') return 'linear_strength';
+    return 'block_periodization';
   }
 
   // ── Step 3: Cálculo de Volume Semanal (Séries) ───────────────
@@ -211,9 +212,8 @@ class WorkoutPrescriptionEngine {
     return PrescribedExercise(
       exercise: ex,
       sets: min(5, max(2, setsPerSession)), // Prescrição real entre 2 e 5 séries
-      repsMin: ex.repRangeMin,
       repsMax: ex.repRangeMax,
-      rir: profile.experienceLevel == 'beginner' ? 2 : 1, // Iniciantes treinam mais longe da falha
+      rir: profile.experienceLevel == 'beginner' ? 2 : 1, 
       restSeconds: _getRestSeconds(profile.primaryGoal, ex.category),
       sessionCues: ex.cues.take(3).toList(),
       progressionNote: 'Ao completar ${ex.repRangeMax} reps em todas as séries, aumente a carga.',
@@ -221,8 +221,8 @@ class WorkoutPrescriptionEngine {
   }
 
   int _getRestSeconds(String goal, String category) {
-    if (goal == 'strength') return 180;
-    if (category == 'compound') return 90;
-    return 60;
+    // Ajustado conforme CREF-SP: 2-3 min para garantir recuperação completa
+    if (goal == 'strength' || category == 'compound') return 150; // 2.5 minutos
+    return 90; // 1.5 minutos para isolados
   }
 }
