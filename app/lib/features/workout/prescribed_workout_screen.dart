@@ -39,12 +39,9 @@ class PrescribedWorkoutScreen extends StatelessWidget {
         backgroundColor: AppTheme.surface,
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh_rounded),
-            tooltip: 'Regerar Treino',
-            onPressed: () {
-              // Redireciona para anamnese para refazer o perfil e regerar
-              context.go('/anamnese');
-            },
+            icon: const Icon(Icons.delete_outline_rounded, color: Colors.redAccent),
+            tooltip: 'Excluir Treino',
+            onPressed: () => _confirmDeletion(context),
           )
         ],
       ),
@@ -62,6 +59,50 @@ class PrescribedWorkoutScreen extends StatelessWidget {
                 childCount: workout.sessions.length,
               ),
             ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 60),
+              child: TextButton.icon(
+                onPressed: () => _confirmDeletion(context),
+                icon: const Icon(Icons.refresh_rounded, size: 18),
+                label: const Text('LIMPAR TREINO E REFAZER ANAMNESE'),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.redAccent.withValues(alpha: 0.8),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _confirmDeletion(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.surface,
+        title: const Text('Excluir Treino PRO?', style: TextStyle(color: AppTheme.textPrimary)),
+        content: const Text(
+          'Isso apagará o seu mesociclo atual. Você pode refazer a anamnese e gerar um novo treino quando desejar.',
+          style: TextStyle(color: AppTheme.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            child: const Text('CANCELAR', style: TextStyle(color: AppTheme.textSecondary)),
+            onPressed: () => Navigator.pop(context),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+            onPressed: () async {
+              Navigator.pop(context);
+              final wp = context.read<WorkoutProfileProvider>();
+              await wp.deleteCurrentWorkout();
+              context.go('/anamnese');
+            },
+            child: const Text('EXCLUIR E REFAZER', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),

@@ -113,6 +113,30 @@ class WorkoutProfileProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteCurrentWorkout() async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      await _db
+          .collection('users')
+          .doc(uid)
+          .collection('generated_workouts')
+          .doc('current')
+          .delete();
+          
+      _currentWorkout = null;
+    } catch (e) {
+      _error = 'Erro ao excluir treino: $e';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   Future<void> loadCurrentWorkout(ExerciseModel? Function(String) getById) async {
     final uid = _auth.currentUser?.uid;
     if (uid == null) return;
