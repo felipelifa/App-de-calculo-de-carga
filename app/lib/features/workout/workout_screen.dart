@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import '../../shared/theme/app_theme.dart';
 import '../exercises/exercise_provider.dart';
 import 'workout_provider.dart';
@@ -165,10 +166,11 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             const SnackBar(
               content: Text('Treino salvo! Cargas recalculadas com sucesso! 🚀'),
               backgroundColor: AppTheme.success,
+              duration: Duration(seconds: 3),
             ),
           );
-          // Volta para a tela de plano (prescribed)
-          Navigator.pop(context);
+          // Redireciona explicitamente para a tela de planejamento
+          context.go('/prescribed');
         }
       } catch (e) {
         if (context.mounted) {
