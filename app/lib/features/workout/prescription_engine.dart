@@ -39,14 +39,130 @@ class WorkoutPrescriptionEngine {
     final periodization = _selectPeriodization(profile);
     final sessions = _buildSessions(profile, splitType, periodization);
 
+    // Etapa 4: Ajustes Clínicos e Proporções de Volume (Murer 2019 / Doral 2012)
+    final adjustedSessions = _applyClinicalAdjustments(profile, sessions);
+
     return GeneratedWorkout(
       id: 'gen_${DateTime.now().millisecondsSinceEpoch}',
       userId: profile.uid,
       splitType: splitType,
       periodizationModel: periodization,
-      sessions: sessions,
+      sessions: adjustedSessions,
       mesocycleDurationWeeks: _mesocycleDuration(profile),
       generatedAt: DateTime.now(),
+    );
+  }
+
+  // ── Ajustes Clínicos e de Nível ──────────────────────────────
+
+  List<PrescribedSession> _applyClinicalAdjustments(
+      WorkoutProfile profile, List<PrescribedSession> sessions) {
+    final List<PrescribedSession> adjusted = [];
+    final hasRestrictions = profile.healthRestrictions.isNotEmpty;
+    final isBeginner = profile.experienceLevel == 'beginner';
+
+    for (final session in sessions) {
+      final List<PrescribedExercise> sessionExercises = [];
+      int currentIsolators = 0;
+
+      for (final pe in session.exercises) {
+        // Regra de Proporção (Murer 2019)
+        // Iniciantes: Máximo 2 isoladores por treino para reduzir fadiga/DOMS
+        if (isBeginner && pe.exercise.category == 'isolation') {
+          if (currentIsolators >= 2) continue;
+          currentIsolators++;
+        }
+
+        PrescribedExercise adjustedEx = pe;
+
+        // Regra de Lesões (Doral 2012)
+        if (hasRestrictions) {
+          adjustedEx = _handleInjuryRules(profile, pe);
+        }
+
+        sessionExercises.add(adjustedEx);
+      }
+
+      adjusted.add(PrescribedSession(
+        id: session.id,
+        name: session.name,
+        objective: session.objective,
+        estimatedDurationMinutes: session.estimatedDurationMinutes,
+        warmupInstructions: session.warmupInstructions,
+        exercises: sessionExercises,
+        progressionNote: session.progressionNote,
+      ));
+    }
+    return adjusted;
+  }
+
+  PrescribedExercise _handleInjuryRules(WorkoutProfile profile, PrescribedExercise pe) {
+    String? injuryNote;
+    String tempo = pe.tempo;
+    int rir = pe.rir;
+    final exId = pe.exercise.id;
+    final rest = profile.healthRestrictions;
+
+    // Hipertensão (ACSM 2021)
+    if (rest.contains('hypertension')) {
+      rir = (rir >= 3) ? rir : 3;
+      injuryNote = 'SEGURANÇA: Evite manobra de Valsalva (bloqueio da respiração). RIR mínimo de 3 sempre garantido.';
+    }
+
+    // Joelho (LCA / Menisco / Condromalácia)
+    if (rest.contains('knee')) {
+      if (exId.contains('leg_press')) {
+         injuryNote = 'REABILITAÇÃO: Utilize amplitude parcial (0-60 graus). Evite extensão total explosiva.';
+      }
+      if (exId.contains('agachamento') || exId.contains('flexora')) {
+         injuryNote = 'ATENÇÃO: Mantenha joelhos alinhados com o segundo dedo do pé. Evite dor > 3/10.';
+      }
+    }
+
+    // Lombar (Hérnia / Dor Axial)
+    if (rest.contains('lower_back')) {
+      if (pe.exercise.category == 'compound' && (exId.contains('barra') || exId.contains('terra'))) {
+        injuryNote = 'PROTEÇÃO LOMBAR: Ative o cinturão abdominal (Bracing). Reduza carga se sentir desconforto axial.';
+      }
+    }
+
+    // Cotovelo / Tendinopatias (Alfredson Protocol)
+    if (rest.contains('elbow')) {
+      tempo = '3-0-3'; // Cadência exêntrica lenta
+      injuryNote = 'PROTOCOLO TENDINOSO: Foco na fase exêntrica lenta (3 seg) para estímulo de colágeno.';
+    }
+
+    // Punho (Instabilidade)
+    if (rest.contains('wrist')) {
+      if (exId.contains('rosca_barra_reta') || exId.contains('supino_barra')) {
+        injuryNote = 'PUNHO NEUTRO: Recomendado usar Barra W ou halteres para reduzir cisalhamento no túnel do carpo.';
+      }
+    }
+
+    // Ombro / Manguito (Impingement)
+    if (rest.contains('shoulder')) {
+      if (exId.contains('arnold') || (pe.exercise.movementPattern == 'push_vertical')) {
+        injuryNote = 'SAÚDE DO OMBRO: Evite abdução > 90°. Foco em manter as escápulas "no bolso traseiro" durante todo o movimento.';
+      }
+    }
+
+    // Pós-cirurgia (Recuperação)
+    if (rest.contains('post_surgery')) {
+      rir = (rir >= 4) ? rir : 4;
+      injuryNote = 'PÓS-CIRÚRGICO: Treino de intensidade reduzida. Continue apenas com liberação médica explícita para esta região.';
+    }
+
+    return PrescribedExercise(
+      exercise: pe.exercise,
+      sets: pe.sets,
+      repsMin: pe.repsMin,
+      repsMax: pe.repsMax,
+      rir: rir,
+      restSeconds: pe.restSeconds,
+      tempo: tempo,
+      sessionCues: pe.sessionCues,
+      progressionNote: pe.progressionNote,
+      injuryNote: injuryNote,
     );
   }
 
@@ -98,44 +214,61 @@ class WorkoutPrescriptionEngine {
   // ── Step 3: Volumes Semanais (MEV/MRV) ───────────────────────
 
   Map<String, int> _weeklyVolumes(WorkoutProfile profile) {
-    final isHypertrophy = ['hypertrophy', 'fat_loss', 'athletic_performance']
-        .contains(profile.primaryGoal);
+    final months = profile.trainingAge;
+    final isBeginner = profile.experienceLevel == 'beginner';
+    final isAdvanced = profile.experienceLevel == 'advanced';
 
-    if (profile.experienceLevel == 'beginner') {
-      return {
-        'chest': 8, 'back': 10, 'shoulders': 6, 'side_delt': 6,
-        'rear_delt': 4, 'biceps': 6, 'triceps': 6,
-        'quads': 8, 'hamstrings': 6, 'glutes': 6, 'calves': 8, 'abs': 4,
-      };
+    // Fator de escala dentro da faixa (0.0 a 1.0) baseado no tempo de treino
+    // Para iniciantes: 0-12 meses
+    // Para inter/avançados: 12-60 meses (5 anos)
+    double factor;
+    if (isBeginner) {
+      factor = (months / 12.0).clamp(0.0, 1.0);
+    } else {
+      factor = ((months - 12) / 48.0).clamp(0.0, 1.0);
+      if (isAdvanced) factor = factor.clamp(0.5, 1.0); // Avançados começam no meio da faixa INT
     }
 
-    if (profile.experienceLevel == 'intermediate') {
-      if (isHypertrophy) {
-        return {
-          'chest': 14, 'back': 16, 'shoulders': 12, 'side_delt': 10,
-          'rear_delt': 8, 'biceps': 10, 'triceps': 10,
-          'quads': 14, 'hamstrings': 10, 'glutes': 10, 'calves': 12, 'abs': 8,
-        };
-      }
-      return {
-        'chest': 10, 'back': 12, 'shoulders': 8, 'side_delt': 6,
-        'rear_delt': 6, 'biceps': 6, 'triceps': 6,
-        'quads': 10, 'hamstrings': 8, 'glutes': 8, 'calves': 8, 'abs': 6,
-      };
+    // Helper para extrair volume das faixas da imagem técnica
+    int getVol(List<int> rangeINI, List<int> rangeINT) {
+      final range = isBeginner ? rangeINI : rangeINT;
+      return (range[0] + (range[1] - range[0]) * factor).round();
     }
 
-    // Advanced
-    if (isHypertrophy) {
-      return {
-        'chest': 18, 'back': 20, 'shoulders': 16, 'side_delt': 12,
-        'rear_delt': 10, 'biceps': 14, 'triceps': 14,
-        'quads': 18, 'hamstrings': 14, 'glutes': 14, 'calves': 16, 'abs': 10,
-      };
-    }
+    // 1. Cálculos de volumes ALVO (Brutos por grupo muscular)
+    final vChest = getVol([8, 10], [12, 16]);
+    final vBack = getVol([10, 12], [14, 20]);
+    final vShoulders = getVol([8, 10], [12, 16]);
+    final vQuads = getVol([8, 10], [12, 18]);
+    final vPostGlute = getVol([6, 8], [10, 16]);
+    final vCalves = getVol([8, 10], [12, 16]);
+    final vAbs = getVol([4, 6], [6, 12]);
+
+    // Alvos para braços (antes de descontar o volume indireto)
+    final vBicepsTarget = getVol([6, 8], [10, 14]);
+    final vTricepsTarget = getVol([6, 8], [10, 14]);
+
+    // 2. Aplicação da REGRA: Volume Indireto (Israelte 2019 / Schoenfeld 2021)
+    // Biceps recebem ~50% de remadas/puxadas (Back)
+    // Triceps recebem ~50% de supinos/desenvolvimentos (Chest/Shoulders parcial)
+    // Clamp mínimo de 2-4 séries para garantir estimulo direto mínimo
+    
+    final vBicepsFinal = (vBicepsTarget - (vBack * 0.5)).round().clamp(3, 14);
+    final vTricepsFinal = (vTricepsTarget - (vChest * 0.5)).round().clamp(3, 14);
+
     return {
-      'chest': 12, 'back': 14, 'shoulders': 10, 'side_delt': 8,
-      'rear_delt': 8, 'biceps': 8, 'triceps': 8,
-      'quads': 12, 'hamstrings': 10, 'glutes': 10, 'calves': 10, 'abs': 6,
+      'chest': vChest,
+      'back': vBack,
+      'shoulders': vShoulders,
+      'side_delt': (vShoulders * 0.6).round().clamp(4, 12),
+      'rear_delt': (vShoulders * 0.5).round().clamp(3, 10),
+      'biceps': vBicepsFinal,
+      'triceps': vTricepsFinal,
+      'quads': vQuads,
+      'hamstrings': vPostGlute,
+      'glutes': (vPostGlute * 0.6).round().clamp(4, 12),
+      'calves': vCalves,
+      'abs': vAbs,
     };
   }
 

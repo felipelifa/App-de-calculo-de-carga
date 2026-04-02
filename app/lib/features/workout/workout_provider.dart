@@ -139,6 +139,7 @@ class WorkoutProvider extends ChangeNotifier {
         exerciseId: exId,
         exerciseName: pe['exerciseName'] as String? ?? '',
         muscleGroup: pe['muscleGroup'] as String? ?? '',
+        injuryNote: pe['injuryNote'] as String?,
         sets: List.generate(
           sets,
           (_) => WorkoutSet(

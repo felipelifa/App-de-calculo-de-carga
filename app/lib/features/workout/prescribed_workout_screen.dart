@@ -441,26 +441,14 @@ class _SessionCardState extends State<_SessionCard> {
   void _startSession(BuildContext context) {
     final wp = context.read<WorkoutProvider>();
 
-    // Converte para RoutineExercise para compatibilidade
-    final routine = WorkoutRoutine(
-      id: widget.session.id,
-      name: widget.session.name,
-      description: widget.session.objective,
-      createdAt: DateTime.now(),
-      exercises: widget.session.exercises
-          .map((e) => RoutineExercise(
-                exerciseId: e.exercise.id,
-                name: e.exercise.name,
-                muscleGroup: e.exercise.primaryMuscles.isNotEmpty
-                    ? e.exercise.primaryMuscles.first
-                    : '',
-                sets: e.sets,
-                reps: e.repsMax,
-              ))
-          .toList(),
+    final prescribedData = widget.session.exercises.map((e) => e.toMap()).toList();
+
+    wp.startSessionFromPrescribed(
+      sessionId: widget.session.id,
+      sessionName: widget.session.name,
+      prescribedExercises: prescribedData,
     );
 
-    wp.startSessionFromRoutine(routine);
     context.go('/workout');
   }
 }
@@ -535,6 +523,36 @@ class _ExerciseRowState extends State<_ExerciseRow> {
                 ),
               ],
             ),
+            
+            // Alerta de Lesão/Segurança
+            if (ex.injuryNote != null) ...[
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                decoration: BoxDecoration(
+                  color: AppTheme.danger.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppTheme.danger.withValues(alpha: 0.2)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.warning_amber_rounded, size: 14, color: AppTheme.danger),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        ex.injuryNote!,
+                        style: const TextStyle(
+                          color: AppTheme.danger,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+
             const SizedBox(height: 10),
             // Métricas em linha
             Wrap(

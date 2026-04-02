@@ -423,6 +423,23 @@ class _ExerciseCard extends StatelessWidget {
                               color: AppTheme.textPrimary,
                               fontWeight: FontWeight.w600,
                               fontSize: 15)),
+                      if (entry.injuryNote != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.warning_amber_rounded, size: 12, color: AppTheme.danger),
+                              const SizedBox(width: 4),
+                              Expanded(
+                                child: Text(entry.injuryNote!,
+                                    style: const TextStyle(
+                                        color: AppTheme.danger,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                            ],
+                          ),
+                        ),
                       Text(entry.muscleGroup,
                           style: const TextStyle(
                               color: AppTheme.textSecondary, fontSize: 12)),

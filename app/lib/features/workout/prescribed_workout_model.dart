@@ -14,6 +14,7 @@ class PrescribedExercise {
   final String tempo;    // Cadência: ex '2-0-2' (conc-iso-exc)
   final List<String> sessionCues;
   final String progressionNote;
+  final String? injuryNote; // Alertas de segurança baseados no histórico
 
   const PrescribedExercise({
     required this.exercise,
@@ -24,6 +25,7 @@ class PrescribedExercise {
     required this.restSeconds,
     required this.sessionCues,
     required this.progressionNote,
+    this.injuryNote,
     this.tempo = '2-0-2',
   });
 
@@ -41,6 +43,7 @@ class PrescribedExercise {
         'tempo': tempo,
         'sessionCues': sessionCues,
         'progressionNote': progressionNote,
+        'injuryNote': injuryNote,
         // Metadados para o motor de progressão
         'isBodyweight': exercise.equipment.contains('bodyweight') &&
             exercise.equipment.length == 1,
@@ -60,6 +63,7 @@ class PrescribedExercise {
       tempo: map['tempo'] as String? ?? '2-0-2',
       sessionCues: List<String>.from(map['sessionCues'] ?? []),
       progressionNote: map['progressionNote'] as String? ?? '',
+      injuryNote: map['injuryNote'] as String?,
     );
   }
 }

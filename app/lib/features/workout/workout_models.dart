@@ -33,12 +33,14 @@ class WorkoutExerciseEntry {
   final String exerciseName;
   final String muscleGroup;
   List<WorkoutSet> sets;
+  final String? injuryNote;
 
   WorkoutExerciseEntry({
     required this.exerciseId,
     required this.exerciseName,
     required this.muscleGroup,
     List<WorkoutSet>? sets,
+    this.injuryNote,
   }) : sets = sets ?? [];
 
   double get totalVolume =>
@@ -50,6 +52,7 @@ class WorkoutExerciseEntry {
         'muscleGroup': muscleGroup,
         'sets': sets.map((s) => s.toMap()).toList(),
         'volume': totalVolume,
+        'injuryNote': injuryNote,
       };
 }
 
@@ -89,6 +92,7 @@ class WorkoutSession {
           sets: rawSets
               .map((s) => WorkoutSet.fromMap(s as Map<String, dynamic>))
               .toList(),
+          injuryNote: em['injuryNote'] as String?,
         );
       }).toList(),
     );

@@ -155,7 +155,12 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
                 children: [
                   _StepPersonal(onAge: (v) => age = v, onSex: (v) => sex = v, onWeight: (v) => weight = v, onHeight: (v) => height = v),
                   _StepExperience(onLevel: (v) => level = v, onTrainingAge: (v) => trainingAge = v, onBodyFat: (v) => bodyFat = v),
-                  _StepGoals(onGoal: (v) => goal = v, onStyle: (v) => style = v, onDays: (v) => days = v, onDuration: (v) => duration = v),
+                  _StepGoals(
+                    onGoal: (v) => goal = v,
+                    onStyle: (v) => style = v,
+                    onDays: (v) => days = v,
+                    onDuration: (v) => duration = v,
+                  ),
                   _StepConstraints(onEnv: (v) => env = v, onRestrictions: (v) => restrictions = v),
                 ],
               ),
@@ -303,7 +308,12 @@ class _StepGoals extends StatelessWidget {
   final ValueChanged<int> onDays;
   final ValueChanged<int> onDuration;
 
-  const _StepGoals({required this.onGoal, required this.onStyle, required this.onDays, required this.onDuration});
+  const _StepGoals({
+    required this.onGoal,
+    required this.onStyle,
+    required this.onDays,
+    required this.onDuration,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -364,10 +374,13 @@ class _StepConstraints extends StatelessWidget {
         // Simplesmente uma lista por enquanto para agilizar
         _MultiChoiceGroup(
           choices: {
-            'knee': 'Joelho',
-            'lower_back': 'Lombar',
-            'shoulder': 'Ombro',
-            'hypertension': 'Hipertensão'
+            'knee': 'Joelho (LCA/Menisco)',
+            'lower_back': 'Lombar (Hérnia/Dor)',
+            'shoulder': 'Ombro (Manguito)',
+            'elbow': 'Cotovelo (Epicondilite)',
+            'wrist': 'Punho (Instabilidade)',
+            'hypertension': 'Hipertensão',
+            'post_surgery': 'Pós-cirurgia (Recuperação)'
           },
           onChanged: onRestrictions,
         ),
