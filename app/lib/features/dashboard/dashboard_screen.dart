@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../core/services/auth_service.dart';
 import '../../shared/theme/app_theme.dart';
 import '../workout/workout_profile_provider.dart';
+import '../workout/progression_provider.dart';
 import '../exercises/exercise_provider.dart';
 
 class DashboardData {
@@ -197,7 +198,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
               },
             ),
 
-            const SizedBox(height: 28),
+            const SizedBox(height: 20),
+
+            // Card de deload / fase do ciclo
+            Consumer<ProgressionProvider>(
+              builder: (context, pp, _) {
+                if (pp.state == null) return const SizedBox.shrink();
+                return _CycleStatusCard(provider: pp);
+              },
+            ),
+
+            const SizedBox(height: 20),
 
             const _SectionLabel('ATALHOS'),
             const SizedBox(height: 12),
@@ -865,6 +876,95 @@ class _NavCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+// ─── Card de status do ciclo de periodização ──
+
+class _CycleStatusCard extends StatelessWidget {
+  final ProgressionProvider provider;
+  const _CycleStatusCard({required this.provider});
+
+  Color get _phaseColor {
+    switch (provider.currentPhase) {
+      case 'accumulation': return AppTheme.accent;
+      case 'intensification': return const Color(0xFFF59E0B);
+      case 'peak': return AppTheme.success;
+      case 'deload': return AppTheme.danger;
+      default: return AppTheme.accent;
+    }
+  }
+
+  String get _phaseLabel {
+    switch (provider.currentPhase) {
+      case 'accumulation': return 'Acumulação';
+      case 'intensification': return 'Intensificação';
+      case 'peak': return 'Pico';
+      case 'deload': return 'Deload';
+      default: return provider.currentPhase;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = _phaseColor;
+    final isDeload = provider.isDeloadWeek;
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: c.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: c.withValues(alpha: 0.25)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: c.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(12)),
+            child: Icon(
+              isDeload ? Icons.refresh_rounded : Icons.loop_rounded,
+              color: c, size: 22),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      isDeload
+                          ? '🔄  SEMANA DE DELOAD'
+                          : 'Semana ${provider.currentWeek}  •  Fase: $_phaseLabel',
+                      style: TextStyle(
+                          color: c,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  isDeload
+                      ? 'Reduza o volume em 45%. Carga igual. Foco em técnica.'
+                      : provider.weeksUntilDeload <= 1
+                          ? 'Próximo deload na semana que vem'
+                          : '${provider.weeksUntilDeload} semana(s) até o próximo deload',
+                  style: const TextStyle(
+                      color: AppTheme.textSecondary, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          Icon(Icons.chevron_right_rounded,
+              color: c.withValues(alpha: 0.5), size: 18),
+        ],
       ),
     );
   }

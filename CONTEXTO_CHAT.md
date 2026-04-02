@@ -237,16 +237,19 @@ Mapas:
 - ✅ PrescribedWorkoutScreen — exibe RIR, cadência, cues, fase DUP, aquecimento
 - ✅ Motor de Progressão v2 — RIR, deload automático, plateau, bodyweight chain
 - ✅ ProgressionProvider — estado global de progressão para UI
+- ✅ ProgressionScreen v2 — duas abas: motor RIR (pós-sessão) + histórico; banner de ciclo, deload e info RIR
+- ✅ WorkoutScreen — seletor de RIR por exercício (0–5) com código de cores; badge de aviso de lesão (contraindicados)
+- ✅ Dashboard — card de fase do ciclo de periodização (acumulação/intensificação/pico/deload)
+- ✅ Firestore rules — progression_state + personalRecords adicionados
+- ✅ Firestore indexes — índices para generated_workouts, progression_state, exercises e personalRecords
 
 ---
 
 ## O que está pendente (⏳)
 
-- ⏳ Progressão via Cloud Functions (conectar ProgressionScreen ao backend real)
-- ⏳ Sistema de lesões na UI (mostrar aviso quando exercício é modificado por lesão)
 - ⏳ Notificações push (deload, inatividade, PR)
 - ⏳ Website Next.js + landing page
-- ⏳ Sistema de download do APK
+- ⏳ Sistema de download do APK (URL real)
 - ⏳ Modelo freemium / monetização
 - ⏳ Rodar em produção Firebase (hoje usa emuladores)
 

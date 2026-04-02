@@ -2,7 +2,6 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper functions
     function isAuthenticated() {
       return request.auth != null;
     }
@@ -19,9 +18,7 @@ service cloud.firestore {
       return field is number && field >= minVal && field <= maxVal;
     }
 
-    // ────────────────────────────────────────────────────────────
-    // users/{uid}  →  profile document
-    // ────────────────────────────────────────────────────────────
+    // ── users/{uid} ──────────────────────────────────────────────
     match /users/{uid} {
       allow read: if isOwner(uid);
       allow create: if isOwner(uid)
@@ -29,11 +26,9 @@ service cloud.firestore {
         && isValidString(request.resource.data.email, 255);
       allow update: if isOwner(uid)
         && isValidString(request.resource.data.name, 100);
-      allow delete: if false; // soft-delete only via Cloud Functions
+      allow delete: if false;
 
-      // ──────────────────────────────────────────────────────────
-      // users/{uid}/exercises/{exId}
-      // ──────────────────────────────────────────────────────────
+      // exercises
       match /exercises/{exId} {
         allow read: if isOwner(uid);
         allow create: if isOwner(uid)
@@ -50,9 +45,7 @@ service cloud.firestore {
         allow delete: if isOwner(uid);
       }
 
-      // ──────────────────────────────────────────────────────────
-      // users/{uid}/workouts/{wId}
-      // ──────────────────────────────────────────────────────────
+      // workouts
       match /workouts/{wId} {
         allow read: if isOwner(uid);
         allow create: if isOwner(uid)
@@ -61,7 +54,6 @@ service cloud.firestore {
         allow update: if isOwner(uid);
         allow delete: if isOwner(uid);
 
-        // users/{uid}/workouts/{wId}/exercises/{weId}
         match /exercises/{weId} {
           allow read: if isOwner(uid);
           allow create: if isOwner(uid)
@@ -74,9 +66,7 @@ service cloud.firestore {
         }
       }
 
-      // ──────────────────────────────────────────────────────────
-      // users/{uid}/progressionWeeks/{pwId}
-      // ──────────────────────────────────────────────────────────
+      // progressionWeeks
       match /progressionWeeks/{pwId} {
         allow read: if isOwner(uid);
         allow create: if isOwner(uid)
@@ -87,58 +77,52 @@ service cloud.firestore {
         allow delete: if isOwner(uid);
       }
 
-      // ──────────────────────────────────────────────────────────
-      // users/{uid}/volumeHistory/{vhId}
-      // Written ONLY by Cloud Functions (backend validation)
-      // ──────────────────────────────────────────────────────────
+      // volumeHistory — Cloud Functions only
       match /volumeHistory/{vhId} {
         allow read: if isOwner(uid);
-        allow write: if false; // Cloud Functions only
+        allow write: if false;
       }
 
-      // ──────────────────────────────────────────────────────────
-      // users/{uid}/suggestedProgressions/{spId}
-      // Written ONLY by Cloud Functions
-      // ──────────────────────────────────────────────────────────
+      // suggestedProgressions — Cloud Functions only
       match /suggestedProgressions/{spId} {
         allow read: if isOwner(uid);
-        allow write: if false; // Cloud Functions only
+        allow write: if false;
       }
 
-      // ──────────────────────────────────────────────────────────
-      // users/{uid}/profile/{docId}
-      // ──────────────────────────────────────────────────────────
+      // profile
       match /profile/{docId} {
         allow read, write: if isOwner(uid);
       }
 
-      // ──────────────────────────────────────────────────────────
-      // users/{uid}/generated_workouts/{docId}
-      // ──────────────────────────────────────────────────────────
+      // generated_workouts
       match /generated_workouts/{docId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // progression_state — motor de progressão
+      match /progression_state/{docId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // personalRecords
+      match /personalRecords/{exId} {
         allow read, write: if isOwner(uid);
       }
     }
 
-    // ────────────────────────────────────────────────────────────
-    // config  →  global app config (APK version, etc.)
-    // Read-only for authenticated users, write only by admin SDK
-    // ────────────────────────────────────────────────────────────
+    // ── config — read-only para autenticados ─────────────────────
     match /config/{docId} {
       allow read: if isAuthenticated();
-      allow write: if false; // Admin SDK via Cloud Functions only
+      allow write: if false;
     }
 
-    // ────────────────────────────────────────────────────────────
-    // exercises  →  global exercise library
-    // Read-only for authenticated users, write only by admin SDK
-    // ────────────────────────────────────────────────────────────
+    // ── exercises — biblioteca global, read-only ─────────────────
     match /exercises/{exId} {
       allow read: if isAuthenticated();
-      allow write: if false; 
+      allow write: if false;
     }
 
-    // Block everything else
+    // Bloqueia tudo mais
     match /{document=**} {
       allow read, write: if false;
     }
