@@ -7,6 +7,8 @@ import 'prescribed_workout_model.dart';
 import 'workout_provider.dart';
 import 'workout_routine_model.dart';
 import '../exercises/exercise_provider.dart';
+import '../exercises/exercise_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 // ─────────────────────────────────────────────
 // Tela de Visualização do Treino Prescrito
@@ -128,7 +130,10 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   final session = workout.sessions[index];
-                  return _SessionCard(session: session);
+                  return _SessionCard(
+                    session: session,
+                    onShowTutorial: (ctx, e) => _showTutorial(ctx, e),
+                  );
                 },
                 childCount: workout.sessions.length,
               ),
@@ -372,7 +377,8 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
 
 class _SessionCard extends StatefulWidget {
   final PrescribedSession session;
-  const _SessionCard({required this.session});
+  final Function(BuildContext, ExerciseModel) onShowTutorial;
+  const _SessionCard({required this.session, required this.onShowTutorial});
 
   @override
   State<_SessionCard> createState() => _SessionCardState();
@@ -523,7 +529,10 @@ class _SessionCardState extends State<_SessionCard> {
           _buildWarmupBlock(),
           const SizedBox(height: 12),
           // Exercícios
-          ...widget.session.exercises.map((ex) => _ExerciseRow(ex: ex)),
+          ...widget.session.exercises.map((ex) => _ExerciseRow(
+                ex: ex,
+                onShowTutorial: widget.onShowTutorial,
+              )),
         ],
       ),
     );
@@ -624,7 +633,8 @@ class _SessionCardState extends State<_SessionCard> {
 
 class _ExerciseRow extends StatefulWidget {
   final PrescribedExercise ex;
-  const _ExerciseRow({required this.ex});
+  final Function(BuildContext, ExerciseModel) onShowTutorial;
+  const _ExerciseRow({required this.ex, required this.onShowTutorial});
 
   @override
   State<_ExerciseRow> createState() => _ExerciseRowState();
@@ -755,7 +765,7 @@ class _ExerciseRowState extends State<_ExerciseRow> {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
-                onPressed: () => _showTutorial(context, ex.exercise),
+                onPressed: () => widget.onShowTutorial(context, ex.exercise),
                 icon: const Icon(Icons.play_circle_outline_rounded, size: 20),
                 label: const Text('VER TUTORIAL EM VÍDEO', 
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
