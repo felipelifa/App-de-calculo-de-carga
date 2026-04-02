@@ -133,7 +133,7 @@ class WorkoutProvider extends ChangeNotifier {
       final exId = pe['exerciseId'] as String? ?? '';
       final sets = (pe['sets'] as int?) ?? 3;
       final repsMax = (pe['repsMax'] as int?) ?? 12;
-      final defaultWeight = (pe['defaultWeightKg'] as double?) ?? 0.0;
+      final defaultWeight = (pe['defaultWeightKg'] as num?)?.toDouble() ?? 0.0;
 
       final entry = WorkoutExerciseEntry(
         exerciseId: exId,

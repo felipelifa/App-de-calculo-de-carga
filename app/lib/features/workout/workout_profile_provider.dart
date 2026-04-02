@@ -40,7 +40,8 @@ class WorkoutProfileProvider extends ChangeNotifier {
 
   double getLatestWeightForExercise(String exerciseId) {
     if (_progressionState == null) return 0.0;
-    return _progressionState!.exerciseProgress[exerciseId]?.lastWeightKg ?? 0.0;
+    final val = _progressionState!.exerciseProgress[exerciseId]?.lastWeightKg;
+    return (val as num?)?.toDouble() ?? 0.0;
   }
 
   Future<void> _init() async {

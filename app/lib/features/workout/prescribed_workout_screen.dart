@@ -70,6 +70,12 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
                 onPressed: () => context.go('/anamnese'),
                 child: const Text('GERAR TREINO'),
               ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () => context.go('/'),
+                child: const Text('VOLTAR PARA O INÍCIO', 
+                    style: TextStyle(color: AppTheme.textSecondary)),
+              ),
             ],
           ),
         ),
@@ -81,6 +87,11 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
       appBar: AppBar(
         title: const Text('Meu Plano de Treino',
             style: TextStyle(fontWeight: FontWeight.bold)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded, color: AppTheme.textSecondary),
+          onPressed: () => context.go('/'),
+          tooltip: 'Página Inicial',
+        ),
         backgroundColor: AppTheme.surface,
         actions: [
           IconButton(
@@ -536,7 +547,7 @@ class _ExerciseRowState extends State<_ExerciseRow> {
   Widget build(BuildContext context) {
     final ex = widget.ex;
     final profileProvider = context.watch<WorkoutProfileProvider>();
-    final suggestedWeight = profileProvider.getLatestWeightForExercise(ex.exercise.id);
+    final suggestedWeight = (profileProvider.getLatestWeightForExercise(ex.exercise.id) as num?)?.toDouble() ?? 0.0;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
