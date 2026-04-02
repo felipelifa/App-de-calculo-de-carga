@@ -87,8 +87,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen>
                   fontWeight: FontWeight.w600,
                 ),
                 tabs: const [
-                  Tab(text: 'VOLUME'),
-                  Tab(text: 'CARGA'),
+                  Tab(text: 'TREINOS'),
+                  Tab(text: 'PESO'),
                   Tab(text: 'MÚSCULOS'),
                 ],
               ),
@@ -158,8 +158,8 @@ class _VolumeTab extends StatelessWidget {
 
         // Gráfico de linha — volume semanal
         _ChartCard(
-          title: 'Volume por Semana',
-          subtitle: 'Últimas ${data.weeklyVolume.length} semanas • kg totais',
+          title: 'Histórico de Treinos',
+          subtitle: 'Peso total levantado por semana (toneladas)',
           child: SfCartesianChart(
             plotAreaBorderWidth: 0,
             primaryXAxis: CategoryAxis(
@@ -298,7 +298,7 @@ class _LoadTab extends StatelessWidget {
         // Gráfico de carga
         _ChartCard(
           title: activeExercise.name,
-          subtitle: '${activeExercise.muscleGroup} • Evolução de peso (kg)',
+          subtitle: '${_translateMuscle(activeExercise.muscleGroup)} • Evolução do Peso (kg)',
           child: points.length < 2
               ? const Padding(
                   padding: EdgeInsets.symmetric(vertical: 40),
@@ -456,8 +456,8 @@ class _MuscleTab extends StatelessWidget {
 
         // Gráfico de barras agrupadas
         _ChartCard(
-          title: 'Volume por Grupo Muscular',
-          subtitle: 'Comparativo últimas 4 semanas vs 4 anteriores • kg',
+          title: 'Foco por Músculo',
+          subtitle: 'Quais regiões você mais treinou (kg)',
           child: SfCartesianChart(
             plotAreaBorderWidth: 0,
             primaryXAxis: CategoryAxis(
@@ -485,13 +485,23 @@ class _MuscleTab extends StatelessWidget {
               enable: true,
               color: AppTheme.surfaceHighlight,
               textStyle: const TextStyle(color: AppTheme.textPrimary),
-              format: 'point.x\npoint.y kg',
+              // Traduzir o conteúdo do tooltip
+              builder: (data, point, series, pointIndex, seriesIndex) {
+                 final bar = data as MuscleVolumeBar;
+                 return Container(
+                   padding: const EdgeInsets.all(10),
+                   child: Text(
+                     '${_translateMuscle(bar.muscle)}\n${bar.volume.toStringAsFixed(0)} kg',
+                     style: const TextStyle(color: Colors.white, fontSize: 12),
+                   ),
+                 );
+              },
             ),
             series: <CartesianSeries>[
               ColumnSeries<MuscleVolumeBar, String>(
                 name: 'Atual',
                 dataSource: data.muscleVolume,
-                xValueMapper: (d, _) => d.muscle,
+                xValueMapper: (d, _) => _translateMuscle(d.muscle),
                 yValueMapper: (d, _) => d.volume,
                 color: AppTheme.accent,
                 borderRadius: const BorderRadius.only(
@@ -504,7 +514,7 @@ class _MuscleTab extends StatelessWidget {
               ColumnSeries<MuscleVolumeBar, String>(
                 name: 'Anterior',
                 dataSource: data.muscleVolume,
-                xValueMapper: (d, _) => d.muscle,
+                xValueMapper: (d, _) => _translateMuscle(d.muscle),
                 yValueMapper: (d, _) => d.lastPeriodVolume,
                 color: AppTheme.textSecondary.withValues(alpha: 0.35),
                 borderRadius: const BorderRadius.only(
@@ -639,7 +649,7 @@ class _QuickStatsRow extends StatelessWidget {
       children: [
         Expanded(
           child: _StatChip(
-            label: 'Sessões',
+            label: 'Total de Treinos',
             value: '${data.totalSessions}',
             icon: Icons.calendar_month_rounded,
             color: AppTheme.accent,
@@ -648,7 +658,7 @@ class _QuickStatsRow extends StatelessWidget {
         const SizedBox(width: 10),
         Expanded(
           child: _StatChip(
-            label: 'Volume total',
+            label: 'Peso Levantado',
             value: '${(data.totalVolume / 1000).toStringAsFixed(1)}t',
             icon: Icons.fitness_center_rounded,
             color: const Color(0xFF8B5CF6),
@@ -657,7 +667,7 @@ class _QuickStatsRow extends StatelessWidget {
         const SizedBox(width: 10),
         Expanded(
           child: _StatChip(
-            label: 'Melhor semana',
+            label: 'Melhor Treino',
             value: '${data.bestWeekVolume.toStringAsFixed(0)} kg',
             icon: Icons.emoji_events_rounded,
             color: const Color(0xFFF59E0B),
@@ -1114,6 +1124,29 @@ class _EmptyState extends StatelessWidget {
       ),
     );
   }
+}
+
+// Helper para leigos
+String _translateMuscle(String m) {
+  final map = {
+    'chest': 'Peitoral',
+    'back': 'Costas',
+    'shoulders': 'Ombros',
+    'side_delt': 'Ombro Lateral',
+    'rear_delt': 'Ombro Posterior',
+    'biceps': 'Bíceps',
+    'triceps': 'Tríceps',
+    'quads': 'Coxa (Frente)',
+    'hamstrings': 'Coxa (Atrás)',
+    'glutes': 'Glúteos',
+    'calves': 'Panturrilha',
+    'abs': 'Abdômen',
+    'core': 'Abdominal',
+    'Peito': 'Peitoral',
+    'Ombro': 'Ombros',
+    'Legs': 'Pernas',
+  };
+  return map[m.toLowerCase()] ?? map[m] ?? m;
 }
 
 class _Label extends StatelessWidget {

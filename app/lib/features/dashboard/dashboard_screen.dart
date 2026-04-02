@@ -179,7 +179,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             const SizedBox(height: 4),
             const Text(
-              'Seu progresso desta semana',
+              'Como está seu progresso esta semana:',
               style: TextStyle(color: AppTheme.textSecondary),
             ),
             const SizedBox(height: 24),
@@ -207,8 +207,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 final hasPro = wp.hasWorkout;
                 return _NavCard(
                   icon: Icons.auto_awesome_rounded,
-                  label: hasPro ? 'MEU TREINO PRO' : 'GERAR TREINO PRO',
-                  subtitle: hasPro ? 'Ver seu plano científico' : 'Prescrição científica baseada no seu perfil',
+                  label: hasPro ? 'MEU TREINO INTELIGENTE' : 'MONTAR MEU TREINO',
+                  subtitle: hasPro ? 'Ver meu plano de exercícios' : 'Deixa nossa IA montar seu treino completo',
                   color: AppTheme.accent,
                   onTap: () => context.push(hasPro ? '/prescribed' : '/anamnese'),
                   isFeatured: true,
@@ -429,8 +429,8 @@ class _VolumeCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               data.lastWeekVolume > 0
-                  ? 'Semana passada: ${data.lastWeekVolume.toStringAsFixed(0)} kg'
-                  : 'Primeira semana com dados',
+                  ? 'Semana passada: ${data.lastWeekVolume.toStringAsFixed(0)} kg levantados'
+                  : 'Começando sua jornada agora! 🚀',
               style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
             ),
           ],
@@ -539,7 +539,8 @@ class _VolumeByMuscleCard extends StatelessWidget {
           const _SectionLabel('VOLUME POR GRUPO MUSCULAR'),
           const SizedBox(height: 16),
           ...sorted.take(6).map((entry) {
-            final color = _muscleColors[entry.key] ?? AppTheme.accent;
+            final translatedName = _translateMuscle(entry.key);
+            final color = _muscleColors[entry.key] ?? _muscleColors[translatedName] ?? AppTheme.accent;
             final ratio = entry.value / maxVol;
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
@@ -550,7 +551,7 @@ class _VolumeByMuscleCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          entry.key,
+                          translatedName,
                           style: const TextStyle(
                               color: AppTheme.textPrimary, fontSize: 13),
                         ),
@@ -677,7 +678,7 @@ class _SectionLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      text,
+      text.toUpperCase(),
       style: const TextStyle(
         color: AppTheme.textSecondary,
         fontSize: 11,
@@ -686,6 +687,30 @@ class _SectionLabel extends StatelessWidget {
       ),
     );
   }
+}
+
+// Helper de tradução para leigos
+String _translateMuscle(String m) {
+  final map = {
+    'chest': 'Peitoral',
+    'back': 'Costas',
+    'shoulders': 'Ombros',
+    'side_delt': 'Ombro Lateral',
+    'rear_delt': 'Ombro Posterior',
+    'biceps': 'Bíceps',
+    'triceps': 'Tríceps',
+    'quads': 'Coxa (Frente)',
+    'hamstrings': 'Coxa (Atrás)',
+    'glutes': 'Glúteos',
+    'calves': 'Panturrilha',
+    'abs': 'Abdômen',
+    'core': 'Abdominal',
+    'upper_chest': 'Peito Superior',
+    'lower_chest': 'Peito Inferior',
+    'traps': 'Trapézio',
+    'forearms': 'Antebraço',
+  };
+  return map[m.toLowerCase()] ?? m;
 }
 
 class _NavCard extends StatelessWidget {

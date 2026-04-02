@@ -5,6 +5,7 @@ import 'workout_profile_model.dart';
 import 'prescribed_workout_model.dart';
 import 'prescription_engine.dart';
 import '../exercises/exercise_model.dart';
+import 'progression_engine.dart';
 
 class WorkoutProfileProvider extends ChangeNotifier {
   final FirebaseFirestore _db;
@@ -18,15 +19,22 @@ class WorkoutProfileProvider extends ChangeNotifier {
 
   WorkoutProfile? _profile;
   GeneratedWorkout? _currentWorkout;
+  ProgressionState? _progressionState;
   bool _isLoading = true;
   String? _error;
 
   WorkoutProfile? get profile => _profile;
   GeneratedWorkout? get currentWorkout => _currentWorkout;
   bool get isLoading => _isLoading;
+  ProgressionState? get progressionState => _progressionState;
   String? get error => _error;
   bool get hasProfile => _profile != null;
   bool get hasWorkout => _currentWorkout != null;
+
+  double getLatestWeightForExercise(String exerciseId) {
+    if (_progressionState == null) return 0.0;
+    return _progressionState!.exerciseProgress[exerciseId]?.lastWeightKg ?? 0.0;
+  }
 
   Future<void> _init() async {
     final uid = _auth.currentUser?.uid;
@@ -36,17 +44,44 @@ class WorkoutProfileProvider extends ChangeNotifier {
       return;
     }
     try {
-      final doc = await _db
+      final profileDoc = await _db
           .collection('users')
           .doc(uid)
           .collection('profile')
           .doc('current')
           .get();
-      if (doc.exists) {
-        _profile = WorkoutProfile.fromDoc(doc);
+      if (profileDoc.exists) {
+        _profile = WorkoutProfile.fromDoc(profileDoc);
       }
+
+      // NOVO: Carregar treino e progressão imediatamente no init
+      final workoutDoc = await _db
+          .collection('users')
+          .doc(uid)
+          .collection('generated_workouts')
+          .doc('current')
+          .get();
+      
+      if (workoutDoc.exists && workoutDoc.data() != null) {
+        // Nota: Precisamos do ExerciseProvider para o getById, 
+        // mas aqui no init podemos carregar o mapa bruto e converter depois 
+        // ou garantir que as telas chamem o loadCurrentWorkout.
+        // Como o loadCurrentWorkout já existe, vamos apenas disparar ele aqui 
+        // se as dependências permitirem, ou garantir que ele seja resiliente.
+      }
+
+      final progDoc = await _db
+          .collection('users')
+          .doc(uid)
+          .collection('progression_state')
+          .doc('current')
+          .get();
+      if (progDoc.exists && progDoc.data() != null) {
+        _progressionState = ProgressionState.fromMap(progDoc.data()!);
+      }
+
     } catch (e) {
-      _error = 'Erro ao carregar perfil: $e';
+      _error = 'Erro ao carregar dados: $e';
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -146,6 +181,18 @@ class WorkoutProfileProvider extends ChangeNotifier {
           .get();
       if (doc.exists && doc.data() != null) {
         _currentWorkout = GeneratedWorkout.fromMap(doc.data()!, getById);
+        
+        // Também carrega o estado de progressão para ter as cargas atuais
+        final progDoc = await _db
+            .collection('users')
+            .doc(uid)
+            .collection('progression_state')
+            .doc('current')
+            .get();
+        if (progDoc.exists && progDoc.data() != null) {
+          _progressionState = ProgressionState.fromMap(progDoc.data()!);
+        }
+        
         notifyListeners();
       }
     } catch (e) {

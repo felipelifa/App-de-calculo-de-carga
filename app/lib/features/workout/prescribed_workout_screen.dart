@@ -6,20 +6,48 @@ import 'workout_profile_provider.dart';
 import 'prescribed_workout_model.dart';
 import 'workout_provider.dart';
 import 'workout_routine_model.dart';
+import '../exercises/exercise_provider.dart';
 
 // ─────────────────────────────────────────────
 // Tela de Visualização do Treino Prescrito
 // Exibe RIR, cadência, cues e notas de progressão
 // ─────────────────────────────────────────────
 
-class PrescribedWorkoutScreen extends StatelessWidget {
+class PrescribedWorkoutScreen extends StatefulWidget {
   const PrescribedWorkoutScreen({super.key});
+
+  @override
+  State<PrescribedWorkoutScreen> createState() => _PrescribedWorkoutScreenState();
+}
+
+class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
+  bool _isChecking = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final wpAuth = context.read<WorkoutProfileProvider>();
+    final exerciseProvider = context.read<ExerciseProvider>();
+    
+    // Se o treino não estiver na memória, tenta carregar do Firestore antes de desistir
+    if (wpAuth.currentWorkout == null) {
+      await wpAuth.loadCurrentWorkout(exerciseProvider.getById);
+    }
+    
+    if (mounted) {
+      setState(() { _isChecking = false; });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final wpAuth = context.watch<WorkoutProfileProvider>();
 
-    if (wpAuth.isLoading) {
+    if (wpAuth.isLoading || _isChecking) {
       return const Scaffold(
         backgroundColor: AppTheme.background,
         body: Center(child: CircularProgressIndicator(color: AppTheme.accent)),
@@ -28,15 +56,30 @@ class PrescribedWorkoutScreen extends StatelessWidget {
 
     final workout = wpAuth.currentWorkout;
     if (workout == null) {
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => context.go('/anamnese'));
-      return const SizedBox.shrink();
+      // Somente redireciona após ter certeza absoluta que o workout não existe no banco
+      return Scaffold(
+        backgroundColor: AppTheme.background,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Nenhum treino gerado ainda.',
+                  style: TextStyle(color: AppTheme.textSecondary)),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => context.go('/anamnese'),
+                child: const Text('GERAR TREINO'),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     return Scaffold(
       backgroundColor: AppTheme.background,
       appBar: AppBar(
-        title: const Text('Mesociclo Científico',
+        title: const Text('Meu Plano de Treino',
             style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: AppTheme.surface,
         actions: [
@@ -201,11 +244,11 @@ class PrescribedWorkoutScreen extends StatelessWidget {
   String _periodizationExplainer(String p) {
     switch (p) {
       case 'linear':
-        return 'Progressão linear: +2,5-5 kg por semana';
+        return 'Foco: Aumentar o peso um pouquinho toda semana';
       case 'dup':
-        return 'DUP: força [F] / hipertrofia [H] / resistência [R] variam entre sessões';
+        return 'Foco: Variar entre carga pesada e mais repetições';
       case 'block':
-        return 'Bloco: acumulação → intensificação → pico → deload';
+        return 'Foco: Fases de força e fases de definição';
       default:
         return p;
     }
@@ -440,8 +483,19 @@ class _SessionCardState extends State<_SessionCard> {
 
   void _startSession(BuildContext context) {
     final wp = context.read<WorkoutProvider>();
+    final profileProvider = context.read<WorkoutProfileProvider>();
 
-    final prescribedData = widget.session.exercises.map((e) => e.toMap()).toList();
+    // Sobrepõe os dados estáticos com as cargas calculadas pela progressão
+    final prescribedData = widget.session.exercises.map((e) {
+      final map = e.toMap();
+      final latestWeight = profileProvider.getLatestWeightForExercise(e.exercise.id);
+      
+      // Se tivermos carga na progressão, ela vira o novo default
+      if (latestWeight > 0) {
+        map['defaultWeightKg'] = latestWeight;
+      }
+      return map;
+    }).toList();
 
     wp.startSessionFromPrescribed(
       sessionId: widget.session.id,
@@ -481,6 +535,9 @@ class _ExerciseRowState extends State<_ExerciseRow> {
   @override
   Widget build(BuildContext context) {
     final ex = widget.ex;
+    final profileProvider = context.watch<WorkoutProfileProvider>();
+    final suggestedWeight = profileProvider.getLatestWeightForExercise(ex.exercise.id);
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Container(
@@ -568,9 +625,14 @@ class _ExerciseRowState extends State<_ExerciseRow> {
                 _MetricChip(
                     icon: Icons.timer_outlined,
                     label: '${ex.restSeconds}s descanso'),
+                if (suggestedWeight > 0)
+                  _MetricChip(
+                      icon: Icons.fitness_center_rounded,
+                      label: '${suggestedWeight.toStringAsFixed(1)} kg',
+                      highlight: true),
                 _MetricChip(
                     icon: Icons.speed_rounded,
-                    label: 'RIR ${ex.rir}',
+                    label: _friendlyRir(ex.rir),
                     highlight: true),
                 _MetricChip(
                     icon: Icons.av_timer_rounded,
