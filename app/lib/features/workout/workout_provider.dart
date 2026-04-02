@@ -343,6 +343,18 @@ class WorkoutProvider extends ChangeNotifier {
     );
   }
 
+  Future<void> deleteSession(String sessionId) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+    try {
+      await _db.collection('users/$uid/workouts').doc(sessionId).delete();
+      // O listener de snapshots atualizará a lista automaticamente
+    } catch (e) {
+      debugPrint('Erro ao excluir sessão: $e');
+      rethrow;
+    }
+  }
+
   @override
   void dispose() {
     _historySub?.cancel();

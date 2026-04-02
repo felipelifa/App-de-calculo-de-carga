@@ -88,11 +88,53 @@ class _SessionCard extends StatelessWidget {
           style:
               const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
         ),
+        trailing: IconButton(
+          icon: const Icon(Icons.delete_outline_rounded, color: AppTheme.danger, size: 20),
+          onPressed: () => _confirmDelete(context, session.id),
+        ),
         iconColor: AppTheme.textSecondary,
         collapsedIconColor: AppTheme.textSecondary,
         children: session.exercises
             .map((ex) => _ExerciseSummary(entry: ex))
             .toList(),
+      ),
+    );
+  }
+  void _confirmDelete(BuildContext context, String sessionId) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: AppTheme.surface,
+        title: const Text('Excluir treino?', style: TextStyle(color: AppTheme.textPrimary)),
+        content: const Text('Esta ação não pode ser desfeita e removerá este registro do seu histórico.', 
+            style: TextStyle(color: AppTheme.textSecondary)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: const Text('Cancelar', style: TextStyle(color: AppTheme.textSecondary)),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.pop(dialogContext);
+              try {
+                await context.read<WorkoutProvider>().deleteSession(sessionId);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Treino removido com sucesso.')),
+                  );
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Erro ao excluir: $e')),
+                  );
+                }
+              }
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.danger),
+            child: const Text('Excluir'),
+          ),
+        ],
       ),
     );
   }

@@ -209,6 +209,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     );
     if (confirmed == true && context.mounted) {
       context.read<WorkoutProvider>().cancelSession();
+      if (context.mounted) {
+        context.go('/dashboard');
+      }
     }
   }
 
@@ -284,30 +287,43 @@ class _EmptyState extends StatelessWidget {
           children: [
             Icon(Icons.fitness_center_rounded,
                 size: 72,
-                color: AppTheme.textSecondary.withValues(alpha: 0.4)),
+                color: AppTheme.textSecondary.withValues(alpha: 0.3)),
             const SizedBox(height: 24),
             const Text(
               'Nenhum treino em andamento',
               style: TextStyle(
                   color: AppTheme.textPrimary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             const Text(
               'Inicie uma sessão para registrar seus exercícios e acompanhar sua evolução.',
               style: TextStyle(color: AppTheme.textSecondary, fontSize: 14),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 48),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: onStart,
-                icon: const Icon(Icons.play_arrow_rounded),
-                label: const Text('Iniciar treino'),
+                icon: const Icon(Icons.play_arrow_rounded, color: Colors.white),
+                label: const Text('INICIAR TREINO LIVRE', 
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.accent,
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  elevation: 4,
+                ),
               ),
+            ),
+            const SizedBox(height: 16),
+            TextButton(
+              onPressed: () => context.go('/dashboard'),
+              child: const Text('VOLTAR PARA O INÍCIO', 
+                  style: TextStyle(color: AppTheme.textSecondary, fontWeight: FontWeight.w600)),
             ),
           ],
         ),
