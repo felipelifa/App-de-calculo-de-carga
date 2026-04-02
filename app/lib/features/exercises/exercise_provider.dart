@@ -3,11 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'exercise_model.dart';
-import '../../core/data/mock_exercises.dart';
-
-// ─────────────────────────────────────────────
-// Provider de Exercícios (Gera e gerencia biblioteca global)
-// ─────────────────────────────────────────────
+import '../../core/data/exercise_library.dart';
 
 class ExerciseProvider extends ChangeNotifier {
   final FirebaseFirestore _db;
@@ -19,7 +15,6 @@ class ExerciseProvider extends ChangeNotifier {
     _init();
   }
 
-  // ── State ─────────────────────────────────
   List<ExerciseModel> _allExercises = [];
   String? _selectedMuscle;
   String _searchQuery = '';
@@ -28,7 +23,6 @@ class ExerciseProvider extends ChangeNotifier {
 
   StreamSubscription<QuerySnapshot>? _sub;
 
-  // ── Getters ───────────────────────────────
   bool get isLoading => _isLoading;
   String? get error => _error;
   String? get selectedMuscle => _selectedMuscle;
@@ -38,8 +32,8 @@ class ExerciseProvider extends ChangeNotifier {
     var list = _allExercises;
     if (_selectedMuscle != null && _selectedMuscle!.isNotEmpty) {
       list = list
-          .where((e) => e.primaryMuscles.any((m) => 
-               m.toLowerCase() == _selectedMuscle!.toLowerCase()))
+          .where((e) => e.primaryMuscles.any(
+              (m) => m.toLowerCase() == _selectedMuscle!.toLowerCase()))
           .toList();
     }
     if (_searchQuery.isNotEmpty) {
@@ -49,34 +43,44 @@ class ExerciseProvider extends ChangeNotifier {
     return list;
   }
 
-  // ── Init ──────────────────────────────────
   void _init() {
+    // Carrega imediatamente da biblioteca local para não bloquear a UI
+    _allExercises = List.from(exerciseLibrary);
+    _isLoading = false;
+    notifyListeners();
+
+    // Em paralelo, tenta buscar do Firestore global para sobrescrever
+    // (útil quando o admin popula exercícios com gifUrl no banco)
     _sub = _db
         .collection('exercises')
         .orderBy('name')
         .snapshots()
         .listen(
       (snap) {
-        if (snap.docs.isEmpty) {
-          _allExercises = List.from(mockExercises);
-          // Optional: Push to Firestore so it populates the emulator dynamically
-          // snap.docs.isEmpty could mean we just started the emulator.
-        } else {
-          _allExercises = snap.docs.map(ExerciseModel.fromDoc).toList();
+        if (snap.docs.isNotEmpty) {
+          // Merge: combina os do Firestore com os da biblioteca local
+          // IDs do Firestore têm prioridade (podem ter gifUrl atualizado)
+          final fromFirestore = snap.docs.map(ExerciseModel.fromDoc).toList();
+          final firestoreIds = fromFirestore.map((e) => e.id).toSet();
+          final localOnly = exerciseLibrary
+              .where((e) => !firestoreIds.contains(e.id))
+              .toList();
+          _allExercises = [...fromFirestore, ...localOnly];
         }
+        // Se vazio, mantém a biblioteca local já carregada
         _isLoading = false;
         _error = null;
         notifyListeners();
       },
       onError: (e) {
-        _error = 'Erro ao carregar exercícios: $e';
+        // Em caso de erro no Firestore, mantém a biblioteca local
+        _error = null; // não mostra erro — biblioteca local é suficiente
         _isLoading = false;
         notifyListeners();
       },
     );
   }
 
-  // ── Filters ───────────────────────────────
   void setMuscleFilter(String? muscle) {
     _selectedMuscle = (_selectedMuscle == muscle) ? null : muscle;
     notifyListeners();
@@ -87,27 +91,19 @@ class ExerciseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ── Methods ───────────────────────────────
-  
+  /// Retorna exercício por ID — busca na biblioteca completa
   ExerciseModel? getById(String id) {
+    if (id.isEmpty) return null;
     try {
       return _allExercises.firstWhere((e) => e.id == id);
     } catch (_) {
-      return null;
+      // Fallback direto na biblioteca estática (nunca retorna null para IDs válidos)
+      try {
+        return exerciseLibrary.firstWhere((e) => e.id == id);
+      } catch (_) {
+        return null;
+      }
     }
-  }
-
-  Future<void> addExercise({
-    required String name,
-    required String muscleGroup,
-    required String equipment,
-    required int seriesDefault,
-    required int repMin,
-    required int repMax,
-    String? gifUrl,
-  }) async {
-    // Read only for user database.
-    await Future.delayed(const Duration(milliseconds: 500));
   }
 
   Future<List<VolumeHistoryEntry>> getExerciseHistory(String exerciseId) async {
@@ -120,9 +116,11 @@ class ExerciseProvider extends ChangeNotifier {
           .orderBy('weekNumber', descending: true)
           .limit(10)
           .get();
-      return snap.docs.map((d) => VolumeHistoryEntry.fromMap(d.data())).toList();
+      return snap.docs
+          .map((d) => VolumeHistoryEntry.fromMap(d.data()))
+          .toList();
     } catch (e) {
-      debugPrint('Erro ao obter histórico do exercício: $e');
+      debugPrint('Erro ao obter histórico: $e');
       return [];
     }
   }
@@ -133,10 +131,6 @@ class ExerciseProvider extends ChangeNotifier {
     super.dispose();
   }
 }
-
-// ─────────────────────────────────────────────
-// Histórico de Volume Local
-// ─────────────────────────────────────────────
 
 class VolumeHistoryEntry {
   final int weekNumber;
