@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../shared/theme/app_theme.dart';
 import '../exercises/exercise_provider.dart';
+import '../exercises/exercise_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'workout_provider.dart';
 import 'pr_celebration_dialog.dart';
 
@@ -215,6 +217,88 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     }
   }
 
+  void _showTutorial(BuildContext context, ExerciseModel exercise) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.surface,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        maxChildSize: 0.9,
+        expand: false,
+        builder: (context, scrollController) => SingleChildScrollView(
+          controller: scrollController,
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 40, height: 4,
+                  decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(2)),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(exercise.name, style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppTheme.textPrimary, fontWeight: FontWeight.bold)),
+              Text(exercise.nameEn, style: const TextStyle(color: AppTheme.textSecondary)),
+              const SizedBox(height: 24),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Container(
+                  width: double.infinity,
+                  height: 250,
+                  color: AppTheme.background,
+                  child: exercise.gifUrl != null && exercise.gifUrl!.isNotEmpty
+                    ? CachedNetworkImage(
+                        imageUrl: exercise.gifUrl!,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) => const Center(child: Icon(Icons.video_library_rounded, size: 50, color: AppTheme.textSecondary)),
+                      )
+                    : const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.video_library_rounded, size: 48, color: AppTheme.textSecondary),
+                            SizedBox(height: 8),
+                            Text('Tutorial em breve', style: TextStyle(color: AppTheme.textSecondary)),
+                          ],
+                        ),
+                      ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text('DICAS DE EXECUÇÃO', style: TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+              const SizedBox(height: 12),
+              ...exercise.cues.map((cue) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.check_circle_outline_rounded, size: 18, color: AppTheme.success),
+                    const SizedBox(width: 12),
+                    Expanded(child: Text(cue, style: const TextStyle(color: AppTheme.textPrimary))),
+                  ],
+                ),
+              )),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('ENTENDI'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<WorkoutProvider>();
@@ -265,6 +349,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
               timerStream: _timerStream,
               formatDuration: _formatDuration,
               onAddExercise: () => _showAddExerciseDialog(context),
+              onShowTutorial: (ctx, e) => _showTutorial(ctx, e),
             )
           : _EmptyState(onStart: () => provider.startSession()),
     );
@@ -338,11 +423,13 @@ class _ActiveSession extends StatelessWidget {
   final Stream<int> timerStream;
   final String Function(DateTime) formatDuration;
   final VoidCallback onAddExercise;
+  final Function(BuildContext, ExerciseModel) onShowTutorial;
 
   const _ActiveSession({
     required this.timerStream,
     required this.formatDuration,
     required this.onAddExercise,
+    required this.onShowTutorial,
   });
 
   @override
@@ -405,6 +492,7 @@ class _ActiveSession extends StatelessWidget {
                   itemBuilder: (_, i) => _ExerciseCard(
                     exerciseIndex: i,
                     entry: exercises[i],
+                    onShowTutorial: onShowTutorial,
                   ),
                 ),
         ),
@@ -418,8 +506,13 @@ class _ActiveSession extends StatelessWidget {
 class _ExerciseCard extends StatelessWidget {
   final int exerciseIndex;
   final dynamic entry;
+  final Function(BuildContext, ExerciseModel) onShowTutorial;
 
-  const _ExerciseCard({required this.exerciseIndex, required this.entry});
+  const _ExerciseCard({
+    required this.exerciseIndex, 
+    required this.entry,
+    required this.onShowTutorial,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -529,14 +622,34 @@ class _ExerciseCard extends StatelessWidget {
 
             const SizedBox(height: 8),
 
-            TextButton.icon(
-              onPressed: () => provider.addSet(exerciseIndex),
-              icon: const Icon(Icons.add, size: 16),
-              label: const Text('Adicionar série'),
-              style: TextButton.styleFrom(
-                foregroundColor: AppTheme.accent,
-                padding: EdgeInsets.zero,
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton.icon(
+                    onPressed: () => provider.addSet(exerciseIndex),
+                    icon: const Icon(Icons.add, size: 16),
+                    label: const Text('Adicionar série'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppTheme.accent,
+                      padding: EdgeInsets.zero,
+                    ),
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () {
+                    final exercise = context.read<ExerciseProvider>().getById(entry.exerciseId);
+                    if (exercise != null) {
+                      onShowTutorial(context, exercise);
+                    }
+                  },
+                  icon: const Icon(Icons.play_circle_outline, size: 16),
+                  label: const Text('Tutorial'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppTheme.textSecondary,
+                    padding: EdgeInsets.zero,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
