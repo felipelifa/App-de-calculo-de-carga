@@ -10,6 +10,7 @@ import 'core/services/auth_service.dart';
 import 'features/exercises/exercise_provider.dart';
 import 'features/workout/workout_provider.dart';
 import 'features/workout/workout_profile_provider.dart';
+import 'features/workout/progression_provider.dart';
 import 'shared/theme/app_theme.dart';
 
 void main() async {
@@ -19,6 +20,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // Para desenvolvimento local com emuladores, descomente:
   // const String host = '127.0.0.1';
   // FirebaseFirestore.instance.useFirestoreEmulator(host, 8080);
   // FirebaseAuth.instance.useAuthEmulator(host, 9099);
@@ -42,6 +44,10 @@ class WorkoutApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<WorkoutProfileProvider>(
           create: (_) => WorkoutProfileProvider(),
+        ),
+        // Motor de Progressão — registrado globalmente
+        ChangeNotifierProvider<ProgressionProvider>(
+          create: (_) => ProgressionProvider(),
         ),
         Provider.value(value: FirebaseFirestore.instance),
       ],
