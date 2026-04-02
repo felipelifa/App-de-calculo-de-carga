@@ -329,11 +329,11 @@ class ProgressionEngine {
 
       final newSessionsWithoutProgress = hasMadeProgress
           ? 0
-          : (prev?.sessionsWithoutProgress ?? 0) + 1;
+          : (prev.sessionsWithoutProgress) + 1;
 
       final newConsecutiveFailures = completedAllSets
           ? 0
-          : (prev?.consecutiveFailures ?? 0) + 1;
+          : (prev.consecutiveFailures) + 1;
 
       // Aplica tabela de decisão
       final decision = _decide(
@@ -346,7 +346,7 @@ class ProgressionEngine {
         isBodyweight: isBodyweight,
         progressionIds: progressionIds,
         substituteIds: substituteIds,
-        prevSessionsWithProgress: !hasMadeProgress ? (prev?.sessionsWithoutProgress ?? 0) : 0,
+        prevSessionsWithProgress: !hasMadeProgress ? (prev.sessionsWithoutProgress) : 0,
       );
 
       decisions.add(decision);
@@ -436,7 +436,7 @@ class ProgressionEngine {
           type: ProgressionDecisionType.continueBodyweight,
           title: 'Quase pronto para avançar',
           reason:
-              'RIR $_rir. Mais uma sessão assim e você estará pronto para o próximo nível na cadeia de progressão.',
+              'RIR $rir. Mais uma sessão assim e você estará pronto para o próximo nível na cadeia de progressão.',
           sessionsAnalyzed: 1,
         );
       }
@@ -465,7 +465,7 @@ class ProgressionEngine {
         type: ProgressionDecisionType.increaseLoad,
         title: 'Aumente a carga',
         reason:
-            'RIR $_rir — você tem margem. Adicione ${increment.toStringAsFixed(1)} kg na próxima sessão.',
+            'RIR $rir — você tem margem. Adicione ${increment.toStringAsFixed(1)} kg na próxima sessão.',
         suggestedWeightKg: newWeight.toDouble(),
         sessionsAnalyzed: 1,
       );
