@@ -329,11 +329,11 @@ class ProgressionEngine {
 
       final newSessionsWithoutProgress = hasMadeProgress
           ? 0
-          : (prev.sessionsWithoutProgress) + 1;
+          : (prev?.sessionsWithoutProgress ?? 0) + 1;
 
       final newConsecutiveFailures = completedAllSets
           ? 0
-          : (prev.consecutiveFailures) + 1;
+          : (prev?.consecutiveFailures ?? 0) + 1;
 
       // Aplica tabela de decisão
       final decision = _decide(
@@ -346,7 +346,7 @@ class ProgressionEngine {
         isBodyweight: isBodyweight,
         progressionIds: progressionIds,
         substituteIds: substituteIds,
-        prevSessionsWithProgress: !hasMadeProgress ? (prev.sessionsWithoutProgress) : 0,
+        prevSessionsWithProgress: !hasMadeProgress ? (prev?.sessionsWithoutProgress ?? 0) : 0,
       );
 
       decisions.add(decision);
