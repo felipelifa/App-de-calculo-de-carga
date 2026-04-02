@@ -25,6 +25,7 @@ final List<ExerciseModel> exerciseLibrary = [
     difficulty: 'intermediate',
     restrictions: ['shoulder'],
     repRangeMin: 5, repRangeMax: 10,
+    gifUrl: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press.gif',
     cues: ['Escápulas retraídas e deprimidas', 'Pés firmes no chão', 'Barra desce ao mamilo'],
     substituteIds: ['chest_supino_halteres', 'chest_flexao_archer'],
     progressionIds: ['chest_supino_barra_declinado'],
@@ -44,6 +45,7 @@ final List<ExerciseModel> exerciseLibrary = [
     difficulty: 'beginner',
     restrictions: [],
     repRangeMin: 8, repRangeMax: 12,
+    gifUrl: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press.gif',
     cues: ['Amplitude maior que a barra', 'Halteres paralelos ao topo', 'Controle a descida'],
     substituteIds: ['chest_supino_barra', 'chest_flexao'],
     tags: ['compound', 'chest', 'push', 'home_friendly'],
@@ -1252,6 +1254,322 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ['rehab', 'elbow', 'wrist', 'tendinitis', 'eccentric'],
   ),
 
+  // ════════════════════════════════════════
+  // UNILATERAIS AVANÇADOS
+  // ════════════════════════════════════════
+
+  ExerciseModel(
+    id: 'hinge_bulgarian_rdl',
+    name: 'Bulgarian Romanian Deadlift',
+    nameEn: 'Single Leg Bulgarian RDL',
+    primaryMuscles: ['hamstrings', 'glutes'],
+    secondaryMuscles: ['core'],
+    movementPattern: 'hinge_unilateral',
+    equipment: ['dumbbell'],
+    isUnilateral: true,
+    difficulty: 'advanced',
+    repRangeMin: 8, repRangeMax: 12,
+    cues: ['Pé de trás apoiado no banco', 'Quadril desce para trás', 'Foco no equilíbrio e posterior'],
+    tags: ['unilateral', 'hamstring', 'stability'],
+  ),
+
+  ExerciseModel(
+    id: 'squat_step_down',
+    name: 'Step Down (Controle Excêntrico)',
+    nameEn: 'Peterson Step Down',
+    primaryMuscles: ['quads'],
+    secondaryMuscles: ['glute_med'],
+    movementPattern: 'squat_unilateral',
+    equipment: ['bodyweight'],
+    isUnilateral: true,
+    difficulty: 'beginner',
+    repRangeMin: 10, repRangeMax: 15,
+    cues: ['Descida lenta (3-4 segundos)', 'Calcanhar toca o chão levemente', 'Joelhos alinhados com o pé'],
+    tags: ['rehab', 'knee_health', 'eccentric'],
+  ),
+
+  ExerciseModel(
+    id: 'glute_single_leg_bridge',
+    name: 'Ponte de Glúteo Unilateral',
+    nameEn: 'Single Leg Glute Bridge',
+    primaryMuscles: ['glutes'],
+    secondaryMuscles: ['hamstrings', 'core'],
+    movementPattern: 'hinge_unilateral',
+    equipment: ['bodyweight'],
+    isUnilateral: true,
+    difficulty: 'beginner',
+    repRangeMin: 12, repRangeMax: 20,
+    cues: ['Esmague o glúteo no topo', 'Mantenha a pelve nivelada', 'Pé firme no chão'],
+    tags: ['rehab', 'glute_activation', 'stability'],
+  ),
+
+  // ════════════════════════════════════════
+  // CORE ANTI-MOVIMENTO
+  // ════════════════════════════════════════
+
+  ExerciseModel(
+    id: 'core_pallof_walkout',
+    name: 'Pallof Press com Caminhada',
+    nameEn: 'Pallof Press Walkout',
+    primaryMuscles: ['abs', 'obliques'],
+    secondaryMuscles: ['shoulders'],
+    movementPattern: 'anti_rotation',
+    equipment: ['cable', 'band'],
+    difficulty: 'intermediate',
+    repRangeMin: 5, repRangeMax: 10,
+    cues: ['Resista à rotação lateral', 'Dê 3 passos curtos para o lado e volte', 'Core travado'],
+    tags: ['core', 'anti_rotation', 'stability'],
+  ),
+
+  ExerciseModel(
+    id: 'core_stir_the_pot',
+    name: 'Stir the Pot (Bola Suíça)',
+    nameEn: 'Stir the Pot',
+    primaryMuscles: ['abs'],
+    secondaryMuscles: ['shoulders', 'core'],
+    movementPattern: 'anti_extension',
+    equipment: ['swiss_ball'],
+    difficulty: 'advanced',
+    repRangeMin: 8, repRangeMax: 12,
+    cues: ['Mantenha a prancha na bola', 'Faça círculos lentos com os cotovelos', 'Não deixe a lombar arquear'],
+    tags: ['core', 'advanced', 'anti_extension'],
+  ),
+
+  ExerciseModel(
+    id: 'core_dead_bug_weighted',
+    name: 'Dead Bug com Carga',
+    nameEn: 'Weighted Dead Bug',
+    primaryMuscles: ['abs'],
+    secondaryMuscles: ['core_deep'],
+    movementPattern: 'anti_extension',
+    equipment: ['dumbbell'],
+    difficulty: 'intermediate',
+    repRangeMin: 10, repRangeMax: 16,
+    cues: ['Lombar colada no chão', 'Haltere estendido sobre o peito', 'Movimento controlado das pernas'],
+    tags: ['core', 'rehab', 'low_back_health'],
+  ),
+
+  ExerciseModel(
+    id: 'core_side_plank_row',
+    name: 'Prancha Lateral com Remada',
+    nameEn: 'Side Plank Cable Row',
+    primaryMuscles: ['obliques', 'back'],
+    secondaryMuscles: ['shoulders'],
+    movementPattern: 'anti_rotation',
+    equipment: ['cable', 'band'],
+    isUnilateral: true,
+    difficulty: 'advanced',
+    repRangeMin: 8, repRangeMax: 12,
+    cues: ['Mantenha a prancha lateral estável', 'Puxe o cabo sem girar o tronco', 'Quadril alto'],
+    tags: ['core', 'stability', 'oblique'],
+  ),
+
+  // ════════════════════════════════════════
+  // CARRIES (TRANSPORTES)
+  // ════════════════════════════════════════
+
+  ExerciseModel(
+    id: 'carry_farmer_walk',
+    name: 'Farmer Walk',
+    nameEn: 'Farmer Carry',
+    primaryMuscles: ['forearms', 'core', 'traps'],
+    secondaryMuscles: ['glutes', 'calves'],
+    movementPattern: 'carry',
+    equipment: ['dumbbell', 'kettlebell'],
+    difficulty: 'beginner',
+    repRangeMin: 30, repRangeMax: 60, // Segundos
+    cues: ['Postura ereta', 'Passos curtos e rápidos', 'Escápulas firmes'],
+    tags: ['functional', 'grip_strength', 'core'],
+  ),
+
+  ExerciseModel(
+    id: 'carry_suitcase',
+    name: 'Suitcase Carry',
+    nameEn: 'Suitcase Carry',
+    primaryMuscles: ['obliques', 'core'],
+    secondaryMuscles: ['forearms'],
+    movementPattern: 'anti_lateral_flexion',
+    equipment: ['dumbbell'],
+    isUnilateral: true,
+    difficulty: 'intermediate',
+    repRangeMin: 30, repRangeMax: 45, // Segundos
+    cues: ['Carga em apenas um lado', 'Não incline para o lado do peso', 'Ande em linha reta'],
+    tags: ['core', 'anti_lateral_flexion', 'functional'],
+  ),
+
+  ExerciseModel(
+    id: 'carry_overhead',
+    name: 'Overhead Carry (Unilateral)',
+    nameEn: 'Single Arm Overhead Carry',
+    primaryMuscles: ['shoulders', 'core', 'traps'],
+    secondaryMuscles: ['abs'],
+    movementPattern: 'carry_overhead',
+    equipment: ['dumbbell', 'kettlebell'],
+    isUnilateral: true,
+    difficulty: 'advanced',
+    repRangeMin: 20, repRangeMax: 40, // Segundos
+    cues: ['Braço totalmente estendido', 'Ombro longe da orelha', 'Respire pelo diafragma'],
+    tags: ['shoulder_stability', 'advanced', 'core'],
+  ),
+
+  // ════════════════════════════════════════
+  // LANDMINE (BARRA LIVRE APOIADA)
+  // ════════════════════════════════════════
+
+  ExerciseModel(
+    id: 'landmine_press_knee',
+    name: 'Landmine Press (Ajoelhado)',
+    nameEn: 'Half-Kneeling Landmine Press',
+    primaryMuscles: ['shoulders', 'upper_chest'],
+    secondaryMuscles: ['triceps'],
+    movementPattern: 'push_diagonal',
+    equipment: ['barbell_landmine'],
+    isUnilateral: true,
+    difficulty: 'beginner',
+    repRangeMin: 8, repRangeMax: 12,
+    cues: ['Empurre a barra para frente e para cima', 'Core travado para não girar', 'Ombro estável'],
+    tags: ['shoulder_health', 'landmine', 'push'],
+  ),
+
+  ExerciseModel(
+    id: 'landmine_squat',
+    name: 'Landmine Squat (Goblet Style)',
+    nameEn: 'Landmine Goblet Squat',
+    primaryMuscles: ['quads', 'glutes'],
+    secondaryMuscles: ['core'],
+    movementPattern: 'squat',
+    equipment: ['barbell_landmine'],
+    difficulty: 'beginner',
+    repRangeMin: 10, repRangeMax: 15,
+    cues: ['Segure a ponta da barra no peito', 'Cotovelos entre os joelhos no fundo', 'Coluna neutra'],
+    tags: ['squat', 'safe_back', 'landmine'],
+  ),
+
+  ExerciseModel(
+    id: 'landmine_rotation',
+    name: 'Landmine Rotation',
+    nameEn: 'Landmine Rainbows',
+    primaryMuscles: ['obliques', 'abs'],
+    secondaryMuscles: ['shoulders'],
+    movementPattern: 'anti_rotation',
+    equipment: ['barbell_landmine'],
+    difficulty: 'advanced',
+    repRangeMin: 10, repRangeMax: 16,
+    cues: ['Mantenha os braços estendidos', 'Gire o core, não apenas os braços', 'Pés pivotando levemente'],
+    tags: ['rotational_power', 'core', 'athlete'],
+  ),
+
+  // ════════════════════════════════════════
+  // GLÚTEO MÉDIO E ESTABILIDADE
+  // ════════════════════════════════════════
+
+  ExerciseModel(
+    id: 'glute_monster_walk',
+    name: 'Monster Walk (Mini Band)',
+    nameEn: 'Lateral Band Walk',
+    primaryMuscles: ['glute_med'],
+    secondaryMuscles: ['glutes'],
+    movementPattern: 'isolation',
+    equipment: ['band'],
+    difficulty: 'beginner',
+    repRangeMin: 15, repRangeMax: 20,
+    cues: ['Mini band nos tornozelos ou joelhos', 'Passos laterais curtos', 'Mantenha tensão na banda'],
+    tags: ['rehab', 'knee_stability', 'glute_med'],
+  ),
+
+  ExerciseModel(
+    id: 'glute_hip_airplane',
+    name: 'Hip Airplane',
+    nameEn: 'Hip Airplane',
+    primaryMuscles: ['glute_med', 'glutes'],
+    secondaryMuscles: ['core'],
+    movementPattern: 'hip_stability',
+    equipment: ['bodyweight'],
+    isUnilateral: true,
+    difficulty: 'intermediate',
+    repRangeMin: 8, repRangeMax: 12,
+    cues: ['Equilibre-se em um pé', 'Gire o quadril para abrir e fechar', 'Tronco reto como um avião'],
+    tags: ['mobility', 'stability', 'hip_health'],
+  ),
+
+  // ════════════════════════════════════════
+  // POSTERIOR DE COXA (PREVENÇÃO)
+  // ════════════════════════════════════════
+
+  ExerciseModel(
+    id: 'hamstring_nordic_curl',
+    name: 'Nordic Hamstring Curl',
+    nameEn: 'Nordic Curl',
+    primaryMuscles: ['hamstrings'],
+    secondaryMuscles: ['glutes'],
+    movementPattern: 'eccentric_hinge',
+    equipment: ['bench'],
+    difficulty: 'advanced',
+    repRangeMin: 5, repRangeMax: 8,
+    cues: ['Peça para alguém segurar os calcanhares', 'Desça o mais lento possível', 'Use as mãos para amortecer'],
+    tags: ['injury_prevention', 'eccentric', 'athlete'],
+  ),
+
+  ExerciseModel(
+    id: 'hamstring_sliding_curl',
+    name: 'Flexão de Pernas Deslizante',
+    nameEn: 'Sliding Leg Curl',
+    primaryMuscles: ['hamstrings'],
+    secondaryMuscles: ['glutes', 'core'],
+    movementPattern: 'hamstring_curl',
+    equipment: ['sliders'],
+    difficulty: 'intermediate',
+    repRangeMin: 10, repRangeMax: 15,
+    cues: ['Ponte de glúteo sustentada', 'Deslize os calcanhares para longe e volte', 'Mantenha o quadril alto'],
+    tags: ['rehab', 'hamstring', 'home_friendly'],
+  ),
+
+  // ════════════════════════════════════════
+  // SAÚDE DA ESCÁPULA (OMBROS)
+  // ════════════════════════════════════════
+
+  ExerciseModel(
+    id: 'scapula_pull_up_shrug',
+    name: 'Scapular Pull Up',
+    nameEn: 'Scapular Pull Up',
+    primaryMuscles: ['traps_lower', 'rhomboids'],
+    secondaryMuscles: ['back'],
+    movementPattern: 'scapular_stability',
+    equipment: ['bar'],
+    difficulty: 'beginner',
+    repRangeMin: 10, repRangeMax: 15,
+    cues: ['Pendurado na barra', 'Suba apenas usando as escápulas', 'Braços sempre esticados'],
+    tags: ['rehab', 'shoulder_health', 'scapular_control'],
+  ),
+
+  ExerciseModel(
+    id: 'scapula_wall_slides',
+    name: 'Wall Slides',
+    nameEn: 'Wall Slides',
+    primaryMuscles: ['serratus_anterior', 'traps'],
+    secondaryMuscles: ['shoulders'],
+    movementPattern: 'scapular_mobility',
+    equipment: ['bodyweight'],
+    difficulty: 'beginner',
+    repRangeMin: 12, repRangeMax: 20,
+    cues: ['Costas e braços colados na parede', 'Deslize os braços para cima em V', 'Não deixe a lombar sair'],
+    tags: ['rehab', 'mobility', 'shoulder_health'],
+  ),
+
+  ExerciseModel(
+    id: 'scapula_serratus_punch',
+    name: 'Serratus Punch (Haltere)',
+    nameEn: 'Dumbbell Serratus Punch',
+    primaryMuscles: ['serratus_anterior'],
+    secondaryMuscles: ['shoulders'],
+    movementPattern: 'scapular_stability',
+    equipment: ['dumbbell'],
+    difficulty: 'beginner',
+    repRangeMin: 12, repRangeMax: 15,
+    cues: ['Deitado no banco', 'Empurre o peso em direção ao teto apenas com o ombro', 'Cotovelo travado'],
+    tags: ['rehab', 'serratus', 'shoulder_stability'],
+  ),
+
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -1261,21 +1579,26 @@ final List<ExerciseModel> exerciseLibrary = [
 
 const Map<String, List<String>> injuryRehabExercises = {
   'shoulder': [
-    'rehab_manguito_rotador_externo',
-    'rehab_manguito_rotador_interno',
-    'rehab_ombro_y_t_w',
+    'rehab_manguito_rotador_external',
+    'rehab_manguito_rotador_internal',
+    'scapula_wall_slides',
+    'scapula_serratus_punch',
+    'scapula_pull_up_shrug',
     'back_facepull',
+    'landmine_press_knee',
   ],
   'knee': [
     'rehab_joelho_terminal_extension',
-    'rehab_joelho_step_up',
-    'rehab_joelho_mini_squat',
-    'glute_ponte_solo',
+    'squat_step_down',
+    'glute_monster_walk',
+    'glute_single_leg_bridge',
+    'hamstring_sliding_curl',
   ],
   'lower_back': [
-    'rehab_lombar_bird_dog',
-    'rehab_lombar_dead_bug',
-    'rehab_lombar_hiperextensao',
+    'core_dead_bug_weighted',
+    'core_pallof_walkout',
+    'carry_suitcase',
+    'glute_single_leg_bridge',
     'core_prancha',
   ],
   'wrist': [
@@ -1285,6 +1608,11 @@ const Map<String, List<String>> injuryRehabExercises = {
   'elbow': [
     'rehab_cotovelo_extensao_excentrica',
     'rehab_punho_flexao',
+  ],
+  'hamstring': [
+    'hamstring_nordic_curl',
+    'hamstring_sliding_curl',
+    'hinge_bulgarian_rdl',
   ],
 };
 

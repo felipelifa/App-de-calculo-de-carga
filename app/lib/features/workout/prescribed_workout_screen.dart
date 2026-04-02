@@ -153,6 +153,89 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
     );
   }
 
+  void _showTutorial(BuildContext context, ExerciseModel exercise) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.surface,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        maxChildSize: 0.9,
+        expand: false,
+        builder: (context, scrollController) => SingleChildScrollView(
+          controller: scrollController,
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 40, height: 4,
+                  decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(2)),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(exercise.name, style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppTheme.textPrimary, fontWeight: FontWeight.bold)),
+              Text(exercise.nameEn, style: const TextStyle(color: AppTheme.textSecondary)),
+              const SizedBox(height: 24),
+              // VÍDEO / GIF PLAYER
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Container(
+                  width: double.infinity,
+                  height: 250,
+                  color: AppTheme.background,
+                  child: exercise.gifUrl != null && exercise.gifUrl!.isNotEmpty
+                    ? CachedNetworkImage(
+                        imageUrl: exercise.gifUrl!,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) => const Center(child: Icon(Icons.video_library_rounded, size: 50, color: AppTheme.textSecondary)),
+                      )
+                    : const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.video_library_rounded, size: 48, color: AppTheme.textSecondary),
+                            SizedBox(height: 8),
+                            Text('Tutorial em breve', style: TextStyle(color: AppTheme.textSecondary)),
+                          ],
+                        ),
+                      ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text('DICAS DE EXECUÇÃO', style: TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+              const SizedBox(height: 12),
+              ...exercise.cues.map((cue) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.check_circle_outline_rounded, size: 18, color: AppTheme.success),
+                    const SizedBox(width: 12),
+                    Expanded(child: Text(cue, style: const TextStyle(color: AppTheme.textPrimary))),
+                  ],
+                ),
+              )),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('ENTENDI'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   void _confirmDeletion(BuildContext context) {
     showDialog(
       context: context,
@@ -666,6 +749,23 @@ class _ExerciseRowState extends State<_ExerciseRow> {
                     icon: Icons.av_timer_rounded,
                     label: ex.tempo),
               ],
+            ),
+            const SizedBox(height: 12),
+            // NOVO: Botão de Tutorial
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () => _showTutorial(context, ex.exercise),
+                icon: const Icon(Icons.play_circle_outline_rounded, size: 20),
+                label: const Text('VER TUTORIAL EM VÍDEO', 
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppTheme.accent,
+                  side: BorderSide(color: AppTheme.accent.withValues(alpha: 0.3)),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
             ),
             // Cues expansíveis
             if (ex.sessionCues.isNotEmpty) ...[
