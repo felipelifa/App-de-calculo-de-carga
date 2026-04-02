@@ -163,10 +163,12 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Treino salvo com sucesso!'),
+              content: Text('Treino salvo! Cargas recalculadas com sucesso! 🚀'),
               backgroundColor: AppTheme.success,
             ),
           );
+          // Volta para a tela de plano (prescribed)
+          Navigator.pop(context);
         }
       } catch (e) {
         if (context.mounted) {

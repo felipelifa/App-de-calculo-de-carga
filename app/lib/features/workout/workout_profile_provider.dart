@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -19,7 +20,13 @@ class WorkoutProfileProvider extends ChangeNotifier {
 
   WorkoutProfile? _profile;
   GeneratedWorkout? _currentWorkout;
+  Map<String, dynamic>? _currentWorkoutRaw;
   ProgressionState? _progressionState;
+  
+  StreamSubscription? _workoutSub;
+  StreamSubscription? _progressionSub;
+  StreamSubscription? _authSub;
+
   bool _isLoading = true;
   String? _error;
 
@@ -37,12 +44,23 @@ class WorkoutProfileProvider extends ChangeNotifier {
   }
 
   Future<void> _init() async {
+    _authSub?.cancel();
+    _authSub = _auth.authStateChanges().listen((user) {
+       if (user != null) {
+         _setupListeners(user.uid);
+       } else {
+         _cleanup();
+       }
+    });
+
+    // Carga inicial do perfil
     final uid = _auth.currentUser?.uid;
     if (uid == null) {
       _isLoading = false;
       notifyListeners();
       return;
     }
+    
     try {
       final profileDoc = await _db
           .collection('users')
@@ -53,39 +71,70 @@ class WorkoutProfileProvider extends ChangeNotifier {
       if (profileDoc.exists) {
         _profile = WorkoutProfile.fromDoc(profileDoc);
       }
-
-      // NOVO: Carregar treino e progressão imediatamente no init
-      final workoutDoc = await _db
-          .collection('users')
-          .doc(uid)
-          .collection('generated_workouts')
-          .doc('current')
-          .get();
-      
-      if (workoutDoc.exists && workoutDoc.data() != null) {
-        // Nota: Precisamos do ExerciseProvider para o getById, 
-        // mas aqui no init podemos carregar o mapa bruto e converter depois 
-        // ou garantir que as telas chamem o loadCurrentWorkout.
-        // Como o loadCurrentWorkout já existe, vamos apenas disparar ele aqui 
-        // se as dependências permitirem, ou garantir que ele seja resiliente.
-      }
-
-      final progDoc = await _db
-          .collection('users')
-          .doc(uid)
-          .collection('progression_state')
-          .doc('current')
-          .get();
-      if (progDoc.exists && progDoc.data() != null) {
-        _progressionState = ProgressionState.fromMap(progDoc.data()!);
-      }
-
     } catch (e) {
-      _error = 'Erro ao carregar dados: $e';
+      debugPrint('Erro no init profile: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  void _setupListeners(String uid) {
+    _workoutSub?.cancel();
+    _progressionSub?.cancel();
+
+    // Listener para o treino atual (GeneratedWorkout)
+    _workoutSub = _db
+        .collection('users')
+        .doc(uid)
+        .collection('generated_workouts')
+        .doc('current')
+        .snapshots()
+        .listen((snap) {
+      if (snap.exists && snap.data() != null) {
+        _currentWorkoutRaw = snap.data();
+        // A hidratação acontecerá quando a UI chamar loadCurrentWorkout
+        _isLoading = false;
+        notifyListeners();
+      } else {
+        _currentWorkoutRaw = null;
+        _currentWorkout = null;
+        _isLoading = false;
+        notifyListeners();
+      }
+    });
+
+    // Listener para as cargas recalculadas (ProgressionState)
+    _progressionSub = _db
+        .collection('users')
+        .doc(uid)
+        .collection('progression_state')
+        .doc('current')
+        .snapshots()
+        .listen((snap) {
+      if (snap.exists && snap.data() != null) {
+        _progressionState = ProgressionState.fromMap(snap.data()!);
+        notifyListeners();
+      }
+    });
+  }
+
+  void _cleanup() {
+    _workoutSub?.cancel();
+    _progressionSub?.cancel();
+    _profile = null;
+    _currentWorkoutRaw = null;
+    _currentWorkout = null;
+    _progressionState = null;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _authSub?.cancel();
+    _workoutSub?.cancel();
+    _progressionSub?.cancel();
+    super.dispose();
   }
 
   Future<void> saveProfile(WorkoutProfile profile) async {
@@ -115,8 +164,34 @@ class WorkoutProfileProvider extends ChangeNotifier {
     }
   }
 
-  /// Gera e salva o treino. A biblioteca de exercícios agora é interna
-  /// ao motor — não precisa ser passada externamente.
+  Future<void> loadCurrentWorkout(ExerciseModel? Function(String) getById) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+    
+    // Se temos dados brutos do listener, hidratamos imediatamente
+    if (_currentWorkoutRaw != null) {
+      _currentWorkout = GeneratedWorkout.fromMap(_currentWorkoutRaw!, getById);
+      notifyListeners();
+      return;
+    }
+
+    try {
+      final doc = await _db
+          .collection('users')
+          .doc(uid)
+          .collection('generated_workouts')
+          .doc('current')
+          .get();
+      if (doc.exists && doc.data() != null) {
+        _currentWorkoutRaw = doc.data();
+        _currentWorkout = GeneratedWorkout.fromMap(_currentWorkoutRaw!, getById);
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('Erro ao carregar workout: $e');
+    }
+  }
+
   Future<void> generateAndSaveWorkout([List<ExerciseModel>? _unused]) async {
     final uid = _auth.currentUser?.uid;
     if (uid == null || _profile == null) return;
@@ -125,7 +200,6 @@ class WorkoutProfileProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // Motor agora recebe o profile e usa a biblioteca interna
       final engine = WorkoutPrescriptionEngine(_profile!);
       final workout = engine.generate(_profile!);
 
@@ -137,6 +211,7 @@ class WorkoutProfileProvider extends ChangeNotifier {
           .set(workout.toMap());
 
       _currentWorkout = workout;
+      _currentWorkoutRaw = workout.toMap();
     } catch (e) {
       _error = 'Erro ao gerar treino: $e';
       rethrow;
@@ -161,42 +236,12 @@ class WorkoutProfileProvider extends ChangeNotifier {
           .doc('current')
           .delete();
       _currentWorkout = null;
+      _currentWorkoutRaw = null;
     } catch (e) {
       _error = 'Erro ao excluir treino: $e';
     } finally {
       _isLoading = false;
       notifyListeners();
-    }
-  }
-
-  Future<void> loadCurrentWorkout(ExerciseModel? Function(String) getById) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-    try {
-      final doc = await _db
-          .collection('users')
-          .doc(uid)
-          .collection('generated_workouts')
-          .doc('current')
-          .get();
-      if (doc.exists && doc.data() != null) {
-        _currentWorkout = GeneratedWorkout.fromMap(doc.data()!, getById);
-        
-        // Também carrega o estado de progressão para ter as cargas atuais
-        final progDoc = await _db
-            .collection('users')
-            .doc(uid)
-            .collection('progression_state')
-            .doc('current')
-            .get();
-        if (progDoc.exists && progDoc.data() != null) {
-          _progressionState = ProgressionState.fromMap(progDoc.data()!);
-        }
-        
-        notifyListeners();
-      }
-    } catch (e) {
-      debugPrint('Erro ao carregar workout: $e');
     }
   }
 }
