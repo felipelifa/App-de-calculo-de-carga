@@ -19,7 +19,7 @@ import '../../features/workout/prescribed_workout_screen.dart';
 class AppRouter {
   static GoRouter createRouter(AuthService authService) {
     return GoRouter(
-      initialLocation: '/login',
+      initialLocation: '/dashboard',
       refreshListenable: authService,
       redirect: (context, state) {
         final isLoggedIn = authService.currentUser != null;
@@ -28,6 +28,10 @@ class AppRouter {
 
         if (!isLoggedIn && !isAuthRoute) return '/login';
         if (isLoggedIn && isAuthRoute) return '/dashboard';
+        
+        // Mapeia a raiz para o dashboard
+        if (state.uri.path == '/') return '/dashboard';
+        
         return null;
       },
       routes: [

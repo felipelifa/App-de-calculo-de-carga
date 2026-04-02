@@ -59,20 +59,37 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
       // Somente redireciona após ter certeza absoluta que o workout não existe no banco
       return Scaffold(
         backgroundColor: AppTheme.background,
+        appBar: AppBar(
+          backgroundColor: AppTheme.background,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_rounded, color: AppTheme.textSecondary),
+            onPressed: () => context.go('/dashboard'),
+          ),
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Icon(Icons.fitness_center_rounded, size: 64, color: AppTheme.textSecondary),
+              const SizedBox(height: 24),
               const Text('Nenhum treino gerado ainda.',
-                  style: TextStyle(color: AppTheme.textSecondary)),
-              const SizedBox(height: 16),
+                  style: TextStyle(color: AppTheme.textSecondary, fontSize: 18)),
+              const SizedBox(height: 8),
+              const Text('Responda a anamnese para criar seu plano.',
+                  style: TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
+              const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: () => context.go('/anamnese'),
-                child: const Text('GERAR TREINO'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.accent,
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                ),
+                child: const Text('GERAR MEU TREINO'),
               ),
               const SizedBox(height: 16),
               TextButton(
-                onPressed: () => context.go('/'),
+                onPressed: () => context.go('/dashboard'),
                 child: const Text('VOLTAR PARA O INÍCIO', 
                     style: TextStyle(color: AppTheme.textSecondary)),
               ),
@@ -89,7 +106,7 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
             style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded, color: AppTheme.textSecondary),
-          onPressed: () => context.go('/'),
+          onPressed: () => context.go('/dashboard'),
           tooltip: 'Página Inicial',
         ),
         backgroundColor: AppTheme.surface,
