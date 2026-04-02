@@ -724,3 +724,34 @@ class _MetricChip extends StatelessWidget {
     );
   }
 }
+
+// ─────────────────────────────────────────────
+// Helpers de Idioma e Simplicidade
+// ─────────────────────────────────────────────
+
+String _translateMuscle(String m) {
+  final map = {
+    'chest': 'Peitoral',
+    'back': 'Costas',
+    'shoulders': 'Ombros',
+    'side_delt': 'Ombro Lateral',
+    'rear_delt': 'Ombro Posterior',
+    'biceps': 'Bíceps',
+    'triceps': 'Tríceps',
+    'quads': 'Coxa (Frente)',
+    'hamstrings': 'Coxa (Atrás)',
+    'glutes': 'Glúteos',
+    'calves': 'Panturrilha',
+    'abs': 'Abdômen',
+    'core': 'Abdominal',
+  };
+  return map[m.toLowerCase()] ?? m;
+}
+
+String _friendlyRir(int rir) {
+  if (rir <= 0) return 'Até o limite (Difícil)';
+  if (rir == 1) return 'Quase no limite';
+  if (rir == 2) return 'Esforço intenso';
+  if (rir == 3) return 'Carga moderada';
+  return 'Carga leve';
+}
