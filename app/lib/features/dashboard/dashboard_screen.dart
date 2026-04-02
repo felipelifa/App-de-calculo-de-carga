@@ -259,9 +259,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
             _NavCard(
               icon: Icons.history_rounded,
               label: 'Histórico',
-              subtitle: 'Treinos anteriores',
+              subtitle: 'Treinos anteriores registrados',
               color: const Color(0xFF8B5CF6),
               onTap: () => context.push('/workout/history'),
+            ),
+            const SizedBox(height: 12),
+
+            // NOVO: Card de Download do APK
+            _NavCard(
+              icon: Icons.android_rounded,
+              label: 'APLICATIVO PARA CELULAR',
+              subtitle: 'Baixe o APK para instalar e usar como um app nativo',
+              color: const Color(0xFF3DDC84), // Android Green
+              onTap: () => _showDownloadDialog(context),
+              isFeatured: true,
             ),
 
             const SizedBox(height: 28),
@@ -277,6 +288,67 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
 
             const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDownloadDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.surface,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
+      builder: (context) => Padding(
+        padding: const EdgeInsets.fromLTRB(24, 12, 24, 40),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40, height: 4,
+              decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(2)),
+            ),
+            const SizedBox(height: 32),
+            const Icon(Icons.install_mobile_rounded, size: 64, color: Color(0xFF3DDC84)),
+            const SizedBox(height: 20),
+            const Text(
+              'Instale o App no Android',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Acesse todos os recursos de forma nativa e muito mais rápida no seu celular Android.',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: AppTheme.textSecondary, fontSize: 14),
+            ),
+            const SizedBox(height: 32),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Download iniciado...')),
+                  );
+                },
+                icon: const Icon(Icons.download_rounded, color: Colors.white),
+                label: const Text('BAIXAR INSTALADOR (APK)', 
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF3DDC84), 
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Dica: Se o Android bloquear, habilite "Instalar de fontes desconhecidas".',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
+            ),
           ],
         ),
       ),

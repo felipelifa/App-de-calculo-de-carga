@@ -15,26 +15,27 @@ import '../../features/workout/routine_detail_screen.dart';
 import '../../features/workout/workout_routine_model.dart';
 import '../../features/workout/anamnese_screen.dart';
 import '../../features/workout/prescribed_workout_screen.dart';
+import '../../features/auth/splash_screen.dart';
 
 class AppRouter {
   static GoRouter createRouter(AuthService authService) {
     return GoRouter(
-      initialLocation: '/dashboard',
+      initialLocation: '/',
       refreshListenable: authService,
       redirect: (context, state) {
         final isLoggedIn = authService.currentUser != null;
         final isAuthRoute =
-            state.uri.path == '/login' || state.uri.path == '/register';
+            state.uri.path == '/login' || state.uri.path == '/register' || state.uri.path == '/';
 
         if (!isLoggedIn && !isAuthRoute) return '/login';
-        if (isLoggedIn && isAuthRoute) return '/dashboard';
-        
-        // Mapeia a raiz para o dashboard
-        if (state.uri.path == '/') return '/dashboard';
-        
+        if (isLoggedIn && isAuthRoute && state.uri.path != '/') return '/dashboard';
         return null;
       },
       routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const SplashScreen(),
+        ),
         GoRoute(
           path: '/login',
           builder: (context, state) => const LoginScreen(),
