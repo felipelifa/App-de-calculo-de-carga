@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../core/services/notification_service.dart';
 import 'workout_models.dart';
 import 'progression_engine.dart';
 
@@ -92,6 +93,11 @@ class ProgressionProvider extends ChangeNotifier {
         experienceLevel: experienceLevel,
       );
       _state = await _engine.loadState(); // recarrega estado atualizado
+
+      // Se a semana resultante é deload, notificar imediatamente
+      if (_state?.isDeloadWeek == true) {
+        await NotificationService.scheduleDeloadAlert();
+      }
     } catch (e) {
       _error = 'Erro ao processar progressão: $e';
       debugPrint('ProgressionProvider.processCompletedSession error: $e');

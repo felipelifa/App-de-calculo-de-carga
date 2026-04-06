@@ -402,6 +402,8 @@ class _SessionCardState extends State<_SessionCard> {
         children: [
           // Header
           _buildCardHeader(),
+          // Indicador de fadiga
+          _buildFatigueIndicator(),
           // Progressão note
           _buildProgressionNote(),
           // Exercícios
@@ -520,6 +522,54 @@ class _SessionCardState extends State<_SessionCard> {
     );
   }
 
+  Widget _buildFatigueIndicator() {
+    final f = widget.session.fatigue;
+    final maxVal = f.spinalLoad;
+    final maxMetric = f.spinalLoad >= f.shoulderStress && f.spinalLoad >= f.kneeStress && f.spinalLoad >= f.cnsLoad ? 'spinal' : '';
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceHighlight.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('CARGA DO TREINO',
+                style: TextStyle(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+            const SizedBox(height: 8),
+            _FatigueBar(label: 'Carga lombar', value: f.spinalLoad, icon: Icons.back_hand_rounded, labelFn: _fatigueStatus),
+            const SizedBox(height: 6),
+            _FatigueBar(label: 'Ombro', value: f.shoulderStress, icon: Icons.accessibility_new_rounded, labelFn: _fatigueStatus),
+            const SizedBox(height: 6),
+            _FatigueBar(label: 'Joelho', value: f.kneeStress, icon: Icons.directions_walk_rounded, labelFn: _fatigueStatus),
+            const SizedBox(height: 6),
+            _FatigueBar(label: 'SNC', value: f.cnsLoad, icon: Icons.bolt_rounded, labelFn: _fatigueStatus),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _fatigueStatus(double value) {
+    final pct = (value * 100).round();
+    if (value > 0.85) return 'crítico';
+    if (value > 0.65) return 'alto';
+    if (value > 0.4) return 'moderado';
+    return pct.toString();
+  }
+
+  Color _fatigueColor(double value) {
+    if (value > 0.85) return Colors.redAccent;
+    if (value > 0.65) return Colors.orangeAccent;
+    if (value > 0.4) return Colors.amberAccent;
+    return AppTheme.success;
+  }
+
   Widget _buildExercisesList() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
@@ -626,6 +676,67 @@ class _SessionCardState extends State<_SessionCard> {
     context.go('/workout');
   }
 }
+
+// ─────────────────────────────────────────────
+// Fatigue Bar Widget
+// ─────────────────────────────────────────────
+
+typedef _FatigueLabelFn = String Function(double value, double percent);
+
+class _FatigueBar extends StatelessWidget {
+  final String label;
+  final double value;
+  final IconData icon;
+  final String Function(double) labelFn;
+
+  const _FatigueBar({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.labelFn,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final pct = value.clamp(0.0, 1.0);
+    final color = _colorFor(pct);
+    final statusText = pct < 0.01 ? 'N/A' : labelFn(value);
+
+    return Row(
+      children: [
+        Icon(icon, size: 14, color: Colors.white54),
+        const SizedBox(width: 8),
+        Text(label, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+        const SizedBox(width: 8),
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: pct,
+              backgroundColor: color.withValues(alpha: 0.1),
+              color: color,
+              minHeight: 4,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        SizedBox(
+          width: 60,
+          child: Text(statusText, style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.bold)),
+        ),
+      ],
+    );
+  }
+
+  Color _colorFor(double value) {
+    if (value > 0.85) return Colors.redAccent;
+    if (value > 0.65) return Colors.orangeAccent;
+    if (value > 0.4) return Colors.amberAccent;
+    return AppTheme.success;
+  }
+}
+
+// _FatigueBar already defined above in _SessionCardState
 
 // ─────────────────────────────────────────────
 // Linha de Exercício com detalhes completos

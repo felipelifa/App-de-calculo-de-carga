@@ -1,5 +1,4 @@
 import * as admin from "firebase-admin";
-import * as path from "path";
 
 // ═══════════════════════════════════════════════════════════════
 // SEED SCRIPT — Banco Global de Exercícios no Firestore

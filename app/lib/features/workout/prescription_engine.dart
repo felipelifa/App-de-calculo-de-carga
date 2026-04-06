@@ -2,19 +2,24 @@ import 'dart:math';
 import '../exercises/exercise_model.dart';
 import 'workout_profile_model.dart';
 import 'prescribed_workout_model.dart';
+import 'session_fatigue_accumulator.dart';
+import 'exercise_rotation_manager.dart';
 import '../../core/data/exercise_library.dart';
 
 // ═══════════════════════════════════════════════════════════════
-// MOTOR DE PRESCRIÇÃO v3.0
+// MOTOR DE PRESCRIÇÃO v4.0
 //
-// Melhorias baseadas em Schoenfeld (2021) + Murer et al. (2019):
-// 1. DUP real: rep range varia ENTRE sessões (força/hipertrofia/resistência)
+// Baseado em Schoenfeld (2021) + Murer et al. (2019):
+// 1. DUP real: rep range varia ENTRE sessões
 // 2. Cadência prescrita por exercício
-// 3. RIR real por objetivo (não só por nível)
-// 4. Equilíbrio push:pull garantido (ratio >= 1:1 na semana)
-// 5. ROM completa nos cues de todos os exercícios
-// 6. Volume indireto contabilizado (bíceps/tríceps)
-// 7. Descanso correto por padrão motor e objetivo
+// 3. RIR real por objetivo
+// 4. Equilíbrio push:pull garantido
+// 5. ROM completa nos cues
+// 6. Volume indireto contabilizado
+// 7. FatigueAccumulator: previne sobrecarga articular
+// 8. PatternHistory: evita padrão repetido entre dias
+// 9. Algoritmo de score > seleção por seed
+// 10. Exercise Rotation: variação semanal de exercícios (Schoenfeld + Bompa)
 // ═══════════════════════════════════════════════════════════════
 
 // Intensidade da sessão DUP
@@ -27,10 +32,25 @@ enum _DupPhase {
 class WorkoutPrescriptionEngine {
   final List<ExerciseModel> _library;
   late final int _seed;
+  final PatternHistoryTracker _patternHistory;
+  final ExerciseRotationManager _rotation;
+  final int _weekNumber;
 
-  WorkoutPrescriptionEngine(WorkoutProfile profile)
+  WorkoutPrescriptionEngine(WorkoutProfile profile,
+      {PatternHistoryTracker? patternHistory, int? weekNumber})
       : _library = exerciseLibrary,
-        _seed = profile.uid.codeUnits.fold(0, (a, b) => a + b);
+        _seed = _computeSeed(profile),
+        _patternHistory = patternHistory ?? PatternHistoryTracker(),
+        _rotation = ExerciseRotationManager(exerciseLibrary),
+        _weekNumber = weekNumber ?? profile.currentWeek;
+
+  static int _computeSeed(WorkoutProfile profile) {
+    int sum = 0;
+    for (final code in profile.uid.codeUnits) {
+      sum += code;
+    }
+    return sum;
+  }
 
   // ── API Pública ───────────────────────────────────────────────
 
@@ -41,6 +61,16 @@ class WorkoutPrescriptionEngine {
 
     // Etapa 4: Ajustes Clínicos e Proporções de Volume (Murer 2019 / Doral 2012)
     final adjustedSessions = _applyClinicalAdjustments(profile, sessions);
+
+    // Registra os padrões usados no _patternHistory para evitar sobreposição
+    // com treinos passados quando re-avaliados (Schoenfeld 2021)
+    for (int i = 0; i < adjustedSessions.length; i++) {
+      final patterns = adjustedSessions[i].exercises
+          .map((e) => e.exercise.movementPattern)
+          .toList();
+      final dayKey = i % 2 == 0 ? 'day_minus_1' : 'day_minus_2';
+      _patternHistory.recordDay(dayKey, patterns);
+    }
 
     return GeneratedWorkout(
       id: 'gen_${DateTime.now().millisecondsSinceEpoch}',
@@ -219,23 +249,32 @@ class WorkoutPrescriptionEngine {
     final isAdvanced = profile.experienceLevel == 'advanced';
 
     // Fator de escala dentro da faixa (0.0 a 1.0) baseado no tempo de treino
-    // Para iniciantes: 0-12 meses
-    // Para inter/avançados: 12-60 meses (5 anos)
     double factor;
     if (isBeginner) {
       factor = (months / 12.0).clamp(0.0, 1.0);
     } else {
       factor = ((months - 12) / 48.0).clamp(0.0, 1.0);
-      if (isAdvanced) factor = factor.clamp(0.5, 1.0); // Avançados começam no meio da faixa INT
+      if (isAdvanced) factor = factor.clamp(0.5, 1.0);
     }
 
-    // Helper para extrair volume das faixas da imagem técnica
+    // Ajuste de recuperação (sono + estresse + BF)
+    // Sono ruim + estresse alto => reduzir volume global ~25%
+    // BF alto => menor capacidade de ganho, reduzir ~10%
+    double recoveryMod = 1.0;
+    if (profile.sleepQuality == 'poor') recoveryMod -= 0.15;
+    if (profile.stressLevel == 'high') recoveryMod -= 0.10;
+    if (profile.bodyFatCategory == 'high') recoveryMod -= 0.10;
+    // BF baixo em iniciantes = potencial maior, +5%
+    if (profile.bodyFatCategory == 'low' && isBeginner) recoveryMod += 0.05;
+    recoveryMod = recoveryMod.clamp(0.65, 1.1);
+
+    // Helper para extrair volume das faixas
     int getVol(List<int> rangeINI, List<int> rangeINT) {
       final range = isBeginner ? rangeINI : rangeINT;
-      return (range[0] + (range[1] - range[0]) * factor).round();
+      return ((range[0] + (range[1] - range[0]) * factor) * recoveryMod).round();
     }
 
-    // 1. Cálculos de volumes ALVO (Brutos por grupo muscular)
+    // Volumes ALVO
     final vChest = getVol([8, 10], [12, 16]);
     final vBack = getVol([10, 12], [14, 20]);
     final vShoulders = getVol([8, 10], [12, 16]);
@@ -244,31 +283,30 @@ class WorkoutPrescriptionEngine {
     final vCalves = getVol([8, 10], [12, 16]);
     final vAbs = getVol([4, 6], [6, 12]);
 
-    // Alvos para braços (antes de descontar o volume indireto)
     final vBicepsTarget = getVol([6, 8], [10, 14]);
     final vTricepsTarget = getVol([6, 8], [10, 14]);
 
-    // 2. Aplicação da REGRA: Volume Indireto (Israelte 2019 / Schoenfeld 2021)
-    // Biceps recebem ~50% de remadas/puxadas (Back)
-    // Triceps recebem ~50% de supinos/desenvolvimentos (Chest/Shoulders parcial)
-    // Clamp mínimo de 2-4 séries para garantir estimulo direto mínimo
-    
     final vBicepsFinal = (vBicepsTarget - (vBack * 0.5)).round().clamp(3, 14);
     final vTricepsFinal = (vTricepsTarget - (vChest * 0.5)).round().clamp(3, 14);
 
+    // Boost para músculos prioritários (+30% volume)
+    final priorities = profile.priorityMuscles.toSet();
+    int priorityBoost(int vol, String muscle) =>
+      priorities.contains(muscle) ? (vol * 1.3).round().clamp(4, 22) : vol;
+
     return {
-      'chest': vChest,
-      'back': vBack,
-      'shoulders': vShoulders,
-      'side_delt': (vShoulders * 0.6).round().clamp(4, 12),
-      'rear_delt': (vShoulders * 0.5).round().clamp(3, 10),
-      'biceps': vBicepsFinal,
-      'triceps': vTricepsFinal,
-      'quads': vQuads,
-      'hamstrings': vPostGlute,
-      'glutes': (vPostGlute * 0.6).round().clamp(4, 12),
-      'calves': vCalves,
-      'abs': vAbs,
+      'chest': priorityBoost(vChest, 'chest'),
+      'back': priorityBoost(vBack, 'back'),
+      'shoulders': priorityBoost(vShoulders, 'shoulders'),
+      'side_delt': priorityBoost((vShoulders * 0.6).round().clamp(4, 12), 'side_delt'),
+      'rear_delt': priorityBoost((vShoulders * 0.5).round().clamp(3, 10), 'rear_delt'),
+      'biceps': priorityBoost(vBicepsFinal, 'biceps'),
+      'triceps': priorityBoost(vTricepsFinal, 'triceps'),
+      'quads': priorityBoost(vQuads, 'quads'),
+      'hamstrings': priorityBoost(vPostGlute, 'hamstrings'),
+      'glutes': priorityBoost((vPostGlute * 0.6).round().clamp(4, 12), 'glutes'),
+      'calves': priorityBoost(vCalves, 'calves'),
+      'abs': priorityBoost(vAbs, 'abs'),
     };
   }
 
@@ -397,6 +435,7 @@ class WorkoutPrescriptionEngine {
     }
   }
 
+
   // ── Full Body ──────────────────────────────────────────────────
 
   List<PrescribedSession> _buildFullBodySplit(
@@ -413,23 +452,24 @@ class WorkoutPrescriptionEngine {
       final isA = i.isEven;
       final phase = _dupPhase(periodization, i, days);
 
+      final fatigue = SessionFatigueAccumulator();
       final exercises = <PrescribedExercise?>[];
 
       // Compostos: push horizontal + pull vertical (equilíbrio 1:1)
       exercises.add(_pick('chest', isA ? 'push_horizontal' : 'push_incline',
-          profile, vols, days, slot: i, phase: phase));
+          profile, vols, days, slot: i, phase: phase, fatigue: fatigue));
       exercises.add(_pick('back', isA ? 'pull_vertical' : 'pull_horizontal',
-          profile, vols, days, slot: i, phase: phase));
-      exercises.add(_pick('quads', 'squat', profile, vols, days, slot: i, phase: phase));
-      exercises.add(_pick('hamstrings', 'hinge', profile, vols, days, slot: i, phase: phase));
+          profile, vols, days, slot: i, phase: phase, fatigue: fatigue));
+      exercises.add(_pick('quads', 'squat', profile, vols, days, slot: i, phase: phase, fatigue: fatigue));
+      exercises.add(_pick('hamstrings', 'hinge', profile, vols, days, slot: i, phase: phase, fatigue: fatigue));
       exercises.add(_pick('shoulders', 'push_vertical', profile, vols, days,
-          slot: i, phase: phase, setsModifier: 1));
+          slot: i, phase: phase, setsModifier: 1, fatigue: fatigue));
       // Isoladores (Murer 2019: opcional para iniciantes, importante para intermediários+)
       if (profile.experienceLevel != 'beginner') {
         exercises.add(_pick('biceps', 'isolation', profile, vols, days,
-            slot: i, phase: phase, forceIsolation: true));
+            slot: i, phase: phase, forceIsolation: true, fatigue: fatigue));
         exercises.add(_pick('triceps', 'isolation', profile, vols, days,
-            slot: i, phase: phase, forceIsolation: true));
+            slot: i, phase: phase, forceIsolation: true, fatigue: fatigue));
       }
 
       final rehabExs = _buildRehabBlock(profile, days);
@@ -446,6 +486,7 @@ class WorkoutPrescriptionEngine {
           ...rehabExs,
         ],
         progressionNote: _progressionNote(profile, periodization, phase),
+        fatigue: _fatigueMetrics(fatigue),
       ));
     }
 
@@ -491,31 +532,35 @@ class WorkoutPrescriptionEngine {
   }) {
     final isA = slot.isEven;
     final exercises = <PrescribedExercise?>[];
+    final fatigue = SessionFatigueAccumulator();
     final dupLabel = _dupLabel(phase, periodization);
 
     // Push composto
     exercises.add(_pick('chest', isA ? 'push_horizontal' : 'push_incline',
-        profile, vols, 2, slot: slot, phase: phase, setsModifier: 2));
+        profile, vols, 2, slot: slot, phase: phase, setsModifier: 2, fatigue: fatigue));
     // Pull vertical (garante equilíbrio push:pull)
     exercises.add(_pick('back', isA ? 'pull_vertical' : 'pull_horizontal',
-        profile, vols, 2, slot: slot, phase: phase, setsModifier: 2));
+        profile, vols, 2, slot: slot, phase: phase, setsModifier: 2, fatigue: fatigue));
     // Pull horizontal (2º puxada para ratio >=1:1)
     exercises.add(_pick('back', isA ? 'pull_horizontal' : 'pull_vertical',
-        profile, vols, 2, slot: slot + 5, phase: phase, setsModifier: 1));
+        profile, vols, 2, slot: slot + 5, phase: phase, setsModifier: 1, fatigue: fatigue));
     // Ombros
     exercises.add(_pick('shoulders', 'push_vertical', profile, vols, 2,
-        slot: slot, phase: phase, setsModifier: 1));
+        slot: slot, phase: phase, setsModifier: 1, fatigue: fatigue));
     // Isoladores (intermediários+)
     if (profile.experienceLevel != 'beginner') {
       exercises.add(_pick('triceps', 'isolation', profile, vols, 2,
-          slot: slot, phase: phase, forceIsolation: true));
+          slot: slot, phase: phase, forceIsolation: true, fatigue: fatigue));
       exercises.add(_pick('biceps', 'isolation', profile, vols, 2,
-          slot: slot, phase: phase, forceIsolation: true));
+          slot: slot, phase: phase, forceIsolation: true, fatigue: fatigue));
     }
     if (profile.sessionDurationMinutes >= 60 && profile.experienceLevel != 'beginner') {
       exercises.add(_pick('side_delt', 'isolation', profile, vols, 2,
-          slot: slot, phase: phase, forceIsolation: true));
+          slot: slot, phase: phase, forceIsolation: true, fatigue: fatigue));
     }
+
+    // Obrigatório: exercício escapular por sessão Upper (previne impingement)
+    exercises.add(_pickScapularExercise(profile, vols, fatigue));
 
     final rehabExs = _buildRehabBlockUpper(profile, 2);
 
@@ -530,6 +575,7 @@ class WorkoutPrescriptionEngine {
         ...rehabExs,
       ],
       progressionNote: _progressionNote(profile, periodization, phase),
+      fatigue: _fatigueMetrics(fatigue),
     );
   }
 
@@ -544,25 +590,26 @@ class WorkoutPrescriptionEngine {
   }) {
     final isA = slot.isEven;
     final exercises = <PrescribedExercise?>[];
+    final fatigue = SessionFatigueAccumulator();
     final dupLabel = _dupLabel(phase, periodization);
 
     exercises.add(_pick('quads', 'squat', profile, vols, 2,
-        slot: slot, phase: phase, setsModifier: 2));
+        slot: slot, phase: phase, setsModifier: 2, fatigue: fatigue));
     exercises.add(_pick('hamstrings', 'hinge', profile, vols, 2,
-        slot: slot, phase: phase, setsModifier: 2));
+        slot: slot, phase: phase, setsModifier: 2, fatigue: fatigue));
     exercises.add(_pick('glutes', 'hinge', profile, vols, 2,
-        slot: slot, phase: phase, setsModifier: 1));
+        slot: slot, phase: phase, setsModifier: 1, fatigue: fatigue));
     if (!profile.healthRestrictions.contains('knee')) {
       exercises.add(_pick('quads', 'isolation', profile, vols, 2,
-          slot: slot + 5, phase: phase, forceIsolation: true));
+          slot: slot + 5, phase: phase, forceIsolation: true, fatigue: fatigue));
     }
     exercises.add(_pick('hamstrings', 'isolation', profile, vols, 2,
-        slot: slot + 5, phase: phase, forceIsolation: true));
+        slot: slot + 5, phase: phase, forceIsolation: true, fatigue: fatigue));
     exercises.add(_pick('calves', 'isolation', profile, vols, 2,
-        slot: slot, phase: phase, setsModifier: 2, forceIsolation: true));
+        slot: slot, phase: phase, setsModifier: 2, forceIsolation: true, fatigue: fatigue));
     if (profile.sessionDurationMinutes >= 60) {
       exercises.add(_pick('abs', 'isolation', profile, vols, 2,
-          slot: slot, phase: phase, forceIsolation: true));
+          slot: slot, phase: phase, forceIsolation: true, fatigue: fatigue));
     }
 
     final rehabExs = _buildRehabBlockLower(profile, 2);
@@ -578,6 +625,7 @@ class WorkoutPrescriptionEngine {
         ...rehabExs,
       ],
       progressionNote: _progressionNote(profile, periodization, phase),
+      fatigue: _fatigueMetrics(fatigue),
     );
   }
 
@@ -618,22 +666,24 @@ class WorkoutPrescriptionEngine {
   }) {
     final isA = slot.isEven;
     final exercises = <PrescribedExercise?>[];
+    final fatigue = SessionFatigueAccumulator();
     final dupLabel = _dupLabel(phase, periodization);
 
     exercises.add(_pick('chest', isA ? 'push_horizontal' : 'push_incline',
-        profile, vols, 3, slot: slot, phase: phase, setsModifier: 2));
+        profile, vols, 3, slot: slot, phase: phase, setsModifier: 2, fatigue: fatigue));
     exercises.add(_pick('shoulders', 'push_vertical', profile, vols, 3,
-        slot: slot, phase: phase, setsModifier: 2));
+        slot: slot, phase: phase, setsModifier: 2, fatigue: fatigue));
     exercises.add(_pick('chest', 'isolation', profile, vols, 3,
-        slot: slot, phase: phase, forceIsolation: true));
+        slot: slot, phase: phase, forceIsolation: true, fatigue: fatigue));
     exercises.add(_pick('side_delt', 'isolation', profile, vols, 3,
-        slot: slot, phase: phase, forceIsolation: true));
+        slot: slot, phase: phase, forceIsolation: true, fatigue: fatigue));
     exercises.add(_pick('triceps', 'isolation', profile, vols, 3,
-        slot: slot, phase: phase));
+        slot: slot, phase: phase, fatigue: fatigue));
     if (profile.sessionDurationMinutes >= 60) {
       exercises.add(_pick('triceps', 'isolation', profile, vols, 3,
-          slot: slot + 10, phase: phase));
+          slot: slot + 10, phase: phase, fatigue: fatigue));
     }
+    exercises.add(_pickScapularExercise(profile, vols, fatigue));
 
     final rehabExs = _buildRehabBlockUpper(profile, 3);
 
@@ -648,6 +698,7 @@ class WorkoutPrescriptionEngine {
         ...rehabExs,
       ],
       progressionNote: _progressionNote(profile, periodization, phase),
+      fatigue: _fatigueMetrics(fatigue),
     );
   }
 
@@ -661,21 +712,22 @@ class WorkoutPrescriptionEngine {
   }) {
     final isA = slot.isEven;
     final exercises = <PrescribedExercise?>[];
+    final fatigue = SessionFatigueAccumulator();
     final dupLabel = _dupLabel(phase, periodization);
 
     exercises.add(_pick('back', isA ? 'pull_vertical' : 'pull_vertical',
-        profile, vols, 3, slot: slot, phase: phase, setsModifier: 2));
+        profile, vols, 3, slot: slot, phase: phase, setsModifier: 2, fatigue: fatigue));
     exercises.add(_pick('back', 'pull_horizontal', profile, vols, 3,
-        slot: slot, phase: phase, setsModifier: 2));
+        slot: slot, phase: phase, setsModifier: 2, fatigue: fatigue));
     exercises.add(_pick('back', 'pull_horizontal', profile, vols, 3,
-        slot: slot + 5, phase: phase, setsModifier: 1));
+        slot: slot + 5, phase: phase, setsModifier: 1, fatigue: fatigue));
     exercises.add(_pick('rear_delt', 'pull_horizontal', profile, vols, 3,
-        slot: slot, phase: phase, forceIsolation: true));
+        slot: slot, phase: phase, forceIsolation: true, fatigue: fatigue));
     exercises.add(_pick('biceps', 'isolation', profile, vols, 3,
-        slot: slot, phase: phase));
+        slot: slot, phase: phase, fatigue: fatigue));
     if (profile.sessionDurationMinutes >= 60) {
       exercises.add(_pick('biceps', 'isolation', profile, vols, 3,
-          slot: slot + 10, phase: phase));
+          slot: slot + 10, phase: phase, fatigue: fatigue));
     }
 
     return PrescribedSession(
@@ -686,6 +738,7 @@ class WorkoutPrescriptionEngine {
       warmupInstructions: _warmup('pull', profile),
       exercises: exercises.where((e) => e != null).cast<PrescribedExercise>().toList(),
       progressionNote: _progressionNote(profile, periodization, phase),
+      fatigue: _fatigueMetrics(fatigue),
     );
   }
 
@@ -698,26 +751,27 @@ class WorkoutPrescriptionEngine {
     required _DupPhase phase,
   }) {
     final exercises = <PrescribedExercise?>[];
+    final fatigue = SessionFatigueAccumulator();
     final dupLabel = _dupLabel(phase, periodization);
     final hasKneeInjury = profile.healthRestrictions.contains('knee');
 
     exercises.add(_pick('quads', 'squat', profile, vols, 3,
-        slot: slot, phase: phase, setsModifier: 2));
+        slot: slot, phase: phase, setsModifier: 2, fatigue: fatigue));
     exercises.add(_pick('hamstrings', 'hinge', profile, vols, 3,
-        slot: slot, phase: phase, setsModifier: 2));
+        slot: slot, phase: phase, setsModifier: 2, fatigue: fatigue));
     exercises.add(_pick('glutes', 'hinge', profile, vols, 3,
-        slot: slot, phase: phase, setsModifier: 1));
+        slot: slot, phase: phase, setsModifier: 1, fatigue: fatigue));
     if (!hasKneeInjury) {
       exercises.add(_pick('quads', 'isolation', profile, vols, 3,
-          slot: slot, phase: phase, forceIsolation: true));
+          slot: slot, phase: phase, forceIsolation: true, fatigue: fatigue));
     }
     exercises.add(_pick('hamstrings', 'isolation', profile, vols, 3,
-        slot: slot, phase: phase, forceIsolation: true));
+        slot: slot, phase: phase, forceIsolation: true, fatigue: fatigue));
     exercises.add(_pick('calves', 'isolation', profile, vols, 3,
-        slot: slot, phase: phase, setsModifier: 2, forceIsolation: true));
+        slot: slot, phase: phase, setsModifier: 2, forceIsolation: true, fatigue: fatigue));
     if (profile.sessionDurationMinutes >= 60) {
       exercises.add(_pick('abs', 'isolation', profile, vols, 3,
-          slot: slot, phase: phase, forceIsolation: true));
+          slot: slot, phase: phase, forceIsolation: true, fatigue: fatigue));
     }
 
     final rehabExs = _buildRehabBlockLower(profile, 3);
@@ -733,6 +787,7 @@ class WorkoutPrescriptionEngine {
         ...rehabExs,
       ],
       progressionNote: _progressionNote(profile, periodization, phase),
+      fatigue: _fatigueMetrics(fatigue),
     );
   }
 
@@ -750,6 +805,8 @@ class WorkoutPrescriptionEngine {
     bool forceIsolation = false,
     int setsModifier = 1,
     required _DupPhase phase,
+    SessionFatigueAccumulator? fatigue,
+    int exercisePosition = 0, // posição do músculo na sessão (0 = primeiro)
   }) {
     final candidates = _filterCandidates(
       muscle: muscle,
@@ -760,8 +817,92 @@ class WorkoutPrescriptionEngine {
 
     if (candidates.isEmpty) return null;
 
-    final pickIndex = (_seed + slot + muscle.hashCode).abs() % candidates.length;
-    final ex = candidates[pickIndex];
+    // Algoritmo de score: seleciona o melhor exercício por contexto
+    // Em vez de seed aleatório, calcula pontuação baseada em:
+    // - Necessidade de músculo / pattern faltando (positivo)
+    // - Fadiga acumulada (penalidade)
+    // - Pattern usado ontem (penalidade)
+    // - Skill > nível do usuário (penalidade)
+    // - Bonus lengthened (Schoenfeld 2021)
+
+    ExerciseModel? bestEx;
+    double bestScore = -double.infinity;
+
+    for (final candidate in candidates) {
+      double score = 0;
+
+      // Positivos
+      score += 2.0; // baseline
+
+      // Penalidade de fadiga
+      if (fatigue != null) {
+        score -= fatigue.spinalLoadAccumulated * candidate.spinalLoad * 1.5;
+        score -= fatigue.shoulderStressAccumulated * candidate.shoulderStress * 1.5;
+        score -= fatigue.kneeStressAccumulated * candidate.kneeStress * 1.5;
+      }
+
+      // Penalidade de pattern entre dias
+      final patternAvailability = _patternHistory.patternAvailability(candidate.movementPattern);
+      score -= (1.0 - patternAvailability) * 2.0;
+
+      // Penalidade de skill > nível
+      final levelMax = profile.experienceLevel == 'beginner' ? 2 : profile.experienceLevel == 'intermediate' ? 4 : 5;
+      if (candidate.skillLevel > levelMax) {
+        score -= 3.0;
+      }
+
+      // Length bias balancing (Schoenfeld 2021)
+      // Primeiro exercício do músculo: favorece posição alongada
+      // Exercícios seguintes: favorece mid_range ou posição encurtada
+      if (exercisePosition == 0) {
+        if (candidate.lengthBias == 'lengthened') score += 1.0;
+        if (candidate.lengthBias == 'shortened') score -= 0.5;
+      } else if (exercisePosition == 1) {
+        if (candidate.lengthBias == 'mid_range' || candidate.lengthBias == 'shortened') {
+          score += 0.8;
+        }
+      } else {
+        if (candidate.lengthBias == 'shortened') score += 0.6;
+      }
+
+      // Bonus exercício favorito (aderência)
+      if (profile.favoriteExercises.contains(candidate.id)) {
+        score += 2.0;
+      }
+
+      // Seed como tiebreaker determinístico
+      score += ((_seed + slot + candidate.id.hashCode).abs() % 100) * 0.01;
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestEx = candidate;
+      }
+    }
+
+    if (bestEx == null) return null;
+
+    // Verifica se pode adicionar sem estourar fatigue
+    if (fatigue != null) {
+      final weeklyVol = vols[muscle] ?? 10;
+      final freqPerWeek = max(1, sessionsPerWeek ~/ 2 + 1);
+      final rawSets = (weeklyVol / freqPerWeek).ceil();
+      final baseSets = (rawSets * setsModifier).clamp(2, 5);
+      final sets = phase == _DupPhase.strength ? min(baseSets + 1, 5) : baseSets;
+      if (!fatigue.canAdd(bestEx!, sets)) {
+        // Candidata alternativa com menos fadiga
+        final safeCands = candidates.where((c) {
+          final cScore = _scoreExercise(c, profile, fatigue, slot);
+          return fatigue.canAdd(c, sets) && c.id != bestEx!.id;
+        }).toList()
+          ..sort((a, b) => _scoreExercise(b, profile, fatigue, slot)
+              .compareTo(_scoreExercise(a, profile, fatigue, slot)));
+        if (safeCands.isNotEmpty) bestEx = safeCands.first;
+        // Se não tem safe alternative, permite mesmo assim (não quebrar o treino)
+      }
+      fatigue.add(bestEx!, sets);
+    }
+
+    final ex = bestEx!;
 
     // Volume baseado em MEV/MRV
     final weeklyVol = vols[muscle] ?? 10;
@@ -769,17 +910,25 @@ class WorkoutPrescriptionEngine {
     final rawSets = (weeklyVol / freqPerWeek).ceil();
     final baseSets = (rawSets * setsModifier).clamp(2, 5);
 
-    // Prescrição com DUP
-    final rx = _prescription(profile, ex, phase);
-
-    // Cues com ROM completa obrigatório (Schoenfeld 2021)
+    // Rotao semanal: troca exerccio similar se semana > 1
+    final rotatedId = _rotation.resolveExercise(
+      ex.id,
+      weekNumber: _weekNumber,
+      favorites: profile.favoriteExercises,
+      disliked: profile.dislikedExercises,
+      rotationSeed: _seed,
+    );
+    final finalEx = rotatedId != ex.id
+        ? _library.firstWhere((e) => e.id == rotatedId, orElse: () => ex)
+        : ex;
+    final rx = _prescription(profile, finalEx, phase);
     final sessionCues = [
-      ...ex.cues.take(2),
+      ...finalEx.cues.take(2),
       'ROM completa — amplitude máxima segura em cada repetição.',
     ];
 
     return PrescribedExercise(
-      exercise: ex,
+      exercise: finalEx,
       sets: phase == _DupPhase.strength ? min(baseSets + 1, 5) : baseSets,
       repsMin: rx.repsMin,
       repsMax: rx.repsMax,
@@ -788,6 +937,101 @@ class WorkoutPrescriptionEngine {
       sessionCues: sessionCues,
       progressionNote: _exerciseProgressionNote(ex, profile, phase),
       tempo: rx.tempo,
+    );
+  }
+
+  double _scoreExercise(
+    ExerciseModel ex,
+    WorkoutProfile profile,
+    SessionFatigueAccumulator fatigue,
+    int slot, {
+    int exercisePosition = 1,
+  }) {
+    double score = 0;
+    score += 2.0;
+    score -= fatigue.spinalLoadAccumulated * ex.spinalLoad * 1.5;
+    score -= fatigue.shoulderStressAccumulated * ex.shoulderStress * 1.5;
+    score -= fatigue.kneeStressAccumulated * ex.kneeStress * 1.5;
+    score -= (1.0 - _patternHistory.patternAvailability(ex.movementPattern)) * 2.0;
+    final levelMax = profile.experienceLevel == 'beginner'
+        ? 2
+        : profile.experienceLevel == 'intermediate'
+            ? 4
+            : 5;
+    if (ex.skillLevel > levelMax) score -= 3.0;
+    // Length bias (position-aware)
+    if (exercisePosition == 0) {
+      if (ex.lengthBias == 'lengthened') score += 1.0;
+      if (ex.lengthBias == 'shortened') score -= 0.5;
+    } else {
+      if (ex.lengthBias == 'shortened') score += 0.6;
+    }
+    if (profile.favoriteExercises.contains(ex.id)) score += 2.0;
+    score += ((_seed + slot + ex.id.hashCode).abs() % 100) * 0.01;
+    return score;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // EXERCÍCIO ESCAPULAR OBRIGATÓRIO (Upper sessions)
+  //
+  // Previne impingement selecionando exercícios de estabilidade
+  // escapular com prioridade: face pull, Y-raise, external rotation.
+  // NUNCA é pulado — é o seguro do treino upper.
+  // ═══════════════════════════════════════════════════════════════
+
+  PrescribedExercise? _pickScapularExercise(
+    WorkoutProfile profile,
+    Map<String, int> vols,
+    SessionFatigueAccumulator fatigue,
+  ) {
+    final scapularIds = [
+      'face_pull',
+      'y_raise_trap3',
+      'rotacao_externa_elastico',
+      'prone_Y_cobra',
+      'band_pull_apart',
+    ];
+
+    // Preferência: maior score, mas respeitando fadiga
+    ExerciseModel? best;
+    double bestScore = -double.infinity;
+
+    for (final id in scapularIds) {
+      final ex = _library.firstWhere(
+        (e) => e.id == id,
+        orElse: () => ExerciseModel(
+          id: '', name: '', primaryMuscles: [],
+        ),
+      );
+      if (ex.id.isEmpty) continue;
+
+      double score = _scoreExercise(ex, profile, fatigue, _seed);
+      // Bonus extra para face pull e Y-raise (mais evidência para impingement)
+      if (id == 'face_pull') score += 1.5;
+      if (id == 'y_raise_trap3') score += 1.0;
+
+      if (score > bestScore) {
+        bestScore = score;
+        best = ex;
+      }
+    }
+
+    if (best == null) return null;
+
+    // 2 séries leves, RIR 3, foco em ativação
+    return PrescribedExercise(
+      exercise: best!,
+      sets: 2,
+      repsMin: 15,
+      repsMax: 20,
+      rir: 3,
+      restSeconds: 45,
+      sessionCues: [
+        ...best!.cues.take(2),
+        'ESCOPO ESCAPULAR: Foque em retração/depressão escapular. Carga leve, ativação máxima.',
+      ],
+      progressionNote: 'Estabilidade escapular: previne impingement. Não aumente carga a ponto de compensar trapézio superior.',
+      tempo: '2-1-2',
     );
   }
 
@@ -805,6 +1049,12 @@ class WorkoutPrescriptionEngine {
       // Filtro ambiente
       if (!ex.environment.contains(profile.environment)) {
         if (profile.environment != 'full_gym' && !ex.environment.contains('home')) return false;
+      }
+
+      // Filtro equipamentos disponíveis
+      if (profile.availableEquipment.isNotEmpty) {
+        final hasMatchingEquip = ex.equipment.any((eq) => profile.availableEquipment.contains(eq));
+        if (!hasMatchingEquip) return false;
       }
 
       // Filtro restrições (NUNCA incluir exercícios contraindicados — Doral 2012)
@@ -883,6 +1133,14 @@ class WorkoutPrescriptionEngine {
   }
 
   // ── Auxiliares ────────────────────────────────────────────────
+
+  FatigueMetrics _fatigueMetrics(SessionFatigueAccumulator ft) =>
+      FatigueMetrics(
+        spinalLoad: ft.spinalLoadAccumulated / SessionFatigueAccumulator.maxSpinalLoad,
+        shoulderStress: ft.shoulderStressAccumulated / SessionFatigueAccumulator.maxShoulderStress,
+        kneeStress: ft.kneeStressAccumulated / SessionFatigueAccumulator.maxKneeStress,
+        cnsLoad: ft.cnsLoadAccumulated / SessionFatigueAccumulator.maxCnsLoad,
+      );
 
   String _dupLabel(_DupPhase phase, String periodization) {
     if (periodization == 'linear') return '';

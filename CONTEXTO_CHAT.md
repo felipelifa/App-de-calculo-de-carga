@@ -34,8 +34,9 @@ App de calculo de carga/
 │   ├── firestore.indexes.json
 │   ├── storage.rules
 │   └── functions/src/
-│       ├── index.ts               ← 4 Cloud Functions
+│       ├── index.ts               ← 7 Cloud Functions (4 engine + 3 push)
 │       ├── volumeEngine.ts        ← motor matemático
+│       ├── pushNotifications.ts   ← push: PR, deload, inatividade
 │       ├── types.ts
 │       └── seed_exercises.ts      ← script para popular Firestore global
 │
@@ -141,6 +142,9 @@ exercises/{exId}                 ← biblioteca global (seed_exercises.ts)
 2. `generateProgressionSuggestions` — callable, sugestões de progressão
 3. `calculatePeriodizationPlan` — callable, plano de periodização
 4. `getApkVersion` — callable, metadados do APK
+5. `onPersonalRecordCreated` — Firestore trigger, push quando novo PR
+6. `onDeloadActivated` — Firestore trigger, push quando entra em deload
+7. `notifyInactiveUsers` — scheduled (daily 9h BRT), push quem não treina há 7+ dias
 
 ---
 
@@ -247,7 +251,7 @@ Mapas:
 
 ## O que está pendente (⏳)
 
-- ⏳ Notificações push (deload, inatividade, PR)
+- ~~⏳ Notificações push (deload, inatividade, PR)~~ ✅ (2026-04-06)
 - ⏳ Website Next.js + landing page
 - ⏳ Sistema de download do APK (URL real)
 - ⏳ Modelo freemium / monetização
@@ -323,6 +327,36 @@ C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\C
 
 ---
 
+## Notificações Push (✅ 2026-04-06)
+
+### Arquitetura mista (local + FCM)
+
+| Tipo | Canal | Gatilho |
+|------|-------|---------|
+| Local | flutter_local_notifications | `NotificationService.showLocalNotification()` |
+| Push remoto | Firebase Cloud Messaging | Cloud Functions (Firestore triggers + cron) |
+| Inatividade local | `scheduleInactivityReminder` | Chamado no startup do app (main.dart) |
+| PR push | `onPersonalRecordCreated` | Trigger em `users/{uid}/personalRecords/{prId}` |
+| Deload push | `onDeloadActivated` | Trigger em `users/{uid}/progression_state/current` (quando phase muda para "deload") |
+| Inatividade push | `notifyInactiveUsers` | Scheduled job daily 9h BRT |
+
+### Fluxo FCM
+1. `fcmSetup()` no `main.dart` inicializa `FirebaseMessaging`
+2. Obtém token, salva em `users/{uid}.fcmToken`
+3. `onTokenRefresh` atualiza token automaticamente
+4. `onMessage` (foreground) → mostra notificação local
+5. `onMessageOpenedApp` → handler pronto para navegação contextual
+6. `AndroidManifest`: canal `general` como default, permissão `POST_NOTIFICATIONS`
+7. Cloud Functions leem `fcmToken` do userDoc e chamam `admin.messaging().send()`
+8. FCM **não roda em web** (Chrome) — bypass com `if (!kIsWeb)` no main.dart
+
+### Permissões Android
+- `POST_NOTIFICATIONS` obrigatório para Android 13+
+- `RECEIVE_BOOT_COMPLETED` para re-agendar notificações após reboot
+- `SCHEDULE_EXACT_NOTIFICATION` para agendamento exato
+
+---
+
 ## Padrões de código
 
 - Sem lógica de negócio nas telas — tudo via Provider ou Service
@@ -332,3 +366,4 @@ C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\C
 - Queries Firestore usando índices compostos existentes
 - Erros em português amigável
 - withValues(alpha:) em vez de withOpacity()
+- FCM: `fcmToken` armazenado em `users/{uid}.fcmToken` no Firestore

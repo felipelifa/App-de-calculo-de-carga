@@ -1,9 +1,16 @@
 import '../../features/exercises/exercise_model.dart';
 
 // ═══════════════════════════════════════════════════════════════
-// BIBLIOTECA CIENTÍFICA DE EXERCÍCIOS — v2.0
-// 120+ exercícios organizados por padrão motor, músculo, nível,
-// ambiente e restrições. Inclui exercícios de reabilitação.
+// BIBLIOTECA CIENTÍFICA DE EXERCÍCIOS — v3.0
+// 80+ exercícios com perfil de fadiga multiarticular
+//
+// spinalLoad:      0.0–1.0 (carga na coluna lombar)
+// shoulderStress:  0.0–1.0 (estresse no ombro)
+// kneeStress:      0.0–1.0 (demanda articular do joelho)
+// cnsLoad:         0.0–1.0 (custo neural / CNS)
+// stabilityType:   'none' | 'anti_extension' | 'anti_rotation' | 'lateral' | 'scapular'
+// lengthBias:      'lengthened' | 'shortened' | 'mid_range'
+// skillLevel:      1–5 complexidade técnica/neural
 // ═══════════════════════════════════════════════════════════════
 
 final List<ExerciseModel> exerciseLibrary = [
@@ -30,6 +37,13 @@ final List<ExerciseModel> exerciseLibrary = [
     substituteIds: ['chest_supino_halteres', 'chest_flexao_archer'],
     progressionIds: ['chest_supino_barra_declinado'],
     tags: ['compound', 'chest', 'push'],
+    spinalLoad: 0.2,
+    shoulderStress: 0.6,
+    kneeStress: 0.0,
+    cnsLoad: 0.7,
+    stabilityType: 'scapular',
+    lengthBias: 'mid_range',
+    skillLevel: 3,
   ),
 
   ExerciseModel(
@@ -49,6 +63,13 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: ['Amplitude maior que a barra', 'Halteres paralelos ao topo', 'Controle a descida'],
     substituteIds: ['chest_supino_barra', 'chest_flexao'],
     tags: ['compound', 'chest', 'push', 'home_friendly'],
+    spinalLoad: 0.1,
+    shoulderStress: 0.5,
+    kneeStress: 0.0,
+    cnsLoad: 0.6,
+    stabilityType: 'scapular',
+    lengthBias: 'lengthened',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -67,6 +88,13 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: ['Banco a 30-45 graus', 'Não deixe os halteres passarem da orelha'],
     substituteIds: ['chest_supino_inclinado_barra'],
     tags: ['compound', 'upper_chest', 'push'],
+    spinalLoad: 0.1,
+    shoulderStress: 0.7,
+    kneeStress: 0.0,
+    cnsLoad: 0.6,
+    stabilityType: 'scapular',
+    lengthBias: 'mid_range',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -85,6 +113,13 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: ['Banco a 30 graus', 'Pegada ligeiramente mais fechada'],
     substituteIds: ['chest_supino_inclinado_halteres'],
     tags: ['compound', 'upper_chest', 'push'],
+    spinalLoad: 0.2,
+    shoulderStress: 0.8,
+    kneeStress: 0.0,
+    cnsLoad: 0.7,
+    stabilityType: 'scapular',
+    lengthBias: 'mid_range',
+    skillLevel: 3,
   ),
 
   ExerciseModel(
@@ -102,6 +137,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Travamento seguro dos pés', 'Ângulo de -15 a -30 graus'],
     tags: ['compound', 'lower_chest', 'push'],
+    spinalLoad: 0.3,
+    shoulderStress: 0.3,
+    kneeStress: 0.0,
+    cnsLoad: 0.6,
+    stabilityType: 'scapular',
+    lengthBias: 'shortened',
+    skillLevel: 3,
   ),
 
   ExerciseModel(
@@ -120,6 +162,13 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: ['Corpo reto como prancha', 'Cotovelos a 45 graus', 'Peito toca o chão'],
     progressionIds: ['chest_flexao_archer', 'chest_flexao_declinada'],
     tags: ['bodyweight', 'chest', 'push', 'home_friendly', 'no_equipment'],
+    spinalLoad: 0.3,
+    shoulderStress: 0.4,
+    kneeStress: 0.1,
+    cnsLoad: 0.4,
+    stabilityType: 'anti_extension',
+    lengthBias: 'lengthened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -137,6 +186,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 20,
     cues: ['Pés em superfície elevada', 'Cabeça neutra'],
     tags: ['bodyweight', 'upper_chest', 'push', 'home_friendly'],
+    spinalLoad: 0.3,
+    shoulderStress: 0.6,
+    kneeStress: 0.1,
+    cnsLoad: 0.4,
+    stabilityType: 'anti_extension',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -154,6 +210,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 20,
     cues: ['Leve inclinação para frente', 'Puxe para baixo e para frente', 'Sinta o esmague central'],
     tags: ['isolation', 'lower_chest', 'cable'],
+    spinalLoad: 0.1,
+    shoulderStress: 0.4,
+    kneeStress: 0.0,
+    cnsLoad: 0.2,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -171,6 +234,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 15,
     cues: ['Leve flexão de cotovelo fixa', 'Expanda o peito como um abraço', 'Não force abaixo da linha do ombro'],
     tags: ['isolation', 'chest', 'stretch'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.6,
+    kneeStress: 0.0,
+    cnsLoad: 0.2,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -188,6 +258,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 20,
     cues: ['Cotovelos na altura dos ombros', 'Sente a contração no centro'],
     tags: ['isolation', 'chest', 'machine'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.3,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   // ════════════════════════════════════════
@@ -210,6 +287,13 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: ['Puxe com os cotovelos', 'Peito alto, leve inclinação para trás', 'Barra na linha do queixo'],
     progressionIds: ['back_barra_fixa'],
     tags: ['compound', 'back', 'pull_vertical', 'lats'],
+    spinalLoad: 0.1,
+    shoulderStress: 0.3,
+    kneeStress: 0.1,
+    cnsLoad: 0.4,
+    stabilityType: 'scapular',
+    lengthBias: 'lengthened',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -228,6 +312,13 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: ['Deprime as escápulas antes de puxar', 'Queixo acima da barra', 'Controle a descida'],
     regressionIds: ['back_puxada_frente'],
     tags: ['bodyweight', 'back', 'pull_vertical', 'advanced'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.5,
+    kneeStress: 0.1,
+    cnsLoad: 0.7,
+    stabilityType: 'scapular',
+    lengthBias: 'lengthened',
+    skillLevel: 4,
   ),
 
   ExerciseModel(
@@ -245,6 +336,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Cotovelo levemente flexionado', 'Descida atrás da cabeça com controle'],
     tags: ['isolation', 'back', 'lats', 'stretch'],
+    spinalLoad: 0.3,
+    shoulderStress: 0.7,
+    kneeStress: 0.0,
+    cnsLoad: 0.3,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 2,
   ),
 
   // ════════════════════════════════════════
@@ -266,6 +364,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Não balance o tronco', 'Aproxime as escápulas no final', 'Cotovelos colados ao corpo'],
     tags: ['compound', 'back', 'pull_horizontal', 'mid_back'],
+    spinalLoad: 0.2,
+    shoulderStress: 0.2,
+    kneeStress: 0.1,
+    cnsLoad: 0.4,
+    stabilityType: 'scapular',
+    lengthBias: 'lengthened',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -284,6 +389,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Costas paralelas ao chão', 'Puxe o halter até o quadril', 'Retrai a escápula'],
     tags: ['compound', 'back', 'pull_horizontal', 'unilateral', 'home_friendly'],
+    spinalLoad: 0.2,
+    shoulderStress: 0.2,
+    kneeStress: 0.3,
+    cnsLoad: 0.5,
+    stabilityType: 'anti_rotation',
+    lengthBias: 'lengthened',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -301,6 +413,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 5, repRangeMax: 10,
     cues: ['Tronco a 45 graus', 'Joelhos levemente flexionados', 'Barra raspa a perna na descida'],
     tags: ['compound', 'back', 'pull_horizontal', 'strength'],
+    spinalLoad: 0.8,
+    shoulderStress: 0.2,
+    kneeStress: 0.2,
+    cnsLoad: 0.8,
+    stabilityType: 'none',
+    lengthBias: 'mid_range',
+    skillLevel: 4,
   ),
 
   ExerciseModel(
@@ -318,6 +437,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Peito apoiado elimina compensação lombar', 'Foque na retração da escápula'],
     tags: ['compound', 'back', 'machine', 'lower_back_safe'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.2,
+    kneeStress: 0.1,
+    cnsLoad: 0.3,
+    stabilityType: 'scapular',
+    lengthBias: 'lengthened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -335,6 +461,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 15, repRangeMax: 20,
     cues: ['Corda na altura dos olhos', 'Puxe para a testa, não para o pescoço', 'Rotação externa do ombro'],
     tags: ['isolation', 'rear_delt', 'shoulder_health', 'rehab_friendly'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.1,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'scapular',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   // ════════════════════════════════════════
@@ -357,6 +490,13 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: ['Halteres alinhados com orelhas', 'Não trave o cotovelo no topo', 'Core ativado'],
     substituteIds: ['shoulder_press_arnold'],
     tags: ['compound', 'shoulders', 'push_vertical', 'home_friendly'],
+    spinalLoad: 0.4,
+    shoulderStress: 0.7,
+    kneeStress: 0.1,
+    cnsLoad: 0.7,
+    stabilityType: 'scapular',
+    lengthBias: 'mid_range',
+    skillLevel: 3,
   ),
 
   ExerciseModel(
@@ -374,6 +514,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Começa com palmas para dentro', 'Rotação externa na subida', 'Controle o movimento'],
     tags: ['compound', 'shoulders', 'push_vertical', 'all_heads'],
+    spinalLoad: 0.4,
+    shoulderStress: 0.8,
+    kneeStress: 0.1,
+    cnsLoad: 0.7,
+    stabilityType: 'scapular',
+    lengthBias: 'mid_range',
+    skillLevel: 4,
   ),
 
   ExerciseModel(
@@ -391,6 +538,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 5, repRangeMax: 8,
     cues: ['Tranca o core', 'Barra desce até o queixo', 'Cabeça passa entre os braços no topo'],
     tags: ['compound', 'shoulders', 'push_vertical', 'strength'],
+    spinalLoad: 0.6,
+    shoulderStress: 0.8,
+    kneeStress: 0.2,
+    cnsLoad: 0.9,
+    stabilityType: 'anti_extension',
+    lengthBias: 'mid_range',
+    skillLevel: 5,
   ),
 
   ExerciseModel(
@@ -406,8 +560,15 @@ final List<ExerciseModel> exerciseLibrary = [
     difficulty: 'beginner',
     restrictions: ['shoulder'],
     repRangeMin: 12, repRangeMax: 20,
-    cues: ['Sem balançar o tronco', 'Polegar levemente para baixo', 'Cotovelolinha do ombro'],
+    cues: ['Sem balançar o tronco', 'Polegar levemente para baixo', 'Cotovelo na linha do ombro'],
     tags: ['isolation', 'side_delt', 'home_friendly'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.3,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -425,6 +586,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 20,
     cues: ['Tensão constante do cabo', 'Polia na altura do tornozelo'],
     tags: ['isolation', 'side_delt', 'cable', 'constant_tension'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.2,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -442,6 +610,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 15,
     cues: ['Alternado ou simultâneo', 'Braço paralelo ao chão no topo'],
     tags: ['isolation', 'front_delt', 'home_friendly'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.3,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   // ════════════════════════════════════════
@@ -463,6 +638,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Cotovelos fixos apontando ao teto', 'Barra para a testa, não para o nariz', 'Controle na descida'],
     tags: ['isolation', 'triceps', 'long_head'],
+    spinalLoad: 0.1,
+    shoulderStress: 0.4,
+    kneeStress: 0.0,
+    cnsLoad: 0.3,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -480,6 +662,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Halteres paralelos ou neutros', 'Descida ao lado da cabeça'],
     tags: ['isolation', 'triceps', 'home_friendly', 'long_head'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.3,
+    kneeStress: 0.0,
+    cnsLoad: 0.2,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -497,6 +686,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 20,
     cues: ['Abre a corda no final', 'Cotovelos colados ao corpo', 'Punhos neutros'],
     tags: ['isolation', 'triceps', 'lateral_head', 'cable'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.1,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -514,6 +710,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 20,
     cues: ['Pés próximos ao banco', 'Desça até 90 graus', 'Cotovelos alinhados'],
     tags: ['bodyweight', 'triceps', 'home_friendly'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.6,
+    kneeStress: 0.1,
+    cnsLoad: 0.3,
+    stabilityType: 'none',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -531,6 +734,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Cotovelos apontando ao teto', 'Halter desce atrás da cabeça', 'Máximo estiramento do longo'],
     tags: ['isolation', 'triceps', 'long_head', 'home_friendly'],
+    spinalLoad: 0.1,
+    shoulderStress: 0.5,
+    kneeStress: 0.0,
+    cnsLoad: 0.2,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 2,
   ),
 
   // ════════════════════════════════════════
@@ -552,6 +762,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Pegada anatômica reduz tensão no punho', 'Amplitude total', 'Cotovelo fixo'],
     tags: ['isolation', 'biceps', 'barbell'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.1,
+    kneeStress: 0.0,
+    cnsLoad: 0.2,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -569,6 +786,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Supine no topo (palma para cima)', 'Cotovelo para trás no final'],
     tags: ['isolation', 'biceps', 'home_friendly', 'unilateral'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.1,
+    kneeStress: 0.0,
+    cnsLoad: 0.2,
+    stabilityType: 'none',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -586,6 +810,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Pegada neutra (polegar para cima)', 'Desenvolve o braquial'],
     tags: ['isolation', 'biceps', 'brachialis', 'home_friendly'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.1,
+    kneeStress: 0.0,
+    cnsLoad: 0.2,
+    stabilityType: 'none',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -604,6 +835,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 15,
     cues: ['Cotovelo na parte interna do joelho', 'Máxima contração no topo'],
     tags: ['isolation', 'biceps', 'peak', 'home_friendly'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -621,6 +859,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 20,
     cues: ['Tensão constante em todo o movimento', 'Versão excelente para pump'],
     tags: ['isolation', 'biceps', 'cable', 'constant_tension'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   // ════════════════════════════════════════
@@ -643,6 +888,13 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: ['Calcanhares no chão', 'Peito estufado', 'Joelhos sobre o dedo mindinho', 'Quebre a linha do quadril'],
     regressionIds: ['quad_agachamento_goblet', 'quad_leg_press'],
     tags: ['compound', 'quads', 'squat', 'king_exercise'],
+    spinalLoad: 0.7,
+    shoulderStress: 0.0,
+    kneeStress: 0.8,
+    cnsLoad: 0.9,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 5,
   ),
 
   ExerciseModel(
@@ -660,6 +912,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 4, repRangeMax: 8,
     cues: ['Cotovelos altos', 'Tronco mais vertical que no back squat'],
     tags: ['compound', 'quads', 'squat', 'advanced'],
+    spinalLoad: 0.5,
+    shoulderStress: 0.4,
+    kneeStress: 0.7,
+    cnsLoad: 0.8,
+    stabilityType: 'anti_extension',
+    lengthBias: 'lengthened',
+    skillLevel: 5,
   ),
 
   ExerciseModel(
@@ -678,6 +937,13 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: ['Halter colado ao peito', 'Cotovelos entre os joelhos na descida', 'Tronco ereto'],
     progressionIds: ['quad_agachamento_barra'],
     tags: ['compound', 'quads', 'squat', 'beginner_friendly', 'home_friendly'],
+    spinalLoad: 0.2,
+    shoulderStress: 0.1,
+    kneeStress: 0.6,
+    cnsLoad: 0.4,
+    stabilityType: 'anti_extension',
+    lengthBias: 'lengthened',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -695,6 +961,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Pés na largura do ombro no centro', 'Não estenda o joelho totalmente', 'Lombar colada ao banco'],
     tags: ['compound', 'quads', 'machine', 'knee_safe'],
+    spinalLoad: 0.1,
+    shoulderStress: 0.0,
+    kneeStress: 0.6,
+    cnsLoad: 0.3,
+    stabilityType: 'none',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -713,6 +986,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Joelho traseiro quase toca o chão', 'Tronco ereto', 'Passada larga'],
     tags: ['compound', 'quads', 'unilateral', 'home_friendly'],
+    spinalLoad: 0.3,
+    shoulderStress: 0.1,
+    kneeStress: 0.7,
+    cnsLoad: 0.5,
+    stabilityType: 'lateral',
+    lengthBias: 'lengthened',
+    skillLevel: 3,
   ),
 
   ExerciseModel(
@@ -731,6 +1011,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Pé traseiro no banco', 'Torso levemente inclinado para frente', 'Joelho dianteiro sobre o pé'],
     tags: ['compound', 'quads', 'unilateral', 'glutes', 'home_friendly'],
+    spinalLoad: 0.2,
+    shoulderStress: 0.1,
+    kneeStress: 0.7,
+    cnsLoad: 0.6,
+    stabilityType: 'lateral',
+    lengthBias: 'lengthened',
+    skillLevel: 3,
   ),
 
   ExerciseModel(
@@ -748,6 +1035,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 20,
     cues: ['Segure 1 segundo no topo', 'Ajuste o encosto', 'Não use impulso'],
     tags: ['isolation', 'quads', 'machine'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.7,
+    cnsLoad: 0.2,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   // ════════════════════════════════════════
@@ -769,6 +1063,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 6, repRangeMax: 10,
     cues: ['Jogue o quadril para trás', 'Barra rente à perna', 'Tronco cai até a paralela'],
     tags: ['compound', 'hamstrings', 'hinge', 'glutes'],
+    spinalLoad: 0.6,
+    shoulderStress: 0.1,
+    kneeStress: 0.2,
+    cnsLoad: 0.7,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 4,
   ),
 
   ExerciseModel(
@@ -786,6 +1087,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Halteres ao lado das coxas', 'Empurre o quadril para trás'],
     tags: ['compound', 'hamstrings', 'hinge', 'home_friendly'],
+    spinalLoad: 0.3,
+    shoulderStress: 0.1,
+    kneeStress: 0.2,
+    cnsLoad: 0.5,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -803,6 +1111,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 3, repRangeMax: 6,
     cues: ['Barra sobre o mediopé', 'Barra rente ao corpo', 'Empurre o chão', 'Core engajado'],
     tags: ['compound', 'hamstrings', 'hinge', 'full_body', 'strength'],
+    spinalLoad: 1.0,
+    shoulderStress: 0.1,
+    kneeStress: 0.3,
+    cnsLoad: 1.0,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 5,
   ),
 
   ExerciseModel(
@@ -820,6 +1135,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Pressione o quadril no banco', 'Calcanhar vai ao glúteo', 'Pause no topo'],
     tags: ['isolation', 'hamstrings', 'machine'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.3,
+    cnsLoad: 0.2,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -837,6 +1159,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 3, repRangeMax: 8,
     cues: ['Excelente para prevenção de lesões', 'Descida excêntrica controlada', 'Use impulso para subir'],
     tags: ['isolation', 'hamstrings', 'bodyweight', 'injury_prevention'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.5,
+    cnsLoad: 0.4,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 4,
   ),
 
   // ════════════════════════════════════════
@@ -858,6 +1187,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 15,
     cues: ['Joelhos dobrados a 90 graus', 'Force calcanhares no chão', 'Esmague os glúteos no topo', 'Queixo no peito'],
     tags: ['compound', 'glutes', 'hinge', 'knee_safe'],
+    spinalLoad: 0.3,
+    shoulderStress: 0.3,
+    kneeStress: 0.2,
+    cnsLoad: 0.5,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 3,
   ),
 
   ExerciseModel(
@@ -875,6 +1211,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Ombros apoiados no banco', 'Halter no quadril'],
     tags: ['compound', 'glutes', 'home_friendly', 'knee_safe'],
+    spinalLoad: 0.1,
+    shoulderStress: 0.1,
+    kneeStress: 0.2,
+    cnsLoad: 0.4,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -893,6 +1236,13 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: ['Pés próximos ao glúteo', 'Empurre o teto com o quadril', 'Esmague no topo'],
     progressionIds: ['glute_hip_thrust_haltere'],
     tags: ['bodyweight', 'glutes', 'home_friendly', 'no_equipment', 'rehab_friendly'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.1,
+    cnsLoad: 0.2,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -911,6 +1261,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 15, repRangeMax: 20,
     cues: ['Tensão constante', 'Não balanceie o tronco'],
     tags: ['isolation', 'glutes', 'abduction', 'unilateral'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'lateral',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   // ════════════════════════════════════════
@@ -932,6 +1289,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 20,
     cues: ['Amplitude total', 'Pause no topo', 'Não use impulso'],
     tags: ['isolation', 'calves', 'machine'],
+    spinalLoad: 0.1,
+    shoulderStress: 0.0,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -949,6 +1313,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 15, repRangeMax: 25,
     cues: ['Foca o sóleo (joelho dobrado)', 'Maior volume que em pé'],
     tags: ['isolation', 'calves', 'soleus', 'machine'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.3,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -966,6 +1337,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 20, repRangeMax: 40,
     cues: ['Calcanhar abaixo do degrau na descida', 'Amplitude total'],
     tags: ['bodyweight', 'calves', 'home_friendly', 'no_equipment'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.1,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 1,
   ),
 
   // ════════════════════════════════════════
@@ -987,6 +1365,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 20, repRangeMax: 60, // segundos
     cues: ['Corpo reto', 'Core ativado', 'Não deixe o quadril cair'],
     tags: ['core', 'isometric', 'home_friendly', 'lower_back_safe'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.2,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'anti_extension',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -1004,6 +1389,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 20, repRangeMax: 30,
     cues: ['Cotovelo toca o joelho oposto', 'Não puxe o pescoço'],
     tags: ['core', 'bodyweight', 'home_friendly'],
+    spinalLoad: 0.2,
+    shoulderStress: 0.0,
+    kneeStress: 0.2,
+    cnsLoad: 0.2,
+    stabilityType: 'anti_rotation',
+    lengthBias: 'shortened',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -1021,6 +1413,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 15,
     cues: ['Evite balançar', 'Pernas retas ou joelhos dobrados', 'Controle na descida'],
     tags: ['core', 'abs', 'advanced'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.5,
+    kneeStress: 0.1,
+    cnsLoad: 0.5,
+    stabilityType: 'anti_extension',
+    lengthBias: 'lengthened',
+    skillLevel: 3,
   ),
 
   ExerciseModel(
@@ -1038,14 +1437,19 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 15, repRangeMax: 20,
     cues: ['Foco na contração, não no peso', 'Segure 1 segundo'],
     tags: ['isolation', 'abs', 'machine'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   // ════════════════════════════════════════
   // EXERCÍCIOS DE REABILITAÇÃO E PREVENÇÃO
-  // Ativados automaticamente quando há lesão
   // ════════════════════════════════════════
 
-  // --- OMBRO ---
   ExerciseModel(
     id: 'rehab_manguito_rotador_externo',
     name: 'Rotação Externa de Ombro (Cabo)',
@@ -1061,6 +1465,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 15, repRangeMax: 20,
     cues: ['Cotovelo a 90 graus colado ao corpo', 'Movimento lento e controlado', 'Sem compensação'],
     tags: ['rehab', 'shoulder', 'rotator_cuff', 'prevention'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.1,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'scapular',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -1078,6 +1489,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 15, repRangeMax: 20,
     cues: ['Par com rotação externa', 'Equilíbrio muscular do manguito'],
     tags: ['rehab', 'shoulder', 'rotator_cuff', 'prevention'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.1,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'scapular',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -1095,9 +1513,15 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 15,
     cues: ['Halteres muito leves (1-5 kg)', 'Deite no banco inclinado', 'Ative escápulas'],
     tags: ['rehab', 'shoulder', 'scapular_stability', 'prevention'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.1,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'scapular',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
-  // --- JOELHO ---
   ExerciseModel(
     id: 'rehab_joelho_terminal_extension',
     name: 'Extensão Terminal de Joelho (Cabo)',
@@ -1113,6 +1537,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 15, repRangeMax: 20,
     cues: ['Polia presa atrás do joelho', 'Extensão dos últimos graus', 'Ativa vasto medial'],
     tags: ['rehab', 'knee', 'vmo', 'prevention'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.2,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -1131,6 +1562,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 15,
     cues: ['Sobe com o calcanhar', 'Controla a descida', 'Carga no joelho mínima'],
     tags: ['rehab', 'knee', 'unilateral', 'functional'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.3,
+    cnsLoad: 0.2,
+    stabilityType: 'lateral',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -1148,9 +1586,15 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 15, repRangeMax: 25,
     cues: ['0-45 graus apenas', 'Sem dor', 'Ideal pós-cirurgia ou lesão aguda'],
     tags: ['rehab', 'knee', 'limited_range', 'post_surgery'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.2,
+    cnsLoad: 0.1,
+    stabilityType: 'lateral',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
-  // --- LOMBAR ---
   ExerciseModel(
     id: 'rehab_lombar_bird_dog',
     name: 'Bird Dog (Cão-pássaro)',
@@ -1166,6 +1610,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['4 apoios no chão', 'Estenda braço e perna opostos', 'Coluna neutra'],
     tags: ['rehab', 'lower_back', 'core_stability', 'prevention', 'no_equipment'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.1,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'anti_rotation',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -1183,6 +1634,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Lombar colada ao chão durante todo o exercício', 'Braço e perna opostos', 'Respiração controlada'],
     tags: ['rehab', 'lower_back', 'core_stability', 'prevention', 'no_equipment'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.1,
+    cnsLoad: 0.1,
+    stabilityType: 'anti_extension',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -1200,6 +1658,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 20,
     cues: ['Sem hiperextensão no topo', 'Controle o movimento', 'Fortalece a cadeia posterior'],
     tags: ['rehab', 'lower_back', 'strengthening', 'prevention'],
+    spinalLoad: 0.3,
+    shoulderStress: 0.0,
+    kneeStress: 0.1,
+    cnsLoad: 0.3,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -1217,9 +1682,15 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Peso muito leve', 'Foco em mobilidade e força', 'Joelhos levemente flexionados'],
     tags: ['rehab', 'lower_back', 'mobility', 'strengthening'],
+    spinalLoad: 0.5,
+    shoulderStress: 0.0,
+    kneeStress: 0.1,
+    cnsLoad: 0.4,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 3,
   ),
 
-  // --- PUNHO / COTOVELO ---
   ExerciseModel(
     id: 'rehab_punho_flexao',
     name: 'Flexão de Punho com Haltere',
@@ -1235,6 +1706,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 15, repRangeMax: 20,
     cues: ['Antebraço apoiado na coxa', 'Amplitude completa', 'Haltere leve'],
     tags: ['rehab', 'wrist', 'forearm', 'prevention'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -1250,8 +1728,15 @@ final List<ExerciseModel> exerciseLibrary = [
     difficulty: 'beginner',
     restrictions: [],
     repRangeMin: 10, repRangeMax: 15,
-    cues: ['3 segundos na descida excêntrica', 'Haltere muito leve', 'Protocolo para tenisinho'],
+    cues: ['3 segundos na descida excêntrica', 'Haltere muito leve', 'Protocolo para tênis de cotovelo'],
     tags: ['rehab', 'elbow', 'wrist', 'tendinitis', 'eccentric'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 1,
   ),
 
   // ════════════════════════════════════════
@@ -1271,6 +1756,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Pé de trás apoiado no banco', 'Quadril desce para trás', 'Foco no equilíbrio e posterior'],
     tags: ['unilateral', 'hamstring', 'stability'],
+    spinalLoad: 0.3,
+    shoulderStress: 0.1,
+    kneeStress: 0.4,
+    cnsLoad: 0.6,
+    stabilityType: 'lateral',
+    lengthBias: 'lengthened',
+    skillLevel: 4,
   ),
 
   ExerciseModel(
@@ -1286,6 +1778,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Descida lenta (3-4 segundos)', 'Calcanhar toca o chão levemente', 'Joelhos alinhados com o pé'],
     tags: ['rehab', 'knee_health', 'eccentric'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.4,
+    cnsLoad: 0.3,
+    stabilityType: 'lateral',
+    lengthBias: 'mid_range',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -1301,6 +1800,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 20,
     cues: ['Esmague o glúteo no topo', 'Mantenha a pelve nivelada', 'Pé firme no chão'],
     tags: ['rehab', 'glute_activation', 'stability'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.2,
+    cnsLoad: 0.2,
+    stabilityType: 'lateral',
+    lengthBias: 'shortened',
+    skillLevel: 2,
   ),
 
   // ════════════════════════════════════════
@@ -1319,6 +1825,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 5, repRangeMax: 10,
     cues: ['Resista à rotação lateral', 'Dê 3 passos curtos para o lado e volte', 'Core travado'],
     tags: ['core', 'anti_rotation', 'stability'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.1,
+    kneeStress: 0.1,
+    cnsLoad: 0.3,
+    stabilityType: 'anti_rotation',
+    lengthBias: 'mid_range',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -1333,6 +1846,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Mantenha a prancha na bola', 'Faça círculos lentos com os cotovelos', 'Não deixe a lombar arquear'],
     tags: ['core', 'advanced', 'anti_extension'],
+    spinalLoad: 0.2,
+    shoulderStress: 0.3,
+    kneeStress: 0.1,
+    cnsLoad: 0.5,
+    stabilityType: 'anti_extension',
+    lengthBias: 'mid_range',
+    skillLevel: 4,
   ),
 
   ExerciseModel(
@@ -1347,6 +1867,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 16,
     cues: ['Lombar colada no chão', 'Haltere estendido sobre o peito', 'Movimento controlado das pernas'],
     tags: ['core', 'rehab', 'low_back_health'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.1,
+    kneeStress: 0.1,
+    cnsLoad: 0.3,
+    stabilityType: 'anti_extension',
+    lengthBias: 'mid_range',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -1362,6 +1889,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Mantenha a prancha lateral estável', 'Puxe o cabo sem girar o tronco', 'Quadril alto'],
     tags: ['core', 'stability', 'oblique'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.2,
+    kneeStress: 0.0,
+    cnsLoad: 0.4,
+    stabilityType: 'anti_rotation',
+    lengthBias: 'mid_range',
+    skillLevel: 4,
   ),
 
   // ════════════════════════════════════════
@@ -1380,6 +1914,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 30, repRangeMax: 60, // Segundos
     cues: ['Postura ereta', 'Passos curtos e rápidos', 'Escápulas firmes'],
     tags: ['functional', 'grip_strength', 'core'],
+    spinalLoad: 0.2,
+    shoulderStress: 0.2,
+    kneeStress: 0.3,
+    cnsLoad: 0.4,
+    stabilityType: 'anti_lateral',
+    lengthBias: 'mid_range',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -1395,6 +1936,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 30, repRangeMax: 45, // Segundos
     cues: ['Carga em apenas um lado', 'Não incline para o lado do peso', 'Ande em linha reta'],
     tags: ['core', 'anti_lateral_flexion', 'functional'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.1,
+    kneeStress: 0.3,
+    cnsLoad: 0.3,
+    stabilityType: 'lateral',
+    lengthBias: 'mid_range',
+    skillLevel: 3,
   ),
 
   ExerciseModel(
@@ -1410,6 +1958,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 20, repRangeMax: 40, // Segundos
     cues: ['Braço totalmente estendido', 'Ombro longe da orelha', 'Respire pelo diafragma'],
     tags: ['shoulder_stability', 'advanced', 'core'],
+    spinalLoad: 0.3,
+    shoulderStress: 0.7,
+    kneeStress: 0.3,
+    cnsLoad: 0.6,
+    stabilityType: 'anti_lateral',
+    lengthBias: 'mid_range',
+    skillLevel: 4,
   ),
 
   // ════════════════════════════════════════
@@ -1429,6 +1984,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Empurre a barra para frente e para cima', 'Core travado para não girar', 'Ombro estável'],
     tags: ['shoulder_health', 'landmine', 'push'],
+    spinalLoad: 0.1,
+    shoulderStress: 0.3,
+    kneeStress: 0.2,
+    cnsLoad: 0.3,
+    stabilityType: 'anti_rotation',
+    lengthBias: 'mid_range',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -1443,6 +2005,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Segure a ponta da barra no peito', 'Cotovelos entre os joelhos no fundo', 'Coluna neutra'],
     tags: ['squat', 'safe_back', 'landmine'],
+    spinalLoad: 0.1,
+    shoulderStress: 0.1,
+    kneeStress: 0.5,
+    cnsLoad: 0.3,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -1457,6 +2026,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 16,
     cues: ['Mantenha os braços estendidos', 'Gire o core, não apenas os braços', 'Pés pivotando levemente'],
     tags: ['rotational_power', 'core', 'athlete'],
+    spinalLoad: 0.2,
+    shoulderStress: 0.2,
+    kneeStress: 0.3,
+    cnsLoad: 0.5,
+    stabilityType: 'anti_rotation',
+    lengthBias: 'mid_range',
+    skillLevel: 4,
   ),
 
   // ════════════════════════════════════════
@@ -1475,6 +2051,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 15, repRangeMax: 20,
     cues: ['Mini band nos tornozelos ou joelhos', 'Passos laterais curtos', 'Mantenha tensão na banda'],
     tags: ['rehab', 'knee_stability', 'glute_med'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.2,
+    cnsLoad: 0.1,
+    stabilityType: 'lateral',
+    lengthBias: 'mid_range',
+    skillLevel: 1,
   ),
 
   ExerciseModel(
@@ -1490,6 +2073,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 8, repRangeMax: 12,
     cues: ['Equilibre-se em um pé', 'Gire o quadril para abrir e fechar', 'Tronco reto como um avião'],
     tags: ['mobility', 'stability', 'hip_health'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.3,
+    cnsLoad: 0.4,
+    stabilityType: 'lateral',
+    lengthBias: 'mid_range',
+    skillLevel: 3,
   ),
 
   // ════════════════════════════════════════
@@ -1508,6 +2098,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 5, repRangeMax: 8,
     cues: ['Peça para alguém segurar os calcanhares', 'Desça o mais lento possível', 'Use as mãos para amortecer'],
     tags: ['injury_prevention', 'eccentric', 'athlete'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.4,
+    cnsLoad: 0.5,
+    stabilityType: 'none',
+    lengthBias: 'lengthened',
+    skillLevel: 4,
   ),
 
   ExerciseModel(
@@ -1522,6 +2119,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Ponte de glúteo sustentada', 'Deslize os calcanhares para longe e volte', 'Mantenha o quadril alto'],
     tags: ['rehab', 'hamstring', 'home_friendly'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.0,
+    kneeStress: 0.2,
+    cnsLoad: 0.3,
+    stabilityType: 'anti_extension',
+    lengthBias: 'lengthened',
+    skillLevel: 3,
   ),
 
   // ════════════════════════════════════════
@@ -1540,6 +2144,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 10, repRangeMax: 15,
     cues: ['Pendurado na barra', 'Suba apenas usando as escápulas', 'Braços sempre esticados'],
     tags: ['rehab', 'shoulder_health', 'scapular_control'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.3,
+    kneeStress: 0.0,
+    cnsLoad: 0.3,
+    stabilityType: 'scapular',
+    lengthBias: 'lengthened',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -1554,6 +2165,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 20,
     cues: ['Costas e braços colados na parede', 'Deslize os braços para cima em V', 'Não deixe a lombar sair'],
     tags: ['rehab', 'mobility', 'shoulder_health'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.2,
+    kneeStress: 0.0,
+    cnsLoad: 0.1,
+    stabilityType: 'scapular',
+    lengthBias: 'mid_range',
+    skillLevel: 2,
   ),
 
   ExerciseModel(
@@ -1568,6 +2186,13 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMin: 12, repRangeMax: 15,
     cues: ['Deitado no banco', 'Empurre o peso em direção ao teto apenas com o ombro', 'Cotovelo travado'],
     tags: ['rehab', 'serratus', 'shoulder_stability'],
+    spinalLoad: 0.0,
+    shoulderStress: 0.2,
+    kneeStress: 0.0,
+    cnsLoad: 0.2,
+    stabilityType: 'scapular',
+    lengthBias: 'shortened',
+    skillLevel: 1,
   ),
 
 ];
@@ -1579,8 +2204,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
 const Map<String, List<String>> injuryRehabExercises = {
   'shoulder': [
-    'rehab_manguito_rotador_external',
-    'rehab_manguito_rotador_internal',
+    'rehab_manguito_rotador_externo',
+    'rehab_manguito_rotador_interno',
     'scapula_wall_slides',
     'scapula_serratus_punch',
     'scapula_pull_up_shrug',

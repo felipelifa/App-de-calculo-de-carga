@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
+import '../../shared/widgets/pro_gate_dialog.dart';
 import '../services/auth_service.dart';
+import '../services/pro_service.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/auth/register_screen.dart';
 import '../../features/dashboard/dashboard_screen.dart';
@@ -29,6 +31,9 @@ class AppRouter {
 
         if (!isLoggedIn && !isAuthRoute) return '/login';
         if (isLoggedIn && isAuthRoute && state.uri.path != '/') return '/dashboard';
+
+        // Pro gate check (sync: assume que pode acessar no primeiro load)
+        // Gate async é feito dentro de cada tela Pro
         return null;
       },
       routes: [

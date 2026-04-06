@@ -4,6 +4,55 @@ import '../exercises/exercise_model.dart';
 // Modelos do Treino Prescrito
 // ═══════════════════════════════════════════════════════════════
 
+// Métricas de fadiga acumulada por sessão (0.0 a 1.0 normalizado)
+class FatigueMetrics {
+  final double spinalLoad;
+  final double shoulderStress;
+  final double kneeStress;
+  final double cnsLoad;
+
+  const FatigueMetrics({
+    this.spinalLoad = 0.0,
+    this.shoulderStress = 0.0,
+    this.kneeStress = 0.0,
+    this.cnsLoad = 0.0,
+  });
+
+  FatigueMetrics copyWith({
+    double? spinalLoad,
+    double? shoulderStress,
+    double? kneeStress,
+    double? cnsLoad,
+  }) =>
+      FatigueMetrics(
+        spinalLoad: spinalLoad ?? this.spinalLoad,
+        shoulderStress: shoulderStress ?? this.shoulderStress,
+        kneeStress: kneeStress ?? this.kneeStress,
+        cnsLoad: cnsLoad ?? this.cnsLoad,
+      );
+
+  String status(double value) {
+    if (value > 0.85) return 'crítico';
+    if (value > 0.65) return 'alto';
+    if (value > 0.4) return 'moderado';
+    return 'ok';
+  }
+
+  Map<String, dynamic> toMap() => {
+        'spinalLoad': spinalLoad,
+        'shoulderStress': shoulderStress,
+        'kneeStress': kneeStress,
+        'cnsLoad': cnsLoad,
+      };
+
+  factory FatigueMetrics.fromMap(Map<String, dynamic> map) => FatigueMetrics(
+        spinalLoad: (map['spinalLoad'] as num?)?.toDouble() ?? 0.0,
+        shoulderStress: (map['shoulderStress'] as num?)?.toDouble() ?? 0.0,
+        kneeStress: (map['kneeStress'] as num?)?.toDouble() ?? 0.0,
+        cnsLoad: (map['cnsLoad'] as num?)?.toDouble() ?? 0.0,
+      );
+}
+
 class PrescribedExercise {
   final ExerciseModel exercise;
   final int sets;
@@ -76,6 +125,7 @@ class PrescribedSession {
   final List<String> warmupInstructions;
   final List<PrescribedExercise> exercises;
   final String progressionNote;
+  final FatigueMetrics fatigue; // métricas de fadiga desta sessão
 
   const PrescribedSession({
     required this.id,
@@ -85,6 +135,7 @@ class PrescribedSession {
     required this.warmupInstructions,
     required this.exercises,
     required this.progressionNote,
+    this.fatigue = const FatigueMetrics(),
   });
 
   Map<String, dynamic> toMap() => {
@@ -95,6 +146,7 @@ class PrescribedSession {
         'warmupInstructions': warmupInstructions,
         'exercises': exercises.map((e) => e.toMap()).toList(),
         'progressionNote': progressionNote,
+        if (fatigue != const FatigueMetrics()) 'fatigue': fatigue.toMap(),
       };
 
   factory PrescribedSession.fromMap(
@@ -118,6 +170,9 @@ class PrescribedSession {
           List<String>.from(map['warmupInstructions'] ?? []),
       exercises: exList,
       progressionNote: map['progressionNote'] as String? ?? '',
+      fatigue: map['fatigue'] != null
+          ? FatigueMetrics.fromMap(map['fatigue'] as Map<String, dynamic>)
+          : const FatigueMetrics(),
     );
   }
 }

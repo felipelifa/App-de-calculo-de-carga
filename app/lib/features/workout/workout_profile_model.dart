@@ -5,22 +5,42 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // ─────────────────────────────────────────────
 
 class WorkoutProfile {
+  // Identificação
   final String uid;
+
+  // Passo 1: Pessoal
   final int age;
   final String biologicalSex; // male | female
   final double weightKg;
   final double heightCm;
-  final String bodyFatCategory; // low | medium | high
-  final String primaryGoal; // hypertrophy | fat_loss | strength | endurance | general_health | athletic_performance
+
+  // Passo 2: Experiência
   final String experienceLevel; // beginner | intermediate | advanced
   final int trainingAge; // em meses
-  final int availableDaysPerWeek; // 1-7
+  final String bodyFatCategory; // low | medium | high
+
+  // Passo 3: Metas + Estilo
+  final String primaryGoal; // hypertrophy | fat_loss | strength | endurance | general_health | athletic_performance
+  final int availableDaysPerWeek; // 2-7
   final int sessionDurationMinutes; // 30 | 45 | 60 | 75 | 90
-  final String environment; // full_gym | basic_gym | home_dumbbell | home_bodyweight | outdoor
-  final List<String> availableEquipment;
-  final List<String> healthRestrictions; // knee, lower_back, shoulder, wrist, elbow, hypertension, hernia
-  final List<String> dislikedExercises;
   final String preferredStyle; // compound_focus | isolation_focus | circuit | high_frequency | moderate_volume
+
+  // Passo 4: Recuperação + Prioridades
+  final String sleepQuality; // good | regular | poor
+  final String stressLevel; // low | medium | high
+  final List<String> priorityMuscles; // grupos a priorizar
+
+  // Passo 5: Preferências + Restrições
+  final String environment; // full_gym | basic_gym | home_dumbbell | home_bodyweight | outdoor
+  final List<String> availableEquipment; // equipamentos específicos
+  final List<String> dislikedExercises; // exercícios a evitar
+  final List<String> favoriteExercises; // exercícios preferidos
+  final List<String> healthRestrictions; // knee, lower_back, shoulder, etc.
+
+  // Rastreamento de mesociclo
+  final int currentWeek; // semana atual do mesociclo (1-N)
+  final int exerciseRotationOffset; // seed de variação semanal
+
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -30,17 +50,23 @@ class WorkoutProfile {
     required this.biologicalSex,
     required this.weightKg,
     required this.heightCm,
-    required this.bodyFatCategory,
-    required this.primaryGoal,
     required this.experienceLevel,
     required this.trainingAge,
+    required this.bodyFatCategory,
+    required this.primaryGoal,
     required this.availableDaysPerWeek,
     required this.sessionDurationMinutes,
+    required this.preferredStyle,
+    required this.sleepQuality,
+    required this.stressLevel,
+    required this.priorityMuscles,
     required this.environment,
     required this.availableEquipment,
-    required this.healthRestrictions,
     required this.dislikedExercises,
-    required this.preferredStyle,
+    required this.favoriteExercises,
+    required this.healthRestrictions,
+    this.currentWeek = 1,
+    this.exerciseRotationOffset = 0,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -59,11 +85,17 @@ class WorkoutProfile {
       trainingAge: (d['trainingAge'] as num?)?.toInt() ?? 0,
       availableDaysPerWeek: (d['availableDaysPerWeek'] as num?)?.toInt() ?? 3,
       sessionDurationMinutes: (d['sessionDurationMinutes'] as num?)?.toInt() ?? 60,
+      preferredStyle: d['preferredStyle'] as String? ?? 'compound_focus',
+      sleepQuality: d['sleepQuality'] as String? ?? 'regular',
+      stressLevel: d['stressLevel'] as String? ?? 'medium',
+      priorityMuscles: List<String>.from(d['priorityMuscles'] ?? []),
       environment: d['environment'] as String? ?? 'full_gym',
       availableEquipment: List<String>.from(d['availableEquipment'] ?? []),
-      healthRestrictions: List<String>.from(d['healthRestrictions'] ?? []),
       dislikedExercises: List<String>.from(d['dislikedExercises'] ?? []),
-      preferredStyle: d['preferredStyle'] as String? ?? 'compound_focus',
+      favoriteExercises: List<String>.from(d['favoriteExercises'] ?? []),
+      healthRestrictions: List<String>.from(d['healthRestrictions'] ?? []),
+      currentWeek: (d['currentWeek'] as num?)?.toInt() ?? 1,
+      exerciseRotationOffset: (d['exerciseRotationOffset'] as num?)?.toInt() ?? 0,
       createdAt: (d['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       updatedAt: (d['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
@@ -80,11 +112,17 @@ class WorkoutProfile {
         'trainingAge': trainingAge,
         'availableDaysPerWeek': availableDaysPerWeek,
         'sessionDurationMinutes': sessionDurationMinutes,
+        'preferredStyle': preferredStyle,
+        'sleepQuality': sleepQuality,
+        'stressLevel': stressLevel,
+        'priorityMuscles': priorityMuscles,
         'environment': environment,
         'availableEquipment': availableEquipment,
-        'healthRestrictions': healthRestrictions,
         'dislikedExercises': dislikedExercises,
-        'preferredStyle': preferredStyle,
+        'favoriteExercises': favoriteExercises,
+        'healthRestrictions': healthRestrictions,
+        'currentWeek': currentWeek,
+        'exerciseRotationOffset': exerciseRotationOffset,
         'createdAt': createdAt,
         'updatedAt': updatedAt,
       };

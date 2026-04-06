@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../core/services/notification_service.dart';
 import 'workout_models.dart';
 import 'pr_model.dart';
 
@@ -130,6 +131,22 @@ class PrService {
 
     if (achievements.isNotEmpty) {
       await batch.commit();
+
+      // Disparar notificação local para o maior PR da sessão
+      final best = achievements.first;
+      if (best.newMaxWeight != null) {
+        NotificationService.notifyPersonalRecord(
+          exerciseName: best.exerciseName,
+          recordType: 'Carga máxima',
+          value: '${best.newMaxWeight!.toStringAsFixed(1)} kg',
+        );
+      } else if (best.newMaxReps != null) {
+        NotificationService.notifyPersonalRecord(
+          exerciseName: best.exerciseName,
+          recordType: 'Máximo de reps',
+          value: '${best.newMaxReps} reps',
+        );
+      }
     }
 
     return achievements;

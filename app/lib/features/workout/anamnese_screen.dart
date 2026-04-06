@@ -8,7 +8,7 @@ import 'workout_profile_provider.dart';
 import '../exercises/exercise_provider.dart';
 
 // ─────────────────────────────────────────────
-// Tela de Anamnese (Fluxo de Montagem do Perfil)
+// Tela de Anamnese — 5 passos
 // ─────────────────────────────────────────────
 
 class AnamneseScreen extends StatefulWidget {
@@ -22,30 +22,37 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  // -- Step 1: Personal --
+  // Passo 1: Pessoal
   int age = 25;
   String sex = 'male';
   double weight = 70.0;
   double height = 175.0;
 
-  // -- Step 2: Experience --
+  // Passo 2: Experiência
   String level = 'beginner';
   int trainingAge = 0;
   String bodyFat = 'medium';
 
-  // -- Step 3: Goals --
+  // Passo 3: Metas + Estilo
   String goal = 'hypertrophy';
   String style = 'compound_focus';
   int days = 3;
   int duration = 60;
 
-  // -- Step 4: Constraints --
+  // Passo 4: Recuperação + Prioridades
+  String sleepQuality = 'regular';
+  String stressLevel = 'medium';
+  final List<String> priorityMuscles = [];
+
+  // Passo 5: Preferências + Restrições
   String env = 'full_gym';
-  List<String> restrictions = [];
-  List<String> equipment = [];
+  final List<String> availableEquipment = [];
+  final List<String> dislikedExercises = [];
+  final List<String> favoriteExercises = [];
+  final List<String> restrictions = [];
 
   void _next() {
-    if (_currentPage < 3) {
+    if (_currentPage < 4) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -80,31 +87,35 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
       trainingAge: trainingAge,
       availableDaysPerWeek: days,
       sessionDurationMinutes: duration,
-      environment: env,
-      availableEquipment: equipment,
-      healthRestrictions: restrictions,
-      dislikedExercises: [],
       preferredStyle: style,
+      sleepQuality: sleepQuality,
+      stressLevel: stressLevel,
+      priorityMuscles: List.from(priorityMuscles),
+      environment: env,
+      availableEquipment: List.from(availableEquipment),
+      dislikedExercises: List.from(dislikedExercises),
+      favoriteExercises: List.from(favoriteExercises),
+      healthRestrictions: List.from(restrictions),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
 
     try {
       _showLoadingDialog(context);
-      
+
       final profileProvider = context.read<WorkoutProfileProvider>();
       final exerciseProvider = context.read<ExerciseProvider>();
 
       await profileProvider.saveProfile(profile);
       await profileProvider.generateAndSaveWorkout(exerciseProvider.filteredExercises);
-      
+
       if (mounted) {
-        Navigator.pop(context); // Close loading
+        Navigator.pop(context);
         context.go('/prescribed');
       }
     } catch (e) {
       if (mounted) {
-        Navigator.pop(context); // Close loading
+        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Erro ao salvar: $e')),
         );
@@ -155,13 +166,15 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
                 children: [
                   _StepPersonal(onAge: (v) => age = v, onSex: (v) => sex = v, onWeight: (v) => weight = v, onHeight: (v) => height = v),
                   _StepExperience(onLevel: (v) => level = v, onTrainingAge: (v) => trainingAge = v, onBodyFat: (v) => bodyFat = v),
-                  _StepGoals(
-                    onGoal: (v) => goal = v,
-                    onStyle: (v) => style = v,
-                    onDays: (v) => days = v,
-                    onDuration: (v) => duration = v,
+                  _StepGoals(onGoal: (v) => goal = v, onStyle: (v) => style = v, onDays: (v) => days = v, onDuration: (v) => duration = v),
+                  _StepRecovery(onSleep: (v) => sleepQuality = v, onStress: (v) => stressLevel = v, onPriorities: (v) { priorityMuscles.clear(); priorityMuscles.addAll(v); }),
+                  _StepPreferences(
+                    onEnv: (v) => env = v,
+                    onEquipment: (v) { availableEquipment.clear(); availableEquipment.addAll(v); },
+                    onDisliked: (v) { dislikedExercises.clear(); dislikedExercises.addAll(v); },
+                    onFavorite: (v) { favoriteExercises.clear(); favoriteExercises.addAll(v); },
+                    onRestrictions: (v) { restrictions.clear(); restrictions.addAll(v); },
                   ),
-                  _StepConstraints(onEnv: (v) => env = v, onRestrictions: (v) => restrictions = v),
                 ],
               ),
             ),
@@ -182,7 +195,7 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Passo ${_currentPage + 1} de 4',
+                'Passo ${_currentPage + 1} de 5',
                 style: const TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold),
               ),
               IconButton(icon: const Icon(Icons.close_rounded), onPressed: () => context.go('/dashboard')),
@@ -190,7 +203,7 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
           ),
           const SizedBox(height: 8),
           LinearProgressIndicator(
-            value: (_currentPage + 1) / 4,
+            value: (_currentPage + 1) / 5,
             backgroundColor: AppTheme.surfaceHighlight.withValues(alpha: 0.1),
             color: AppTheme.accent,
             borderRadius: BorderRadius.circular(10),
@@ -217,7 +230,7 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
             flex: 2,
             child: ElevatedButton(
               onPressed: _next,
-              child: Text(_currentPage == 3 ? 'FINALIZAR' : 'PRÓXIMO'),
+              child: Text(_currentPage == 4 ? 'GERAR TREINO' : 'PRÓXIMO'),
             ),
           ),
         ],
@@ -227,7 +240,7 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
 }
 
 // ─────────────────────────────────────────────
-// Sub-telas dos passos
+// Passo 1: Pessoal
 // ─────────────────────────────────────────────
 
 class _StepPersonal extends StatelessWidget {
@@ -241,10 +254,10 @@ class _StepPersonal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _BaseStep(
-      title: 'Conte um pouco sobre você',
-      subtitle: 'Precisamos de dados básicos para calcular seus volumes ideais.',
+      title: 'Sobre você',
+      subtitle: 'Dados básicos para calcular volumes ideais.',
       children: [
-        _InputLabel('Qual sua idade?'),
+        _InputLabel('Qual a sua idade?'),
         _Slider(min: 14, max: 80, initial: 25, unit: 'anos', onChanged: (v) => onAge(v.toInt())),
         const SizedBox(height: 24),
         _InputLabel('Sexo biológico'),
@@ -264,6 +277,10 @@ class _StepPersonal extends StatelessWidget {
   }
 }
 
+// ─────────────────────────────────────────────
+// Passo 2: Experiência
+// ─────────────────────────────────────────────
+
 class _StepExperience extends StatelessWidget {
   final ValueChanged<String> onLevel;
   final ValueChanged<int> onTrainingAge;
@@ -274,26 +291,26 @@ class _StepExperience extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _BaseStep(
-      title: 'Qual sua experiência no treino?',
+      title: 'Experiência de treino',
       subtitle: 'Iniciantes progridem diferente de avançados.',
       children: [
         _InputLabel('Nível de experiência'),
         _ChoiceGroup(
           choices: {
-            'beginner': 'Iniciante (0-12 meses)',
-            'intermediate': 'Intermediário (1-3 anos)',
-            'advanced': 'Avançado (+3 anos)'
+            'beginner': 'Iniciante (0–12 meses)',
+            'intermediate': 'Intermediário (1–3 anos)',
+            'advanced': 'Avançado (+3 anos)',
           },
           initial: 'beginner',
           onChanged: onLevel,
         ),
         const SizedBox(height: 24),
         _InputLabel('Tempo total de treino (meses)'),
-        _Slider(min: 0, max: 120, initial: 0, unit: 'meses', onChanged: (v) => onTrainingAge(v.toInt())),
+        _Slider(min: 0, max: 120, initial: 0, unit: 'meses', stepped: true, onChanged: (v) => onTrainingAge(v.toInt())),
         const SizedBox(height: 24),
         _InputLabel('Percentual de gordura (estimado)'),
         _ChoiceGroup(
-          choices: {'low': 'Baixo', 'medium': 'Médio', 'high': 'Alto'},
+          choices: {'low': 'Baixo (< 15%)', 'medium': 'Médio (15–25%)', 'high': 'Alto (> 25%)'},
           initial: 'medium',
           onChanged: onBodyFat,
         ),
@@ -302,23 +319,22 @@ class _StepExperience extends StatelessWidget {
   }
 }
 
+// ─────────────────────────────────────────────
+// Passo 3: Metas + Estilo
+// ─────────────────────────────────────────────
+
 class _StepGoals extends StatelessWidget {
   final ValueChanged<String> onGoal;
   final ValueChanged<String> onStyle;
   final ValueChanged<int> onDays;
   final ValueChanged<int> onDuration;
 
-  const _StepGoals({
-    required this.onGoal,
-    required this.onStyle,
-    required this.onDays,
-    required this.onDuration,
-  });
+  const _StepGoals({required this.onGoal, required this.onStyle, required this.onDays, required this.onDuration});
 
   @override
   Widget build(BuildContext context) {
     return _BaseStep(
-      title: 'O que você quer alcançar?',
+      title: 'Objetivo e disponibilidade',
       subtitle: 'Seu treino será construído com base no seu objetivo.',
       children: [
         _InputLabel('Objetivo principal'),
@@ -327,62 +343,33 @@ class _StepGoals extends StatelessWidget {
             'hypertrophy': 'Hipertrofia',
             'fat_loss': 'Queima de gordura',
             'strength': 'Força bruta',
-            'general_health': 'Saúde e longevidade'
+            'general_health': 'Saúde e longevidade',
+            'athletic_performance': 'Performance atlética',
           },
           initial: 'hypertrophy',
           onChanged: onGoal,
         ),
         const SizedBox(height: 24),
         _InputLabel('Dias disponíveis por semana'),
-        _Slider(min: 2, max: 7, initial: 3, unit: 'dias', onChanged: (v) => onDays(v.toInt())),
+        _Slider(min: 1, max: 6, initial: 3, unit: 'dias', stepped: true, onChanged: (v) => onDays(v.toInt())),
         const SizedBox(height: 24),
         _InputLabel('Duração ideal da sessão'),
         _ChoiceGroup(
-          choices: {'30': '30 min', '45': '45 min', '60': '1 hora', '90': '1.5 horas'},
+          choices: {'30': '30 min', '45': '45 min', '60': '1 hora', '75': '1h15', '90': '1h30'},
           initial: '60',
           onChanged: (v) => onDuration(int.parse(v)),
         ),
-      ],
-    );
-  }
-}
-
-class _StepConstraints extends StatelessWidget {
-  final ValueChanged<String> onEnv;
-  final ValueChanged<List<String>> onRestrictions;
-
-  const _StepConstraints({required this.onEnv, required this.onRestrictions});
-
-  @override
-  Widget build(BuildContext context) {
-    return _BaseStep(
-      title: 'Ambiente e Restrições',
-      subtitle: 'Garantimos que o treino seja seguro e viável.',
-      children: [
-        _InputLabel('Onde você treina?'),
+        const SizedBox(height: 24),
+        _InputLabel('Estilo de treino preferido'),
         _ChoiceGroup(
           choices: {
-            'full_gym': 'Academia Completa',
-            'basic_gym': 'Academia Básica (Prédio)',
-            'home_bodyweight': 'Em Casa (Peso do corpo)'
+            'compound_focus': 'Multiarticulares (base)',
+            'isolation_focus': 'Isoladores (detalhe)',
+            'moderate_volume': 'Volume moderado',
+            'circuit': 'Circuito (intenso)',
           },
-          initial: 'full_gym',
-          onChanged: onEnv,
-        ),
-        const SizedBox(height: 24),
-        _InputLabel('Alguma restrição ou dor? (Selecione)'),
-        // Simplesmente uma lista por enquanto para agilizar
-        _MultiChoiceGroup(
-          choices: {
-            'knee': 'Joelho (LCA/Menisco)',
-            'lower_back': 'Lombar (Hérnia/Dor)',
-            'shoulder': 'Ombro (Manguito)',
-            'elbow': 'Cotovelo (Epicondilite)',
-            'wrist': 'Punho (Instabilidade)',
-            'hypertension': 'Hipertensão',
-            'post_surgery': 'Pós-cirurgia (Recuperação)'
-          },
-          onChanged: onRestrictions,
+          initial: 'compound_focus',
+          onChanged: onStyle,
         ),
       ],
     );
@@ -390,7 +377,356 @@ class _StepConstraints extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────
-// UI Components
+// Passo 4: Recuperação + Prioridades
+// ─────────────────────────────────────────────
+
+class _StepRecovery extends StatelessWidget {
+  final ValueChanged<String> onSleep;
+  final ValueChanged<String> onStress;
+  final ValueChanged<List<String>> onPriorities;
+
+  const _StepRecovery({required this.onSleep, required this.onStress, required this.onPriorities});
+
+  @override
+  Widget build(BuildContext context) {
+    return _BaseStep(
+      title: 'Recuperação e prioridades',
+      subtitle: 'Sono e estresse afetam diretamente sua capacidade de recuperação.',
+      children: [
+        _InputLabel('Como é seu sono em geral?'),
+        _ChoiceGroup(
+          choices: {
+            'good': 'Bom (7–9h por noite)',
+            'regular': 'Regular (5–7h)',
+            'poor': 'Ruim (< 5h ou fragmentado)',
+          },
+          initial: 'regular',
+          onChanged: onSleep,
+        ),
+        const SizedBox(height: 24),
+        _InputLabel('Nível de estresse diário'),
+        _ChoiceGroup(
+          choices: {
+            'low': 'Baixo',
+            'medium': 'Moderado',
+            'high': 'Alto',
+          },
+          initial: 'medium',
+          onChanged: onStress,
+        ),
+        const SizedBox(height: 24),
+        _InputLabel('Grupos musculares que quer priorizar?'),
+        Text(
+          'O volume desses músculos será aumentado no plano.',
+          style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13),
+        ),
+        const SizedBox(height: 12),
+        _MultiChoiceGroup(
+          choices: {
+            'chest': 'Peito',
+            'back': 'Costas',
+            'shoulders': 'Ombros',
+            'biceps': 'Bíceps',
+            'triceps': 'Tríceps',
+            'side_delt': 'Deltóide Lateral',
+            'rear_delt': 'Deltóide Posterior',
+            'quads': 'Quadríceps',
+            'hamstrings': 'Posterior de coxa',
+            'glutes': 'Glúteos',
+            'calves': 'Panturrilhas',
+            'abs': 'Abdômen',
+          },
+          onChanged: onPriorities,
+        ),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────
+// Passo 5: Preferências + Restrições
+// ─────────────────────────────────────────────
+
+class _StepPreferences extends StatefulWidget {
+  final ValueChanged<String> onEnv;
+  final ValueChanged<List<String>> onEquipment;
+  final ValueChanged<List<String>> onDisliked;
+  final ValueChanged<List<String>> onFavorite;
+  final ValueChanged<List<String>> onRestrictions;
+
+  const _StepPreferences({
+    required this.onEnv,
+    required this.onEquipment,
+    required this.onDisliked,
+    required this.onFavorite,
+    required this.onRestrictions,
+  });
+
+  @override
+  State<_StepPreferences> createState() => _StepPreferencesState();
+}
+
+class _StepPreferencesState extends State<_StepPreferences> {
+  String _env = 'full_gym';
+  final List<String> _equipment = [];
+  final List<String> _disliked = [];
+  final List<String> _favorite = [];
+  final List<String> _restrictions = [];
+
+  void _emit() {
+    widget.onEnv(_env);
+    widget.onEquipment(_equipment);
+    widget.onDisliked(_disliked);
+    widget.onFavorite(_favorite);
+    widget.onRestrictions(_restrictions);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _BaseStep(
+      title: 'Preferências e segurança',
+      subtitle: 'Garantimos que o treino seja seguro e aderente.',
+      children: [
+        _InputLabel('Onde você treina?'),
+        _ChoiceGroup(
+          choices: {
+            'full_gym': 'Academia completa',
+            'basic_gym': 'Academia básica',
+            'home_dumbbell': 'Em casa (com halteres)',
+            'home_bodyweight': 'Em casa (peso do corpo)',
+            'outdoor': 'Ao ar livre',
+          },
+          initial: 'full_gym',
+          onChanged: (v) => setState(() { _env = v; _emit(); }),
+        ),
+        const SizedBox(height: 24),
+        _InputLabel('Equipamentos disponíveis?'),
+        Text('(Selecione os que tem acesso)', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
+        const SizedBox(height: 8),
+        _MultiChoiceGroup(
+          choices: {
+            'barbell': 'Barra longa',
+            'dumbbells': 'Halteres',
+            'cables': 'Cabos/Polia',
+            'machines': 'Máquinas',
+            'smith': 'Smith Machine',
+            'pullup_bar': 'Barra fixa',
+            'dip_station': 'Paralelas',
+            'bands': 'Elásticos/Bands',
+            'kettlebell': 'Kettlebell',
+            'trx': 'TRX/Suspension',
+          },
+          onChanged: (v) { _equipment.clear(); _equipment.addAll(v); _emit(); },
+        ),
+        const SizedBox(height: 24),
+        _InputLabel('Exercícios que você GOSTA?'),
+        Text('(Serão priorizados no plano)', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
+        const SizedBox(height: 8),
+        _ExercisePicker(
+          selected: _favorite,
+          title: 'Preferidos',
+          onChanged: (v) { _favorite.clear(); _favorite.addAll(v); _emit(); },
+        ),
+        const SizedBox(height: 24),
+        _InputLabel('Exercícios que você NÃO GOSTA?'),
+        Text('(Serão removidos da biblioteca)', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
+        const SizedBox(height: 8),
+        _ExercisePicker(
+          selected: _disliked,
+          title: 'Evitar',
+          onChanged: (v) { _disliked.clear(); _disliked.addAll(v); _emit(); },
+        ),
+        const SizedBox(height: 24),
+        _InputLabel('Alguma restrição ou lesão?'),
+        _MultiChoiceGroup(
+          choices: {
+            'knee': 'Joelho',
+            'lower_back': 'Lombar',
+            'shoulder': 'Ombro',
+            'elbow': 'Cotovelo',
+            'wrist': 'Punho',
+            'hip': 'Quadril',
+            'hypertension': 'Hipertensão',
+            'hernia': 'Hérnia',
+            'post_surgery': 'Pós-cirurgia',
+          },
+          onChanged: (v) { _restrictions.clear(); _restrictions.addAll(v); _emit(); },
+        ),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────
+// Exercício Picker (lista expandida com busca)
+// ─────────────────────────────────────────────
+
+class _ExercisePicker extends StatefulWidget {
+  final List<String> selected;
+  final String title;
+  final ValueChanged<List<String>> onChanged;
+
+  const _ExercisePicker({required this.selected, required this.title, required this.onChanged});
+
+  @override
+  State<_ExercisePicker> createState() => _ExercisePickerState();
+}
+
+class _ExercisePickerState extends State<_ExercisePicker> {
+  final TextEditingController _search = TextEditingController();
+  bool _open = false;
+
+  // Lista consolidada de exercícios comuns
+  static const Map<String, String> _exercises = {
+    'supino_reto_barra': 'Supino Reto Barra',
+    'supino_inclinado_halteres': 'Supino Inclinado Halteres',
+    'supino_declinado': 'Supino Declinado',
+    'crucifixo_halteres': 'Crucifixo Halteres',
+    'crossover': 'Crossover Cabos',
+    'peck_deck': 'Peck Deck / Voador',
+    'flexao_aps': 'Flexão de Braços',
+    'terra_convensonal': 'Levantamento Terra',
+    'remada_curvada': 'Remada Curvada',
+    'remada_cavaleiro': 'Remada Cavaleiro',
+    'puxada_frente': 'Puxada Frente',
+    'remada_baixa': 'Remada Baixa',
+    'barra_fixa': 'Barra Fixa',
+    'pullover': 'Pullover',
+    'desenvolvimento_halteres': 'Desenvolvimento Halteres',
+    'desenvolvimento_barra': 'Desenvolvimento Barra',
+    'elevacao_lateral': 'Elevação Lateral',
+    'face_pull': 'Face Pull',
+    'y_raise_trap3': 'Y-Raise (Trap 3)',
+    'rotacao_externa_elastico': 'Rotação Externa Elástico',
+    'band_pull_apart': 'Band Pull Apart',
+    'agachamento_livre': 'Agachamento Livre',
+    'agachamento_smith': 'Agachamento Smith',
+    'agachamento_bulgaro': 'Agachamento Búlgaro',
+    'leg_press': 'Leg Press',
+    'extensora': 'Extensão de Pernas',
+    'flexora': 'Flexão de Pernas',
+    'stiff': 'Stiff',
+    'elevacao_pelvica': 'Elevação Pélvica',
+    'panturrilha_em_pe': 'Panturrilha em Pé',
+    'panturrilha_sentado': 'Panturrilha Sentado',
+    'rosca_direta': 'Rosca Direta',
+    'rosca_martelo': 'Rosca Martelo',
+    'rosca_scott': 'Rosca Scott',
+    'rosca_polia': 'Rosca na Polia',
+    'triceps_corda': 'Tríceps Corda',
+    'triceps_testa': 'Tríceps Testa',
+    'triceps_frances': 'Tríceps Francês',
+    'mergulho': 'Mergulho (Paralelas)',
+    'abd_sup': 'Abdominal Supra',
+    'prancha': 'Prancha Isométrica',
+    'paloff_press': 'Pallof Press',
+  };
+
+  List<String> get _filtered {
+    final q = _search.text.toLowerCase();
+    return _exercises.entries
+        .where((e) => e.value.toLowerCase().contains(q))
+        .map((e) => e.key)
+        .toList();
+  }
+
+  void _toggle(String id) {
+    setState(() {
+      if (widget.selected.contains(id)) {
+        widget.selected.remove(id);
+      } else {
+        widget.selected.add(id);
+      }
+      widget.onChanged(List.from(widget.selected));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final items = _filtered;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _search,
+                decoration: InputDecoration(
+                  hintText: 'Buscar exercício...',
+                  hintStyle: const TextStyle(fontSize: 13, color: AppTheme.textSecondary),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                style: const TextStyle(fontSize: 13),
+                onChanged: (_) => setState(() {}),
+              ),
+            ),
+            const SizedBox(width: 8),
+            if (!_open)
+              TextButton(
+                onPressed: () => setState(() => _open = true),
+                child: const Text('Selecionar', style: TextStyle(color: AppTheme.accent)),
+              )
+            else
+              TextButton(
+                onPressed: () => setState(() => _open = false),
+                child: const Text('Fechar', style: TextStyle(color: AppTheme.accent)),
+              ),
+          ],
+        ),
+        if (widget.selected.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Wrap(
+              spacing: 6,
+              runSpacing: 4,
+              children: widget.selected.map((id) {
+                final name = _exercises[id] ?? id;
+                return InputChip(
+                  label: Text(name, style: const TextStyle(fontSize: 11)),
+                  deleteIcon: const Icon(Icons.close_rounded, size: 16),
+                  onDeleted: () => _toggle(id),
+                  selected: true,
+                  selectedColor: AppTheme.accent.withValues(alpha: 0.15),
+                  side: const BorderSide(color: AppTheme.accent),
+                );
+              }).toList(),
+            ),
+          ),
+        if (_open)
+          Container(
+            constraints: const BoxConstraints(maxHeight: 250),
+            decoration: BoxDecoration(
+              color: AppTheme.surface,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.white12),
+            ),
+            margin: const EdgeInsets.only(top: 8),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: items.length,
+              itemBuilder: (context, i) {
+                final id = items[i];
+                final name = _exercises[id]!;
+                final selected = widget.selected.contains(id);
+                return ListTile(
+                  dense: true,
+                  leading: Icon(Icons.fitness_center_rounded, size: 18, color: selected ? AppTheme.accent : Colors.white38),
+                  title: Text(name, style: TextStyle(color: selected ? AppTheme.accent : AppTheme.textPrimary, fontSize: 13)),
+                  trailing: Icon(selected ? Icons.check_circle_rounded : Icons.circle_outlined, size: 20, color: selected ? AppTheme.accent : Colors.white38),
+                  onTap: () => _toggle(id),
+                );
+              },
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────
+// Componentes UI genéricos
 // ─────────────────────────────────────────────
 
 class _BaseStep extends StatelessWidget {
@@ -429,8 +765,9 @@ class _Slider extends StatefulWidget {
   final double min, max, initial;
   final String unit;
   final ValueChanged<double> onChanged;
+  final bool stepped;
 
-  const _Slider({required this.min, required this.max, required this.initial, required this.unit, required this.onChanged});
+  const _Slider({required this.min, required this.max, required this.initial, required this.unit, required this.onChanged, this.stepped = false});
 
   @override
   State<_Slider> createState() => _SliderState();
@@ -443,16 +780,18 @@ class _SliderState extends State<_Slider> {
 
   @override
   Widget build(BuildContext context) {
+    final displayed = widget.stepped ? _val.round() : _val.toInt();
     return Column(
       children: [
         Slider(
           value: _val,
           min: widget.min,
           max: widget.max,
+          divisions: widget.stepped ? ((widget.max - widget.min).toInt()) : null,
           onChanged: (v) { setState(() => _val = v); widget.onChanged(v); },
           activeColor: AppTheme.accent,
         ),
-        Text('${_val.toInt()} ${widget.unit}', style: const TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold)),
+        Text('$displayed ${widget.unit}', style: const TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold)),
       ],
     );
   }
@@ -532,7 +871,7 @@ class _MultiChoiceGroupState extends State<_MultiChoiceGroup> {
             setState(() {
               if (v) _selected.add(e.key); else _selected.remove(e.key);
             });
-            widget.onChanged(_selected);
+            widget.onChanged(List.from(_selected));
           },
         );
       }).toList(),

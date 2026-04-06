@@ -26,6 +26,15 @@ class ExerciseModel {
   final List<String> regressionIds;
   final List<String> tags;
 
+  // Perfil de fadiga (0.0–1.0)
+  final double spinalLoad;       // 0.0 = sem carga lombar, 1.0 = terra pesado
+  final double shoulderStress;   // 0.0 = zero impacto, 1.0 = desenvolvimento pesado
+  final double kneeStress;       // 0.0 = nenhuma demanda, 1.0 = agachamento profundo
+  final double cnsLoad;          // 0.0 = isolamento local, 1.0 = composto multiarticular pesado
+  final String stabilityType;    // 'none' | 'anti_extension' | 'anti_rotation' | 'lateral' | 'scapular'
+  final String lengthBias;       // 'lengthened' | 'shortened' | 'mid_range'
+  final int skillLevel;          // 1–5 complexidade técnica/neural
+
   const ExerciseModel({
     required this.id,
     required this.name,
@@ -47,6 +56,13 @@ class ExerciseModel {
     this.progressionIds = const [],
     this.regressionIds = const [],
     this.tags = const [],
+    this.spinalLoad = 0.0,
+    this.shoulderStress = 0.0,
+    this.kneeStress = 0.0,
+    this.cnsLoad = 0.0,
+    this.stabilityType = 'none',
+    this.lengthBias = 'mid_range',
+    this.skillLevel = 1,
   });
 
   factory ExerciseModel.fromDoc(DocumentSnapshot doc) {
@@ -72,6 +88,13 @@ class ExerciseModel {
       progressionIds: List<String>.from(d['progressionIds'] ?? []),
       regressionIds: List<String>.from(d['regressionIds'] ?? []),
       tags: List<String>.from(d['tags'] ?? []),
+      spinalLoad: (d['spinalLoad'] as num?)?.toDouble() ?? 0.0,
+      shoulderStress: (d['shoulderStress'] as num?)?.toDouble() ?? 0.0,
+      kneeStress: (d['kneeStress'] as num?)?.toDouble() ?? 0.0,
+      cnsLoad: (d['cnsLoad'] as num?)?.toDouble() ?? 0.0,
+      stabilityType: d['stabilityType'] as String? ?? 'none',
+      lengthBias: d['lengthBias'] as String? ?? 'mid_range',
+      skillLevel: (d['skillLevel'] as num?)?.toInt() ?? 1,
     );
   }
 
@@ -95,5 +118,12 @@ class ExerciseModel {
         'progressionIds': progressionIds,
         'regressionIds': regressionIds,
         'tags': tags,
+        'spinalLoad': spinalLoad,
+        'shoulderStress': shoulderStress,
+        'kneeStress': kneeStress,
+        'cnsLoad': cnsLoad,
+        'stabilityType': stabilityType,
+        'lengthBias': lengthBias,
+        'skillLevel': skillLevel,
       };
 }

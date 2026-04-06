@@ -81,6 +81,36 @@ class ExerciseProvider extends ChangeNotifier {
     );
   }
 
+  Future<void> addExercise({
+    required String name,
+    required String muscleGroup,
+    required String equipment,
+    required int seriesDefault,
+    required int repMin,
+    required int repMax,
+    String? gifUrl,
+  }) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) throw Exception('Usuário não autenticado');
+
+    final exercise = ExerciseModel(
+      id: 'user_${DateTime.now().millisecondsSinceEpoch}',
+      name: name,
+      primaryMuscles: [muscleGroup],
+      equipment: [equipment],
+      repRangeMin: repMin,
+      repRangeMax: repMax,
+      gifUrl: gifUrl,
+    );
+
+    await _db.collection('users/$uid/exercises').doc(exercise.id).set(
+          exercise.toMap(),
+        );
+
+    _allExercises = [...exerciseLibrary, exercise];
+    notifyListeners();
+  }
+
   void setMuscleFilter(String? muscle) {
     _selectedMuscle = (_selectedMuscle == muscle) ? null : muscle;
     notifyListeners();

@@ -110,6 +110,12 @@ service cloud.firestore {
       }
     }
 
+    // ── proTokens — apenas leitura, resgate é via Cloud Function ─
+    match /proTokens/{code} {
+      allow read: if isAuthenticated();
+      allow write: if false; // apenas Cloud Functions escreve
+    }
+
     // ── config — read-only para autenticados ─────────────────────
     match /config/{docId} {
       allow read: if isAuthenticated();

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'workout_profile_model.dart';
 import 'prescribed_workout_model.dart';
@@ -168,11 +169,17 @@ class WorkoutProfileProvider extends ChangeNotifier {
   Future<void> loadCurrentWorkout(ExerciseModel? Function(String) getById) async {
     final uid = _auth.currentUser?.uid;
     if (uid == null) return;
-    
+
+    // Defer notification to after the current frame to avoid
+    // calling notifyListeners() during build
+    void _notifyAfter() {
+      WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
+    }
+
     // Se temos dados brutos do listener, hidratamos imediatamente
     if (_currentWorkoutRaw != null) {
       _currentWorkout = GeneratedWorkout.fromMap(_currentWorkoutRaw!, getById);
-      notifyListeners();
+      _notifyAfter();
       return;
     }
 
