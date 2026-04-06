@@ -38,7 +38,9 @@
       "Bash(find '/d/App de calculo de carga/app/lib' -name *screen*.dart -o -name *dialog*.dart)",
       "Bash(flutter config:*)",
       "Bash(flutter --version)",
-      "Bash(flutter clean:*)"
+      "Bash(flutter clean:*)",
+      "Bash(find '/d/App de calculo de carga/app' -name pubspec.yaml -exec cat {})",
+      "Bash(2)"
     ]
   }
 }
