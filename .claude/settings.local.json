@@ -40,7 +40,15 @@
       "Bash(flutter --version)",
       "Bash(flutter clean:*)",
       "Bash(find '/d/App de calculo de carga/app' -name pubspec.yaml -exec cat {})",
-      "Bash(2)"
+      "Bash(2)",
+      "Bash(npx next:*)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(tasklist)",
+      "Bash(curl:*)",
+      "Bash(grep -v '${')",
+      "Bash(grep -n \"objective: ''''Peito\\\\|objective: ''''Ombros\\\\|objective: ''''Costas\" lib/features/workout/prescription_engine.dart)",
+      "WebFetch(domain:buildfit-nine.vercel.app)",
+      "Bash(npm run:*)"
     ]
   }
 }

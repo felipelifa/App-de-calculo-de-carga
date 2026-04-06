@@ -252,12 +252,31 @@ Mapas:
 ## O que está pendente (⏳)
 
 - ~~⏳ Notificações push (deload, inatividade, PR)~~ ✅ (2026-04-06)
-- ⏳ Website Next.js + landing page
-- ⏳ Sistema de download do APK (URL real)
-- ⏳ Modelo freemium / monetização
+- ~~⏳ Website Next.js + landing page~~ ✅ (2026-04-06)
+- ~~⏳ Sistema de download do APK (URL real)~~ ✅ (2026-04-06)
+- ~~⏳ Modelo freemium / monetização~~ ✅ Base (2026-04-06) — Pro via token/resgate, sem Stripe ainda
 - ⏳ Rodar em produção Firebase (hoje usa emuladores)
 
 ---
+
+## Website / Landing Page (✅ 2026-04-06)
+
+- `website/` — Next.js 15 com App Router, tema Neo-Tactile (dark)
+- Landing page: hero, features, seção de ciência, download APK
+- APK em `website/public/download/apk.apk`
+- Rota `/download/apk` → download direto do APK
+- Rota `/app` → redireciona para Flutter web (configurar URL real no next.config.ts após deploy do Flutter web)
+- Deploy: Vercel (vercel.json configurado)
+- Rodar local: `cd website && npm install && npm run dev` → http://localhost:3000
+
+## Build APK (notas de resolução)
+
+- `flutter config --enable-native-assets` necessário para Flutter 3.41+ com Firebase plugins
+- `coreLibraryDesugaringEnabled = true` em `android/app/build.gradle.kts`
+- `<receiver>` tags devem estar dentro de `<application>` no AndroidManifest
+- Developer Mode do Windows necessário para symlink support
+- Comando: `flutter build apk --release` (com `--no-tree-shake-icons` se travar)
+- Output: `build/app/outputs/flutter-apk/app-release.apk`
 
 ## Como rodar localmente
 

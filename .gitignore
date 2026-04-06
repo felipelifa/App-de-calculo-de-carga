@@ -1,0 +1,29 @@
+# Flutter app
+app/build/
+app/.dart_tool/
+app/pubspec.lock
+
+# Next.js website
+website/.next/
+website/out/
+website/node_modules/
+website/public/download/apk.apk
+
+# Node
+firebase/functions/node_modules/
+website/node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+
+# Firebase
+.firebase/
+firebase/functions/lib/
+firebase/functions/*.js
+firebase/functions/*.map
+firebase/functions/*.log

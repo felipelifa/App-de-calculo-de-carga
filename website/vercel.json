@@ -1,8 +1,8 @@
 {
   "buildCommand": "cd website && npm install && npm run build",
   "outputDirectory": "website/.next/standalone",
+  "installCommand": "npm install",
   "rewrites": [
-    { "source": "/app/:path*", "destination": "https://CONTROLE-DE-CARGA.vercel.app/:path*" },
     { "source": "/download/apk", "destination": "/download/apk.apk" }
   ],
   "headers": [

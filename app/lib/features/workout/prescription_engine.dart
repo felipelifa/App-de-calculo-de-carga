@@ -211,7 +211,7 @@ class WorkoutPrescriptionEngine {
     if (level == 'intermediate') {
       if (days <= 3) return 'ppl_3days';
       if (days == 4) return 'upper_lower';
-      if (days == 5) return 'ppl_5days';
+      if (days == 5) return 'ppl_ul_hybrid'; // híbrido: Push/Pull/Legs/Upper/Lower
       return 'ppl_6days';
     }
 
@@ -222,7 +222,8 @@ class WorkoutPrescriptionEngine {
     }
     if (days <= 3) return 'ppl_3days';
     if (days == 4) return 'upper_lower';
-    if (days == 5) return 'ppl_5days';
+    if (days == 5) return 'arnold'; // Arnold split para avançados com 5-6 dias
+    if (days == 6) return 'arnold';
     return 'ppl_6days';
   }
 
@@ -427,9 +428,12 @@ class WorkoutPrescriptionEngine {
         return _buildUpperLowerSplit(profile, periodization, splitType);
       case 'ppl_3days':
       case 'ppl_5days':
+      case 'ppl_ul_hybrid':
       case 'ppl_6days':
       case 'ppl_strength':
         return _buildPPLSplit(profile, periodization, splitType);
+      case 'arnold':
+        return _buildArnoldSplit(profile, periodization);
       default:
         return _buildFullBodySplit(profile, periodization);
     }
@@ -789,6 +793,153 @@ class WorkoutPrescriptionEngine {
       progressionNote: _progressionNote(profile, periodization, phase),
       fatigue: _fatigueMetrics(fatigue),
     );
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // ARNOLD SPLIT
+  //
+  // Arnold Schwarzenegger: Chest/Back, Shoulders/Arms, Legs
+  // Alta frequência para upper, bom para avançados + hipertrofia
+  // Referência: Encyclopedia of Modern Bodybuilding
+  // ═══════════════════════════════════════════════════════════════
+
+  List<PrescribedSession> _buildArnoldSplit(
+    WorkoutProfile profile,
+    String periodization,
+  ) {
+    final vols = _weeklyVolumes(profile);
+    final sessions = <PrescribedSession>[];
+
+    // A: Chest + Back (agonista-antagonista, Arnold 1980)
+    final fatigueA = SessionFatigueAccumulator();
+    final phaseA = _dupPhase(periodization, 0, 6);
+    final exercisesA = <PrescribedExercise?>[];
+
+    // Push horizontal + Pull vertical (par agonista-antagonista)
+    exercisesA.add(_pick('chest', 'push_horizontal', profile, vols, 3,
+        slot: 0, phase: phaseA, setsModifier: 2, fatigue: fatigueA));
+    exercisesA.add(_pick('back', 'pull_vertical', profile, vols, 3,
+        slot: 0, phase: phaseA, setsModifier: 2, fatigue: fatigueA));
+    // Push inclinado + Pull horizontal
+    exercisesA.add(_pick('chest', 'push_incline', profile, vols, 3,
+        slot: 1, phase: phaseA, setsModifier: 2, fatigue: fatigueA));
+    exercisesA.add(_pick('back', 'pull_horizontal', profile, vols, 3,
+        slot: 1, phase: phaseA, setsModifier: 2, fatigue: fatigueA));
+    // Isolador peito + Isolador costas
+    exercisesA.add(_pick('chest', 'isolation', profile, vols, 3,
+        slot: 2, phase: phaseA, forceIsolation: true, fatigue: fatigueA));
+    // Scapular obrigatório
+    exercisesA.add(_pickScapularExercise(profile, vols, fatigueA));
+
+    sessions.add(PrescribedSession(
+      id: 'session_arnold_chestback',
+      name: 'Peito & Costas${_dupLabel(phaseA, periodization)}',
+      objective: 'Peito e costas — antagonista (${_phaseLabel(phaseA)',
+      estimatedDurationMinutes: profile.sessionDurationMinutes,
+      warmupInstructions: _warmup('push', profile),
+      exercises: [...exercisesA.where((e) => e != null).cast<PrescribedExercise>(),
+        ..._buildRehabBlockUpper(profile, 3)],
+      progressionNote: _progressionNote(profile, periodization, phaseA),
+      fatigue: _fatigueMetrics(fatigueA),
+    ));
+
+    // B: Shoulders + Arms
+    final fatigueB = SessionFatigueAccumulator();
+    final phaseB = _dupPhase(periodization, 1, 6);
+    final exercisesB = <PrescribedExercise?>[];
+
+    exercisesB.add(_pick('shoulders', 'push_vertical', profile, vols, 3,
+        slot: 0, phase: phaseB, setsModifier: 2, fatigue: fatigueB));
+    exercisesB.add(_pick('shoulders', 'isolation', profile, vols, 3,
+        slot: 0, phase: phaseB, forceIsolation: true, fatigue: fatigueB));
+    exercisesB.add(_pick('side_delt', 'isolation', profile, vols, 3,
+        slot: 0, phase: phaseB, forceIsolation: true, fatigue: fatigueB));
+    exercisesB.add(_pick('rear_delt', 'isolation', profile, vols, 3,
+        slot: 0, phase: phaseB, forceIsolation: true, fatigue: fatigueB));
+    exercisesB.add(_pick('biceps', 'isolation', profile, vols, 3,
+        slot: 0, phase: phaseB, forceIsolation: true, fatigue: fatigueB));
+    exercisesB.add(_pick('triceps', 'isolation', profile, vols, 3,
+        slot: 0, phase: phaseB, forceIsolation: true, fatigue: fatigueB));
+    exercisesB.add(_pickScapularExercise(profile, vols, fatigueB));
+
+    sessions.add(PrescribedSession(
+      id: 'session_arnold_shoulders_arms',
+      name: 'Ombros & Braços${_dupLabel(phaseB, periodization)}',
+      objective: 'Ombros, bíceps e tríceps — ${_phaseLabel(phaseB)',
+      estimatedDurationMinutes: profile.sessionDurationMinutes,
+      warmupInstructions: _warmup('push', profile),
+      exercises: [...exercisesB.where((e) => e != null).cast<PrescribedExercise>(),
+        ..._buildRehabBlockUpper(profile, 3)],
+      progressionNote: _progressionNote(profile, periodization, phaseB),
+      fatigue: _fatigueMetrics(fatigueB),
+    ));
+
+    // C: Legs
+    sessions.add(_buildLegsSession('A', profile, vols,
+        slot: 0, periodization: periodization, phase: _dupPhase(periodization, 2, 3)));
+
+    // Para 5 dias: só A, B, C + variações de A e B
+    if (profile.availableDaysPerWeek >= 5) {
+      // D: Chest + Back variante B
+      final fatigueD = SessionFatigueAccumulator();
+      final phaseD = _dupPhase(periodization, 3, 6);
+      final exercisesD = <PrescribedExercise?>[];
+      exercisesD.add(_pick('chest', 'push_incline', profile, vols, 3,
+          slot: 5, phase: phaseD, setsModifier: 2, fatigue: fatigueD));
+      exercisesD.add(_pick('back', 'pull_horizontal', profile, vols, 3,
+          slot: 5, phase: phaseD, setsModifier: 2, fatigue: fatigueD));
+      exercisesD.add(_pick('chest', 'isolation', profile, vols, 3,
+          slot: 6, phase: phaseD, forceIsolation: true, fatigue: fatigueD));
+      exercisesD.add(_pick('back', 'pull_vertical', profile, vols, 3,
+          slot: 6, phase: phaseD, setsModifier: 1, fatigue: fatigueD));
+      exercisesD.add(_pickScapularExercise(profile, vols, fatigueD));
+
+      sessions.add(PrescribedSession(
+        id: 'session_arnold_chestback_b',
+        name: 'Peito & Costas B${_dupLabel(phaseD, periodization)}',
+        objective: 'Peito e costas (variante) — ${_phaseLabel(phaseD)',
+        estimatedDurationMinutes: profile.sessionDurationMinutes,
+        warmupInstructions: _warmup('push', profile),
+        exercises: [...exercisesD.where((e) => e != null).cast<PrescribedExercise>(),
+          ..._buildRehabBlockUpper(profile, 3)],
+        progressionNote: _progressionNote(profile, periodization, phaseD),
+        fatigue: _fatigueMetrics(fatigueD),
+      ));
+
+      // E: Shoulders + Arms variante B
+      final fatigueE = SessionFatigueAccumulator();
+      final phaseE = _dupPhase(periodization, 4, 6);
+      final exercisesE = <PrescribedExercise?>[];
+      exercisesE.add(_pick('shoulders', 'push_vertical', profile, vols, 3,
+          slot: 7, phase: phaseE, setsModifier: 2, fatigue: fatigueE));
+      exercisesE.add(_pick('side_delt', 'isolation', profile, vols, 3,
+          slot: 7, phase: phaseE, forceIsolation: true, fatigue: fatigueE));
+      exercisesE.add(_pick('biceps', 'isolation', profile, vols, 3,
+          slot: 7, phase: phaseE, forceIsolation: true, fatigue: fatigueE));
+      exercisesE.add(_pick('triceps', 'isolation', profile, vols, 3,
+          slot: 7, phase: phaseE, forceIsolation: true, fatigue: fatigueE));
+      exercisesE.add(_pickScapularExercise(profile, vols, fatigueE));
+
+      sessions.add(PrescribedSession(
+        id: 'session_arnold_shoulders_arms_b',
+        name: 'Ombros & Braços B${_dupLabel(phaseE, periodization)}',
+        objective: 'Ombros e braços (variante) — ${_phaseLabel(phaseE)',
+        estimatedDurationMinutes: profile.sessionDurationMinutes,
+        warmupInstructions: _warmup('push', profile),
+        exercises: [...exercisesE.where((e) => e != null).cast<PrescribedExercise>(),
+          ..._buildRehabBlockUpper(profile, 3)],
+        progressionNote: _progressionNote(profile, periodization, phaseE),
+        fatigue: _fatigueMetrics(fatigueE),
+      ));
+    }
+
+    // Para 6 dias: add Legs B
+    if (profile.availableDaysPerWeek >= 6) {
+      sessions.add(_buildLegsSession('B', profile, vols,
+          slot: 1, periodization: periodization, phase: _dupPhase(periodization, 5, 3)));
+    }
+
+    return sessions;
   }
 
   // ═══════════════════════════════════════════════════════════════
@@ -1168,7 +1319,7 @@ class WorkoutPrescriptionEngine {
       'endurance': 'Resistência muscular',
       'athletic_performance': 'Performance atlética',
     };
-    final phaseStr = _phaseLabel(phase);
+    final phaseStr = ${_phaseLabel(phase);
     return '${goalMap[goal] ?? 'Evolução'} — $type ($phaseStr)';
   }
 
