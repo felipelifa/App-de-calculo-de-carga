@@ -2,7 +2,7 @@
 
 ## O que é o projeto
 App mobile de controle de treino com progressão automática e sistema adaptativo.
-Stack: Flutter (Dart) + Firebase (Firestore, Auth, Cloud Functions).
+Stack: Flutter (Dart) + Firebase (Firestore, Auth, Cloud Functions) + Next.js (landing page).
 Tema: Dark "Neo-Tactile".
 
 ---
@@ -12,6 +12,7 @@ Tema: Dark "Neo-Tactile".
 | Camada | Tecnologia |
 |--------|-----------|
 | Mobile | Flutter / Dart SDK ^3.11.4 |
+| Web | Next.js 15 (App Router) + React 19 |
 | Backend | Firebase (Firestore, Auth, Functions, Storage) |
 | Cloud Functions | TypeScript + Node.js ≥ 18 |
 | Roteamento | go_router ^17 |
@@ -21,6 +22,8 @@ Tema: Dark "Neo-Tactile".
 | Animações | flutter_animate |
 | Imagens | cached_network_image |
 | Datas | intl ^0.19.0 |
+| Notificações | firebase_messaging ^16.1.3 + flutter_local_notifications ^18.0.1 |
+| Cloud Functions Client | cloud_functions ^6.1.0 |
 
 ---
 
@@ -34,14 +37,24 @@ App de calculo de carga/
 │   ├── firestore.indexes.json
 │   ├── storage.rules
 │   └── functions/src/
-│       ├── index.ts               ← 7 Cloud Functions (4 engine + 3 push)
+│       ├── index.ts               ← 8 Cloud Functions (4 engine + 3 push + 1 pro token)
 │       ├── volumeEngine.ts        ← motor matemático
 │       ├── pushNotifications.ts   ← push: PR, deload, inatividade
+│       ├── proToken.ts            ← Cloud Function resgate de token Pro
 │       ├── types.ts
 │       └── seed_exercises.ts      ← script para popular Firestore global
 │
+├── website/                        ← Landing Page Next.js (Vercel)
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   ├── page.tsx                ← hero, features, ciência, download
+│   │   └── globals.css
+│   ├── public/download/apk.apk     ← APK para download direto
+│   ├── next.config.ts
+│   └── package.json
+│
 └── app/lib/
-    ├── main.dart                  ← registra todos os providers
+    ├── main.dart                  ← registra providers + FCM setup (bypass em web)
     ├── firebase_options.dart
     ├── core/
     │   ├── data/
@@ -49,8 +62,13 @@ App de calculo de carga/
     │   │   └── mock_exercises.dart     ← legado (substituído pela library)
     │   ├── router/app_router.dart
     │   ├── scripts/seed_cloud.dart
-    │   └── services/auth_service.dart
-    ├── shared/theme/app_theme.dart
+    │   └── services/
+    │       ├── auth_service.dart
+    │       ├── notification_service.dart  ← notificações locais + agendamento
+    │       └── pro_service.dart          ← verificação Pro, resgate de token
+    ├── shared/
+    │   ├── theme/app_theme.dart
+    │   └── widgets/pro_gate_dialog.dart  ← dialog de acesso Pro
     └── features/
         ├── auth/
         │   ├── login_screen.dart
@@ -61,7 +79,7 @@ App de calculo de carga/
         │   ├── analytics_screen.dart
         │   └── analytics_service.dart
         ├── exercises/
-        │   ├── exercise_model.dart         ← modelo profissional com restrictions/cues
+        │   ├── exercise_model.dart
         │   ├── exercise_provider.dart
         │   ├── exercise_screen.dart
         │   ├── exercise_card.dart
@@ -71,21 +89,23 @@ App de calculo de carga/
         │   └── progression_service.dart
         └── workout/
             ├── workout_models.dart
-            ├── workout_provider.dart        ← integra ProgressionEngine no finishSession
+            ├── workout_provider.dart
             ├── workout_screen.dart
             ├── workout_history_screen.dart
-            ├── workout_profile_model.dart   ← WorkoutProfile (anamnese completa)
+            ├── workout_profile_model.dart
             ├── workout_profile_provider.dart
             ├── workout_routine_model.dart
             ├── routine_service.dart
             ├── routine_list_screen.dart
             ├── routine_detail_screen.dart
-            ├── anamnese_screen.dart         ← 4 passos: pessoal, experiência, objetivos, restrições
-            ├── prescribed_workout_model.dart ← PrescribedExercise + PrescribedSession + GeneratedWorkout
-            ├── prescribed_workout_screen.dart ← exibe RIR, cadência, cues expansíveis, fase DUP
-            ├── prescription_engine.dart      ← motor v2: FB/UL/PPL, seleção determinística, reabilitação
-            ├── progression_engine.dart       ← motor de progressão: RIR, deload, plateau, bodyweight chain
-            ├── progression_provider.dart     ← expõe estado de progressão para UI
+            ├── anamnese_screen.dart
+            ├── prescribed_workout_model.dart
+            ├── prescribed_workout_screen.dart
+            ├── prescription_engine.dart      ← motor v4: FB/UL/PPL/Arnold/PPL+UL
+            ├── progression_engine.dart
+            ├── progression_provider.dart
+            ├── exercise_rotation_manager.dart  ← rotação semanal de exercícios
+            ├── session_fatigue_accumulator.dart  ← acumulador de fadiga multiarticular
             ├── pr_model.dart
             ├── pr_service.dart
             └── pr_celebration_dialog.dart
@@ -95,22 +115,22 @@ App de calculo de carga/
 
 ## Rotas (app_router.dart)
 
-| Rota | Tela |
-|------|------|
-| /login | LoginScreen |
-| /register | RegisterScreen |
-| /dashboard | DashboardScreen |
-| /exercises | ExerciseScreen |
-| /exercises/add | AddExerciseScreen |
-| /exercises/:id | ExerciseDetailScreen |
-| /progression | ProgressionScreen |
-| /workout | WorkoutScreen |
-| /workout/history | WorkoutHistoryScreen |
-| /analytics | AnalyticsScreen |
-| /routines | RoutineListScreen |
-| /routines/detail | RoutineDetailScreen |
-| /anamnese | AnamneseScreen |
-| /prescribed | PrescribedWorkoutScreen |
+| Rota | Tela | Status |
+|------|------|--------|
+| /login | LoginScreen | Free |
+| /register | RegisterScreen | Free |
+| /dashboard | DashboardScreen | Free |
+| /exercises | ExerciseScreen | Free |
+| /exercises/add | AddExerciseScreen | Free |
+| /exercises/:id | ExerciseDetailScreen | Free |
+| /progression | ProgressionScreen | **Pro** |
+| /workout | WorkoutScreen | Free |
+| /workout/history | WorkoutHistoryScreen | **Pro** |
+| /analytics | AnalyticsScreen | **Pro** |
+| /routines | RoutineListScreen | Free |
+| /routines/detail | RoutineDetailScreen | Free |
+| /anamnese | AnamneseScreen | Free |
+| /prescribed | PrescribedWorkoutScreen | **Pro** |
 
 ---
 
@@ -129,9 +149,23 @@ users/{uid}
   ├── progressionWeeks/{pwId}
   ├── volumeHistory/{vhId}       ← só Cloud Functions escrevem
   └── suggestedProgressions/{spId}
+  isPro: boolean                 ← status Pro do usuário
+  proActivatedAt: timestamp      ← quando ativou
+  proTokenUsed: string           ← código do token usado (opcional)
+  fcmToken: string               ← token FCM para push remoto
 
 config/apkVersion
 exercises/{exId}                 ← biblioteca global (seed_exercises.ts)
+proTokens/{code}                 ← tokens de liberação Pro
+  code: string
+  maxRedemptions: number         ← -1 = ilimitado
+  currentRedemptions: number
+  createdAt: timestamp
+  expiresAt?: timestamp          ← opcional
+  label?: string
+  └── redemptions/{uid}          ← quem resgatou
+        userId: string
+        redeemedAt: timestamp
 ```
 
 ---
@@ -142,16 +176,29 @@ exercises/{exId}                 ← biblioteca global (seed_exercises.ts)
 2. `generateProgressionSuggestions` — callable, sugestões de progressão
 3. `calculatePeriodizationPlan` — callable, plano de periodização
 4. `getApkVersion` — callable, metadados do APK
-5. `onPersonalRecordCreated` — Firestore trigger, push quando novo PR
-6. `onDeloadActivated` — Firestore trigger, push quando entra em deload
-7. `notifyInactiveUsers` — scheduled (daily 9h BRT), push quem não treina há 7+ dias
+5. `onPersonalRecordCreated` — Firestore trigger, push quando novo PR (`users/{uid}/personalRecords/{prId}`)
+6. `onDeloadActivated` — Firestore trigger, push quando entra em deload (`progression_state` phase muda para "deload")
+7. `notifyInactiveUsers` — scheduled daily 9h BRT, push quem não treina há 7+ dias
+8. `redeemProToken` — callable, resgata código de liberação Pro (valida token, verifica limite/expiração, ativa isPro)
 
 ---
 
-## Motor de Prescrição (prescription_engine.dart) — v2
+## Motor de Prescrição (prescription_engine.dart) — v4
 
-- Divisões: Full Body, Upper/Lower, PPL 3/5/6 dias, variantes de força
-- Seleção determinística por seed do uid (sem Random()) — mesma pessoa = mesmo treino, pessoas diferentes = treinos diferentes
+### Divisões disponíveis (10 no total):
+| Split | Dias | Nível |
+|-------|------|-------|
+| Full Body | 1-4 | Iniciante |
+| Upper/Lower | 4 | Intermediário |
+| Upper/Lower Strength | 4 | Avançado (força) |
+| PPL 3 dias | 3 | Intermediário |
+| PPL+UL Híbrido | 5 | Intermediário avançado |
+| PPL 6 dias | 6 | Avançado |
+| PPL Strength | 6 | Avançado (força) |
+| Arnold Split | 5-6 | Avançado (hipertrofia) |
+
+### Características:
+- Seleção determinística por seed do uid (sem Random()) — mesma pessoa = mesmo treino
 - Variação A/B garantida via slot (exercícios alternam entre sessões)
 - Filtro de lesões: remove exercícios agravantes + injeta bloco de reabilitação
 - Volume científico (Israetel MEV/MAV) por nível e objetivo
@@ -159,6 +206,39 @@ exercises/{exId}                 ← biblioteca global (seed_exercises.ts)
 - Cadência prescrita por exercício (1-0-1 / 2-0-2 / 3-1-3)
 - RIR correto por objetivo
 - Equilíbrio push:pull garantido
+- Escapular obrigatório em sessões Upper (previne impingement)
+- FatigueAccumulator: previne sobrecarga articular
+- PatternHistory: evita padrão repetido entre dias
+- Length bias balancing: posição alongada vs encurtada
+- Exercise Rotation Manager: variação semanal de exercícios
+
+---
+
+## Exercise Rotation Manager (exercise_rotation_manager.dart)
+
+- A cada 2 semanas, 1-2 exercícios por grupo muscular são trocados por equivalentes do mesmo movement pattern
+- Usa substitutesIds do ExerciseModel + group peers da library
+- Nunca troca exercícios favoritos (aderência > variação)
+- Filtra disliked exercises
+- Baseado em: Schoenfeld IUSCA 2021 + Bompa Periodization
+
+---
+
+## Session Fatigue Accumulator + Pattern History (session_fatigue_accumulator.dart)
+
+### SessionFatigueAccumulator
+Rastreia acumulação de fadiga multiarticular durante montagem da sessão:
+- `spinalLoadAccumulated` (max 3.0)
+- `shoulderStressAccumulated` (max 3.5)
+- `kneeStressAccumulated` (max 4.0)
+- `cnsLoadAccumulated` (max 3.0)
+- `canAdd(exercise, sets)`: verifica se pode adicionar exercício sem estourar limites
+- Thresholds críticos a 80% do máximo
+
+### PatternHistoryTracker
+- Rastreia quais padrões de movimento foram executados nos últimos dias
+- `patternAvailability(pattern)`: 1.0 (não usado), 0.5 (2 dias atrás), 0.0 (ontem = bloqueia)
+- Patterns relacionados: hinge+squat (carga lombar), push_vertical+push_horizontal (ombro)
 
 ---
 
@@ -171,7 +251,7 @@ Tabela de decisão baseada em RIR (Schoenfeld 2021):
 - 3 sessões sem progressão → substituir exercício
 - Bodyweight: cadeia de progressão (flexão → archer → unilateral)
 - Deload automático temporal: beginner=4sem, intermediate=6sem, advanced=8sem
-- Persiste estado em users/{uid}/progression_state/current
+- Persiste estado em `users/{uid}/progression_state/current`
 
 ---
 
@@ -189,7 +269,8 @@ carga arredondada para múltiplos de 2.5 kg
 ## Biblioteca de Exercícios (exercise_library.dart)
 
 80+ exercícios com: padrão motor, músculos primários/secundários, restrições,
-dificuldade, ambiente, cues técnicos, IDs de substituição/progressão/regressão.
+dificuldade, ambiente, equipment, cues técnicos, IDs de substituição/progressão/regressão,
+spinalLoad, shoulderStress, kneeStress, cnsLoad, lengthBias.
 
 Inclui exercícios de reabilitação para:
 - Ombro: rotação externa/interna, Y-T-W, face pull
@@ -203,6 +284,89 @@ Mapas:
 
 ---
 
+## Sistema Freemium (Pro/Free) (2026-04-06)
+
+### Como funciona
+- Campo `users/{uid}.isPro` (boolean) controla acesso
+- `ProService` em `app/lib/core/services/pro_service.dart` gerencia verificação
+- `ProGate.show(context)` abre dialog com lista de features Pro + campo para resgatar token
+
+### Ativação Pro (3 formas):
+1. **Token de liberação** → Usuário insere código no ProGate dialog
+   - Cloud Function `redeemProToken` valida no Firestore `proTokens/{code}`
+   - Suporta limite de resgates (`maxRedemptions`: -1 = ilimitado)
+   - Suporta expiração (`expiresAt`)
+   - Registra quem resgatou em `proTokens/{code}/redemptions/{uid}`
+2. **Admin via Firestore** → `users/{uid}.isPro = true` manualmente
+3. **ProService.setProStatus(true)** → método exposto (para teste, remover em produção)
+
+### Features FREE vs PRO
+- **Free**: workout básico, anamnese, lista de exercícios, login
+- **Pro**: prescrição inteligente, analytics, progressão RIR, PR, rotação semanal, deload
+
+---
+
+## Notificações Push (2026-04-06)
+
+### Arquitetura mista (local + FCM)
+
+| Tipo | Canal | Gatilho |
+|------|-------|---------|
+| Local | flutter_local_notifications | `NotificationService.showLocalNotification()` |
+| Push remoto | Firebase Cloud Messaging | Cloud Functions (Firestore triggers + cron) |
+| Inatividade local | `scheduleInactivityReminder` | Startup do app (main.dart) |
+| PR push | `onPersonalRecordCreated` | `users/{uid}/personalRecords/{prId}` |
+| Deload push | `onDeloadActivated` | progression_state phase → "deload" |
+| Inatividade push | `notifyInactiveUsers` | Scheduled daily 9h BRT |
+
+### Fluxo FCM
+1. `fcmSetup()` no `main.dart` inicializa `FirebaseMessaging`
+2. Obtém token, salva em `users/{uid}.fcmToken`
+3. `onTokenRefresh` atualiza token automaticamente
+4. `onMessage` (foreground) → mostra notificação local
+5. `onMessageOpenedApp` → handler pronto para navegação contextual
+6. `AndroidManifest`: canal `general` como default, permissão `POST_NOTIFICATIONS`
+7. Cloud Functions leem `fcmToken` do userDoc e chamam `admin.messaging().send()`
+8. **FCM não roda em web** — bypass com `if (!kIsWeb)` no main.dart
+
+### Permissões Android
+- `POST_NOTIFICATIONS` obrigatório para Android 13+
+- `RECEIVE_BOOT_COMPLETED` para re-agendar notificações após reboot
+- `SCHEDULE_EXACT_NOTIFICATION` para agendamento exato
+- Receivers dentro de `<application>` no AndroidManifest
+
+---
+
+## Website / Landing Page (2026-04-06)
+
+- `website/` — Next.js 15 App Router, tema Neo-Tactile
+- Seções: Hero, Features (6 cards), Ciência (4 refs), Download APK
+- Botão "Entrar" na navbar → `/app` (redireciona para Flutter web)
+- Botão "Baixar APK" → `/download/apk` (download direto)
+- APK em `website/public/download/apk.apk`
+- Deploy: Vercel (projeto `buildfit-nine`)
+- Rodar local: `cd website && npm install && npm run dev` → http://localhost:3000
+- `next.config.ts`: output standalone, rewrite para `/app`
+
+---
+
+## Build APK (notas de resolução)
+
+- `flutter config --enable-native-assets` necessário para Flutter 3.41+ com Firebase plugins
+- `coreLibraryDesugaringEnabled = true` em `android/app/build.gradle.kts`
+- `<receiver>` tags devem estar dentro de `<application>` no AndroidManifest.xml
+- Developer Mode do Windows necessário para symlink support
+- Comando: `flutter build apk --release` (com `--no-tree-shake-icons` se travar)
+- Output: `build/app/outputs/flutter-apk/app-release.apk`
+
+### Problemas conhecidos no Web (Chrome)
+- Ícones Material Icons podem quebrar com tree-shake-icons no web build
+- GIFs de exercícios vêm de URLs externas (GitHub raw) — CORS pode bloquear no web
+- FCM não funciona em web (requer service worker)
+- **Solução**: build web com `--no-tree-shake-icons`, no Android funciona normal
+
+---
+
 ## Tema Neo-Tactile (app_theme.dart)
 
 | Token | Hex | Uso |
@@ -211,6 +375,7 @@ Mapas:
 | surface | #181822 | Cards |
 | surfaceHighlight | #232332 | Inputs |
 | accent | #3B82FF | Azul primário |
+| accentVariant | #1E5AD6 | Azul escuro |
 | success | #22C55E | Verde |
 | danger | #EF4444 | Vermelho / deload |
 | textPrimary | #F3F4F6 | Texto principal |
@@ -220,63 +385,48 @@ Mapas:
 
 ## O que já está implementado (✅)
 
-- ✅ Firebase backend completo (rules, indexes, 4 functions, volumeEngine)
+- ✅ Firebase backend completo (rules, indexes, 8 functions, volumeEngine, push notifications, pro token)
 - ✅ Auth (login, cadastro, logout)
 - ✅ Roteamento com GoRouter + redirect por auth
 - ✅ Tema escuro global Neo-Tactile
 - ✅ Dashboard com volume semanal, comparação semana anterior, volume por músculo, atalhos
 - ✅ Tela de Exercícios (lista, busca, filtro, adicionar, detalhe, editar)
 - ✅ ExerciseCard com GIF + placeholder por grupo muscular
-- ✅ ProgressionService — sugestões de carga (aumentar peso/reps, deload, manter)
-- ✅ ProgressionScreen — sugestões agrupadas por tipo
-- ✅ WorkoutScreen — sessão ativa com timer, FAB, finalizar/cancelar
-- ✅ WorkoutProvider — estado da sessão, integração com ProgressionEngine no finishSession
-- ✅ WorkoutHistoryScreen — histórico das últimas 20 sessões
+- ✅ ProgressionService — sugestões de carga
+- ✅ ProgressionScreen — duas abas: motor RIR + histórico
+- ✅ WorkoutScreen — sessão ativa com timer, FAB, RIR por exercício
+- ✅ WorkoutProvider — estado da sessão
+- ✅ WorkoutHistoryScreen
 - ✅ Analytics com gráficos Syncfusion
-- ✅ Sistema de PR — detecção automática, celebração animada, histórico
-- ✅ Gestão de rotinas — templates A/B/C, início rápido a partir de template
-- ✅ Anamnese — 4 passos: pessoal, experiência, objetivos, restrições/ambiente
-- ✅ Motor de Prescrição v2 — FB/UL/PPL completo, determinístico, lesão-aware
-- ✅ Biblioteca de 80+ exercícios com reabilitação
-- ✅ PrescribedWorkoutScreen — exibe RIR, cadência, cues, fase DUP, aquecimento
+- ✅ Sistema de PR — detecção, celebração animada, histórico
+- ✅ Gestão de rotinas — templates A/B/C
+- ✅ Anamnese — 4 passos
+- ✅ Motor de Prescrição v4 — 10 divisões (FB, UL, UL Str, PPL 3, PPL 5 hídrido, PPL 6, PPL Str, Arnold)
+- ✅ Biblioteca de 80+ exercícios com reabilitação, fadiga, length bias
+- ✅ PrescribedWorkoutScreen — RIR, cadência, cues, fase DUP, aquecimento, barras de fadiga
 - ✅ Motor de Progressão v2 — RIR, deload automático, plateau, bodyweight chain
-- ✅ ProgressionProvider — estado global de progressão para UI
-- ✅ ProgressionScreen v2 — duas abas: motor RIR (pós-sessão) + histórico; banner de ciclo, deload e info RIR
-- ✅ WorkoutScreen — seletor de RIR por exercício (0–5) com código de cores; badge de aviso de lesão (contraindicados)
-- ✅ Dashboard — card de fase do ciclo de periodização (acumulação/intensificação/pico/deload)
-- ✅ Firestore rules — progression_state + personalRecords adicionados
-- ✅ Firestore indexes — índices para generated_workouts, progression_state, exercises e personalRecords
+- ✅ ProgressionProvider — estado global de progressão
+- ✅ Arnold Split — Chest/Back, Shoulders/Arms, Legs
+- ✅ PPL+UL Híbrido — Push/Pull/Legs/Upper/Lower (5 dias)
+- ✅ Exercise Rotation Manager
+- ✅ Session Fatigue Accumulator + Pattern History Tracker
+- ✅ Notificações Push (FCM + local) — PR, deload, inatividade
+- ✅ Sistema Freemium Free/Pro com token de resgate
+- ✅ Landing Page Next.js na Vercel com download APK
+- ✅ Firestore rules — progression_state + personalRecords + proTokens
+- ✅ Firestore indexes
 
 ---
 
 ## O que está pendente (⏳)
 
-- ~~⏳ Notificações push (deload, inatividade, PR)~~ ✅ (2026-04-06)
-- ~~⏳ Website Next.js + landing page~~ ✅ (2026-04-06)
-- ~~⏳ Sistema de download do APK (URL real)~~ ✅ (2026-04-06)
-- ~~⏳ Modelo freemium / monetização~~ ✅ Base (2026-04-06) — Pro via token/resgate, sem Stripe ainda
-- ⏳ Rodar em produção Firebase (hoje usa emuladores)
+- ⏳ Stripe integração (pagamentos reais para Pro)
+- ⏳ Deploy Flutter web na Vercel (caminho `/app`)
+- ⏳ Deploy Firebase Functions em produção (hoje emuladores)
+- ⏳ Remover botão "Ativar Pro (teste local)" do ProGate antes de produção
+- ⏳ Criar tokens Pro iniciais no Firestore para beta testers
 
 ---
-
-## Website / Landing Page (✅ 2026-04-06)
-
-- `website/` — Next.js 15 com App Router, tema Neo-Tactile (dark)
-- Landing page: hero, features, seção de ciência, download APK
-- APK em `website/public/download/apk.apk`
-- Rota `/download/apk` → download direto do APK
-- Rota `/app` → redireciona para Flutter web (configurar URL real no next.config.ts após deploy do Flutter web)
-- Deploy: Vercel (vercel.json configurado)
-- Rodar local: `cd website && npm install && npm run dev` → http://localhost:3000
-
-## Build APK (notas de resolução)
-
-- `flutter config --enable-native-assets` necessário para Flutter 3.41+ com Firebase plugins
-- `coreLibraryDesugaringEnabled = true` em `android/app/build.gradle.kts`
-- `<receiver>` tags devem estar dentro de `<application>` no AndroidManifest
-- Developer Mode do Windows necessário para symlink support
-- Comando: `flutter build apk --release` (com `--no-tree-shake-icons` se travar)
-- Output: `build/app/outputs/flutter-apk/app-release.apk`
 
 ## Como rodar localmente
 
@@ -295,6 +445,14 @@ cd "d:\App de calculo de carga\app"
 flutter pub get
 flutter run -d chrome
 ```
+
+**Terminal 3 — Landing Page:**
+```bash
+cd "d:\App de calculo de carga\website"
+npm install
+npm run dev
+```
+→ http://localhost:3000
 
 **ATENÇÃO:** O main.dart atual tem os emuladores comentados.
 Para desenvolvimento local, descomentar em main.dart:
@@ -326,6 +484,20 @@ flutter run -d <device_id>
 
 ---
 
+## Deploy Vercel
+
+**Projeto:** https://vercel.com → buildfit-nine
+**URL:** https://buildfit-nine.vercel.app/
+
+**Configurações necessárias no dashboard Vercel:**
+- Build Command: `cd website && npm install && npm run build`
+- Output Directory: `website/.next/standalone`
+- Root Directory: vazio (projeto no root, vercel.json cuida do resto)
+
+**Após push para GitHub**, a Vercel detecta mudanças e rebuildar automaticamente.
+
+---
+
 ## MCP configurado (Claude Desktop)
 
 Config em:
@@ -346,36 +518,6 @@ C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\C
 
 ---
 
-## Notificações Push (✅ 2026-04-06)
-
-### Arquitetura mista (local + FCM)
-
-| Tipo | Canal | Gatilho |
-|------|-------|---------|
-| Local | flutter_local_notifications | `NotificationService.showLocalNotification()` |
-| Push remoto | Firebase Cloud Messaging | Cloud Functions (Firestore triggers + cron) |
-| Inatividade local | `scheduleInactivityReminder` | Chamado no startup do app (main.dart) |
-| PR push | `onPersonalRecordCreated` | Trigger em `users/{uid}/personalRecords/{prId}` |
-| Deload push | `onDeloadActivated` | Trigger em `users/{uid}/progression_state/current` (quando phase muda para "deload") |
-| Inatividade push | `notifyInactiveUsers` | Scheduled job daily 9h BRT |
-
-### Fluxo FCM
-1. `fcmSetup()` no `main.dart` inicializa `FirebaseMessaging`
-2. Obtém token, salva em `users/{uid}.fcmToken`
-3. `onTokenRefresh` atualiza token automaticamente
-4. `onMessage` (foreground) → mostra notificação local
-5. `onMessageOpenedApp` → handler pronto para navegação contextual
-6. `AndroidManifest`: canal `general` como default, permissão `POST_NOTIFICATIONS`
-7. Cloud Functions leem `fcmToken` do userDoc e chamam `admin.messaging().send()`
-8. FCM **não roda em web** (Chrome) — bypass com `if (!kIsWeb)` no main.dart
-
-### Permissões Android
-- `POST_NOTIFICATIONS` obrigatório para Android 13+
-- `RECEIVE_BOOT_COMPLETED` para re-agendar notificações após reboot
-- `SCHEDULE_EXACT_NOTIFICATION` para agendamento exato
-
----
-
 ## Padrões de código
 
 - Sem lógica de negócio nas telas — tudo via Provider ou Service
@@ -386,3 +528,6 @@ C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\C
 - Erros em português amigável
 - withValues(alpha:) em vez de withOpacity()
 - FCM: `fcmToken` armazenado em `users/{uid}.fcmToken` no Firestore
+- FCM bypass em web: `if (!kIsWeb)` antes de qualquer chamada FirebaseMessaging
+- `<receiver>` tags sempre dentro de `<application>` no AndroidManifest
+- Features PRO: gate via `ProGate.show(context)` + `ProService.isPro()`
