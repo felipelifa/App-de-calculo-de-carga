@@ -37,7 +37,7 @@ export default function Home() {
           <a href="#features" style={{ color: textS, textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>Recursos</a>
           <a href="#download" style={{ color: textS, textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>Download</a>
           <a href="#science" style={{ color: textS, textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>Ciência</a>
-          <Link href="/app/index.html" style={{
+          <Link href="/treino/index.html" style={{
             background: accent,
             color: 'white',
             padding: '8px 20px',
@@ -241,7 +241,7 @@ export default function Home() {
             Download APK (v1.0.0)
           </a>
           <a
-            href="/app/index.html"
+            href="/treino/index.html"
             style={{
               background: surface, color: textP, padding: '14px 32px',
               borderRadius: 12, textDecoration: 'none', fontWeight: 600, fontSize: 16,
