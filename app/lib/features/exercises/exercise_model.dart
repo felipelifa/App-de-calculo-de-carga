@@ -20,7 +20,9 @@ class ExerciseModel {
   final int repRangeMax;
   final bool isUnilateral;
   final String? gifUrl;
+  final String? videoUrl;
   final List<String> cues;
+  final List<String> instructions;
   final List<String> substituteIds;
   final List<String> progressionIds;
   final List<String> regressionIds;
@@ -51,7 +53,9 @@ class ExerciseModel {
     this.repRangeMax = 12,
     this.isUnilateral = false,
     this.gifUrl,
+    this.videoUrl,
     this.cues = const [],
+    this.instructions = const [],
     this.substituteIds = const [],
     this.progressionIds = const [],
     this.regressionIds = const [],
@@ -83,7 +87,9 @@ class ExerciseModel {
       repRangeMax: (d['repRangeMax'] as num?)?.toInt() ?? 12,
       isUnilateral: d['isUnilateral'] as bool? ?? false,
       gifUrl: d['gifUrl'] as String?,
+      videoUrl: d['videoUrl'] as String?,
       cues: List<String>.from(d['cues'] ?? []),
+      instructions: List<String>.from(d['instructions'] ?? []),
       substituteIds: List<String>.from(d['substituteIds'] ?? []),
       progressionIds: List<String>.from(d['progressionIds'] ?? []),
       regressionIds: List<String>.from(d['regressionIds'] ?? []),
@@ -113,7 +119,9 @@ class ExerciseModel {
         'repRangeMax': repRangeMax,
         'isUnilateral': isUnilateral,
         'gifUrl': gifUrl,
+        'videoUrl': videoUrl,
         'cues': cues,
+        'instructions': instructions,
         'substituteIds': substituteIds,
         'progressionIds': progressionIds,
         'regressionIds': regressionIds,

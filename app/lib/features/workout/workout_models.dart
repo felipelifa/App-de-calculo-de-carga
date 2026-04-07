@@ -8,23 +8,27 @@ class WorkoutSet {
   final int reps;
   final double weight;
   final double volume;
+  final bool isWarmup;
 
   const WorkoutSet({
     required this.reps,
     required this.weight,
     required this.volume,
+    this.isWarmup = false,
   });
 
   Map<String, dynamic> toMap() => {
         'reps': reps,
         'weight': weight,
         'volume': volume,
+        'isWarmup': isWarmup,
       };
 
   factory WorkoutSet.fromMap(Map<String, dynamic> m) => WorkoutSet(
         reps: (m['reps'] as num?)?.toInt() ?? 0,
         weight: (m['weight'] as num?)?.toDouble() ?? 0,
         volume: (m['volume'] as num?)?.toDouble() ?? 0,
+        isWarmup: (m['isWarmup'] as bool?) ?? false,
       );
 }
 
@@ -44,7 +48,7 @@ class WorkoutExerciseEntry {
   }) : sets = sets ?? [];
 
   double get totalVolume =>
-      sets.fold(0, (acc, s) => acc + s.volume);
+      sets.where((s) => !s.isWarmup).fold(0, (acc, s) => acc + s.volume);
 
   Map<String, dynamic> toMap() => {
         'exerciseId': exerciseId,

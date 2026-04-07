@@ -216,6 +216,7 @@ class WorkoutProvider extends ChangeNotifier {
     required int setIndex,
     required int reps,
     required double weight,
+    bool? isWarmup,
   }) {
     if (exerciseIndex >= _currentExercises.length) return;
     final exercise = _currentExercises[exerciseIndex];
@@ -224,6 +225,7 @@ class WorkoutProvider extends ChangeNotifier {
       reps: reps,
       weight: weight,
       volume: reps * weight,
+      isWarmup: isWarmup ?? exercise.sets[setIndex].isWarmup,
     );
     notifyListeners();
   }
@@ -238,6 +240,7 @@ class WorkoutProvider extends ChangeNotifier {
       reps: reps,
       weight: weight,
       volume: reps * weight,
+      isWarmup: false, // New sets default to normal sets
     ));
     notifyListeners();
   }
@@ -249,6 +252,25 @@ class WorkoutProvider extends ChangeNotifier {
       exercise.sets.removeAt(setIndex);
       notifyListeners();
     }
+  }
+
+  void addWarmupSetForExercise(String exerciseId) {
+    final idx = _currentExercises.indexWhere((e) => e.exerciseId == exerciseId);
+    if (idx == -1) return;
+    
+    final exercise = _currentExercises[idx];
+    final lastSet = exercise.sets.isNotEmpty ? exercise.sets.last : null;
+    final reps = lastSet?.reps ?? 12;
+    // Sugestão de carga de aquecimento: 50% da última 
+    final weight = (lastSet?.weight ?? 20) * 0.5;
+
+    exercise.sets.insert(0, WorkoutSet(
+      reps: reps,
+      weight: weight,
+      volume: reps * weight,
+      isWarmup: true,
+    ));
+    notifyListeners();
   }
 
   // ── Finalizar sessão ──────────────────────────────────────────

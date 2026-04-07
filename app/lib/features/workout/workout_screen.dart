@@ -294,33 +294,120 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              const Text('DICAS DE EXECUÇÃO',
-                  style: TextStyle(
-                      color: AppTheme.accent,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.2)),
-              const SizedBox(height: 12),
-              ...exercise.cues.map((cue) => Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Icon(Icons.check_circle_outline_rounded,
-                            size: 18, color: AppTheme.success),
-                        const SizedBox(width: 12),
-                        Expanded(
-                            child: Text(cue,
-                                style: const TextStyle(
-                                    color: AppTheme.textPrimary))),
+              DefaultTabController(
+                length: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TabBar(
+                      isScrollable: true,
+                      tabAlignment: TabAlignment.start,
+                      indicatorColor: AppTheme.accent,
+                      labelColor: AppTheme.accent,
+                      unselectedLabelColor: AppTheme.textSecondary,
+                      dividerColor: Colors.transparent,
+                      tabs: const [
+                        Tab(text: 'Instruções'),
+                        Tab(text: 'Dicas'),
+                        Tab(text: 'Aquecimento'),
                       ],
                     ),
-                  )),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      height: 300,
+                      child: TabBarView(
+                        children: [
+                           // Instruções
+                           ListView(
+                             children: [
+                               if (exercise.instructions.isEmpty)
+                                 const Text('Sem instruções detalhadas no momento.', style: TextStyle(color: AppTheme.textSecondary))
+                               else
+                                 ...exercise.instructions.asMap().entries.map((entry) => Padding(
+                                   padding: const EdgeInsets.only(bottom: 12),
+                                   child: Row(
+                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                     children: [
+                                       CircleAvatar(
+                                         radius: 10,
+                                         backgroundColor: AppTheme.accent.withValues(alpha: 0.1),
+                                         child: Text('${entry.key + 1}', style: const TextStyle(fontSize: 10, color: AppTheme.accent, fontWeight: FontWeight.bold)),
+                                       ),
+                                       const SizedBox(width: 12),
+                                       Expanded(child: Text(entry.value, style: const TextStyle(color: AppTheme.textPrimary, height: 1.4))),
+                                     ],
+                                   ),
+                                 )),
+                             ],
+                           ),
+                           // Dicas (Cues)
+                           ListView(
+                             children: [
+                               if (exercise.cues.isEmpty)
+                                 const Text('Nenhuma dica extra disponível.', style: TextStyle(color: AppTheme.textSecondary))
+                               else
+                                 ...exercise.cues.map((cue) => Padding(
+                                   padding: const EdgeInsets.only(bottom: 10),
+                                   child: Row(
+                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                     children: [
+                                       const Icon(Icons.check_circle_outline_rounded, size: 18, color: AppTheme.success),
+                                       const SizedBox(width: 12),
+                                       Expanded(child: Text(cue, style: const TextStyle(color: AppTheme.textPrimary))),
+                                     ],
+                                   ),
+                                 )),
+                             ],
+                           ),
+                           // Aquecimento
+                           ListView(
+                             children: [
+                               Container(
+                                 padding: const EdgeInsets.all(16),
+                                 decoration: BoxDecoration(
+                                   color: AppTheme.accent.withValues(alpha: 0.05),
+                                   borderRadius: BorderRadius.circular(12),
+                                   border: Border.all(color: AppTheme.accent.withValues(alpha: 0.1)),
+                                 ),
+                                 child: const Column(
+                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                   children: [
+                                     Text('Guia de Aquecimento Específico', style: TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold)),
+                                     SizedBox(height: 12),
+                                     Text('• Série 1: 12-15 reps com 40-50% da carga (Preparo articular)', style: TextStyle(color: AppTheme.textPrimary, fontSize: 13, height: 1.5)),
+                                     Text('• Série 2: 6-8 reps com 70% da carga (Ativação neuromuscular)', style: TextStyle(color: AppTheme.textPrimary, fontSize: 13, height: 1.5)),
+                                     SizedBox(height: 12),
+                                     Text('Dica: O aquecimento não deve gerar fadiga, apenas preparar o movimento.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontStyle: FontStyle.italic)),
+                                   ],
+                                 ),
+                               ),
+                               const SizedBox(height: 16),
+                               ElevatedButton.icon(
+                                 onPressed: () {
+                                   context.read<WorkoutProvider>().addWarmupSetForExercise(exercise.id);
+                                   Navigator.pop(ctx);
+                                   ScaffoldMessenger.of(context).showSnackBar(
+                                     const SnackBar(content: Text('Série de aquecimento adicionada!'), duration: Duration(seconds: 1)),
+                                   );
+                                 },
+                                 icon: const Icon(Icons.wb_sunny_outlined),
+                                 label: const Text('ADICIONAR SÉRIE DE AQUECIMENTO'),
+                                 style: ElevatedButton.styleFrom(backgroundColor: AppTheme.surfaceHighlight, foregroundColor: AppTheme.textPrimary),
+                               ),
+                             ],
+                           ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(ctx),
-                  child: const Text('ENTENDI'),
+                  child: const Text('FECHAR'),
                 ),
               ),
             ],
@@ -642,11 +729,13 @@ class _ExerciseCard extends StatelessWidget {
                 reps: set.reps,
                 weight: set.weight,
                 volume: set.volume,
-                onChanged: (reps, weight) => provider.updateSet(
+                isWarmup: set.isWarmup,
+                onChanged: (reps, weight, isWarmup) => provider.updateSet(
                   exerciseIndex: exerciseIndex,
                   setIndex: si,
                   reps: reps,
                   weight: weight,
+                  isWarmup: isWarmup,
                 ),
                 onRemove: entry.sets.length > 1
                     ? () => provider.removeSet(exerciseIndex, si)
@@ -882,7 +971,8 @@ class _SetRow extends StatefulWidget {
   final int reps;
   final double weight;
   final double volume;
-  final void Function(int reps, double weight) onChanged;
+  final bool isWarmup;
+  final void Function(int reps, double weight, bool isWarmup) onChanged;
   final VoidCallback? onRemove;
 
   const _SetRow({
@@ -890,6 +980,7 @@ class _SetRow extends StatefulWidget {
     required this.reps,
     required this.weight,
     required this.volume,
+    required this.isWarmup,
     required this.onChanged,
     this.onRemove,
   });
@@ -917,24 +1008,39 @@ class _SetRowState extends State<_SetRow> {
     super.dispose();
   }
 
-  void _notify() {
+  void _notify({bool? isWarmup}) {
     final reps = int.tryParse(_repsCtrl.text) ?? widget.reps;
     final weight = double.tryParse(_weightCtrl.text) ?? widget.weight;
-    widget.onChanged(reps, weight);
+    widget.onChanged(reps, weight, isWarmup ?? widget.isWarmup);
   }
 
   @override
   Widget build(BuildContext context) {
+    final color = widget.isWarmup ? AppTheme.textSecondary.withValues(alpha: 0.5) : AppTheme.textPrimary;
+    
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          SizedBox(
-            width: 32,
-            child: Text('${widget.setNumber}',
-                style: const TextStyle(
-                    color: AppTheme.textSecondary,
-                    fontWeight: FontWeight.w600)),
+          GestureDetector(
+            onTap: () => _notify(isWarmup: !widget.isWarmup),
+            child: SizedBox(
+              width: 32,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                   Text('${widget.setNumber}',
+                      style: TextStyle(
+                          color: widget.isWarmup ? AppTheme.accent.withValues(alpha: 0.6) : AppTheme.textSecondary,
+                          fontWeight: FontWeight.w600)),
+                   if (widget.isWarmup)
+                     Positioned(
+                       bottom: 0, right: 0,
+                       child: Icon(Icons.wb_sunny_outlined, size: 10, color: AppTheme.accent),
+                     )
+                ],
+              ),
+            ),
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -943,8 +1049,8 @@ class _SetRowState extends State<_SetRow> {
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                  color: AppTheme.textPrimary, fontSize: 14),
+              style: TextStyle(
+                  color: color, fontSize: 14),
               decoration: const InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -959,8 +1065,8 @@ class _SetRowState extends State<_SetRow> {
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                  color: AppTheme.textPrimary, fontSize: 14),
+              style: TextStyle(
+                  color: color, fontSize: 14),
               decoration: const InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -973,8 +1079,8 @@ class _SetRowState extends State<_SetRow> {
             child: Text(
               widget.volume.toStringAsFixed(0),
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                  color: AppTheme.success,
+              style: TextStyle(
+                  color: widget.isWarmup ? AppTheme.success.withValues(alpha: 0.5) : AppTheme.success,
                   fontWeight: FontWeight.w600,
                   fontSize: 14),
             ),
