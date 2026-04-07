@@ -1,17 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  output: 'export',
   images: {
-    remotePatterns: [],
+    unoptimized: true,
   },
-  async rewrites() {
-    return [
-      {
-        source: '/app/:path*',
-        destination: 'https://<VERCEL-URL>/:path*', // Replace with actual Flutter web URL after deploy
-      },
-    ];
-  },
+  basePath: '',
+  trailingSlash: false,
 };
 
 export default nextConfig;
