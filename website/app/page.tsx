@@ -1,9 +1,13 @@
+'use client';
+
+import Link from 'next/link';
+
 // Cores do tema Neo-Tactile
 const bg = '#0A0A0F';
 const surface = '#181822';
 const surfaceH = '#232332';
 const accent = '#3B82FF';
-const accentV = '#1E5AD6';
+const accentV = '#2563EB';
 const success = '#22C55E';
 const danger = '#EF4444';
 const textP = '#F3F4F6';
@@ -33,7 +37,7 @@ export default function Home() {
           <a href="#features" style={{ color: textS, textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>Recursos</a>
           <a href="#download" style={{ color: textS, textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>Download</a>
           <a href="#science" style={{ color: textS, textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>Ciência</a>
-          <a href="/app" style={{
+          <Link href="/app/index.html" style={{
             background: accent,
             color: 'white',
             padding: '8px 20px',
@@ -49,7 +53,7 @@ export default function Home() {
               <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             Entrar
-          </a>
+          </Link>
         </div>
       </nav>
 
@@ -237,7 +241,7 @@ export default function Home() {
             Download APK (v1.0.0)
           </a>
           <a
-            href="/app"
+            href="/app/index.html"
             style={{
               background: surface, color: textP, padding: '14px 32px',
               borderRadius: 12, textDecoration: 'none', fontWeight: 600, fontSize: 16,
@@ -250,7 +254,7 @@ export default function Home() {
         <p className="animate-in delay-4" style={{
           color: textS, fontSize: 13, marginTop: 16,
         }}>
-          Requer Android 9+. Permissão &quot;fontes desconhecidas&quot; pode ser necessária.
+          Requer Android 9+. Permissão "fontes desconhecidas" pode ser necessária.
         </p>
       </section>
 

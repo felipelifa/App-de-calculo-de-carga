@@ -834,7 +834,7 @@ class WorkoutPrescriptionEngine {
     sessions.add(PrescribedSession(
       id: 'session_arnold_chestback',
       name: 'Peito & Costas${_dupLabel(phaseA, periodization)}',
-      objective: 'Peito e costas — antagonista (${_phaseLabel(phaseA)',
+      objective: 'Peito e costas — antagonista (${_phaseLabel(phaseA)})',
       estimatedDurationMinutes: profile.sessionDurationMinutes,
       warmupInstructions: _warmup('push', profile),
       exercises: [...exercisesA.where((e) => e != null).cast<PrescribedExercise>(),
@@ -865,7 +865,7 @@ class WorkoutPrescriptionEngine {
     sessions.add(PrescribedSession(
       id: 'session_arnold_shoulders_arms',
       name: 'Ombros & Braços${_dupLabel(phaseB, periodization)}',
-      objective: 'Ombros, bíceps e tríceps — ${_phaseLabel(phaseB)',
+      objective: 'Ombros, bíceps e tríceps — ${_phaseLabel(phaseB)}',
       estimatedDurationMinutes: profile.sessionDurationMinutes,
       warmupInstructions: _warmup('push', profile),
       exercises: [...exercisesB.where((e) => e != null).cast<PrescribedExercise>(),
@@ -897,7 +897,7 @@ class WorkoutPrescriptionEngine {
       sessions.add(PrescribedSession(
         id: 'session_arnold_chestback_b',
         name: 'Peito & Costas B${_dupLabel(phaseD, periodization)}',
-        objective: 'Peito e costas (variante) — ${_phaseLabel(phaseD)',
+        objective: 'Peito e costas (variante) — ${_phaseLabel(phaseD)}',
         estimatedDurationMinutes: profile.sessionDurationMinutes,
         warmupInstructions: _warmup('push', profile),
         exercises: [...exercisesD.where((e) => e != null).cast<PrescribedExercise>(),
@@ -923,7 +923,7 @@ class WorkoutPrescriptionEngine {
       sessions.add(PrescribedSession(
         id: 'session_arnold_shoulders_arms_b',
         name: 'Ombros & Braços B${_dupLabel(phaseE, periodization)}',
-        objective: 'Ombros e braços (variante) — ${_phaseLabel(phaseE)',
+        objective: 'Ombros e braços (variante) — ${_phaseLabel(phaseE)}',
         estimatedDurationMinutes: profile.sessionDurationMinutes,
         warmupInstructions: _warmup('push', profile),
         exercises: [...exercisesE.where((e) => e != null).cast<PrescribedExercise>(),
@@ -1319,7 +1319,7 @@ class WorkoutPrescriptionEngine {
       'endurance': 'Resistência muscular',
       'athletic_performance': 'Performance atlética',
     };
-    final phaseStr = ${_phaseLabel(phase);
+    final phaseStr = _phaseLabel(phase);
     return '${goalMap[goal] ?? 'Evolução'} — $type ($phaseStr)';
   }
 
