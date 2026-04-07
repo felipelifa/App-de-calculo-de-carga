@@ -43,9 +43,9 @@ class DefaultFirebaseOptions {
   // Dummy values for Local Emulator usage
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'dummy-api-key',
-    appId: '1:1234567890:android:abcdef',
-    messagingSenderId: '1234567890',
+    apiKey: 'AIzaSyA8Cnjhujks-BjLk7_43L8MwK0mxS2IUZA', // Usando chave real do projeto
+    appId: '1:220706619737:android:8af56698b30c668385cc48', // Placeholder aproximado (favor conferir no console)
+    messagingSenderId: '220706619737',
     projectId: 'appcalculotreino-51f23',
     storageBucket: 'appcalculotreino-51f23.appspot.com',
   );
