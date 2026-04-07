@@ -3,6 +3,8 @@ import '../../core/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../shared/theme/app_theme.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:url_launcher/url_launcher.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -140,6 +142,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                 ),
+                if (kIsWeb) ...[
+                  const SizedBox(height: 24),
+                  TextButton.icon(
+                    onPressed: () async {
+                      final url = Uri.parse('/');
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(url, webOnlyWindowName: '_self');
+                      }
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                    label: const Text('Voltar ao site principal'),
+                    style: TextButton.styleFrom(foregroundColor: AppTheme.textSecondary),
+                  ),
+                ],
               ],
             ),
           ),
