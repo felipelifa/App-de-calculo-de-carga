@@ -7,7 +7,6 @@ app/pubspec.lock
 website/.next/
 website/out/
 website/node_modules/
-website/public/download/apk.apk
 
 # Node
 firebase/functions/node_modules/

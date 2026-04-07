@@ -145,11 +145,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 if (kIsWeb) ...[
                   const SizedBox(height: 24),
                   TextButton.icon(
-                    onPressed: () async {
-                      final url = Uri.parse('/');
-                      if (await canLaunchUrl(url)) {
-                        await launchUrl(url, webOnlyWindowName: '_self');
-                      }
+                    onPressed: () {
+                      final origin = Uri.base.origin;
+                      launchUrl(Uri.parse(origin), webOnlyWindowName: '_self');
                     },
                     icon: const Icon(Icons.arrow_back),
                     label: const Text('Voltar ao site principal'),
