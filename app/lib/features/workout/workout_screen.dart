@@ -291,9 +291,26 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                             ],
                           ),
                         ),
-                ),
+               ),
               ),
-              const SizedBox(height: 24),
+              if (exercise.videoUrl != null && exercise.videoUrl!.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton.icon(
+                    onPressed: () async {
+                      final url = Uri.parse(exercise.videoUrl!);
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(url, mode: LaunchMode.externalApplication);
+                      }
+                    },
+                    icon: const Icon(Icons.play_circle_fill, color: AppTheme.accent),
+                    label: const Text('VER VÍDEO DE EXECUÇÃO', style: TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold)),
+                    style: TextButton.styleFrom(backgroundColor: AppTheme.accent.withValues(alpha: 0.1)),
+                  ),
+                ),
+              ],
+              const SizedBox(height: 16),
               DefaultTabController(
                 length: 3,
                 child: Column(
