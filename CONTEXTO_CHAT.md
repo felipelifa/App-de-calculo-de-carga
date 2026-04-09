@@ -364,6 +364,7 @@ Mapas:
 - GIFs de exercícios vêm de URLs externas (GitHub raw) — CORS pode bloquear no web
 - FCM não funciona em web (requer service worker)
 - **Solução**: build web com `--no-tree-shake-icons`, no Android funciona normal
+- **Vídeos/GIFs**: Migrados de repositórios GitHub genéricos para `gifdotreino.com` (maior qualidade + mapa muscular anatômico). (2026-04-07)
 
 ---
 
@@ -415,6 +416,7 @@ Mapas:
 - ✅ Landing Page Next.js na Vercel com download APK
 - ✅ Firestore rules — progression_state + personalRecords + proTokens
 - ✅ Firestore indexes
+- ✅ Integração de GIFs Anatômicos (gifdotreino.com) — 30+ exercícios principais atualizados com mapa muscular em vermelho para melhor visualização técnica. (2026-04-07)
 
 ---
 
@@ -531,3 +533,41 @@ C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\C
 - FCM bypass em web: `if (!kIsWeb)` antes de qualquer chamada FirebaseMessaging
 - `<receiver>` tags sempre dentro de `<application>` no AndroidManifest
 - Features PRO: gate via `ProGate.show(context)` + `ProService.isPro()`
+
+---
+
+## Registro de Progresso Diário
+
+### 📅 2026-04-07
+- **Foco:** Visual Assets & Exercise Guidance.
+- **Feito:**
+  - Avaliação de fontes de GIFs (Kaggle vs ExRx vs Gif do Treino).
+  - Substituição massiva de links de GIFs no `exercise_library.dart`.
+  - Migração para a CDN do `gifdotreino.com` — agora os GIFs mostram os músculos em vermelho (anatomical highlights).
+  - Adição de URLs para exercícios que estavam sem imagem (Puxadas, Remadas, Agachamentos).
+- **Pendências de hoje:** Finalizar mapeamento dos exercícios de reabilitação (rehab) com o novo site.
+
+### 📅 2026-04-08
+- **Foco:** Expansão da Biblioteca de Exercícios & Automação de Dados.
+- **Feito:**
+  - Listagem completa de 949 novos GIFs de exercícios a partir do diretório local `biblioteca de gif`.
+  - Desenvolvimento de um script de inferência inteligente (`generate_library.js`) para categorizar automaticamente exercícios em português.
+  - Reconstrução total do `exercise_library.dart` integrando os 949 exercícios com metadados científicos (músculos, padrões de movimento, equipamentos, dificuldade, etc.).
+  - Refinamento da lógica de inferência para evitar falsos positivos em nomes compostos (ex: "lateral" em quadril vs ombro).
+  - Preservação dos mapas de reabilitação e integração com o novo modelo de dados.
+- **Status:** Biblioteca expandida de ~80 para 949 exercícios com detalhamento científico.
+- **Motor v3.0:** Upgrade massivo do motor de prescrição implementado em 8 dimensões:
+  - **D1 (Modalidades):** Geradores independentes para Calistenia, HIIT, Casa e Reabilitação.
+  - **D2 (Objetivos):** Mapeamento de estética, performance e saúde.
+  - **D3 (Especialização):** Mesociclos com boost de 40% em grupos foco e manutenção no resto.
+  - **D4 (Tempo):** Adaptação automática do número de exercícios (15min a 2h+).
+  - **D5 (Macrociclo):** Fases encadeadas de 24 semanas (Adaptação -> Pico).
+  - **D6 (Variação):** Rotação semanal inteligente e determinística.
+  - **D7 (Temáticos):** Suporte para 5x5, Arnold Split, GVT, etc.
+  - **D8 (Adaptativo — Loop de Aprendizado):** 
+    - Novo `UserAdaptiveProfile` que rastreia tolerância a volume, sensibilidade à fadiga e precisão de RIR.
+    - Sistema de Feedback Pós-Treino (RPE, Fadiga, Dor, Exercícios Pulados).
+    - Re-calibração automática de volume pelo motor com base na fadiga real reportada.
+    - Histórico de dor por articulação para ajuste preventivo de carga e movimento.
+
+
