@@ -1,8 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // ─────────────────────────────────────────────
-// Modelo de Perfil de Treino (Anamnese)
 // ─────────────────────────────────────────────
+
+class UserAdaptiveProfile {
+  final String volumeTolerance; // high | medium | low
+  final String recoveryCapacity; // high | medium | low
+  
+  const UserAdaptiveProfile({
+    this.volumeTolerance = 'medium',
+    this.recoveryCapacity = 'medium',
+  });
+
+  factory UserAdaptiveProfile.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return const UserAdaptiveProfile();
+    return UserAdaptiveProfile(
+      volumeTolerance: map['volumeTolerance'] as String? ?? 'medium',
+      recoveryCapacity: map['recoveryCapacity'] as String? ?? 'medium',
+    );
+  }
+
+  Map<String, dynamic> toMap() => {
+    'volumeTolerance': volumeTolerance,
+    'recoveryCapacity': recoveryCapacity,
+  };
+}
 
 class WorkoutProfile {
   // Identificação
@@ -41,6 +63,8 @@ class WorkoutProfile {
   final int currentWeek; // semana atual do mesociclo (1-N)
   final int exerciseRotationOffset; // seed de variação semanal
 
+  final UserAdaptiveProfile adaptive; // perfil de adaptação
+
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -67,6 +91,7 @@ class WorkoutProfile {
     required this.healthRestrictions,
     this.currentWeek = 1,
     this.exerciseRotationOffset = 0,
+    this.adaptive = const UserAdaptiveProfile(),
     required this.createdAt,
     required this.updatedAt,
   });
@@ -96,6 +121,7 @@ class WorkoutProfile {
       healthRestrictions: List<String>.from(d['healthRestrictions'] ?? []),
       currentWeek: (d['currentWeek'] as num?)?.toInt() ?? 1,
       exerciseRotationOffset: (d['exerciseRotationOffset'] as num?)?.toInt() ?? 0,
+      adaptive: UserAdaptiveProfile.fromMap(d['adaptive'] as Map<String, dynamic>?),
       createdAt: (d['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       updatedAt: (d['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
@@ -123,6 +149,7 @@ class WorkoutProfile {
         'healthRestrictions': healthRestrictions,
         'currentWeek': currentWeek,
         'exerciseRotationOffset': exerciseRotationOffset,
+        'adaptive': adaptive.toMap(),
         'createdAt': createdAt,
         'updatedAt': updatedAt,
       };

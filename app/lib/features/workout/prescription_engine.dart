@@ -293,7 +293,7 @@ class WorkoutPrescriptionEngine {
     // Boost para músculos prioritários (+30% volume)
     final priorities = profile.priorityMuscles.toSet();
     int finalVol(int vol, String muscle) {
-      double v = specBoost(muscle, vol);
+      double v = vol.toDouble();
       if (priorities.contains(muscle)) v *= 1.3;
 
       // Dimensão 8 — ADAPTAÇÃO POR TOLERÂNCIA (Adaptive Profile)
@@ -1067,7 +1067,7 @@ class WorkoutPrescriptionEngine {
         if (candidate.tags.contains('explosive') || candidate.tags.contains('combat')) score += 4.0;
       } else if (profile.primaryGoal == 'running_hybrid') {
          if (candidate.isUnilateral) score += 5.0; // PRIORIDADE MÁXIMA PARA CORRIDA
-         if (candidate.muscleGroup == 'calves' || candidate.muscleGroup == 'glutes') score += 2.0;
+         if (candidate.primaryMuscles.contains('calves') || candidate.primaryMuscles.contains('glutes')) score += 2.0;
          if (candidate.movementPattern == 'carry') score += 1.5;
       } else if (profile.primaryGoal == 'athletic_agility') {
          if (candidate.movementPattern == 'rotation' || candidate.movementPattern == 'carry') score += 2.5;
