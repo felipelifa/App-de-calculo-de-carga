@@ -25,8 +25,6 @@ const nextConfig: NextConfig = {
   trailingSlash: false,
 };
 
-if (process.env.NEXT_EXPORT === '1') {
-  copyDir(path.join(__dirname, 'public/treino'), path.join(__dirname, 'out/treino'));
-}
+copyDir(path.join(__dirname, 'public/treino'), path.join(__dirname, 'out/treino'));
 
 export default nextConfig;
