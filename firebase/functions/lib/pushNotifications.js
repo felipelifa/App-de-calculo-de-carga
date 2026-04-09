@@ -36,12 +36,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.notifyInactiveUsers = exports.onDeloadActivated = exports.onPersonalRecordCreated = void 0;
 const admin = __importStar(require("firebase-admin"));
 const functions = __importStar(require("firebase-functions"));
-const db = admin.firestore();
+const getDb = () => {
+    if (admin.apps.length === 0) {
+        admin.initializeApp();
+    }
+    return admin.firestore();
+};
 // ============================================================
 // Helper: enviar notificação push para um usuário
 // ============================================================
 async function sendPushToUser(uid, payload) {
     var _a, _b;
+    const db = getDb();
     const userDoc = await db.collection("users").doc(uid).get();
     const fcmToken = (_a = userDoc.data()) === null || _a === void 0 ? void 0 : _a.fcmToken;
     if (!fcmToken) {
@@ -122,6 +128,7 @@ exports.notifyInactiveUsers = functions.pubsub
     .schedule("every day 09:00")
     .timeZone("America/Sao_Paulo")
     .onRun(async () => {
+    const db = getDb();
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     const usersSnap = await db

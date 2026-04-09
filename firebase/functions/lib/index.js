@@ -33,17 +33,26 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getApkVersion = exports.calculatePeriodizationPlan = exports.generateProgressionSuggestions = exports.onWorkoutExerciseSave = void 0;
+exports.getApkVersion = exports.calculatePeriodizationPlan = exports.generateProgressionSuggestions = exports.onWorkoutExerciseSave = exports.redeemProToken = exports.notifyInactiveUsers = exports.onDeloadActivated = exports.onPersonalRecordCreated = void 0;
 const admin = __importStar(require("firebase-admin"));
 const functions = __importStar(require("firebase-functions"));
 const volumeEngine_1 = require("./volumeEngine");
+// Push Notifications
+var pushNotifications_1 = require("./pushNotifications");
+Object.defineProperty(exports, "onPersonalRecordCreated", { enumerable: true, get: function () { return pushNotifications_1.onPersonalRecordCreated; } });
+Object.defineProperty(exports, "onDeloadActivated", { enumerable: true, get: function () { return pushNotifications_1.onDeloadActivated; } });
+Object.defineProperty(exports, "notifyInactiveUsers", { enumerable: true, get: function () { return pushNotifications_1.notifyInactiveUsers; } });
+var proToken_1 = require("./proToken");
+Object.defineProperty(exports, "redeemProToken", { enumerable: true, get: function () { return proToken_1.redeemProToken; } });
 // ════════════════════════════════════════════════════════════
 // Firebase Admin Init (only once per cold start)
 // ════════════════════════════════════════════════════════════
-if (admin.apps.length === 0) {
-    admin.initializeApp();
-}
-const db = admin.firestore();
+const getDb = () => {
+    if (admin.apps.length === 0) {
+        admin.initializeApp();
+    }
+    return admin.firestore();
+};
 // ════════════════════════════════════════════════════════════
 // TRIGGER: onWorkoutSave
 // Fires when a workout/exercises document is created or updated.
@@ -53,6 +62,7 @@ exports.onWorkoutExerciseSave = functions.firestore
     .document("users/{uid}/workouts/{wId}/exercises/{weId}")
     .onWrite(async (change, context) => {
     var _a, _b, _c, _d, _e;
+    const db = getDb();
     const { uid, wId } = context.params;
     // If deleted, we still recalculate (volume drops to 0 removal)
     const newData = change.after.exists
@@ -115,6 +125,7 @@ exports.onWorkoutExerciseSave = functions.firestore
 // but this serves as authoritative validation.
 // ════════════════════════════════════════════════════════════
 exports.generateProgressionSuggestions = functions.https.onCall(async (data, context) => {
+    const db = getDb();
     if (!context.auth) {
         throw new functions.https.HttpsError("unauthenticated", "Authentication required");
     }
@@ -192,6 +203,7 @@ exports.generateProgressionSuggestions = functions.https.onCall(async (data, con
 // returns the full target volume schedule for each week.
 // ════════════════════════════════════════════════════════════
 exports.calculatePeriodizationPlan = functions.https.onCall(async (data, context) => {
+    const db = getDb();
     if (!context.auth) {
         throw new functions.https.HttpsError("unauthenticated", "Authentication required");
     }
@@ -237,6 +249,7 @@ exports.calculatePeriodizationPlan = functions.https.onCall(async (data, context
 // Used by the Flutter app on startup to check for updates.
 // ════════════════════════════════════════════════════════════
 exports.getApkVersion = functions.https.onCall(async (_data, context) => {
+    const db = getDb();
     if (!context.auth) {
         throw new functions.https.HttpsError("unauthenticated", "Authentication required");
     }

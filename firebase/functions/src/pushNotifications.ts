@@ -1,7 +1,12 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
-const db = admin.firestore();
+const getDb = () => {
+  if (admin.apps.length === 0) {
+    admin.initializeApp();
+  }
+  return admin.firestore();
+};
 
 // ============================================================
 // Helper: enviar notificação push para um usuário
@@ -11,6 +16,7 @@ async function sendPushToUser(uid: string, payload: {
   body: string;
   data?: Record<string, string>;
 }): Promise<void> {
+  const db = getDb();
   const userDoc = await db.collection("users").doc(uid).get();
   const fcmToken = userDoc.data()?.fcmToken;
   if (!fcmToken) {
@@ -99,6 +105,7 @@ export const notifyInactiveUsers = functions.pubsub
   .schedule("every day 09:00")
   .timeZone("America/Sao_Paulo")
   .onRun(async () => {
+    const db = getDb();
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 

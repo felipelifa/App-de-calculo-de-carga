@@ -48,7 +48,10 @@
       "Bash(grep -v '${')",
       "Bash(grep -n \"objective: ''''Peito\\\\|objective: ''''Ombros\\\\|objective: ''''Costas\" lib/features/workout/prescription_engine.dart)",
       "WebFetch(domain:buildfit-nine.vercel.app)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(git push:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
