@@ -340,11 +340,22 @@ class _StepGoals extends StatelessWidget {
         _InputLabel('Objetivo principal'),
         _ChoiceGroup(
           choices: {
+<<<<<<< HEAD
             'hypertrophy': 'Hipertrofia',
             'fat_loss': 'Queima de gordura',
             'strength': 'Força bruta',
             'general_health': 'Saúde e longevidade',
             'athletic_performance': 'Performance atlética',
+=======
+            'hypertrophy': 'Hipertrofia Estética',
+            'strength': 'Força Máxima (Powerlifting)',
+            'combat_sports': 'Lutas e Artes Marciais',
+            'power_explosive': 'Potência e Explosão',
+            'running_hybrid': 'Performance em Corrida / Híbrido',
+            'fat_loss': 'Emagrecimento / Definição',
+            'athletic_agility': 'Agilidade e Coordenação',
+            'general_health': 'Saúde e Longevidade',
+>>>>>>> 6dac4b00 (feat: implement Adaptive Intelligence (D8), Post-Workout Feedback loop, and Sport-Specific prescriptions)
           },
           initial: 'hypertrophy',
           onChanged: onGoal,

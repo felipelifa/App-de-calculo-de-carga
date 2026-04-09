@@ -292,8 +292,31 @@ class WorkoutPrescriptionEngine {
 
     // Boost para músculos prioritários (+30% volume)
     final priorities = profile.priorityMuscles.toSet();
+<<<<<<< HEAD
     int priorityBoost(int vol, String muscle) =>
       priorities.contains(muscle) ? (vol * 1.3).round().clamp(4, 22) : vol;
+=======
+    int finalVol(int vol, String muscle) {
+      double v = specBoost(muscle, vol);
+      if (priorities.contains(muscle)) v *= 1.3;
+
+      // Dimenso 8 — ADAPTAO POR TOLERNCIA (Adaptive Profile)
+      if (profile.adaptive.volumeTolerance == 'high') v *= 1.15;
+      if (profile.adaptive.volumeTolerance == 'low') v *= 0.85;
+      
+      if (profile.adaptive.recoveryCapacity == 'low') v *= 0.9;
+
+      // Adaptação para Corredores (Não sobrecarregar pernas, mas focar em estabilizadores)
+      if (profile.primaryGoal == 'running_hybrid') {
+        if (muscle == 'quads') v *= 0.6; // Redução maior em quads (fadiga de impacto)
+        if (muscle == 'calves') v *= 1.4; // BOOST em panturrilhas (propulsão e prevenção de canelite)
+        if (muscle == 'glutes') v *= 1.2; // BOOST em glúteos (estabilidade pélvica)
+        if (muscle == 'abs') v *= 1.2; // BOOST em core (postura na corrida)
+      }
+      
+      return v.round().clamp(3, 22);
+    }
+>>>>>>> 6dac4b00 (feat: implement Adaptive Intelligence (D8), Post-Workout Feedback loop, and Sport-Specific prescriptions)
 
     return {
       'chest': priorityBoost(vChest, 'chest'),
@@ -370,6 +393,38 @@ class WorkoutPrescriptionEngine {
           restSeconds: isCompound ? 180 : 120,
           tempo: '1-0-1',
         );
+      case 'combat_sports':
+        return (
+          sets: 4,
+          repsMin: 6, repsMax: 10,
+          rir: 2,
+          restSeconds: 120,
+          tempo: 'explosive',
+        );
+      case 'power_explosive':
+        return (
+          sets: 5,
+          repsMin: 3, repsMax: 5,
+          rir: 4,
+          restSeconds: 240,
+          tempo: 'explosive',
+        );
+      case 'running_hybrid':
+        return (
+          sets: 3,
+          repsMin: 12, repsMax: 15,
+          rir: 2,
+          restSeconds: 60,
+          tempo: 'controlled',
+        );
+      case 'athletic_agility':
+        return (
+          sets: 4,
+          repsMin: 8, repsMax: 12,
+          rir: 3,
+          restSeconds: 90,
+          tempo: 'dynamic',
+        );
       case 'fat_loss':
         return (
           sets: 3,
@@ -378,14 +433,6 @@ class WorkoutPrescriptionEngine {
           restSeconds: 45,
           tempo: '2-0-2',
         );
-      case 'endurance':
-        return (
-          sets: 3,
-          repsMin: 15, repsMax: 25,
-          rir: 1,
-          restSeconds: 45,
-          tempo: '2-0-1',
-        );
       case 'general_health':
         return (
           sets: 2,
@@ -393,14 +440,6 @@ class WorkoutPrescriptionEngine {
           rir: 3,
           restSeconds: 75,
           tempo: '2-0-2',
-        );
-      case 'athletic_performance':
-        return (
-          sets: isCompound ? 5 : 3,
-          repsMin: 4, repsMax: 8,
-          rir: 1,
-          restSeconds: isCompound ? 180 : 120,
-          tempo: '1-0-2',
         );
       default:
         return (
@@ -1024,6 +1063,22 @@ class WorkoutPrescriptionEngine {
       // Seed como tiebreaker determinístico
       score += ((_seed + slot + candidate.id.hashCode).abs() % 100) * 0.01;
 
+      // Bonus de Especificidade por Objetivo (Dimenso 8)
+      if (profile.primaryGoal == 'combat_sports') {
+        if (candidate.movementPattern == 'rotation') score += 5.0; // PRIORIDADE MÁXIMA
+        if (candidate.movementPattern == 'carry') score += 3.0;
+        if (candidate.movementPattern == 'isometric') score += 2.0;
+        if (candidate.equipment.contains('cable') || candidate.equipment.contains('kettlebell')) score += 1.5;
+        if (candidate.tags.contains('explosive') || candidate.tags.contains('combat')) score += 4.0;
+      } else if (profile.primaryGoal == 'running_hybrid') {
+         if (candidate.isUnilateral) score += 5.0; // PRIORIDADE MÁXIMA PARA CORRIDA
+         if (candidate.muscleGroup == 'calves' || candidate.muscleGroup == 'glutes') score += 2.0;
+         if (candidate.movementPattern == 'carry') score += 1.5;
+      } else if (profile.primaryGoal == 'athletic_agility') {
+         if (candidate.movementPattern == 'rotation' || candidate.movementPattern == 'carry') score += 2.5;
+         if (candidate.equipment.contains('medicine_ball') || candidate.equipment.contains('band')) score += 1.5;
+      }
+
       if (score > bestScore) {
         bestScore = score;
         bestEx = candidate;
@@ -1118,6 +1173,16 @@ class WorkoutPrescriptionEngine {
       if (ex.lengthBias == 'shortened') score += 0.6;
     }
     if (profile.favoriteExercises.contains(ex.id)) score += 2.0;
+
+    // Bonus de Especificidade por Objetivo (Dimenso 8)
+    if (profile.primaryGoal == 'combat_sports') {
+      if (ex.movementPattern == 'rotation') score += 5.0;
+      if (ex.movementPattern == 'carry') score += 3.0;
+      if (ex.tags.contains('explosive') || ex.tags.contains('combat')) score += 4.0;
+    } else if (profile.primaryGoal == 'power_explosive') {
+      if (ex.tags.contains('explosive')) score += 5.0;
+    }
+
     score += ((_seed + slot + ex.id.hashCode).abs() % 100) * 0.01;
     return score;
   }
