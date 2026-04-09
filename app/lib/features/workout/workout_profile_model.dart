@@ -42,7 +42,9 @@ class WorkoutProfile {
   final String bodyFatCategory; // low | medium | high
 
   // Passo 3: Metas + Estilo
-  final String primaryGoal; // hypertrophy | fat_loss | strength | endurance | general_health | athletic_performance
+  final String primaryGoal; // hypertrophy | fat_loss | strength | endurance | general_health | athletic_performance | sport_specific | calisthenics | functional_hiit | mobility_rehab
+  final String sportSubType; // run_5k | run_10k | run_half | run_marathon | mma | bjj | boxing | soccer | basketball | swimming | cycling | agility | none
+  final String trainingModality; // traditional | calisthenics | hiit_tabata | functional | home_no_equip | home_dumbbells | home_bands | kettlebell_only | mobility | rehab | template_5x5 | template_gvt | template_531 | template_phat | template_phul | none
   final int availableDaysPerWeek; // 2-7
   final int sessionDurationMinutes; // 30 | 45 | 60 | 75 | 90
   final String preferredStyle; // compound_focus | isolation_focus | circuit | high_frequency | moderate_volume
@@ -78,6 +80,8 @@ class WorkoutProfile {
     required this.trainingAge,
     required this.bodyFatCategory,
     required this.primaryGoal,
+    this.sportSubType = 'none',
+    this.trainingModality = 'none',
     required this.availableDaysPerWeek,
     required this.sessionDurationMinutes,
     required this.preferredStyle,
@@ -106,6 +110,8 @@ class WorkoutProfile {
       heightCm: (d['heightCm'] as num?)?.toDouble() ?? 175.0,
       bodyFatCategory: d['bodyFatCategory'] as String? ?? 'medium',
       primaryGoal: d['primaryGoal'] as String? ?? 'hypertrophy',
+      sportSubType: d['sportSubType'] as String? ?? 'none',
+      trainingModality: d['trainingModality'] as String? ?? 'none',
       experienceLevel: d['experienceLevel'] as String? ?? 'beginner',
       trainingAge: (d['trainingAge'] as num?)?.toInt() ?? 0,
       availableDaysPerWeek: (d['availableDaysPerWeek'] as num?)?.toInt() ?? 3,
@@ -134,6 +140,8 @@ class WorkoutProfile {
         'heightCm': heightCm,
         'bodyFatCategory': bodyFatCategory,
         'primaryGoal': primaryGoal,
+        'sportSubType': sportSubType,
+        'trainingModality': trainingModality,
         'experienceLevel': experienceLevel,
         'trainingAge': trainingAge,
         'availableDaysPerWeek': availableDaysPerWeek,

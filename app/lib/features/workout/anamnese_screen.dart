@@ -35,6 +35,8 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
 
   // Passo 3: Metas + Estilo
   String goal = 'hypertrophy';
+  String sportSubType = 'none';
+  String trainingModality = 'none';
   String style = 'compound_focus';
   int days = 3;
   int duration = 60;
@@ -83,6 +85,8 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
       heightCm: height,
       bodyFatCategory: bodyFat,
       primaryGoal: goal,
+      sportSubType: sportSubType,
+      trainingModality: trainingModality,
       experienceLevel: level,
       trainingAge: trainingAge,
       availableDaysPerWeek: days,
@@ -166,7 +170,14 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
                 children: [
                   _StepPersonal(onAge: (v) => age = v, onSex: (v) => sex = v, onWeight: (v) => weight = v, onHeight: (v) => height = v),
                   _StepExperience(onLevel: (v) => level = v, onTrainingAge: (v) => trainingAge = v, onBodyFat: (v) => bodyFat = v),
-                  _StepGoals(onGoal: (v) => goal = v, onStyle: (v) => style = v, onDays: (v) => days = v, onDuration: (v) => duration = v),
+                  _StepGoals(
+                    onGoal: (v) => goal = v,
+                    onSportSubType: (v) => sportSubType = v,
+                    onModality: (v) => trainingModality = v,
+                    onStyle: (v) => style = v,
+                    onDays: (v) => days = v,
+                    onDuration: (v) => duration = v,
+                  ),
                   _StepRecovery(onSleep: (v) => sleepQuality = v, onStress: (v) => stressLevel = v, onPriorities: (v) { priorityMuscles.clear(); priorityMuscles.addAll(v); }),
                   _StepPreferences(
                     onEnv: (v) => env = v,
@@ -323,13 +334,24 @@ class _StepExperience extends StatelessWidget {
 // Passo 3: Metas + Estilo
 // ─────────────────────────────────────────────
 
-class _StepGoals extends StatelessWidget {
+class _StepGoals extends StatefulWidget {
   final ValueChanged<String> onGoal;
+  final ValueChanged<String> onSportSubType;
+  final ValueChanged<String> onModality;
   final ValueChanged<String> onStyle;
   final ValueChanged<int> onDays;
   final ValueChanged<int> onDuration;
 
-  const _StepGoals({required this.onGoal, required this.onStyle, required this.onDays, required this.onDuration});
+  const _StepGoals({required this.onGoal, required this.onSportSubType, required this.onModality, required this.onStyle, required this.onDays, required this.onDuration});
+
+  @override
+  State<_StepGoals> createState() => _StepGoalsState();
+}
+
+class _StepGoalsState extends State<_StepGoals> {
+  String _goal = 'hypertrophy';
+  bool get _showSportSub => _goal == 'sport_specific';
+  bool get _showModality => _goal == 'calisthenics' || _goal == 'functional_hiit' || _goal == 'mobility_rehab';
 
   @override
   Widget build(BuildContext context) {
@@ -340,27 +362,87 @@ class _StepGoals extends StatelessWidget {
         _InputLabel('Objetivo principal'),
         _ChoiceGroup(
           choices: {
-            'hypertrophy': 'Hipertrofia Estética',
-            'strength': 'Força Máxima (Powerlifting)',
-            'combat_sports': 'Lutas e Artes Marciais',
-            'power_explosive': 'Potência e Explosão',
-            'running_hybrid': 'Performance em Corrida / Híbrido',
-            'fat_loss': 'Emagrecimento / Definição',
-            'athletic_agility': 'Agilidade e Coordenação',
-            'general_health': 'Saúde e Longevidade',
+            'hypertrophy': '💪 Hipertrofia Estética',
+            'strength': '🏋️ Força Máxima (Powerlifting)',
+            'fat_loss': '🔥 Emagrecimento / Definição',
+            'general_health': '❤️ Saúde e Longevidade',
+            'sport_specific': '⚽ Treinamento Esportivo',
+            'combat_sports': '🥊 Lutas e Artes Marciais',
+            'running_hybrid': '🏃 Performance em Corrida',
+            'power_explosive': '⚡ Potência e Explosão',
+            'athletic_agility': '🏅 Agilidade e Coordenação',
+            'calisthenics': '🤸 Calistenia / Peso Corporal',
+            'functional_hiit': '🔄 Funcional / HIIT',
+            'mobility_rehab': '🧘 Mobilidade e Reabilitação',
           },
           initial: 'hypertrophy',
-          onChanged: onGoal,
+          onChanged: (v) {
+            setState(() => _goal = v);
+            widget.onGoal(v);
+          },
         ),
+        if (_showSportSub) ...[
+          const SizedBox(height: 24),
+          _InputLabel('Qual esporte?'),
+          _ChoiceGroup(
+            choices: {
+              'run_5k': '🏃 Corrida 5K',
+              'run_10k': '🏃 Corrida 10K',
+              'run_half': '🏃 Meia Maratona',
+              'run_marathon': '🏃 Maratona',
+              'soccer': '⚽ Futebol',
+              'basketball': '🏀 Basquete',
+              'swimming': '🏊 Natação',
+              'cycling': '🚴 Ciclismo',
+              'mma': '🥊 MMA / Luta',
+              'bjj': '🥋 Jiu-Jitsu',
+              'boxing': '🥊 Boxe / Muay Thai',
+              'agility': '🏅 Agilidade / Campo',
+            },
+            initial: 'run_5k',
+            onChanged: widget.onSportSubType,
+          ),
+        ],
+        if (_showModality) ...[
+          const SizedBox(height: 24),
+          _InputLabel('Modalidade específica'),
+          _ChoiceGroup(
+            choices: _goal == 'calisthenics' ? {
+              'calisthenics_beginner': '🔰 Calistenia Iniciante',
+              'calisthenics_intermediate': '💪 Calistenia Intermediária',
+              'calisthenics_advanced': '🤸 Calistenia Avançada (Planche, Lever)',
+              'street_workout': '🏋️ Street Workout',
+            } : _goal == 'functional_hiit' ? {
+              'hiit_tabata': '⏱️ Tabata (20s/10s)',
+              'hiit_emom': '⏱️ EMOM (Every Minute)',
+              'hiit_amrap': '⏱️ AMRAP (Max Rounds)',
+              'functional_kettlebell': '🏋️ Funcional Kettlebell',
+              'functional_trx': '🔗 Funcional TRX',
+              'circuit': '🔄 Circuito Metabólico',
+            } : {
+              'mobility_full': '🧘 Mobilidade Articular Completa',
+              'yoga_fitness': '🧘 Yoga Fitness',
+              'myofascial': '🧽 Liberação Miofascial',
+              'rehab_shoulder': '🩹 Reabilitação Ombro',
+              'rehab_knee': '🩹 Reabilitação Joelho',
+              'rehab_lower_back': '🩹 Reabilitação Lombar',
+              'rehab_return': '🩹 Retorno Pós-Lesão',
+            },
+            initial: _goal == 'calisthenics' ? 'calisthenics_beginner'
+                : _goal == 'functional_hiit' ? 'circuit'
+                : 'mobility_full',
+            onChanged: widget.onModality,
+          ),
+        ],
         const SizedBox(height: 24),
         _InputLabel('Dias disponíveis por semana'),
-        _Slider(min: 1, max: 6, initial: 3, unit: 'dias', stepped: true, onChanged: (v) => onDays(v.toInt())),
+        _Slider(min: 1, max: 6, initial: 3, unit: 'dias', stepped: true, onChanged: (v) => widget.onDays(v.toInt())),
         const SizedBox(height: 24),
         _InputLabel('Duração ideal da sessão'),
         _ChoiceGroup(
-          choices: {'30': '30 min', '45': '45 min', '60': '1 hora', '75': '1h15', '90': '1h30'},
+          choices: {'20': '20 min', '30': '30 min', '45': '45 min', '60': '1 hora', '75': '1h15', '90': '1h30', '120': '2 horas'},
           initial: '60',
-          onChanged: (v) => onDuration(int.parse(v)),
+          onChanged: (v) => widget.onDuration(int.parse(v)),
         ),
         const SizedBox(height: 24),
         _InputLabel('Estilo de treino preferido'),
@@ -372,7 +454,7 @@ class _StepGoals extends StatelessWidget {
             'circuit': 'Circuito (intenso)',
           },
           initial: 'compound_focus',
-          onChanged: onStyle,
+          onChanged: widget.onStyle,
         ),
       ],
     );

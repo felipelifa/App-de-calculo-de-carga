@@ -4,6 +4,7 @@ import 'workout_profile_model.dart';
 import 'prescribed_workout_model.dart';
 import 'session_fatigue_accumulator.dart';
 import 'exercise_rotation_manager.dart';
+import 'sport_plan_builders.dart';
 import '../../core/data/exercise_library.dart';
 
 // ═══════════════════════════════════════════════════════════════
@@ -34,6 +35,7 @@ class WorkoutPrescriptionEngine {
   late final int _seed;
   final PatternHistoryTracker _patternHistory;
   final ExerciseRotationManager _rotation;
+  final SportPlanBuilders _sportBuilders;
   final int _weekNumber;
 
   WorkoutPrescriptionEngine(WorkoutProfile profile,
@@ -42,6 +44,7 @@ class WorkoutPrescriptionEngine {
         _seed = _computeSeed(profile),
         _patternHistory = patternHistory ?? PatternHistoryTracker(),
         _rotation = ExerciseRotationManager(exerciseLibrary),
+        _sportBuilders = SportPlanBuilders(exerciseLibrary, _computeSeed(profile)),
         _weekNumber = weekNumber ?? profile.currentWeek;
 
   static int _computeSeed(WorkoutProfile profile) {
@@ -55,17 +58,30 @@ class WorkoutPrescriptionEngine {
   // ── API Pública ───────────────────────────────────────────────
 
   GeneratedWorkout generate(WorkoutProfile profile) {
-    final splitType = _selectSplit(profile);
-    final periodization = _selectPeriodization(profile);
-    final sessions = _buildSessions(profile, splitType, periodization);
+    // ── Dimensão 1+2: Roteamento por modalidade/esporte ──
+    final goal = profile.primaryGoal;
+    List<PrescribedSession> sessions;
+    String splitType;
+    String periodization;
 
-    // Etapa 4: Ajustes Clínicos e Proporções de Volume (Murer 2019 / Doral 2012)
-    final adjustedSessions = _applyClinicalAdjustments(profile, sessions);
+    if (_isSportGoal(goal) || _isModalityGoal(goal)) {
+      sessions = _buildSportOrModalitySessions(profile);
+      splitType = _sportSplitLabel(profile);
+      periodization = 'sport_specific';
+    } else if (profile.trainingModality.startsWith('template_')) {
+      sessions = _sportBuilders.buildTemplatePlan(profile);
+      splitType = profile.trainingModality;
+      periodization = 'template';
+    } else {
+      splitType = _selectSplit(profile);
+      periodization = _selectPeriodization(profile);
+      sessions = _buildSessions(profile, splitType, periodization);
+      sessions = _applyClinicalAdjustments(profile, sessions);
+    }
 
-    // Registra os padrões usados no _patternHistory para evitar sobreposição
-    // com treinos passados quando re-avaliados (Schoenfeld 2021)
-    for (int i = 0; i < adjustedSessions.length; i++) {
-      final patterns = adjustedSessions[i].exercises
+    // Registra padrões usados
+    for (int i = 0; i < sessions.length; i++) {
+      final patterns = sessions[i].exercises
           .map((e) => e.exercise.movementPattern)
           .toList();
       final dayKey = i % 2 == 0 ? 'day_minus_1' : 'day_minus_2';
@@ -77,10 +93,52 @@ class WorkoutPrescriptionEngine {
       userId: profile.uid,
       splitType: splitType,
       periodizationModel: periodization,
-      sessions: adjustedSessions,
+      sessions: sessions,
       mesocycleDurationWeeks: _mesocycleDuration(profile),
       generatedAt: DateTime.now(),
     );
+  }
+
+  bool _isSportGoal(String goal) =>
+      ['sport_specific', 'combat_sports', 'running_hybrid'].contains(goal);
+
+  bool _isModalityGoal(String goal) =>
+      ['calisthenics', 'functional_hiit', 'mobility_rehab'].contains(goal);
+
+  List<PrescribedSession> _buildSportOrModalitySessions(WorkoutProfile profile) {
+    final goal = profile.primaryGoal;
+    final sub = profile.sportSubType;
+
+    if (goal == 'running_hybrid' || (goal == 'sport_specific' && sub.startsWith('run_'))) {
+      return _sportBuilders.buildRunningPlan(profile);
+    }
+    if (goal == 'combat_sports' || sub == 'mma' || sub == 'bjj' || sub == 'boxing') {
+      return _sportBuilders.buildCombatPlan(profile);
+    }
+    if (sub == 'swimming') return _sportBuilders.buildSwimmingPlan(profile);
+    if (sub == 'cycling') return _sportBuilders.buildCyclingPlan(profile);
+    if (sub == 'soccer' || sub == 'basketball' || sub == 'agility') {
+      return _sportBuilders.buildFieldSportPlan(profile);
+    }
+    if (goal == 'calisthenics') return _sportBuilders.buildCalisthenicsPlan(profile);
+    if (goal == 'functional_hiit') return _sportBuilders.buildHIITPlan(profile);
+    if (goal == 'mobility_rehab') return _sportBuilders.buildMobilityRehabPlan(profile);
+
+    // Fallback para sport_specific genérico
+    return _sportBuilders.buildFieldSportPlan(profile);
+  }
+
+  String _sportSplitLabel(WorkoutProfile profile) {
+    final goal = profile.primaryGoal;
+    final sub = profile.sportSubType;
+    if (goal == 'running_hybrid' || sub.startsWith('run_')) return 'running_$sub';
+    if (goal == 'combat_sports' || sub == 'mma' || sub == 'bjj' || sub == 'boxing') return 'combat_$sub';
+    if (sub == 'swimming') return 'swimming';
+    if (sub == 'cycling') return 'cycling';
+    if (goal == 'calisthenics') return 'calisthenics';
+    if (goal == 'functional_hiit') return 'hiit_${profile.trainingModality}';
+    if (goal == 'mobility_rehab') return 'mobility_${profile.trainingModality}';
+    return 'sport_$sub';
   }
 
   // ── Ajustes Clínicos e de Nível ──────────────────────────────
