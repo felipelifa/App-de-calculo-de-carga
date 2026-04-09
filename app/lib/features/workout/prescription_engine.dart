@@ -292,15 +292,11 @@ class WorkoutPrescriptionEngine {
 
     // Boost para músculos prioritários (+30% volume)
     final priorities = profile.priorityMuscles.toSet();
-<<<<<<< HEAD
-    int priorityBoost(int vol, String muscle) =>
-      priorities.contains(muscle) ? (vol * 1.3).round().clamp(4, 22) : vol;
-=======
     int finalVol(int vol, String muscle) {
       double v = specBoost(muscle, vol);
       if (priorities.contains(muscle)) v *= 1.3;
 
-      // Dimenso 8 — ADAPTAO POR TOLERNCIA (Adaptive Profile)
+      // Dimensão 8 — ADAPTAÇÃO POR TOLERÂNCIA (Adaptive Profile)
       if (profile.adaptive.volumeTolerance == 'high') v *= 1.15;
       if (profile.adaptive.volumeTolerance == 'low') v *= 0.85;
       
@@ -316,21 +312,20 @@ class WorkoutPrescriptionEngine {
       
       return v.round().clamp(3, 22);
     }
->>>>>>> 6dac4b00 (feat: implement Adaptive Intelligence (D8), Post-Workout Feedback loop, and Sport-Specific prescriptions)
 
     return {
-      'chest': priorityBoost(vChest, 'chest'),
-      'back': priorityBoost(vBack, 'back'),
-      'shoulders': priorityBoost(vShoulders, 'shoulders'),
-      'side_delt': priorityBoost((vShoulders * 0.6).round().clamp(4, 12), 'side_delt'),
-      'rear_delt': priorityBoost((vShoulders * 0.5).round().clamp(3, 10), 'rear_delt'),
-      'biceps': priorityBoost(vBicepsFinal, 'biceps'),
-      'triceps': priorityBoost(vTricepsFinal, 'triceps'),
-      'quads': priorityBoost(vQuads, 'quads'),
-      'hamstrings': priorityBoost(vPostGlute, 'hamstrings'),
-      'glutes': priorityBoost((vPostGlute * 0.6).round().clamp(4, 12), 'glutes'),
-      'calves': priorityBoost(vCalves, 'calves'),
-      'abs': priorityBoost(vAbs, 'abs'),
+      'chest': finalVol(vChest, 'chest'),
+      'back': finalVol(vBack, 'back'),
+      'shoulders': finalVol(vShoulders, 'shoulders'),
+      'side_delt': finalVol((vShoulders * 0.6).round().clamp(4, 12), 'side_delt'),
+      'rear_delt': finalVol((vShoulders * 0.5).round().clamp(3, 10), 'rear_delt'),
+      'biceps': finalVol(vBicepsFinal, 'biceps'),
+      'triceps': finalVol(vTricepsFinal, 'triceps'),
+      'quads': finalVol(vQuads, 'quads'),
+      'hamstrings': finalVol(vPostGlute, 'hamstrings'),
+      'glutes': finalVol((vPostGlute * 0.6).round().clamp(4, 12), 'glutes'),
+      'calves': finalVol(vCalves, 'calves'),
+      'abs': finalVol(vAbs, 'abs'),
     };
   }
 
