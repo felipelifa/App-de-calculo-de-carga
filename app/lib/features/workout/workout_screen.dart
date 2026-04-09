@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../shared/theme/app_theme.dart';
 import '../exercises/exercise_provider.dart';
 import '../exercises/exercise_model.dart';
@@ -37,15 +38,11 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       _showingPrDialog = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
-        PrCelebrationDialog.show(
-          context,
-          newPrs,
-          () {
-            Navigator.of(context).pop();
-            provider.clearNewPrs();
-            _showingPrDialog = false;
-          },
-        );
+        PrCelebrationDialog.show(context, newPrs, () {
+          Navigator.of(context).pop();
+          provider.clearNewPrs();
+          _showingPrDialog = false;
+        });
       });
     }
   }
@@ -71,7 +68,8 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       context: context,
       backgroundColor: AppTheme.surface,
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       isScrollControlled: true,
       builder: (_) => DraggableScrollableSheet(
         expand: false,
@@ -81,17 +79,22 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
           children: [
             const SizedBox(height: 12),
             Container(
-              width: 40, height: 4,
+              width: 40,
+              height: 4,
               decoration: BoxDecoration(
-                  color: AppTheme.textSecondary.withValues(alpha: 0.4),
-                  borderRadius: BorderRadius.circular(2)),
+                color: AppTheme.textSecondary.withValues(alpha: 0.4),
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
             const SizedBox(height: 16),
-            const Text('Escolha o exercício',
-                style: TextStyle(
-                    color: AppTheme.textPrimary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600)),
+            const Text(
+              'Escolha o exercício',
+              style: TextStyle(
+                color: AppTheme.textPrimary,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: 12),
             Expanded(
               child: ListView.builder(
@@ -100,26 +103,31 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                 itemBuilder: (ctx, i) {
                   final ex = exercises[i];
                   return ListTile(
-                    title: Text(ex.name,
-                        style: const TextStyle(color: AppTheme.textPrimary)),
+                    title: Text(
+                      ex.name,
+                      style: const TextStyle(color: AppTheme.textPrimary),
+                    ),
                     subtitle: Text(
-                        ex.primaryMuscles.isNotEmpty
-                            ? ex.primaryMuscles.first
-                            : 'Geral',
-                        style: const TextStyle(
-                            color: AppTheme.textSecondary, fontSize: 12)),
+                      ex.primaryMuscles.isNotEmpty
+                          ? ex.primaryMuscles.first
+                          : 'Geral',
+                      style: const TextStyle(
+                        color: AppTheme.textSecondary,
+                        fontSize: 12,
+                      ),
+                    ),
                     onTap: () {
                       ctx.read<WorkoutProvider>().addExerciseToSession(
-                            exerciseId: ex.id,
-                            exerciseName: ex.name,
-                            muscleGroup: ex.primaryMuscles.isNotEmpty
-                                ? ex.primaryMuscles.first
-                                : 'Geral',
-                            defaultSeries: 3,
-                            defaultReps: ex.repRangeMin,
-                            defaultWeight: 20,
-                            exerciseModel: ex,
-                          );
+                        exerciseId: ex.id,
+                        exerciseName: ex.name,
+                        muscleGroup: ex.primaryMuscles.isNotEmpty
+                            ? ex.primaryMuscles.first
+                            : 'Geral',
+                        defaultSeries: 3,
+                        defaultReps: ex.repRangeMin,
+                        defaultWeight: 20,
+                        exerciseModel: ex,
+                      );
                       Navigator.pop(ctx);
                     },
                   );
@@ -142,8 +150,10 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: AppTheme.surface,
-        title: const Text('Finalizar treino?',
-            style: TextStyle(color: AppTheme.textPrimary)),
+        title: const Text(
+          'Finalizar treino?',
+          style: TextStyle(color: AppTheme.textPrimary),
+        ),
         content: Text(
           'Volume total: ${provider.currentTotalVolume.toStringAsFixed(0)} kg\n'
           'Exercícios: ${provider.currentExercises.length}',
@@ -152,8 +162,10 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancelar',
-                style: TextStyle(color: AppTheme.textSecondary)),
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: AppTheme.textSecondary),
+            ),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
@@ -165,8 +177,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
 
     if (confirmed == true && context.mounted) {
       try {
-        await provider.finishSession(
-            experienceLevel: experienceLevel);
+        await provider.finishSession(experienceLevel: experienceLevel);
 
         // Dispara o motor de progressão no provider global
         if (context.mounted) {
@@ -188,9 +199,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         }
       } catch (e) {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Erro ao salvar: $e')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Erro ao salvar: $e')));
         }
       }
     }
@@ -201,20 +212,28 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: AppTheme.surface,
-        title: const Text('Cancelar treino?',
-            style: TextStyle(color: AppTheme.textPrimary)),
-        content: const Text('Todo o progresso desta sessão será perdido.',
-            style: TextStyle(color: AppTheme.textSecondary)),
+        title: const Text(
+          'Cancelar treino?',
+          style: TextStyle(color: AppTheme.textPrimary),
+        ),
+        content: const Text(
+          'Todo o progresso desta sessão será perdido.',
+          style: TextStyle(color: AppTheme.textSecondary),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Continuar treinando',
-                style: TextStyle(color: AppTheme.textSecondary)),
+            child: const Text(
+              'Continuar treinando',
+              style: TextStyle(color: AppTheme.textSecondary),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Cancelar treino',
-                style: TextStyle(color: AppTheme.danger)),
+            child: const Text(
+              'Cancelar treino',
+              style: TextStyle(color: AppTheme.danger),
+            ),
           ),
         ],
       ),
@@ -231,7 +250,8 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       backgroundColor: AppTheme.surface,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
       builder: (ctx) => DraggableScrollableSheet(
         initialChildSize: 0.7,
         maxChildSize: 0.9,
@@ -244,56 +264,69 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             children: [
               Center(
                 child: Container(
-                  width: 40, height: 4,
+                  width: 40,
+                  height: 4,
                   decoration: BoxDecoration(
-                      color: Colors.white24,
-                      borderRadius: BorderRadius.circular(2)),
+                    color: Colors.white24,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
-              Text(exercise.name,
-                  style: Theme.of(ctx).textTheme.headlineSmall?.copyWith(
-                      color: AppTheme.textPrimary,
-                      fontWeight: FontWeight.bold)),
+              Text(
+                exercise.name,
+                style: Theme.of(ctx).textTheme.headlineSmall?.copyWith(
+                  color: AppTheme.textPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               if (exercise.nameEn.isNotEmpty)
-                Text(exercise.nameEn,
-                    style:
-                        const TextStyle(color: AppTheme.textSecondary)),
+                Text(
+                  exercise.nameEn,
+                  style: const TextStyle(color: AppTheme.textSecondary),
+                ),
               const SizedBox(height: 24),
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Container(
-                  width: double.infinity, height: 250,
+                  width: double.infinity,
+                  height: 250,
                   color: AppTheme.background,
-                  child: exercise.gifUrl != null &&
-                          exercise.gifUrl!.isNotEmpty
+                  child: exercise.gifUrl != null && exercise.gifUrl!.isNotEmpty
                       ? CachedNetworkImage(
                           imageUrl: exercise.gifUrl!,
                           fit: BoxFit.cover,
-                          placeholder: (_, __) => const Center(
-                              child: CircularProgressIndicator()),
+                          placeholder: (_, __) =>
+                              const Center(child: CircularProgressIndicator()),
                           errorWidget: (_, __, ___) => const Center(
-                              child: Icon(Icons.video_library_rounded,
-                                  size: 50,
-                                  color: AppTheme.textSecondary)),
+                            child: Icon(
+                              Icons.video_library_rounded,
+                              size: 50,
+                              color: AppTheme.textSecondary,
+                            ),
+                          ),
                         )
                       : const Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.video_library_rounded,
-                                  size: 48,
-                                  color: AppTheme.textSecondary),
+                              Icon(
+                                Icons.video_library_rounded,
+                                size: 48,
+                                color: AppTheme.textSecondary,
+                              ),
                               SizedBox(height: 8),
-                              Text('Tutorial em breve',
-                                  style: TextStyle(
-                                      color: AppTheme.textSecondary)),
+                              Text(
+                                'Tutorial em breve',
+                                style: TextStyle(color: AppTheme.textSecondary),
+                              ),
                             ],
                           ),
                         ),
-               ),
+                ),
               ),
-              if (exercise.videoUrl != null && exercise.videoUrl!.isNotEmpty) ...[
+              if (exercise.videoUrl != null &&
+                  exercise.videoUrl!.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 SizedBox(
                   width: double.infinity,
@@ -301,12 +334,26 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                     onPressed: () async {
                       final url = Uri.parse(exercise.videoUrl!);
                       if (await canLaunchUrl(url)) {
-                        await launchUrl(url, mode: LaunchMode.externalApplication);
+                        await launchUrl(
+                          url,
+                          mode: LaunchMode.externalApplication,
+                        );
                       }
                     },
-                    icon: const Icon(Icons.play_circle_fill, color: AppTheme.accent),
-                    label: const Text('VER VÍDEO DE EXECUÇÃO', style: TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold)),
-                    style: TextButton.styleFrom(backgroundColor: AppTheme.accent.withValues(alpha: 0.1)),
+                    icon: const Icon(
+                      Icons.play_circle_fill,
+                      color: AppTheme.accent,
+                    ),
+                    label: const Text(
+                      'VER VÍDEO DE EXECUÇÃO',
+                      style: TextStyle(
+                        color: AppTheme.accent,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      backgroundColor: AppTheme.accent.withValues(alpha: 0.1),
+                    ),
                   ),
                 ),
               ],
@@ -334,85 +381,173 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                       height: 300,
                       child: TabBarView(
                         children: [
-                           // Instruções
-                           ListView(
-                             children: [
-                               if (exercise.instructions.isEmpty)
-                                 const Text('Sem instruções detalhadas no momento.', style: TextStyle(color: AppTheme.textSecondary))
-                               else
-                                 ...exercise.instructions.asMap().entries.map((entry) => Padding(
-                                   padding: const EdgeInsets.only(bottom: 12),
-                                   child: Row(
-                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                     children: [
-                                       CircleAvatar(
-                                         radius: 10,
-                                         backgroundColor: AppTheme.accent.withValues(alpha: 0.1),
-                                         child: Text('${entry.key + 1}', style: const TextStyle(fontSize: 10, color: AppTheme.accent, fontWeight: FontWeight.bold)),
-                                       ),
-                                       const SizedBox(width: 12),
-                                       Expanded(child: Text(entry.value, style: const TextStyle(color: AppTheme.textPrimary, height: 1.4))),
-                                     ],
-                                   ),
-                                 )),
-                             ],
-                           ),
-                           // Dicas (Cues)
-                           ListView(
-                             children: [
-                               if (exercise.cues.isEmpty)
-                                 const Text('Nenhuma dica extra disponível.', style: TextStyle(color: AppTheme.textSecondary))
-                               else
-                                 ...exercise.cues.map((cue) => Padding(
-                                   padding: const EdgeInsets.only(bottom: 10),
-                                   child: Row(
-                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                     children: [
-                                       const Icon(Icons.check_circle_outline_rounded, size: 18, color: AppTheme.success),
-                                       const SizedBox(width: 12),
-                                       Expanded(child: Text(cue, style: const TextStyle(color: AppTheme.textPrimary))),
-                                     ],
-                                   ),
-                                 )),
-                             ],
-                           ),
-                           // Aquecimento
-                           ListView(
-                             children: [
-                               Container(
-                                 padding: const EdgeInsets.all(16),
-                                 decoration: BoxDecoration(
-                                   color: AppTheme.accent.withValues(alpha: 0.05),
-                                   borderRadius: BorderRadius.circular(12),
-                                   border: Border.all(color: AppTheme.accent.withValues(alpha: 0.1)),
-                                 ),
-                                 child: const Column(
-                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                   children: [
-                                     Text('Guia de Aquecimento Específico', style: TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold)),
-                                     SizedBox(height: 12),
-                                     Text('• Série 1: 12-15 reps com 40-50% da carga (Preparo articular)', style: TextStyle(color: AppTheme.textPrimary, fontSize: 13, height: 1.5)),
-                                     Text('• Série 2: 6-8 reps com 70% da carga (Ativação neuromuscular)', style: TextStyle(color: AppTheme.textPrimary, fontSize: 13, height: 1.5)),
-                                     SizedBox(height: 12),
-                                     Text('Dica: O aquecimento não deve gerar fadiga, apenas preparar o movimento.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontStyle: FontStyle.italic)),
-                                   ],
-                                 ),
-                               ),
-                               const SizedBox(height: 16),
-                               ElevatedButton.icon(
-                                 onPressed: () {
-                                   context.read<WorkoutProvider>().addWarmupSetForExercise(exercise.id);
-                                   Navigator.pop(ctx);
-                                   ScaffoldMessenger.of(context).showSnackBar(
-                                     const SnackBar(content: Text('Série de aquecimento adicionada!'), duration: Duration(seconds: 1)),
-                                   );
-                                 },
-                                 icon: const Icon(Icons.wb_sunny_outlined),
-                                 label: const Text('ADICIONAR SÉRIE DE AQUECIMENTO'),
-                                 style: ElevatedButton.styleFrom(backgroundColor: AppTheme.surfaceHighlight, foregroundColor: AppTheme.textPrimary),
-                               ),
-                             ],
-                           ),
+                          // Instruções
+                          ListView(
+                            children: [
+                              if (exercise.instructions.isEmpty)
+                                const Text(
+                                  'Sem instruções detalhadas no momento.',
+                                  style: TextStyle(
+                                    color: AppTheme.textSecondary,
+                                  ),
+                                )
+                              else
+                                ...exercise.instructions.asMap().entries.map(
+                                  (entry) => Padding(
+                                    padding: const EdgeInsets.only(bottom: 12),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 10,
+                                          backgroundColor: AppTheme.accent
+                                              .withValues(alpha: 0.1),
+                                          child: Text(
+                                            '${entry.key + 1}',
+                                            style: const TextStyle(
+                                              fontSize: 10,
+                                              color: AppTheme.accent,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Text(
+                                            entry.value,
+                                            style: const TextStyle(
+                                              color: AppTheme.textPrimary,
+                                              height: 1.4,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                          // Dicas (Cues)
+                          ListView(
+                            children: [
+                              if (exercise.cues.isEmpty)
+                                const Text(
+                                  'Nenhuma dica extra disponível.',
+                                  style: TextStyle(
+                                    color: AppTheme.textSecondary,
+                                  ),
+                                )
+                              else
+                                ...exercise.cues.map(
+                                  (cue) => Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Icon(
+                                          Icons.check_circle_outline_rounded,
+                                          size: 18,
+                                          color: AppTheme.success,
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Text(
+                                            cue,
+                                            style: const TextStyle(
+                                              color: AppTheme.textPrimary,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                          // Aquecimento
+                          ListView(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.accent.withValues(
+                                    alpha: 0.05,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: AppTheme.accent.withValues(
+                                      alpha: 0.1,
+                                    ),
+                                  ),
+                                ),
+                                child: const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Guia de Aquecimento Específico',
+                                      style: TextStyle(
+                                        color: AppTheme.accent,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(height: 12),
+                                    Text(
+                                      '• Série 1: 12-15 reps com 40-50% da carga (Preparo articular)',
+                                      style: TextStyle(
+                                        color: AppTheme.textPrimary,
+                                        fontSize: 13,
+                                        height: 1.5,
+                                      ),
+                                    ),
+                                    Text(
+                                      '• Série 2: 6-8 reps com 70% da carga (Ativação neuromuscular)',
+                                      style: TextStyle(
+                                        color: AppTheme.textPrimary,
+                                        fontSize: 13,
+                                        height: 1.5,
+                                      ),
+                                    ),
+                                    SizedBox(height: 12),
+                                    Text(
+                                      'Dica: O aquecimento não deve gerar fadiga, apenas preparar o movimento.',
+                                      style: TextStyle(
+                                        color: AppTheme.textSecondary,
+                                        fontSize: 12,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  context
+                                      .read<WorkoutProvider>()
+                                      .addWarmupSetForExercise(exercise.id);
+                                  Navigator.pop(ctx);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'Série de aquecimento adicionada!',
+                                      ),
+                                      duration: Duration(seconds: 1),
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(Icons.wb_sunny_outlined),
+                                label: const Text(
+                                  'ADICIONAR SÉRIE DE AQUECIMENTO',
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppTheme.surfaceHighlight,
+                                  foregroundColor: AppTheme.textPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -443,28 +578,40 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       appBar: AppBar(
         backgroundColor: AppTheme.surface,
         elevation: 0,
-        title: const Text('Treino',
-            style: TextStyle(
-                color: AppTheme.textPrimary, fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Treino',
+          style: TextStyle(
+            color: AppTheme.textPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         actions: [
           if (provider.isSessionActive) ...[
             TextButton(
               onPressed: () => _confirmCancel(context),
-              child: const Text('Cancelar',
-                  style: TextStyle(color: AppTheme.danger)),
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(color: AppTheme.danger),
+              ),
             ),
             TextButton(
               onPressed: () => _confirmFinish(context),
-              child: const Text('Finalizar',
-                  style: TextStyle(
-                      color: AppTheme.accent, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Finalizar',
+                style: TextStyle(
+                  color: AppTheme.accent,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
           ],
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-              height: 1, color: Colors.white.withValues(alpha: 0.06)),
+            height: 1,
+            color: Colors.white.withValues(alpha: 0.06),
+          ),
         ),
       ),
       floatingActionButton: provider.isSessionActive
@@ -472,9 +619,13 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
               onPressed: () => _showAddExerciseDialog(context),
               backgroundColor: AppTheme.accent,
               icon: const Icon(Icons.add, color: Colors.white),
-              label: const Text('Exercício',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600)),
+              label: const Text(
+                'Exercício',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             )
           : null,
       body: provider.isSessionActive
@@ -503,16 +654,21 @@ class _EmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.fitness_center_rounded,
-                size: 72,
-                color: AppTheme.textSecondary.withValues(alpha: 0.3)),
+            Icon(
+              Icons.fitness_center_rounded,
+              size: 72,
+              color: AppTheme.textSecondary.withValues(alpha: 0.3),
+            ),
             const SizedBox(height: 24),
-            const Text('Nenhum treino em andamento',
-                style: TextStyle(
-                    color: AppTheme.textPrimary,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center),
+            const Text(
+              'Nenhum treino em andamento',
+              style: TextStyle(
+                color: AppTheme.textPrimary,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 12),
             const Text(
               'Inicie uma sessão para registrar seus exercícios e acompanhar sua evolução.',
@@ -524,25 +680,30 @@ class _EmptyState extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: onStart,
-                icon: const Icon(Icons.play_arrow_rounded,
-                    color: Colors.white),
-                label: const Text('INICIAR TREINO LIVRE',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
+                icon: const Icon(Icons.play_arrow_rounded, color: Colors.white),
+                label: const Text(
+                  'INICIAR TREINO LIVRE',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.accent,
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 16),
             TextButton(
               onPressed: () => context.go('/dashboard'),
-              child: const Text('VOLTAR PARA O INÍCIO',
-                  style: TextStyle(color: AppTheme.textSecondary)),
+              child: const Text(
+                'VOLTAR PARA O INÍCIO',
+                style: TextStyle(color: AppTheme.textSecondary),
+              ),
             ),
           ],
         ),
@@ -579,24 +740,30 @@ class _ActiveSession extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Row(
             children: [
-              const Icon(Icons.timer_outlined,
-                  color: AppTheme.accent, size: 18),
+              const Icon(
+                Icons.timer_outlined,
+                color: AppTheme.accent,
+                size: 18,
+              ),
               const SizedBox(width: 8),
               StreamBuilder<int>(
                 stream: timerStream,
                 builder: (_, __) => Text(
                   formatDuration(provider.sessionStart!),
                   style: const TextStyle(
-                      color: AppTheme.accent,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 15),
+                    color: AppTheme.accent,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
                 ),
               ),
               const Spacer(),
               Text(
                 'Vol: ${provider.currentTotalVolume.toStringAsFixed(0)} kg',
                 style: const TextStyle(
-                    color: AppTheme.textSecondary, fontSize: 13),
+                  color: AppTheme.textSecondary,
+                  fontSize: 13,
+                ),
               ),
             ],
           ),
@@ -608,8 +775,10 @@ class _ActiveSession extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text('Nenhum exercício adicionado',
-                          style: TextStyle(color: AppTheme.textSecondary)),
+                      const Text(
+                        'Nenhum exercício adicionado',
+                        style: TextStyle(color: AppTheme.textSecondary),
+                      ),
                       const SizedBox(height: 16),
                       TextButton.icon(
                         onPressed: onAddExercise,
@@ -651,15 +820,15 @@ class _ExerciseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.read<WorkoutProvider>();
     final profileProvider = context.read<WorkoutProfileProvider>();
-    final restrictions =
-        profileProvider.profile?.healthRestrictions ?? [];
+    final restrictions = profileProvider.profile?.healthRestrictions ?? [];
 
     // Verifica se exercício tem restrição ativa
-    final exerciseModel =
-        context.read<ExerciseProvider>().getById(entry.exerciseId);
-    final hasInjuryConflict = exerciseModel != null &&
-        exerciseModel.restrictions
-            .any((r) => restrictions.contains(r));
+    final exerciseModel = context.read<ExerciseProvider>().getById(
+      entry.exerciseId,
+    );
+    final hasInjuryConflict =
+        exerciseModel != null &&
+        exerciseModel.restrictions.any((r) => restrictions.contains(r));
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -675,21 +844,30 @@ class _ExerciseCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(entry.exerciseName,
-                          style: const TextStyle(
-                              color: AppTheme.textPrimary,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15)),
-                      Text(entry.muscleGroup,
-                          style: const TextStyle(
-                              color: AppTheme.textSecondary,
-                              fontSize: 12)),
+                      Text(
+                        entry.exerciseName,
+                        style: const TextStyle(
+                          color: AppTheme.textPrimary,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        entry.muscleGroup,
+                        style: const TextStyle(
+                          color: AppTheme.textSecondary,
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete_outline,
-                      color: AppTheme.danger, size: 20),
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: AppTheme.danger,
+                    size: 20,
+                  ),
                   onPressed: () =>
                       provider.removeExerciseFromSession(exerciseIndex),
                 ),
@@ -711,28 +889,48 @@ class _ExerciseCard extends StatelessWidget {
             const Row(
               children: [
                 SizedBox(
-                    width: 32,
-                    child: Text('Sér.',
-                        style: TextStyle(
-                            color: AppTheme.textSecondary, fontSize: 11))),
+                  width: 32,
+                  child: Text(
+                    'Sér.',
+                    style: TextStyle(
+                      color: AppTheme.textSecondary,
+                      fontSize: 11,
+                    ),
+                  ),
+                ),
                 SizedBox(width: 8),
                 Expanded(
-                    child: Text('Reps',
-                        style: TextStyle(
-                            color: AppTheme.textSecondary, fontSize: 11),
-                        textAlign: TextAlign.center)),
+                  child: Text(
+                    'Reps',
+                    style: TextStyle(
+                      color: AppTheme.textSecondary,
+                      fontSize: 11,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
                 SizedBox(width: 8),
                 Expanded(
-                    child: Text('Carga (kg)',
-                        style: TextStyle(
-                            color: AppTheme.textSecondary, fontSize: 11),
-                        textAlign: TextAlign.center)),
+                  child: Text(
+                    'Carga (kg)',
+                    style: TextStyle(
+                      color: AppTheme.textSecondary,
+                      fontSize: 11,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
                 SizedBox(width: 8),
                 Expanded(
-                    child: Text('Volume',
-                        style: TextStyle(
-                            color: AppTheme.textSecondary, fontSize: 11),
-                        textAlign: TextAlign.center)),
+                  child: Text(
+                    'Volume',
+                    style: TextStyle(
+                      color: AppTheme.textSecondary,
+                      fontSize: 11,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
                 SizedBox(width: 36),
               ],
             ),
@@ -778,8 +976,9 @@ class _ExerciseCard extends StatelessWidget {
                     icon: const Icon(Icons.add, size: 16),
                     label: const Text('Série'),
                     style: TextButton.styleFrom(
-                        foregroundColor: AppTheme.accent,
-                        padding: EdgeInsets.zero),
+                      foregroundColor: AppTheme.accent,
+                      padding: EdgeInsets.zero,
+                    ),
                   ),
                 ),
                 TextButton.icon(
@@ -791,8 +990,9 @@ class _ExerciseCard extends StatelessWidget {
                   icon: const Icon(Icons.play_circle_outline, size: 16),
                   label: const Text('Tutorial'),
                   style: TextButton.styleFrom(
-                      foregroundColor: AppTheme.textSecondary,
-                      padding: EdgeInsets.zero),
+                    foregroundColor: AppTheme.textSecondary,
+                    padding: EdgeInsets.zero,
+                  ),
                 ),
               ],
             ),
@@ -808,8 +1008,7 @@ class _ExerciseCard extends StatelessWidget {
 class _RirSelector extends StatelessWidget {
   final String exerciseId;
   final String exerciseName;
-  const _RirSelector(
-      {required this.exerciseId, required this.exerciseName});
+  const _RirSelector({required this.exerciseId, required this.exerciseName});
 
   @override
   Widget build(BuildContext context) {
@@ -821,19 +1020,24 @@ class _RirSelector extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(Icons.speed_rounded,
-                size: 14, color: AppTheme.textSecondary),
+            const Icon(
+              Icons.speed_rounded,
+              size: 14,
+              color: AppTheme.textSecondary,
+            ),
             const SizedBox(width: 6),
-            const Text('RIR (reps em reserva):',
-                style: TextStyle(
-                    color: AppTheme.textSecondary, fontSize: 12)),
+            const Text(
+              'RIR (reps em reserva):',
+              style: TextStyle(color: AppTheme.textSecondary, fontSize: 12),
+            ),
             const SizedBox(width: 8),
             Text(
               _rirLabel(currentRir),
               style: TextStyle(
-                  color: _rirColor(currentRir),
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold),
+                color: _rirColor(currentRir),
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
@@ -844,8 +1048,7 @@ class _RirSelector extends StatelessWidget {
             final color = _rirColor(i);
             return Expanded(
               child: GestureDetector(
-                onTap: () =>
-                    provider.setRirForExercise(exerciseId, i),
+                onTap: () => provider.setRirForExercise(exerciseId, i),
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 2),
                   padding: const EdgeInsets.symmetric(vertical: 7),
@@ -855,9 +1058,7 @@ class _RirSelector extends StatelessWidget {
                         : AppTheme.surfaceHighlight,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: selected
-                          ? color
-                          : Colors.transparent,
+                      color: selected ? color : Colors.transparent,
                       width: selected ? 1.5 : 1,
                     ),
                   ),
@@ -939,8 +1140,11 @@ class _InjuryWarningBadge extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.warning_amber_rounded,
-              size: 16, color: AppTheme.danger),
+          const Icon(
+            Icons.warning_amber_rounded,
+            size: 16,
+            color: AppTheme.danger,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
@@ -949,27 +1153,30 @@ class _InjuryWarningBadge extends StatelessWidget {
                 const Text(
                   'ATENÇÃO — Exercício contraindicado',
                   style: TextStyle(
-                      color: AppTheme.danger,
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.3),
+                    color: AppTheme.danger,
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.3,
+                  ),
                 ),
                 const SizedBox(height: 3),
                 Text(
                   'Conflito com sua restrição de ${conflicts.map(_translateRestriction).join(", ")}. '
                   'Execute com cautela máxima ou substitua por uma variante mais segura.',
                   style: const TextStyle(
-                      color: AppTheme.danger,
-                      fontSize: 11,
-                      height: 1.4),
+                    color: AppTheme.danger,
+                    fontSize: 11,
+                    height: 1.4,
+                  ),
                 ),
                 if (exerciseModel.substituteIds.isNotEmpty) ...[
                   const SizedBox(height: 4),
                   Text(
                     'Substitutos disponíveis: ${exerciseModel.substituteIds.take(2).join(", ")}',
                     style: TextStyle(
-                        color: AppTheme.danger.withValues(alpha: 0.7),
-                        fontSize: 10),
+                      color: AppTheme.danger.withValues(alpha: 0.7),
+                      fontSize: 10,
+                    ),
                   ),
                 ],
               ],
@@ -1014,8 +1221,7 @@ class _SetRowState extends State<_SetRow> {
   void initState() {
     super.initState();
     _repsCtrl = TextEditingController(text: widget.reps.toString());
-    _weightCtrl =
-        TextEditingController(text: widget.weight.toStringAsFixed(1));
+    _weightCtrl = TextEditingController(text: widget.weight.toStringAsFixed(1));
   }
 
   @override
@@ -1033,8 +1239,10 @@ class _SetRowState extends State<_SetRow> {
 
   @override
   Widget build(BuildContext context) {
-    final color = widget.isWarmup ? AppTheme.textSecondary.withValues(alpha: 0.5) : AppTheme.textPrimary;
-    
+    final color = widget.isWarmup
+        ? AppTheme.textSecondary.withValues(alpha: 0.5)
+        : AppTheme.textPrimary;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -1046,15 +1254,25 @@ class _SetRowState extends State<_SetRow> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                   Text('${widget.setNumber}',
-                      style: TextStyle(
-                          color: widget.isWarmup ? AppTheme.accent.withValues(alpha: 0.6) : AppTheme.textSecondary,
-                          fontWeight: FontWeight.w600)),
-                   if (widget.isWarmup)
-                     Positioned(
-                       bottom: 0, right: 0,
-                       child: Icon(Icons.wb_sunny_outlined, size: 10, color: AppTheme.accent),
-                     )
+                  Text(
+                    '${widget.setNumber}',
+                    style: TextStyle(
+                      color: widget.isWarmup
+                          ? AppTheme.accent.withValues(alpha: 0.6)
+                          : AppTheme.textSecondary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  if (widget.isWarmup)
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Icon(
+                        Icons.wb_sunny_outlined,
+                        size: 10,
+                        color: AppTheme.accent,
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -1066,12 +1284,14 @@ class _SetRowState extends State<_SetRow> {
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: color, fontSize: 14),
+              style: TextStyle(color: color, fontSize: 14),
               decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                  isDense: true),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 8,
+                ),
+                isDense: true,
+              ),
               onChanged: (_) => _notify(),
             ),
           ),
@@ -1079,15 +1299,18 @@ class _SetRowState extends State<_SetRow> {
           Expanded(
             child: TextField(
               controller: _weightCtrl,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: color, fontSize: 14),
+              style: TextStyle(color: color, fontSize: 14),
               decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                  isDense: true),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 8,
+                ),
+                isDense: true,
+              ),
               onChanged: (_) => _notify(),
             ),
           ),
@@ -1097,17 +1320,23 @@ class _SetRowState extends State<_SetRow> {
               widget.volume.toStringAsFixed(0),
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: widget.isWarmup ? AppTheme.success.withValues(alpha: 0.5) : AppTheme.success,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14),
+                color: widget.isWarmup
+                    ? AppTheme.success.withValues(alpha: 0.5)
+                    : AppTheme.success,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
             ),
           ),
           SizedBox(
             width: 36,
             child: widget.onRemove != null
                 ? IconButton(
-                    icon: const Icon(Icons.remove_circle_outline,
-                        size: 18, color: AppTheme.textSecondary),
+                    icon: const Icon(
+                      Icons.remove_circle_outline,
+                      size: 18,
+                      color: AppTheme.textSecondary,
+                    ),
                     onPressed: widget.onRemove,
                     padding: EdgeInsets.zero,
                   )

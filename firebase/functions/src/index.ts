@@ -26,10 +26,12 @@ export {
 // ════════════════════════════════════════════════════════════
 // Firebase Admin Init (only once per cold start)
 // ════════════════════════════════════════════════════════════
-if (admin.apps.length === 0) {
-  admin.initializeApp();
-}
-const db = admin.firestore();
+const getDb = () => {
+  if (admin.apps.length === 0) {
+    admin.initializeApp();
+  }
+  return admin.firestore();
+};
 
 // ════════════════════════════════════════════════════════════
 // TRIGGER: onWorkoutSave
@@ -39,6 +41,7 @@ const db = admin.firestore();
 export const onWorkoutExerciseSave = functions.firestore
   .document("users/{uid}/workouts/{wId}/exercises/{weId}")
   .onWrite(async (change, context) => {
+    const db = getDb();
     const { uid, wId } = context.params;
 
     // If deleted, we still recalculate (volume drops to 0 removal)
@@ -119,6 +122,7 @@ export const onWorkoutExerciseSave = functions.firestore
 // ════════════════════════════════════════════════════════════
 export const generateProgressionSuggestions = functions.https.onCall(
   async (data, context) => {
+    const db = getDb();
     if (!context.auth) {
       throw new functions.https.HttpsError(
         "unauthenticated",
@@ -219,6 +223,7 @@ export const generateProgressionSuggestions = functions.https.onCall(
 // ════════════════════════════════════════════════════════════
 export const calculatePeriodizationPlan = functions.https.onCall(
   async (data, context) => {
+    const db = getDb();
     if (!context.auth) {
       throw new functions.https.HttpsError(
         "unauthenticated",
@@ -283,6 +288,7 @@ export const calculatePeriodizationPlan = functions.https.onCall(
 // Used by the Flutter app on startup to check for updates.
 // ════════════════════════════════════════════════════════════
 export const getApkVersion = functions.https.onCall(async (_data, context) => {
+  const db = getDb();
   if (!context.auth) {
     throw new functions.https.HttpsError(
       "unauthenticated",

@@ -1,7 +1,12 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
-const db = admin.firestore();
+const getDb = () => {
+  if (admin.apps.length === 0) {
+    admin.initializeApp();
+  }
+  return admin.firestore();
+};
 
 // Tokens válidos (em produção, mover para Firestore collection em vez de código estático)
 // Adicionar manualmente em deploy ou Firestore: proTokens/{code}
@@ -16,6 +21,7 @@ interface ProTokenDoc {
 
 export const redeemProToken = functions.https.onCall(
   async (data, context) => {
+    const db = getDb();
     if (!context.auth) {
       throw new functions.https.HttpsError(
         "unauthenticated",
@@ -58,14 +64,17 @@ export const redeemProToken = functions.https.onCall(
     if (tokenData.expiresAt) {
       const now = admin.firestore.Timestamp.now();
       if (now.toMillis() > tokenData.expiresAt!.toMillis()) {
-        throw new functions.https.HttpsError("expired", "Token expirado");
+        throw new functions.https.HttpsError(
+          "deadline-exceeded",
+          "Token expirado"
+        );
       }
     }
 
     // Checar limite de uso
     if (currentRedemptions >= maxRedemptions) {
       throw new functions.https.HttpsError(
-        "already-used",
+        "failed-precondition",
         "Token atingiu o limite de resgates"
       );
     }
