@@ -278,6 +278,7 @@ class WorkoutProfileProvider extends ChangeNotifier {
         restSeconds: oldEx.restSeconds,
         sessionCues: [...newEx.cues.take(2), 'Amplitude máxima controlada.'],
         tempo: oldEx.tempo,
+        progressionNote: oldEx.progressionNote, // Mantém a nota de progressão original
         injuryNote: null, // Reset injury note as it might not apply to the new ex
       );
 

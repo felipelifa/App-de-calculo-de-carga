@@ -804,9 +804,18 @@ class _ExerciseRowState extends State<_ExerciseRow> {
                     color: _categoryColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6),
                   ),
+                  child: Text(
+                    _categoryLabel,
+                    style: TextStyle(
+                        color: _categoryColor,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(width: 8),
                 IconButton(
                   icon: const Icon(Icons.play_circle_fill_rounded, size: 26, color: AppTheme.accent),
-                  onPressed: () => onShowTutorial(context, ex.exercise),
+                  onPressed: () => widget.onShowTutorial(context, ex.exercise),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                   visualDensity: VisualDensity.compact,
