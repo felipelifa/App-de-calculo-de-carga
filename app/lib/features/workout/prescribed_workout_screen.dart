@@ -195,23 +195,17 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
                   width: double.infinity,
                   height: 250,
                   color: AppTheme.background,
-                  child: exercise.gifUrl != null && exercise.gifUrl!.isNotEmpty
-                    ? CachedNetworkImage(
-                        imageUrl: exercise.gifUrl!,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) => const Center(child: Icon(Icons.video_library_rounded, size: 50, color: AppTheme.textSecondary)),
-                      )
-                    : const Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.video_library_rounded, size: 48, color: AppTheme.textSecondary),
-                            SizedBox(height: 8),
-                            Text('Tutorial em breve', style: TextStyle(color: AppTheme.textSecondary)),
-                          ],
-                        ),
-                      ),
+                  child: (() {
+                    final gifUrl = context.read<ExerciseProvider>().getEffectiveGifUrl(exercise);
+                    return gifUrl != null && gifUrl.isNotEmpty
+                      ? CachedNetworkImage(
+                          imageUrl: gifUrl,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) => _buildNoGifPlaceholder(isError: true),
+                        )
+                      : _buildNoGifPlaceholder();
+                  }()),
                 ),
               ),
               const SizedBox(height: 24),
@@ -937,13 +931,31 @@ class _ExerciseRowState extends State<_ExerciseRow> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                IconButton(
-                  icon: const Icon(Icons.play_circle_fill_rounded, size: 26, color: AppTheme.accent),
-                  onPressed: () => widget.onShowTutorial(context, ex.exercise),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  visualDensity: VisualDensity.compact,
-                  tooltip: 'Ver tutorial do exercício',
+                InkWell(
+                  onTap: () => widget.onShowTutorial(context, ex.exercise),
+                  borderRadius: BorderRadius.circular(8),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.play_circle_fill_rounded,
+                          color: AppTheme.accent,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 4),
+                        const Text(
+                          'Tutorial',
+                          style: TextStyle(
+                            color: AppTheme.accent,
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 const SizedBox(width: 8),
                 IconButton(

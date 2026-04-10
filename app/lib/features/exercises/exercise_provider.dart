@@ -140,10 +140,12 @@ class ExerciseProvider extends ChangeNotifier {
 
   /// Resolve a URL do GIF com base no modelo ou no nome do exercício
   String? getEffectiveGifUrl(ExerciseModel ex) {
-    // 1. Prioridade para o nome do arquivo no seu novo Bucket do Firebase
-    // O Firebase Storage exige o nome codificado e o parâmetro ?alt=media
+    // 🔗 Caminho da pasta no Firebase Storage
+    const String folder = 'exercises_gifs';
+    
+    // O Firebase Storage exige o nome codificado (o '/' vira '%2F') e o parâmetro ?alt=media
     final filename = Uri.encodeComponent('${ex.name}.gif');
-    return '$baseGifUrl/$filename?alt=media';
+    return '$baseGifUrl/$folder%2F$filename?alt=media';
   }
 
   Future<List<VolumeHistoryEntry>> getExerciseHistory(String exerciseId) async {

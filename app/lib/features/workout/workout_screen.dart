@@ -880,18 +880,36 @@ class _ExerciseCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.play_circle_fill_rounded,
-                    color: AppTheme.accent,
-                    size: 26,
+                  child: InkWell(
+                    onTap: () {
+                      if (exerciseModel != null) {
+                        onShowTutorial(context, exerciseModel);
+                      }
+                    },
+                    borderRadius: BorderRadius.circular(8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.play_circle_fill_rounded,
+                            color: AppTheme.accent,
+                            size: 22,
+                          ),
+                          const SizedBox(width: 6),
+                          const Text(
+                            'Tutorial do exercício',
+                            style: TextStyle(
+                              color: AppTheme.accent,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  tooltip: 'Ver Tutorial',
-                  onPressed: () {
-                    if (exerciseModel != null) {
-                      onShowTutorial(context, exerciseModel);
-                    }
-                  },
                 ),
                 IconButton(
                   icon: const Icon(
@@ -941,8 +959,10 @@ class _ExerciseCard extends StatelessWidget {
                 SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Reps',
-                    style: TextStyle(
+                    exerciseModel != null 
+                      ? 'Reps (${exerciseModel.repRangeMin}–${exerciseModel.repRangeMax})'
+                      : 'Reps',
+                    style: const TextStyle(
                       color: AppTheme.textSecondary,
                       fontSize: 11,
                     ),
@@ -1140,29 +1160,34 @@ class _RirSelector extends StatelessWidget {
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    'Intensidade (RIR): Quantas reps você ainda aguentaria fz?',
+                    'Intensidade (RIR):',
                     style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11),
-                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.help_outline_rounded, size: 16, color: AppTheme.accent),
-                  onPressed: () => _showRirExplanation(context),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  visualDensity: VisualDensity.compact,
-                  tooltip: 'O que é RIR?',
                 ),
               ],
             ),
         const SizedBox(height: 4),
-        Text(
-          _rirLabel(currentRir),
-          style: TextStyle(
-            color: _rirColor(currentRir),
-            fontSize: 13,
-            fontWeight: FontWeight.bold,
-          ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              _rirLabel(currentRir),
+              style: TextStyle(
+                color: _rirColor(currentRir),
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              icon: const Icon(Icons.help_outline_rounded, size: 16, color: AppTheme.accent),
+              onPressed: () => _showRirExplanation(context),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              visualDensity: VisualDensity.compact,
+              tooltip: 'O que é RIR?',
+            ),
+          ],
         ),
         const SizedBox(height: 8),
         Row(
