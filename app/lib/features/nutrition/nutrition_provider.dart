@@ -82,36 +82,32 @@ class NutritionProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) {
+    try {
+      final uid = _auth.currentUser?.uid;
+      if (uid == null) return;
+
+      // Tenta carregar config salva
+      final doc = await _db.doc('users/$uid/nutrition/settings').get();
+      if (doc.exists) {
+        final savedMap = doc.data()!;
+        _profile = NutritionEngine.calculateProfile(
+          wp,
+          macroMode: savedMap['macroMode'] ?? 'automatic',
+          dynamicAdaptationEnabled: savedMap['dynamicAdaptationEnabled'] ?? false,
+          carbCyclingEnabled: savedMap['carbCyclingEnabled'] ?? false,
+        );
+      } else {
+        _profile = NutritionEngine.calculateProfile(wp);
+        await saveSettings();
+      }
+
+      await loadToday();
+    } catch (e) {
+      debugPrint('Error initializing nutrition: $e');
+    } finally {
       _isLoading = false;
-      return;
+      notifyListeners();
     }
-
-    // Tenta carregar config salva
-    final doc = await _db.doc('users/$uid/nutrition/settings').get();
-    if (doc.exists) {
-       // Atualiza a meta caso o peso/dados mudaram, mas preserva toggles
-       final savedMap = doc.data()!;
-       _profile = NutritionEngine.calculateProfile(
-         wp,
-         macroMode: savedMap['macroMode'] ?? 'automatic',
-         dynamicAdaptationEnabled: savedMap['dynamicAdaptationEnabled'] ?? false,
-         carbCyclingEnabled: savedMap['carbCyclingEnabled'] ?? false,
-       );
-    } else {
-       // Cria default e salva
-       _profile = NutritionEngine.calculateProfile(wp);
-       await saveSettings();
-    }
-
-    // Carrega dados do dia atual
-    await loadToday();
-    
-    // (Opcional) calcular adherenceScore puxando summaries dos últimos 7 dias
-
-    _isLoading = false;
-    notifyListeners();
   }
 
   Future<void> saveSettings() async {
@@ -176,7 +172,7 @@ class NutritionProvider extends ChangeNotifier {
       notifyListeners();
       
       // Auto-update adherence / summary logic aqui no futuro
-    });
+    }, onError: (e) => debugPrint('Error loading meals: $e'));
   }
 
   Future<void> addMeal(MealEntry meal) async {

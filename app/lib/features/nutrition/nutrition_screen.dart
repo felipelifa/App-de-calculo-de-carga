@@ -19,7 +19,14 @@ class _NutritionScreenState extends State<NutritionScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<NutritionProvider>().loadToday();
+      final provider = context.read<NutritionProvider>();
+      if (provider.profile == null && !provider.isLoading) {
+        final wp = context.read<WorkoutProfileProvider>().profile;
+        if (wp != null) {
+          provider.initFromProfile(wp);
+        }
+      }
+      provider.loadToday();
     });
   }
 

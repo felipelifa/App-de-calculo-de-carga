@@ -126,7 +126,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // Assegura que o profile e o treino gerado estejam carregados
     final profileProvider = context.read<WorkoutProfileProvider>();
     final exerciseProvider = context.read<ExerciseProvider>();
-    profileProvider.loadCurrentWorkout(exerciseProvider.getById);
+    final nutritionProvider = context.read<NutritionProvider>();
+    
+    profileProvider.loadCurrentWorkout(exerciseProvider.getById).then((_) {
+      final profile = profileProvider.profile;
+      if (profile != null) {
+        nutritionProvider.initFromProfile(profile);
+      }
+    });
 
     final future = _DashboardService(
       db: FirebaseFirestore.instance,
