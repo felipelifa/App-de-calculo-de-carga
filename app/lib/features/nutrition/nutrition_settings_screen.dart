@@ -130,7 +130,7 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
               decoration: InputDecoration(
                 filled: true,
                 fillColor: AppTheme.surface,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), BorderSide.none),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
               ),
               items: const [
                 DropdownMenuItem(value: 'automatic', child: Text('Automático (Gêmeo Digital)', style: TextStyle(color: AppTheme.textPrimary))),

@@ -152,13 +152,6 @@ class NutritionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleCarbCycling(bool value) async {
-    if (_profile == null) return;
-    _profile = _profile!.copyWith(carbCyclingEnabled: value);
-    await saveSettings();
-    notifyListeners();
-  }
-
   Future<void> updateProfile(NutritionProfile newProfile) async {
     _profile = newProfile;
     await saveSettings();
