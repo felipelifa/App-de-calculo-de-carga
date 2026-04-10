@@ -137,12 +137,12 @@ class SportPlanBuilders {
 
     sessions.add(PrescribedSession(
       id: 'session_sport_a',
-      name: '${_sportLabel(sub)} — Força & Potência',
-      objective: 'Desenvolver força explosiva e potência para ${_sportLabel(sub)}',
+      name: '${_sportLabel(sub)} — NSCA Dia Explosivo/Força',
+      objective: 'Bompa Fase de Conversão: Força explosiva e potência para ${_sportLabel(sub)}',
       estimatedDurationMinutes: profile.sessionDurationMinutes,
       warmupInstructions: _sportWarmup(sub),
       exercises: exA,
-      progressionNote: 'Foco em velocidade de execução na fase concêntrica. Adicione carga quando RIR >= 2 em todas as séries.',
+      progressionNote: 'NSCA Guidelines: Execute os saltos/Cleans com explosão máxima. Adicione carga apenas quando a velocidade do movimento for dominada (RIR >= 2).',
     ));
 
     // Sessão B: Agilidade + Prevenção
@@ -1039,6 +1039,16 @@ class SportPlanBuilders {
     List<String>? preferTags,
     List<String>? preferEquip,
   }) {
+    // ── BOMPA: LEVEL 1 ANATOMICAL ADAPTATION (AA) PHASE ──
+    if (profile.experienceLevel == 'beginner') {
+      repsMin = max(12, repsMin);
+      repsMax = max(15, repsMax);
+      sets = min(2, sets);
+      rir = max(3, rir);
+      // Forçamos um RIR mais alto e repetições mais altas para 
+      // focar em adaptação de tendões/ligamentos antes de carga pesada.
+    }
+
     final candidates = _library.where((ex) {
       if (!ex.primaryMuscles.contains(muscle)) return false;
 
@@ -1171,28 +1181,28 @@ class SportPlanBuilders {
         return _RunningConfig(
           label: '5K',
           sets: 3, repsMin: 8, repsMax: 15, rir: 2, rest: 60,
-          objective: 'Força de propulsão e prevenção para corrida de 5K',
-          progressionNote: 'Corrida 5K: priorize resistência muscular (12-15 reps). Sessão em dia livre de corrida.',
+          objective: 'Força de propulsão e Lactic/Power Endurance para corrida de 5K (Bompa)',
+          progressionNote: 'Corrida 5K: priorize resistência muscular de média duração (12-15 reps). Sessão em dia livre de corrida.',
         );
       case 'run_10k':
         return _RunningConfig(
           label: '10K',
           sets: 3, repsMin: 10, repsMax: 15, rir: 2, rest: 60,
-          objective: 'Resistência muscular e prevenção de lesões para 10K',
-          progressionNote: 'Corrida 10K: foco em resistência e estabilidade. Não aumente carga até completar 3x15.',
+          objective: 'Resistência Muscular e tolerância ao lactato para 10K',
+          progressionNote: 'Corrida 10K: foco em resistência do sistema aeróbio-glicolítico. Não aumente carga até completar 3x15.',
         );
       case 'run_half':
         return _RunningConfig(
           label: 'Meia Maratona',
           sets: 2, repsMin: 12, repsMax: 20, rir: 3, rest: 45,
-          objective: 'Resistência profunda e economia de corrida para meia maratona',
+          objective: 'Capacidade Aeróbia (ME Long) e economia de corrida para meia maratona (Bompa/NSCA)',
           progressionNote: 'Meia maratona: volume baixo na musculação. O foco é suporte à corrida, não hipertrofia.',
         );
       case 'run_marathon':
         return _RunningConfig(
           label: 'Maratona',
           sets: 2, repsMin: 15, repsMax: 20, rir: 3, rest: 45,
-          objective: 'Manutenção muscular mínima e prevenção para maratona',
+          objective: 'Capacidade Aeróbia máxima e prevenção para maratona (ME Long)',
           progressionNote: 'Maratona: musculação 1-2x/semana com volume mínimo. Prioridade total é a corrida.',
         );
       default:
@@ -1225,22 +1235,30 @@ class SportPlanBuilders {
       case 'basketball':
       case 'agility':
         return [
-          '5 min corrida leve com mudanças de direção',
-          'Mobilidade de quadril e tornozelo: 2x10/lado',
-          'Ativação glútea: caminhada lateral com banda',
-          'Skipping A e B: 2x20m',
+          'NSCA RAMP — Raise: 5 min corrida leve multifásica',
+          'Activate/Mobilize: Forward Lunge com Rotação T-Spine (2x10)',
+          'Potentiate: High-Knees (2x20m), Power Skips (2x20m)',
+          'Potentiate: Ali Shuffle e Mudança de Direção (2x15m)',
         ];
       case 'swimming':
         return [
-          '5 min bike leve',
-          'Rotação de ombros com elástico: 2x15',
-          'Ativação escapular: 2x12',
+          'NSCA RAMP — Raise: 5 min ergométrico superior',
+          'Activate/Mobilize: Rotação de ombros com elástico (2x15)',
+          'Potentiate: Ativação escapular e Face Pull leve (2x12)',
+        ];
+      case 'mma':
+      case 'bjj':
+      case 'boxing':
+        return [
+          'NSCA RAMP — Raise: 5 min pular corda (ritmo variado)',
+          'Activate/Mobilize: Prancha frontal (60s) e Sprawls lentos (2x10)',
+          'Potentiate: Saltos explosivos verticais e Shadow Boxing (2 min)',
         ];
       default:
         return [
-          '5 min cardio geral',
-          'Mobilidade articular: 2 min',
-          'Ativação específica: 2x10',
+          'NSCA RAMP — Raise: 5 min cardio geral contínuo',
+          'Activate/Mobilize: Mobilidade articular e dinâmica (2 min)',
+          'Potentiate: Movimentos primários sem carga (2x10)',
         ];
     }
   }
