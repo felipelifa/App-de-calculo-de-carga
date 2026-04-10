@@ -9,6 +9,7 @@ import 'workout_routine_model.dart';
 import '../exercises/exercise_provider.dart';
 import '../exercises/exercise_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'bio_adaptive_engine.dart';
 
 // ─────────────────────────────────────────────
 // Tela de Visualização do Treino Prescrito
@@ -124,8 +125,9 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
       body: CustomScrollView(
         slivers: [
           _buildHeader(context, workout),
+          _buildBioReadinessCard(context),
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
@@ -357,17 +359,116 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
     }
   }
 
-  String _periodizationExplainer(String p) {
-    switch (p) {
-      case 'linear':
-        return 'Foco: Aumentar o peso um pouquinho toda semana';
-      case 'dup':
-        return 'Foco: Variar entre carga pesada e mais repetições';
-      case 'block':
-        return 'Foco: Fases de força e fases de definição';
-      default:
-        return p;
     }
+  }
+
+  Widget _buildBioReadinessCard(BuildContext context) {
+    final profile = context.watch<WorkoutProfileProvider>().profile;
+    if (profile == null) return const SliverToBoxAdapter(child: SizedBox.shrink());
+
+    // Simula cálculo de prontidão (Digital Twin)
+    // Em uma versão real, puxaríamos o histórico real do Provider
+    final readiness = BioAdaptiveEngine.calculateReadiness(
+      recentHistory: [], // Placeholder v6.0
+      sleepQualityScore: profile.sleepQuality == 'good' ? 0.9 : (profile.sleepQuality == 'regular' ? 0.6 : 0.3),
+      stressLevelScore: profile.stressLevel == 'low' ? 0.9 : (profile.stressLevel == 'medium' ? 0.6 : 0.3),
+    );
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppTheme.surfaceHighlight.withValues(alpha: 0.1),
+                AppTheme.surface,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: AppTheme.accent.withValues(alpha: 0.15)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.psychology_outlined, color: AppTheme.accent, size: 24),
+                  const SizedBox(width: 12),
+                  const Text(
+                    'STATUS DO BIO-ORGANISMO',
+                    style: TextStyle(
+                      color: AppTheme.accent,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                  const Spacer(),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: readiness.status == BioStatus.optimal ? AppTheme.success.withValues(alpha: 0.1) : AppTheme.danger.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      readiness.status == BioStatus.optimal ? 'OTIMIZADO' : 'RECUPERANDO',
+                      style: TextStyle(
+                        color: readiness.status == BioStatus.optimal ? AppTheme.success : AppTheme.danger,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Text(
+                readiness.recommendation,
+                style: const TextStyle(color: AppTheme.textPrimary, fontSize: 14, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                   _buildSmallStat('Fadiga CNS', readiness.cnsFatigue),
+                   const SizedBox(width: 16),
+                   _buildSmallStat('Stress Articular', readiness.jointStress),
+                ],
+              ),
+               const SizedBox(height: 12),
+               const Text(
+                'Seu "Gêmeo Digital" está simulando seu estado de recuperação atual...',
+                style: TextStyle(color: AppTheme.textSecondary, fontSize: 10, fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSmallStat(String label, double value) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11)),
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: value,
+              backgroundColor: Colors.white10,
+              color: value > 0.7 ? AppTheme.danger : (value > 0.4 ? Colors.amberAccent : AppTheme.success),
+              minHeight: 4,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -571,6 +672,15 @@ class _SessionCardState extends State<_SessionCard> {
   }
 
   Widget _buildExercisesList() {
+    final profile = context.read<WorkoutProfileProvider>().profile;
+    
+    // Calcula Prontidão Bio-Adaptativa (Gêmeo Digital)
+    final readiness = BioAdaptiveEngine.calculateReadiness(
+      recentHistory: [], // Futuro: puxar do histórico real
+      sleepQualityScore: profile?.sleepQuality == 'good' ? 0.9 : (profile?.sleepQuality == 'regular' ? 0.6 : 0.3),
+      stressLevelScore: profile?.stressLevel == 'low' ? 0.9 : (profile?.stressLevel == 'medium' ? 0.6 : 0.3),
+    );
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
       child: Column(
@@ -578,12 +688,17 @@ class _SessionCardState extends State<_SessionCard> {
           // Aquecimento
           _buildWarmupBlock(),
           const SizedBox(height: 12),
-          // Exercícios
-          ...widget.session.exercises.map((ex) => _ExerciseRow(
-                sessionId: widget.session.id,
-                ex: ex,
-                onShowTutorial: widget.onShowTutorial,
-              )),
+          // Exercícios com Bio-Adaptação
+          ...widget.session.exercises.map((ex) {
+            // APLICA O DIGITAL TWIN: adapta o exercício se necessário
+            final adaptedEx = BioAdaptiveEngine.applyBioAdaptation(ex, readiness);
+            
+            return _ExerciseRow(
+              sessionId: widget.session.id,
+              ex: adaptedEx,
+              onShowTutorial: widget.onShowTutorial,
+            );
+          }),
         ],
       ),
     );

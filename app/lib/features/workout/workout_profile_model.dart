@@ -7,9 +7,15 @@ class UserAdaptiveProfile {
   final String volumeTolerance; // high | medium | low
   final String recoveryCapacity; // high | medium | low
   
+  // 📈 Tendências Bio-Adaptativas (Digital Twin)
+  final double adherenceRate;      // 0.0 a 1.0 (Consistência real)
+  final double volumeSensitivity;  // 1.0 (Normal) - quanto o usuário "quebra" com volume alto
+  
   const UserAdaptiveProfile({
     this.volumeTolerance = 'medium',
     this.recoveryCapacity = 'medium',
+    this.adherenceRate = 1.0,
+    this.volumeSensitivity = 1.0,
   });
 
   factory UserAdaptiveProfile.fromMap(Map<String, dynamic>? map) {
@@ -17,12 +23,16 @@ class UserAdaptiveProfile {
     return UserAdaptiveProfile(
       volumeTolerance: map['volumeTolerance'] as String? ?? 'medium',
       recoveryCapacity: map['recoveryCapacity'] as String? ?? 'medium',
+      adherenceRate: (map['adherenceRate'] as num?)?.toDouble() ?? 1.0,
+      volumeSensitivity: (map['volumeSensitivity'] as num?)?.toDouble() ?? 1.0,
     );
   }
 
   Map<String, dynamic> toMap() => {
     'volumeTolerance': volumeTolerance,
     'recoveryCapacity': recoveryCapacity,
+    'adherenceRate': adherenceRate,
+    'volumeSensitivity': volumeSensitivity,
   };
 }
 
