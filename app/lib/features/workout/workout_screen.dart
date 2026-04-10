@@ -864,6 +864,15 @@ class _ExerciseCard extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(
+                    Icons.swap_horiz_rounded,
+                    color: AppTheme.accent,
+                    size: 20,
+                  ),
+                  tooltip: 'Trocar exercício',
+                  onPressed: () => _showSwapDialog(context, exerciseIndex, entry, exerciseModel),
+                ),
+                IconButton(
+                  icon: const Icon(
                     Icons.delete_outline,
                     color: AppTheme.danger,
                     size: 20,
@@ -1001,6 +1010,81 @@ class _ExerciseCard extends StatelessWidget {
       ),
     );
   }
+
+  void _showSwapDialog(BuildContext context, int index, dynamic entry, ExerciseModel? oldEx) {
+    if (oldEx == null) return;
+    
+    final exerciseProvider = context.read<ExerciseProvider>();
+    final workoutProvider = context.read<WorkoutProvider>();
+    final profile = context.read<WorkoutProfileProvider>().profile;
+    
+    // Busca substitutos
+    List<ExerciseModel> replacements = [];
+    
+    // 1. Substitutos diretos e regressões
+    final directIds = [...oldEx.substituteIds, ...oldEx.regressionIds];
+    for (final id in directIds) {
+      final ex = exerciseProvider.getById(id);
+      if (ex != null && !replacements.any((r) => r.id == ex.id)) replacements.add(ex);
+    }
+    
+    // 2. Fallback por padrão e músculo
+    if (replacements.length < 4) {
+      final fallbacks = exerciseProvider.filteredExercises.where((ex) =>
+        ex.id != oldEx.id &&
+        ex.primaryMuscles.contains(oldEx.primaryMuscles.first) &&
+        ex.movementPattern == oldEx.movementPattern &&
+        !replacements.any((r) => r.id == ex.id) &&
+        !(profile?.experienceLevel == 'beginner' && ex.difficulty == 'advanced')
+      ).take(6);
+      replacements.addAll(fallbacks);
+    }
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.surface,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Trocar exercício', style: TextStyle(color: AppTheme.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text('Sugestões para substituir ${oldEx.name}:', style: const TextStyle(color: AppTheme.textSecondary)),
+            const SizedBox(height: 20),
+            if (replacements.isEmpty)
+              const Center(child: Text('Nenhuma alternativa encontrada.', style: TextStyle(color: AppTheme.textSecondary)))
+            else
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: replacements.length,
+                  itemBuilder: (context, i) {
+                    final ex = replacements[i];
+                    return ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(ex.name, style: const TextStyle(color: AppTheme.textPrimary)),
+                      subtitle: Text('${ex.category == 'compound' ? 'Composto' : 'Isolador'} • ${ex.difficulty}', 
+                        style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+                      trailing: const Icon(Icons.swap_horiz_rounded, color: AppTheme.accent),
+                      onTap: () {
+                        workoutProvider.replaceExerciseInSession(index, ex);
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Exercício trocado por ${ex.name}!'), backgroundColor: AppTheme.accent),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 // ── RIR Selector ─────────────────────────────
@@ -1018,25 +1102,33 @@ class _RirSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          textBaseline: TextBaseline.alphabetic,
-          children: [
-            const Icon(
-              Icons.speed_rounded,
-              size: 14,
-              color: AppTheme.textSecondary,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                const Icon(
+                  Icons.speed_rounded,
+                  size: 14,
+                  color: AppTheme.textSecondary,
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    'Intensidade (RIR): Quantas reps você ainda aguentaria fz?',
+                    style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.help_outline_rounded, size: 16, color: AppTheme.accent),
+                  onPressed: () => _showRirExplanation(context),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  visualDensity: VisualDensity.compact,
+                  tooltip: 'O que é RIR?',
+                ),
+              ],
             ),
-            const SizedBox(width: 6),
-            Expanded(
-              child: Text(
-                'Intensidade (RIR): Quantas reps você ainda aguentaria fz?',
-                style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
         const SizedBox(height: 4),
         Text(
           _rirLabel(currentRir),
@@ -1103,6 +1195,90 @@ class _RirSelector extends StatelessWidget {
     if (rir <= 2) return AppTheme.success;
     if (rir <= 4) return AppTheme.accent;
     return AppTheme.textSecondary;
+  }
+
+  void _showRirExplanation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.surface,
+        title: const Row(
+          children: [
+            Icon(Icons.speed_rounded, color: AppTheme.accent),
+            SizedBox(width: 12),
+            Text('O que é RIR?', style: TextStyle(color: AppTheme.textPrimary)),
+          ],
+        ),
+        content: const SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'RIR (Repetições em Reserva) é quantas repetições você sente que conseguiria fazer além das que já fez.',
+                style: TextStyle(color: AppTheme.textPrimary, fontSize: 14),
+              ),
+              SizedBox(height: 16),
+              _RirHelpItem(num: '0', label: 'Falha Total', desc: 'Não conseguiria fazer mais NENHUMA.'),
+              _RirHelpItem(num: '1', label: 'Muito difícil', desc: 'Talvez saísse mais uma com esforço máximo.'),
+              _RirHelpItem(num: '2', label: 'Zona Ideal', desc: 'Conseguiria fazer mais 2 com boa técnica.'),
+              _RirHelpItem(num: '3', label: 'Moderado', desc: 'Daria para fazer mais 3 repetições.'),
+              _RirHelpItem(num: '4-5', label: 'Leve', desc: 'Carga de aquecimento ou muito fácil.'),
+              SizedBox(height: 16),
+              Text(
+                'DICA: Tente manter a maioria dos seus exercícios no RIR 2 para o melhor equilíbrio entre ganho e recuperação.',
+                style: TextStyle(color: AppTheme.accent, fontSize: 12, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('ENTENDI'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RirHelpItem extends StatelessWidget {
+  final String num;
+  final String label;
+  final String desc;
+  const _RirHelpItem({required this.num, required this.label, required this.desc});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 28,
+            height: 20,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: AppTheme.accent.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(num, style: const TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold, fontSize: 12)),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label, style: const TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.bold, fontSize: 13)),
+                Text(desc, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

@@ -252,4 +252,49 @@ class WorkoutProfileProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> swapPrescribedExercise(String sessionId, String oldExId, ExerciseModel newEx) async {
+    if (_currentWorkout == null) return;
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+
+    try {
+      final sessionIndex = _currentWorkout!.sessions.indexWhere((s) => s.id == sessionId);
+      if (sessionIndex == -1) return;
+
+      final session = _currentWorkout!.sessions[sessionIndex];
+      final exIndex = session.exercises.indexWhere((e) => e.exercise.id == oldExId);
+      if (exIndex == -1) return;
+
+      final oldEx = session.exercises[exIndex];
+      
+      // Cria a nova prescrição baseada na anterior, mas com o novo exercício
+      final swappedEx = PrescribedExercise(
+        exercise: newEx,
+        sets: oldEx.sets,
+        repsMin: newEx.repRangeMin,
+        repsMax: newEx.repRangeMax,
+        rir: oldEx.rir,
+        restSeconds: oldEx.restSeconds,
+        sessionCues: [...newEx.cues.take(2), 'Amplitude máxima controlada.'],
+        tempo: oldEx.tempo,
+        injuryNote: null, // Reset injury note as it might not apply to the new ex
+      );
+
+      // Atualiza localmente
+      session.exercises[exIndex] = swappedEx;
+      
+      // Salva no Firestore
+      await _db
+          .collection('users')
+          .doc(uid)
+          .collection('generated_workouts')
+          .doc('current')
+          .set(_currentWorkout!.toMap());
+
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Erro ao trocar exercício prescrito: $e');
+    }
+  }
 }

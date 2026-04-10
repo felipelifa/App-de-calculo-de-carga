@@ -211,6 +211,39 @@ class WorkoutProvider extends ChangeNotifier {
     }
   }
 
+  void replaceExerciseInSession(int index, ExerciseModel newEx) {
+    if (index < 0 || index >= _currentExercises.length) return;
+    
+    final oldEntry = _currentExercises[index];
+    
+    // Mantém o número de séries do exercício anterior para consistência
+    final setsCount = oldEntry.sets.length;
+    final reps = newEx.repRangeMax;
+    
+    final newEntry = WorkoutExerciseEntry(
+      exerciseId: newEx.id,
+      exerciseName: newEx.name,
+      muscleGroup: newEx.primaryMuscles.isNotEmpty ? newEx.primaryMuscles.first : 'Geral',
+      sets: List.generate(
+        setsCount,
+        (_) => WorkoutSet(reps: reps, weight: 0, volume: 0),
+      ),
+    );
+
+    _currentExercises[index] = newEntry;
+    
+    // Atualiza metadados
+    _exerciseMetadata[newEx.id] = {
+      'isBodyweight': newEx.equipment.contains('bodyweight') && newEx.equipment.length == 1,
+      'progressionIds': newEx.progressionIds,
+      'substituteIds': newEx.substituteIds,
+    };
+    
+    // Remove RIR do anterior se necessário ou deixa como está (será sobreposto ao salvar)
+    
+    notifyListeners();
+  }
+
   void updateSet({
     required int exerciseIndex,
     required int setIndex,

@@ -580,6 +580,7 @@ class _SessionCardState extends State<_SessionCard> {
           const SizedBox(height: 12),
           // Exercícios
           ...widget.session.exercises.map((ex) => _ExerciseRow(
+                sessionId: widget.session.id,
                 ex: ex,
                 onShowTutorial: widget.onShowTutorial,
               )),
@@ -743,9 +744,10 @@ class _FatigueBar extends StatelessWidget {
 // ─────────────────────────────────────────────
 
 class _ExerciseRow extends StatefulWidget {
+  final String sessionId;
   final PrescribedExercise ex;
   final Function(BuildContext, ExerciseModel) onShowTutorial;
-  const _ExerciseRow({required this.ex, required this.onShowTutorial});
+  const _ExerciseRow({required this.sessionId, required this.ex, required this.onShowTutorial});
 
   @override
   State<_ExerciseRow> createState() => _ExerciseRowState();
@@ -809,6 +811,15 @@ class _ExerciseRowState extends State<_ExerciseRow> {
                         fontSize: 10,
                         fontWeight: FontWeight.bold),
                   ),
+                ),
+                const SizedBox(width: 8),
+                IconButton(
+                  icon: const Icon(Icons.swap_horiz_rounded, size: 20, color: AppTheme.accent),
+                  onPressed: () => _showSwapDialog(context, ex),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  visualDensity: VisualDensity.compact,
+                  tooltip: 'Trocar este exercício',
                 ),
               ],
             ),
@@ -932,6 +943,84 @@ class _ExerciseRowState extends State<_ExerciseRow> {
                     )),
               ],
             ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showSwapDialog(BuildContext context, PrescribedExercise oldRx) {
+    final oldEx = oldRx.exercise;
+    final exerciseProvider = context.read<ExerciseProvider>();
+    final profileProvider = context.read<WorkoutProfileProvider>();
+    
+    // Busca substitutos
+    List<ExerciseModel> replacements = [];
+    
+    // 1. Substitutos diretos, regressões e progressões
+    final directIds = [...oldEx.substituteIds, ...oldEx.regressionIds, ...oldEx.progressionIds];
+    for (final id in directIds) {
+      final ex = exerciseProvider.getById(id);
+      if (ex != null && !replacements.any((r) => r.id == ex.id)) replacements.add(ex);
+    }
+    
+    // 2. Fallback por padrão e músculo (respeitando ambiente)
+    if (replacements.length < 4) {
+      final profile = profileProvider.profile;
+      final fallbacks = exerciseProvider.filteredExercises.where((ex) {
+        final samePattern = ex.primaryMuscles.contains(oldEx.primaryMuscles.first) &&
+                            ex.movementPattern == oldEx.movementPattern;
+        final alreadyIn = replacements.any((r) => r.id == ex.id);
+        final isSelf = ex.id == oldEx.id;
+        
+        // Se for iniciante, evita exercícios avançados
+        final tooHard = profile?.experienceLevel == 'beginner' && ex.difficulty == 'advanced';
+        
+        return samePattern && !alreadyIn && !isSelf && !tooHard;
+      }).take(6);
+      replacements.addAll(fallbacks);
+    }
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.surface,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Trocar exercício', style: TextStyle(color: AppTheme.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text('Sugestões para substituir ${oldEx.name}:', style: const TextStyle(color: AppTheme.textSecondary)),
+            const SizedBox(height: 20),
+            if (replacements.isEmpty)
+              const Center(child: Text('Nenhuma alternativa encontrada.', style: TextStyle(color: AppTheme.textSecondary)))
+            else
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: replacements.length,
+                  itemBuilder: (context, i) {
+                    final ex = replacements[i];
+                    return ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(ex.name, style: const TextStyle(color: AppTheme.textPrimary)),
+                      subtitle: Text('${ex.category == 'compound' ? 'Composto' : 'Isolador'} • ${ex.difficulty}', 
+                        style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+                      trailing: const Icon(Icons.swap_horiz_rounded, color: AppTheme.accent),
+                      onTap: () {
+                        profileProvider.swapPrescribedExercise(widget.sessionId, oldEx.id, ex);
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Exercício trocado por ${ex.name}!'), backgroundColor: AppTheme.accent),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
           ],
         ),
       ),
