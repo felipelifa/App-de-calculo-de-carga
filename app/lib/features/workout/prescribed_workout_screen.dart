@@ -358,7 +358,16 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
         return s;
     }
   }
-
+  String _periodizationExplainer(String p) {
+    switch (p) {
+      case 'linear':
+        return 'Foco: Aumentar o peso um pouquinho toda semana';
+      case 'dup':
+        return 'Foco: Variar entre carga pesada e mais repetições';
+      case 'block':
+        return 'Foco: Fases de força e fases de definição';
+      default:
+        return p;
     }
   }
 
