@@ -1060,13 +1060,30 @@ class SportPlanBuilders {
       // Unilateral preference
       if (isUnilateral && !ex.isUnilateral) return false;
 
-      // Equipment preference
+      // Equipment preference pass from Builder config explicitly
       if (preferEquip != null && preferEquip.isNotEmpty) {
         if (!ex.equipment.any((eq) => preferEquip.contains(eq))) return false;
       }
 
-      // Environment
-      if (profile.environment == 'home_bodyweight' && !ex.environment.contains('home')) return false;
+      // ── MODO 'EM CASA' / RESTRIÇÃO DE EQUIPAMENTO ──
+      if (profile.environment.startsWith('home') || profile.environment == 'outdoor') {
+        if (!ex.environment.contains('home')) return false;
+      }
+
+      if (profile.availableEquipment.isNotEmpty) {
+        // Se usuário listou equipamentos na anamnese, o exercício deve ser bodyweight ou usar algo disponível
+        if (!ex.equipment.any((e) => profile.availableEquipment.contains(e) || e == 'bodyweight' || e == 'none')) {
+          return false;
+        }
+      } else {
+        // Fallback se lista vazia mas escolheu 'home_bodyweight'/'home_dumbbell'
+        if (profile.environment == 'home_bodyweight') {
+          if (!ex.equipment.contains('bodyweight') && !ex.equipment.contains('none')) return false;
+        } else if (profile.environment == 'home_dumbbell') {
+          final allowed = ['bodyweight', 'dumbbell', 'band'];
+          if (!ex.equipment.any((e) => allowed.contains(e))) return false;
+        }
+      }
 
       // Restrictions
       if (ex.restrictions.any((r) => profile.healthRestrictions.contains(r))) return false;
