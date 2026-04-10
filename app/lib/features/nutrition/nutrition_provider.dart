@@ -152,6 +152,19 @@ class NutritionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> toggleCarbCycling(bool value) async {
+    if (_profile == null) return;
+    _profile = _profile!.copyWith(carbCyclingEnabled: value);
+    await saveSettings();
+    notifyListeners();
+  }
+
+  Future<void> updateProfile(NutritionProfile newProfile) async {
+    _profile = newProfile;
+    await saveSettings();
+    notifyListeners();
+  }
+
   // --- Meals Logging (Dia Atual) ---
 
   String get _todayKey => DateFormat('yyyy-MM-dd').format(DateTime.now());

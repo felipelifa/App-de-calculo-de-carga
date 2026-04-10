@@ -50,9 +50,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings_outlined, color: AppTheme.textSecondary),
-            onPressed: () {
-              // Open Settings/Options
-            },
+            onPressed: () => context.push('/nutrition/settings'),
           )
         ],
       ),

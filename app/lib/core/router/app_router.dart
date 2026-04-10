@@ -21,6 +21,7 @@ import '../../features/auth/splash_screen.dart';
 import 'main_layout_screen.dart';
 import '../../features/nutrition/nutrition_screen.dart';
 import '../../features/nutrition/food_search_screen.dart';
+import '../../features/nutrition/nutrition_settings_screen.dart';
 import '../../features/profile/profile_screen.dart';
 
 class AppRouter {
@@ -82,6 +83,10 @@ class AppRouter {
             final type = state.uri.queryParameters['type'] ?? 'snack';
             return FoodSearchScreen(mealType: type);
           },
+        ),
+        GoRoute(
+          path: '/nutrition/settings',
+          builder: (context, state) => const NutritionSettingsScreen(),
         ),
         GoRoute(
           path: '/exercises',
