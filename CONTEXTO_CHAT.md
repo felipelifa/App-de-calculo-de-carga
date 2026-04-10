@@ -549,4 +549,11 @@ C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\C
   - Sincronização e Build final para Web concluídos.
 - **Status:** Motor v5.0 entregue com 949 exercícios 100% funcionais. Alpha testing iniciado.
 
+  - **Upgrade Motor v5.1 (Integração Teórica Bompa & NSCA):**
+    - **Adaptação Anatômica Automática (Bompa):** Iniciantes têm volumes e intensidades forçados (RIR elevado, repetições 12-15) para fortificação de ligamentos antes do uso de cargas neurais.
+    - **Sistemas de Energia Avançados (Bompa):** Redirecionamento da lógica de Endurance focando em Lactic/Power Endurance vs Aerobic Capacity (ME Long), ajustando volume automaticamente.
+    - **Aquecimento RAMP (NSCA):** Substituiu aquecimentos genéricos. Adiciona protocolos estratificados de *Raise*, *Activate/Mobilize* e *Potentiate* (com *Power Skips* e *High-Knees*) focados na mecânica do esporte.
+    - **Separação Explosivo vs Força Lenta (NSCA):** O app agora segrega "Dia de Levantamentos Explosivos", com recomendações expressas de foco de velocidade da concêntrica.
+    - **Home Fallback Seguro:** Planos Esportivos cruzam com a escolha de ambiente "Em Casa"; se necessário, expurgam equipamentos industriais e readaptam com exercícios da biblioteca *bodyweight* / *dumbbell* / *bands*.
+  - **Refatoração UX:** Seletor de RIR (Repetições de Reserva) totalmente reescrito na interface durante a execução. Rótulos e cores agora descrevem textualmente o esforço limitante (Ex: "0: Falha máxima (0 reps de sobra)"), criando um feedback em tempo real para regular a intensidade.
 
