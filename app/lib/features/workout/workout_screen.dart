@@ -1019,6 +1019,8 @@ class _RirSelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
           children: [
             const Icon(
               Icons.speed_rounded,
@@ -1026,20 +1028,23 @@ class _RirSelector extends StatelessWidget {
               color: AppTheme.textSecondary,
             ),
             const SizedBox(width: 6),
-            const Text(
-              'RIR (reps em reserva):',
-              style: TextStyle(color: AppTheme.textSecondary, fontSize: 12),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              _rirLabel(currentRir),
-              style: TextStyle(
-                color: _rirColor(currentRir),
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
+            Expanded(
+              child: Text(
+                'Intensidade (RIR): Quantas reps você ainda aguentaria fz?',
+                style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
+        ),
+        const SizedBox(height: 4),
+        Text(
+          _rirLabel(currentRir),
+          style: TextStyle(
+            color: _rirColor(currentRir),
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 8),
         Row(
@@ -1083,10 +1088,14 @@ class _RirSelector extends StatelessWidget {
   }
 
   String _rirLabel(int rir) {
-    if (rir == 0) return 'Falha total';
-    if (rir <= 2) return 'Zona ideal';
-    if (rir <= 4) return 'Moderado';
-    return 'Muito fácil';
+    switch (rir) {
+      case 0: return 'Falha máxima (0 reps de sobra)';
+      case 1: return 'Muito difícil (1 rep de sobra)';
+      case 2: return 'Zona ideal de força (2 reps de sobra)';
+      case 3: return 'Moderado (3 reps de sobra)';
+      case 4: return 'Fácil (4 reps de sobra)';
+      default: return 'Aquecimento leve (+5 reps de sobra)';
+    }
   }
 
   Color _rirColor(int rir) {
