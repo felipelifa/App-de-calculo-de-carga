@@ -292,37 +292,23 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                   width: double.infinity,
                   height: 250,
                   color: AppTheme.background,
-                  child: exercise.gifUrl != null && exercise.gifUrl!.isNotEmpty
-                      ? CachedNetworkImage(
-                          imageUrl: exercise.gifUrl!,
-                          fit: BoxFit.cover,
-                          placeholder: (_, __) =>
-                              const Center(child: CircularProgressIndicator()),
-                          errorWidget: (_, __, ___) => const Center(
-                            child: Icon(
-                              Icons.video_library_rounded,
-                              size: 50,
-                              color: AppTheme.textSecondary,
-                            ),
-                          ),
-                        )
-                      : const Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.video_library_rounded,
-                                size: 48,
-                                color: AppTheme.textSecondary,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Tutorial em breve',
-                                style: TextStyle(color: AppTheme.textSecondary),
-                              ),
-                            ],
-                          ),
-                        ),
+                  child: Builder(
+                    builder: (context) {
+                      final url = context.read<ExerciseProvider>().getEffectiveGifUrl(exercise);
+                      if (url == null || url.isEmpty) {
+                        return _buildNoGifPlaceholder();
+                      }
+                      return CachedNetworkImage(
+                        imageUrl: url,
+                        fit: BoxFit.cover,
+                        placeholder: (_, __) => const Center(child: CircularProgressIndicator(color: AppTheme.accent)),
+                        errorWidget: (_, error, ___) {
+                          debugPrint('Erro ao carregar GIF: $error');
+                          return _buildNoGifPlaceholder(isError: true);
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
               if (exercise.videoUrl != null &&
@@ -638,6 +624,38 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
           : _EmptyState(onStart: () => provider.startSession()),
     );
   }
+  Widget _buildNoGifPlaceholder({bool isError = false}) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            isError ? Icons.error_outline_rounded : Icons.video_library_rounded,
+            size: 48,
+            color: isError ? AppTheme.danger.withValues(alpha: 0.5) : AppTheme.textSecondary,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            isError ? 'Erro ao carregar animação' : 'Tutorial em vídeo sendo processado',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: AppTheme.textSecondary,
+              fontSize: 13,
+              fontStyle: isError ? FontStyle.normal : FontStyle.italic,
+            ),
+          ),
+          if (isError)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                'Verifique sua conexão ou tente mais tarde',
+                style: TextStyle(color: AppTheme.textSecondary.withValues(alpha: 0.7), fontSize: 11),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 }
 
 // ── Empty state ───────────────────────────────
@@ -864,8 +882,21 @@ class _ExerciseCard extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(
-                    Icons.swap_horiz_rounded,
+                    Icons.play_circle_fill_rounded,
                     color: AppTheme.accent,
+                    size: 26,
+                  ),
+                  tooltip: 'Ver Tutorial',
+                  onPressed: () {
+                    if (exerciseModel != null) {
+                      onShowTutorial(context, exerciseModel);
+                    }
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.swap_horiz_rounded,
+                    color: AppTheme.textSecondary,
                     size: 20,
                   ),
                   tooltip: 'Trocar exercício',
@@ -990,19 +1021,14 @@ class _ExerciseCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                TextButton.icon(
-                  onPressed: () {
-                    if (exerciseModel != null) {
-                      onShowTutorial(context, exerciseModel);
-                    }
-                  },
-                  icon: const Icon(Icons.play_circle_outline, size: 16),
-                  label: const Text('Tutorial'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: AppTheme.textSecondary,
-                    padding: EdgeInsets.zero,
+                if (exerciseModel != null && exerciseModel.gifUrl == null)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Text(
+                      'Sem GIF',
+                      style: TextStyle(color: AppTheme.danger.withValues(alpha: 0.5), fontSize: 10),
+                    ),
                   ),
-                ),
               ],
             ),
           ],

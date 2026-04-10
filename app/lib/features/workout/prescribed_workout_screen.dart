@@ -804,17 +804,17 @@ class _ExerciseRowState extends State<_ExerciseRow> {
                     color: _categoryColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: Text(
-                    _categoryLabel,
-                    style: TextStyle(
-                        color: _categoryColor,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold),
-                  ),
+                IconButton(
+                  icon: const Icon(Icons.play_circle_fill_rounded, size: 26, color: AppTheme.accent),
+                  onPressed: () => onShowTutorial(context, ex.exercise),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  visualDensity: VisualDensity.compact,
+                  tooltip: 'Ver tutorial do exercício',
                 ),
                 const SizedBox(width: 8),
                 IconButton(
-                  icon: const Icon(Icons.swap_horiz_rounded, size: 20, color: AppTheme.accent),
+                  icon: const Icon(Icons.swap_horiz_rounded, size: 20, color: AppTheme.textSecondary),
                   onPressed: () => _showSwapDialog(context, ex),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
@@ -1023,6 +1023,28 @@ class _ExerciseRowState extends State<_ExerciseRow> {
               ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildNoGifPlaceholder({bool isError = false}) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            isError ? Icons.error_outline_rounded : Icons.video_library_rounded,
+            size: 32,
+            color: isError ? AppTheme.danger.withValues(alpha: 0.5) : AppTheme.textSecondary,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            isError ? 'Erro' : 'Tutorial pendente',
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 10),
+          ),
+        ],
       ),
     );
   }

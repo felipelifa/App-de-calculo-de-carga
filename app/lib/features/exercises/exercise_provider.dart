@@ -20,9 +20,11 @@ class ExerciseProvider extends ChangeNotifier {
   String _searchQuery = '';
   bool _isLoading = true;
   String? _error;
-
   StreamSubscription<QuerySnapshot>? _sub;
-
+  
+  // 🔗 LINK DO SEU STORAGE NO FIREBASE
+  static const String baseGifUrl = 'https://firebasestorage.googleapis.com/v0/b/appcalculotreino-51f23.firebasestorage.app/o';
+  
   bool get isLoading => _isLoading;
   String? get error => _error;
   String? get selectedMuscle => _selectedMuscle;
@@ -134,6 +136,14 @@ class ExerciseProvider extends ChangeNotifier {
         return null;
       }
     }
+  }
+
+  /// Resolve a URL do GIF com base no modelo ou no nome do exercício
+  String? getEffectiveGifUrl(ExerciseModel ex) {
+    // 1. Prioridade para o nome do arquivo no seu novo Bucket do Firebase
+    // O Firebase Storage exige o nome codificado e o parâmetro ?alt=media
+    final filename = Uri.encodeComponent('${ex.name}.gif');
+    return '$baseGifUrl/$filename?alt=media';
   }
 
   Future<List<VolumeHistoryEntry>> getExerciseHistory(String exerciseId) async {
