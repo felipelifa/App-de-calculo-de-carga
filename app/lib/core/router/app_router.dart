@@ -18,6 +18,10 @@ import '../../features/workout/workout_routine_model.dart';
 import '../../features/workout/anamnese_screen.dart';
 import '../../features/workout/prescribed_workout_screen.dart';
 import '../../features/auth/splash_screen.dart';
+import 'main_layout_screen.dart';
+import '../../features/nutrition/nutrition_screen.dart';
+import '../../features/nutrition/food_search_screen.dart';
+import '../../features/profile/profile_screen.dart';
 
 class AppRouter {
   static GoRouter createRouter(AuthService authService) {
@@ -32,8 +36,6 @@ class AppRouter {
         if (!isLoggedIn && !isAuthRoute) return '/login';
         if (isLoggedIn && isAuthRoute && state.uri.path != '/') return '/dashboard';
 
-        // Pro gate check (sync: assume que pode acessar no primeiro load)
-        // Gate async é feito dentro de cada tela Pro
         return null;
       },
       routes: [
@@ -49,9 +51,37 @@ class AppRouter {
           path: '/register',
           builder: (context, state) => const RegisterScreen(),
         ),
+        
+        // --- CORE SHELL WRAPPER ---
+        ShellRoute(
+          builder: (context, state, child) => MainLayoutScreen(child: child),
+          routes: [
+            GoRoute(
+              path: '/dashboard',
+              builder: (context, state) => const DashboardScreen(),
+            ),
+            GoRoute(
+              path: '/nutrition',
+              builder: (context, state) => const NutritionScreen(),
+            ),
+            GoRoute(
+              path: '/analytics',
+              builder: (context, state) => const AnalyticsScreen(),
+            ),
+            GoRoute(
+              path: '/profile',
+              builder: (context, state) => const ProfileScreen(),
+            ),
+          ],
+        ),
+        // --------------------------
+
         GoRoute(
-          path: '/dashboard',
-          builder: (context, state) => const DashboardScreen(),
+          path: '/nutrition/search',
+          builder: (context, state) {
+            final type = state.uri.queryParameters['type'] ?? 'snack';
+            return FoodSearchScreen(mealType: type);
+          },
         ),
         GoRoute(
           path: '/exercises',
@@ -78,10 +108,6 @@ class AppRouter {
         GoRoute(
           path: '/workout/history',
           builder: (context, state) => const WorkoutHistoryScreen(),
-        ),
-        GoRoute(
-          path: '/analytics',
-          builder: (context, state) => const AnalyticsScreen(),
         ),
         GoRoute(
           path: '/routines',

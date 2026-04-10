@@ -237,6 +237,28 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
     );
   }
 
+  Widget _buildNoGifPlaceholder({bool isError = false}) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            isError ? Icons.error_outline_rounded : Icons.video_library_rounded,
+            size: 32,
+            color: isError ? AppTheme.danger.withValues(alpha: 0.5) : AppTheme.textSecondary,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            isError ? 'Erro' : 'Tutorial pendente',
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 10),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _confirmDeletion(BuildContext context) {
     showDialog(
       context: context,

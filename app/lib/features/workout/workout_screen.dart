@@ -11,6 +11,7 @@ import 'workout_provider.dart';
 import 'workout_profile_provider.dart';
 import 'pr_celebration_dialog.dart';
 import 'progression_provider.dart';
+import '../nutrition/nutrition_provider.dart';
 
 class WorkoutScreen extends StatefulWidget {
   const WorkoutScreen({super.key});
@@ -177,7 +178,23 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
 
     if (confirmed == true && context.mounted) {
       try {
+        // Obter métricas da sessão antes de finalizar para notificar nutrição
+        final durationMinutes = provider.sessionStart != null 
+            ? DateTime.now().difference(provider.sessionStart!).inMinutes 
+            : 60;
+        final exCount = provider.currentExercises.length;
+        final vol = provider.currentTotalVolume;
+
         await provider.finishSession(experienceLevel: experienceLevel);
+
+        if (context.mounted) {
+          // Notifica o NutritionProvider sobre o treino concluído
+          context.read<NutritionProvider>().applyPostWorkoutBonus(
+            durationMinutes: durationMinutes,
+            exerciseCount: exCount,
+            totalVolume: vol,
+          );
+        }
 
         // Dispara o motor de progressão no provider global
         if (context.mounted) {
@@ -880,6 +897,7 @@ class _ExerciseCard extends StatelessWidget {
                     ],
                   ),
                 ),
+                Expanded(
                   child: InkWell(
                     onTap: () {
                       if (exerciseModel != null) {
@@ -944,7 +962,7 @@ class _ExerciseCard extends StatelessWidget {
             const SizedBox(height: 12),
 
             // Cabeçalho das colunas
-            const Row(
+            Row(
               children: [
                 SizedBox(
                   width: 32,

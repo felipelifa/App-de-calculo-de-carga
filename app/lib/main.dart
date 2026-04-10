@@ -14,6 +14,7 @@ import 'features/exercises/exercise_provider.dart';
 import 'features/workout/workout_provider.dart';
 import 'features/workout/workout_profile_provider.dart';
 import 'features/workout/progression_provider.dart';
+import 'features/nutrition/nutrition_provider.dart';
 import 'shared/theme/app_theme.dart';
 
 // Background message handler — chamado quando o app está em background
@@ -126,6 +127,9 @@ class WorkoutApp extends StatelessWidget {
         // Motor de Progressão — registrado globalmente
         ChangeNotifierProvider<ProgressionProvider>(
           create: (_) => ProgressionProvider(),
+        ),
+        ChangeNotifierProvider<NutritionProvider>(
+          create: (_) => NutritionProvider(),
         ),
         Provider.value(value: FirebaseFirestore.instance),
       ],
