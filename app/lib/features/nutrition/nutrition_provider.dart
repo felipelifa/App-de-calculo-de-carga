@@ -21,6 +21,9 @@ class NutritionProvider extends ChangeNotifier {
   int? _postWorkoutBonusKcal;
   double _adherenceScore = 1.0;
 
+  String? _lastError;
+  String? get lastError =\u003e _lastError;
+
   StreamSubscription? _mealsSub;
 
   NutritionProvider({FirebaseFirestore? db, FirebaseAuth? auth})
@@ -46,18 +49,20 @@ class NutritionProvider extends ChangeNotifier {
 
   // Metas do dia (com adaptações de Carb Cycling e Bônus)
   double get activeTargetProtein {
-    if (_profile == null) return 0;
-    double p = _profile!.targetProtein;
+    final pProfile = _profile;
+    if (pProfile == null) return 0;
+    double p = pProfile.targetProtein;
     if (_postWorkoutBonusKcal == 250) p += 15;
     else if (_postWorkoutBonusKcal == 150) p += 10;
     return p;
   }
 
   double get activeTargetCarb {
-    if (_profile == null) return 0;
-    double c = _profile!.targetCarb;
-    if (_profile!.carbCyclingEnabled) {
-      c = NutritionEngine.applyCarbCycling(_profile!, _isTrainingDay)['carb'];
+    final pProfile = _profile;
+    if (pProfile == null) return 0;
+    double c = pProfile.targetCarb;
+    if (pProfile.carbCyclingEnabled) {
+      c = NutritionEngine.applyCarbCycling(pProfile, _isTrainingDay)['carb'];
     }
     if (_postWorkoutBonusKcal == 250) c += 50;
     else if (_postWorkoutBonusKcal == 150) c += 30;
@@ -66,10 +71,11 @@ class NutritionProvider extends ChangeNotifier {
   }
 
   double get activeTargetFat {
-    if (_profile == null) return 0;
-    double f = _profile!.targetFat;
-    if (_profile!.carbCyclingEnabled) {
-      f = NutritionEngine.applyCarbCycling(_profile!, _isTrainingDay)['fat'];
+    final pProfile = _profile;
+    if (pProfile == null) return 0;
+    double f = pProfile.targetFat;
+    if (pProfile.carbCyclingEnabled) {
+      f = NutritionEngine.applyCarbCycling(pProfile, _isTrainingDay)['fat'];
     }
     return f;
   }
@@ -79,17 +85,22 @@ class NutritionProvider extends ChangeNotifier {
   /// Inicia o perfil nutricional a partir do WorkoutProfile.
   /// (Geralmente chamado no login ou ao re-calcular metas)
   Future<void> initFromProfile(WorkoutProfile wp) async {
+    if (_isLoading) return;
     _isLoading = true;
+    _lastError = null;
     notifyListeners();
 
     try {
       final uid = _auth.currentUser?.uid;
-      if (uid == null) return;
+      if (uid == null) {
+        _lastError = 'Usuário não autenticado';
+        return;
+      }
 
       // Tenta carregar config salva
       final doc = await _db.doc('users/$uid/nutrition/settings').get();
       if (doc.exists) {
-        final savedMap = doc.data()!;
+        final savedMap = doc.data() ?? {};
         _profile = NutritionEngine.calculateProfile(
           wp,
           macroMode: savedMap['macroMode'] ?? 'automatic',
@@ -104,6 +115,7 @@ class NutritionProvider extends ChangeNotifier {
       await loadToday();
     } catch (e) {
       debugPrint('Error initializing nutrition: $e');
+      _lastError = e.toString();
     } finally {
       _isLoading = false;
       notifyListeners();

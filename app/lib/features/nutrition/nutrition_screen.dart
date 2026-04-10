@@ -156,7 +156,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
     return Column(
       children: [
         Text(
-          DateFormat('EEEE, d MMM', 'pt_BR').format(DateTime.now()).toUpperCase(),
+          DateFormat('EEEE, d MMM').format(DateTime.now()).toUpperCase(),
           style: const TextStyle(color: AppTheme.textSecondary, letterSpacing: 1.2, fontSize: 12),
         ),
         const SizedBox(height: 16),
