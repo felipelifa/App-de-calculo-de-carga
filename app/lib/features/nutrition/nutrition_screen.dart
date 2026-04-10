@@ -34,8 +34,36 @@ class _NutritionScreenState extends State<NutritionScreen> {
   Widget build(BuildContext context) {
     final provider = context.watch<NutritionProvider>();
 
-    if (provider.isLoading || provider.profile == null) {
+    if (provider.isLoading) {
       return const Center(child: CircularProgressIndicator(color: AppTheme.accent));
+    }
+
+    if (provider.profile == null) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.no_meals_outlined, size: 64, color: AppTheme.textSecondary),
+            const SizedBox(height: 16),
+            const Text(
+              'Perfil Nutricional não inicializado.',
+              style: TextStyle(color: AppTheme.textSecondary),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                final wp = context.read<WorkoutProfileProvider>().profile;
+                if (wp != null) {
+                  provider.initFromProfile(wp);
+                } else {
+                  context.go('/anamnese');
+                }
+              },
+              child: const Text('CONFIGURAR DIETA'),
+            ),
+          ],
+        ),
+      );
     }
 
     final target = provider.targetCalories;
