@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
@@ -29,6 +30,8 @@ class NotificationService {
 
   // Inicializao
   static Future<void> initialize() async {
+    // flutter_local_notifications nao funciona no Web
+    if (kIsWeb) return;
     if (_initialized) return;
     _initialized = true;
 
@@ -57,6 +60,7 @@ class NotificationService {
     String? payload,
     int id = 0,
   }) async {
+    if (kIsWeb) return;
     await initialize();
     const androidDetails = AndroidNotificationDetails(
       'general',
@@ -83,6 +87,7 @@ class NotificationService {
     required tz.TZDateTime scheduledDate,
     String channel = 'general',
   }) async {
+    if (kIsWeb) return;
     await initialize();
 
     final now = tz.TZDateTime.now(tz.local);
@@ -121,8 +126,15 @@ class NotificationService {
     );
   }
 
-  static Future<void> cancel(int id) => _notifications.cancel(id);
-  static Future<void> cancelAll() => _notifications.cancelAll();
+  static Future<void> cancel(int id) async {
+    if (kIsWeb) return;
+    await _notifications.cancel(id);
+  }
+
+  static Future<void> cancelAll() async {
+    if (kIsWeb) return;
+    await _notifications.cancelAll();
+  }
 
   // Lembrete de inatividade (se no treinou)
   static Future<void> scheduleInactivityReminder({
@@ -130,6 +142,7 @@ class NotificationService {
     int reminderMinute = 0,
     int daysSinceLastWorkout = 3,
   }) async {
+    if (kIsWeb) return;
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
 
@@ -167,6 +180,7 @@ class NotificationService {
 
   // Aviso de deload
   static Future<void> scheduleDeloadAlert() async {
+    if (kIsWeb) return;
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
 
@@ -193,6 +207,7 @@ class NotificationService {
     required String recordType,
     required String value,
   }) async {
+    if (kIsWeb) return;
     await initialize();
     await showLocalNotification(
       id: _idPr,
