@@ -6,6 +6,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../shared/theme/app_theme.dart';
 import 'nutrition_provider.dart';
+import '../workout/workout_profile_provider.dart';
 
 class NutritionScreen extends StatefulWidget {
   const NutritionScreen({super.key});
@@ -69,6 +70,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
     final target = provider.targetCalories;
     final consumed = provider.consumedCalories;
     final remaining = provider.remainingCalories;
+    final bonus = provider.postWorkoutBonusKcal;
 
     // Charts Data
     final List<_ChartData> chartData = [
@@ -96,8 +98,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            // Banner P\xf3s-Treino
-            final bonus = provider.postWorkoutBonusKcal;
+            // Banner Pós-Treino
             if (bonus != null && bonus > 0)
               _buildPostWorkoutBanner(bonus),
 

@@ -17,13 +17,13 @@ class NutritionProvider extends ChangeNotifier {
   List<MealEntry> _todayMeals = [];
   bool _isLoading = false;
   bool _isDisposed = false;
-  
+
   bool _isTrainingDay = false;
   int? _postWorkoutBonusKcal;
   double _adherenceScore = 1.0;
 
   String? _lastError;
-  String? get lastError =\u003e _lastError;
+  String? get lastError => _lastError;
 
   StreamSubscription? _mealsSub;
 
@@ -35,14 +35,14 @@ class NutritionProvider extends ChangeNotifier {
 
   void _init() {
     _auth.authStateChanges().listen((user) {
+      if (_isDisposed) return;
       if (user == null) {
         _profile = null;
+        _todayMeals = [];
         _mealsSub?.cancel();
         _mealsSub = null;
         notifyListeners();
       }
-      // O DashboardScreen j\xe1 chama initFromProfile quando o perfil do treino carrega.
-      // Poder\xedamos automatizar aqui tamb\xe9m se quisessemos.
     });
   }
 
@@ -56,12 +56,38 @@ class NutritionProvider extends ChangeNotifier {
 
   // Cálculos diários
   int get targetCalories => (_profile?.targetCalories ?? 0) + (_postWorkoutBonusKcal ?? 0);
-  int get consumedCalories => _todayMeals.fold(0, (sum, m) => sum + m.calories.round());
+  int get consumedCalories {
+    try {
+      return _todayMeals.fold(0, (sum, m) => sum + m.calories.round());
+    } catch (_) {
+      return 0;
+    }
+  }
   int get remainingCalories => targetCalories - consumedCalories;
 
-  double get consumedProtein => _todayMeals.fold(0.0, (sum, m) => sum + m.protein);
-  double get consumedCarb => _todayMeals.fold(0.0, (sum, m) => sum + m.carb);
-  double get consumedFat => _todayMeals.fold(0.0, (sum, m) => sum + m.fat);
+  double get consumedProtein {
+    try {
+      return _todayMeals.fold(0.0, (sum, m) => sum + m.protein);
+    } catch (_) {
+      return 0.0;
+    }
+  }
+
+  double get consumedCarb {
+    try {
+      return _todayMeals.fold(0.0, (sum, m) => sum + m.carb);
+    } catch (_) {
+      return 0.0;
+    }
+  }
+
+  double get consumedFat {
+    try {
+      return _todayMeals.fold(0.0, (sum, m) => sum + m.fat);
+    } catch (_) {
+      return 0.0;
+    }
+  }
 
   // Metas do dia (com adaptações de Carb Cycling e Bônus)
   double get activeTargetProtein {
@@ -78,7 +104,7 @@ class NutritionProvider extends ChangeNotifier {
     if (pProfile == null) return 0;
     double c = pProfile.targetCarb;
     if (pProfile.carbCyclingEnabled) {
-      c = NutritionEngine.applyCarbCycling(pProfile, _isTrainingDay)['carb'];
+      c = NutritionEngine.applyCarbCycling(pProfile, _isTrainingDay)['carb'] as double? ?? c;
     }
     if (_postWorkoutBonusKcal == 250) c += 50;
     else if (_postWorkoutBonusKcal == 150) c += 30;
@@ -91,7 +117,7 @@ class NutritionProvider extends ChangeNotifier {
     if (pProfile == null) return 0;
     double f = pProfile.targetFat;
     if (pProfile.carbCyclingEnabled) {
-      f = NutritionEngine.applyCarbCycling(pProfile, _isTrainingDay)['fat'];
+      f = NutritionEngine.applyCarbCycling(pProfile, _isTrainingDay)['fat'] as double? ?? f;
     }
     return f;
   }
@@ -99,7 +125,6 @@ class NutritionProvider extends ChangeNotifier {
   // --- Actions ---
 
   /// Inicia o perfil nutricional a partir do WorkoutProfile.
-  /// (Geralmente chamado no login ou ao re-calcular metas)
   Future<void> initFromProfile(WorkoutProfile wp) async {
     if (_isLoading) return;
     _isLoading = true;
@@ -119,16 +144,15 @@ class NutritionProvider extends ChangeNotifier {
         final savedMap = doc.data() ?? {};
         _profile = NutritionEngine.calculateProfile(
           wp,
-          macroMode: savedMap['macroMode'] ?? 'automatic',
-          dynamicAdaptationEnabled: savedMap['dynamicAdaptationEnabled'] ?? false,
-          carbCyclingEnabled: savedMap['carbCyclingEnabled'] ?? false,
+          macroMode: savedMap['macroMode'] as String? ?? 'automatic',
+          dynamicAdaptationEnabled: savedMap['dynamicAdaptationEnabled'] as bool? ?? false,
+          carbCyclingEnabled: savedMap['carbCyclingEnabled'] as bool? ?? false,
         );
       } else {
         _profile = NutritionEngine.calculateProfile(wp);
         await saveSettings();
       }
 
-      // Evita carregar novamente se j\xe1 estamos ouvindo por streams
       if (_mealsSub == null) {
         await loadToday();
       }
@@ -157,7 +181,8 @@ class NutritionProvider extends ChangeNotifier {
     required int exerciseCount,
     required double totalVolume,
   }) {
-    if (_profile == null || !_profile!.dynamicAdaptationEnabled) return;
+    final p = _profile;
+    if (p == null || !p.dynamicAdaptationEnabled) return;
 
     _isTrainingDay = true;
     _postWorkoutBonusKcal = NutritionEngine.calculatePostWorkoutBonus(
@@ -170,15 +195,17 @@ class NutritionProvider extends ChangeNotifier {
 
   /// Controle de Features Adaptativas
   Future<void> toggleDynamicAdaptation(bool value) async {
-    if (_profile == null) return;
-    _profile = _profile!.copyWith(dynamicAdaptationEnabled: value);
+    final p = _profile;
+    if (p == null) return;
+    _profile = p.copyWith(dynamicAdaptationEnabled: value);
     await saveSettings();
     notifyListeners();
   }
 
   Future<void> toggleCarbCycling(bool value) async {
-    if (_profile == null) return;
-    _profile = _profile!.copyWith(carbCyclingEnabled: value);
+    final p = _profile;
+    if (p == null) return;
+    _profile = p.copyWith(carbCyclingEnabled: value);
     await saveSettings();
     notifyListeners();
   }
@@ -208,8 +235,6 @@ class NutritionProvider extends ChangeNotifier {
         return MealEntry.fromMap(data, d.id);
       }).toList();
       if (!_isDisposed) notifyListeners();
-      
-      // Auto-update adherence / summary logic aqui no futuro
     }, onError: (e) => debugPrint('Error loading meals: $e'));
   }
 

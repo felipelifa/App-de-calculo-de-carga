@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class NutritionProfile {
   final int targetCalories;
   final double targetProtein;
