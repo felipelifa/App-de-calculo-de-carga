@@ -40,29 +40,50 @@ class _NutritionScreenState extends State<NutritionScreen> {
     }
 
     if (provider.profile == null) {
+      final error = provider.lastError;
       return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.no_meals_outlined, size: 64, color: AppTheme.textSecondary),
-            const SizedBox(height: 16),
-            const Text(
-              'Perfil Nutricional não inicializado.',
-              style: TextStyle(color: AppTheme.textSecondary),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                final wp = context.read<WorkoutProfileProvider>().profile;
-                if (wp != null) {
-                  provider.initFromProfile(wp);
-                } else {
-                  context.go('/anamnese');
-                }
-              },
-              child: const Text('CONFIGURAR DIETA'),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                error != null ? Icons.error_outline : Icons.no_meals_outlined,
+                size: 64,
+                color: error != null ? Colors.redAccent : AppTheme.textSecondary,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                error ?? 'Perfil Nutricional não inicializado.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: error != null ? Colors.redAccent : AppTheme.textSecondary,
+                  fontWeight: error != null ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+              if (error != null) ...[
+                const SizedBox(height: 12),
+                const Text(
+                  'Isso pode ser um problema de permissão ou falta de histórico. Tente o botão abaixo:',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: AppTheme.textSecondary, fontSize: 12),
+                ),
+              ],
+              const SizedBox(height: 24),
+              ElevatedButton(
+                style: error != null ? ElevatedButton.styleFrom(backgroundColor: Colors.redAccent.withOpacity(0.1)) : null,
+                onPressed: () {
+                  final wp = context.read<WorkoutProfileProvider>().profile;
+                  if (wp != null) {
+                    provider.initFromProfile(wp);
+                  } else {
+                    context.go('/anamnese');
+                  }
+                },
+                child: Text(error != null ? 'TENTAR NOVAMENTE' : 'CONFIGURAR DIETA'),
+              ),
+            ],
+          ),
         ),
       );
     }

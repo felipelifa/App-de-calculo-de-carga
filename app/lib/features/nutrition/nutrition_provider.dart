@@ -132,15 +132,23 @@ class NutritionProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final uid = _auth.currentUser?.uid;
-      if (uid == null) {
-        _lastError = 'Usuário não autenticado';
+      final user = _auth.currentUser;
+      if (user == null || user.uid.isEmpty) {
+        _lastError = 'Usuário não autenticado no Firebase';
+        debugPrint('NutritionProvider: UID is null or empty');
         return;
       }
+      final uid = user.uid;
+
+      debugPrint('NutritionProvider: Initializing for UID: $uid');
 
       // Tenta carregar config salva
-      final doc = await _db.doc('users/$uid/nutrition/settings').get();
+      final settingsRef = _db.doc('users/$uid/nutrition/settings');
+      debugPrint('NutritionProvider: Checking settings at ${settingsRef.path}');
+      
+      final doc = await settingsRef.get();
       if (doc.exists) {
+        debugPrint('NutritionProvider: Settings found, calculating profile...');
         final savedMap = doc.data() ?? {};
         _profile = NutritionEngine.calculateProfile(
           wp,
@@ -149,6 +157,7 @@ class NutritionProvider extends ChangeNotifier {
           carbCyclingEnabled: savedMap['carbCyclingEnabled'] as bool? ?? false,
         );
       } else {
+        debugPrint('NutritionProvider: No settings found, creating default...');
         _profile = NutritionEngine.calculateProfile(wp);
         await saveSettings();
       }
@@ -157,8 +166,8 @@ class NutritionProvider extends ChangeNotifier {
         await loadToday();
       }
     } catch (e) {
-      debugPrint('Error initializing nutrition: $e');
-      _lastError = e.toString();
+      debugPrint('!!! Error initializing nutrition: $e');
+      _lastError = 'Erro de Acesso: $e';
     } finally {
       if (!_isDisposed) {
         _isLoading = false;
