@@ -23,7 +23,16 @@ class NutritionProfile {
     DateTime? calculatedAt,
   }) : calculatedAt = calculatedAt ?? DateTime.now();
 
-  factory NutritionProfile.fromMap(Map<String, dynamic> map) {
+  factory NutritionProfile.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return NutritionProfile(targetCalories: 2000, targetProtein: 150, targetCarb: 200, targetFat: 66, tmb: 1600, tdee: 2000);
+    
+    DateTime? getCalcAt() {
+      final val = map['calculatedAt'];
+      if (val is Timestamp) return val.toDate();
+      if (val is int) return DateTime.fromMillisecondsSinceEpoch(val);
+      return DateTime.now();
+    }
+
     return NutritionProfile(
       targetCalories: (map['targetCalories'] as num?)?.toInt() ?? 2000,
       targetProtein: (map['targetProtein'] as num?)?.toDouble() ?? 150.0,
@@ -31,12 +40,10 @@ class NutritionProfile {
       targetFat: (map['targetFat'] as num?)?.toDouble() ?? 66.0,
       tmb: (map['tmb'] as num?)?.toInt() ?? 1600,
       tdee: (map['tdee'] as num?)?.toInt() ?? 2000,
-      macroMode: map['macroMode'] ?? 'automatic',
-      dynamicAdaptationEnabled: map['dynamicAdaptationEnabled'] ?? false,
-      carbCyclingEnabled: map['carbCyclingEnabled'] ?? false,
-      calculatedAt: map['calculatedAt'] != null 
-          ? DateTime.fromMillisecondsSinceEpoch(map['calculatedAt'])
-          : DateTime.now(),
+      macroMode: map['macroMode'] as String? ?? 'automatic',
+      dynamicAdaptationEnabled: map['dynamicAdaptationEnabled'] as bool? ?? false,
+      carbCyclingEnabled: map['carbCyclingEnabled'] as bool? ?? false,
+      calculatedAt: getCalcAt(),
     );
   }
 

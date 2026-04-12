@@ -16,6 +16,7 @@ class NutritionProvider extends ChangeNotifier {
   NutritionProfile? _profile;
   List<MealEntry> _todayMeals = [];
   bool _isLoading = false;
+  bool _isDisposed = false;
   
   bool _isTrainingDay = false;
   int? _postWorkoutBonusKcal;
@@ -135,8 +136,10 @@ class NutritionProvider extends ChangeNotifier {
       debugPrint('Error initializing nutrition: $e');
       _lastError = e.toString();
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      if (!_isDisposed) {
+        _isLoading = false;
+        notifyListeners();
+      }
     }
   }
 
@@ -204,7 +207,7 @@ class NutritionProvider extends ChangeNotifier {
         final data = d.data();
         return MealEntry.fromMap(data, d.id);
       }).toList();
-      notifyListeners();
+      if (!_isDisposed) notifyListeners();
       
       // Auto-update adherence / summary logic aqui no futuro
     }, onError: (e) => debugPrint('Error loading meals: $e'));
@@ -238,7 +241,15 @@ class NutritionProvider extends ChangeNotifier {
 
   @override
   void dispose() {
+    _isDisposed = true;
     _mealsSub?.cancel();
     super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (!_isDisposed) {
+      super.notifyListeners();
+    }
   }
 }
