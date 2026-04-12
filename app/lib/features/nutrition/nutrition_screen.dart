@@ -75,7 +75,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 onPressed: () {
                   final wp = context.read<WorkoutProfileProvider>().profile;
                   if (wp != null) {
-                    provider.initFromProfile(wp);
+                    context.push('/nutrition/anamnese');
                   } else {
                     context.go('/anamnese');
                   }
