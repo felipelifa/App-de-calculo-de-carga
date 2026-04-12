@@ -192,7 +192,7 @@ class WorkoutProfileProvider extends ChangeNotifier {
           .get();
       if (doc.exists && doc.data() != null) {
         _currentWorkoutRaw = doc.data();
-        _currentWorkout = GeneratedWorkout.fromMap(_currentWorkoutRaw!, getById);
+        _currentWorkout = GeneratedWorkout.fromMap(_currentWorkoutRaw ?? {}, getById);
         notifyListeners();
       }
     } catch (e) {

@@ -151,8 +151,21 @@ class ProgressionState {
         'lastUpdated': lastUpdated.toIso8601String(),
       };
 
-  factory ProgressionState.fromMap(Map<String, dynamic> map) {
+  factory ProgressionState.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return ProgressionState(
+      currentWeek: 1,
+      currentPhase: 'accumulation',
+      periodizationModel: 'linear',
+      isDeloadWeek: false,
+      weeksUntilDeload: 4,
+      exerciseProgress: {},
+      weeklyVolumeActual: {},
+      lastUpdated: DateTime.now(),
+    );
+
     final epRaw = map['exerciseProgress'] as Map<String, dynamic>? ?? {};
+    final wvRaw = map['weeklyVolumeActual'] as Map<String, dynamic>? ?? {};
+
     return ProgressionState(
       currentWeek: (map['currentWeek'] as num?)?.toInt() ?? 1,
       currentPhase: map['currentPhase'] as String? ?? 'accumulation',
@@ -160,10 +173,9 @@ class ProgressionState {
       isDeloadWeek: map['isDeloadWeek'] as bool? ?? false,
       weeksUntilDeload: (map['weeksUntilDeload'] as num?)?.toInt() ?? 4,
       exerciseProgress: epRaw.map(
-        (k, v) => MapEntry(k, ExerciseProgressState.fromMap(v as Map<String, dynamic>)),
+        (k, v) => MapEntry(k, ExerciseProgressState.fromMap(v as Map<String, dynamic>? ?? {})),
       ),
-      weeklyVolumeActual: (map['weeklyVolumeActual'] as Map<String, dynamic>? ?? {})
-          .map((k, v) => MapEntry(k, (v as num).toInt())),
+      weeklyVolumeActual: wvRaw.map((k, v) => MapEntry(k, (v as num?)?.toInt() ?? 0)),
       lastUpdated: map['lastUpdated'] != null
           ? DateTime.tryParse(map['lastUpdated'] as String) ?? DateTime.now()
           : DateTime.now(),
@@ -212,8 +224,10 @@ class ProgressionEngine {
     try {
       final doc = await _db.doc(_stateDoc).get();
       final data = doc.data();
-      if (!doc.exists || data == null) return null;
-      return ProgressionState.fromMap(data);
+      if (doc.exists && data != null) {
+        return ProgressionState.fromMap(data);
+      }
+      return null;
     } catch (e) {
       debugPrint('ProgressionEngine.loadState error: $e');
       return null;
