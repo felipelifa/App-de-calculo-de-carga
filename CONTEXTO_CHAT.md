@@ -24,6 +24,8 @@ Tema: Dark "Neo-Tactile".
 | Datas | intl ^0.19.0 |
 | Notificações | firebase_messaging ^16.1.3 + flutter_local_notifications ^18.0.1 |
 | Cloud Functions Client | cloud_functions ^6.1.0 |
+| HTTP (APIs) | http ^1.2.0 |
+| Gráficos | syncfusion_flutter_charts ^21 (Web-stable) |
 
 ---
 
@@ -110,6 +112,15 @@ App de calculo de carga/
             ├── pr_model.dart
             ├── pr_service.dart
             └── pr_celebration_dialog.dart
+        └── nutrition/
+            ├── nutrition_profile_model.dart   ← Perfil bio-adaptativo
+            ├── meal_model.dart                ← Log de refeições
+            ├── nutrition_provider.dart         ← Estado e persistência
+            ├── nutrition_engine.dart           ← Motor de TDEE e bônus pós-treino
+            ├── nutrition_service.dart          ← Busca (Local + Open Food Facts API)
+            ├── nutrition_screen.dart           ← Dashboard Nutricional
+            ├── food_search_screen.dart        ← Busca de alimentos
+            └── nutrition_settings_screen.dart  ← Ajustes manuais de macros e modo Bio-Adaptativo
 ```
 
 ---
@@ -132,6 +143,10 @@ App de calculo de carga/
 | /routines/detail | RoutineDetailScreen | Free |
 | /anamnese | AnamneseScreen | Free |
 | /prescribed | PrescribedWorkoutScreen | **Pro** |
+| /nutrition | NutritionScreen | **Pro** |
+| /nutrition/search | FoodSearchScreen | **Pro** |
+| /nutrition/settings | NutritionSettingsScreen | **Pro** |
+| /profile | ProfileScreen | Free |
 
 ---
 
@@ -154,6 +169,11 @@ users/{uid}
   proActivatedAt: timestamp      ← quando ativou
   proTokenUsed: string           ← código do token usado (opcional)
   fcmToken: string               ← token FCM para push remoto
+  
+  nutrition/settings             ← Perfil nutricional (alvo, macros, toggles)
+  nutrition/logs/{yyyy-mm-dd}
+    ├── meals/{mId}              ← Refeições registradas no dia
+    └── summary                  ← Agregado diário (kcal, P, C, G)
 
 config/apkVersion
 exercises/{exId}                 ← biblioteca global (seed_exercises.ts)
@@ -554,6 +574,16 @@ C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\C
     - **Sistemas de Energia Avançados (Bompa):** Redirecionamento da lógica de Endurance focando em Lactic/Power Endurance vs Aerobic Capacity (ME Long), ajustando volume automaticamente.
     - **Aquecimento RAMP (NSCA):** Substituiu aquecimentos genéricos. Adiciona protocolos estratificados de *Raise*, *Activate/Mobilize* e *Potentiate* (com *Power Skips* e *High-Knees*) focados na mecânica do esporte.
     - **Separação Explosivo vs Força Lenta (NSCA):** O app agora segrega "Dia de Levantamentos Explosivos", com recomendações expressas de foco de velocidade da concêntrica.
-    - **Home Fallback Seguro:** Planos Esportivos cruzam com a escolha de ambiente "Em Casa"; se necessário, expurgam equipamentos industriais e readaptam com exercícios da biblioteca *bodyweight* / *dumbbell* / *bands*.
+     - **Home Fallback Seguro:** Planos Esportivos cruzam com a escolha de ambiente "Em Casa"; se necessário, expurgam equipamentos industriais e readaptam com exercícios da biblioteca *bodyweight* / *dumbbell* / *bands*.
   - **Refatoração UX:** Seletor de RIR (Repetições de Reserva) totalmente reescrito na interface durante a execução. Rótulos e cores agora descrevem textualmente o esforço limitante (Ex: "0: Falha máxima (0 reps de sobra)"), criando um feedback em tempo real para regular a intensidade.
 
+### 📅 2026-04-10
+- **Foco:** Módulo de Nutrição Bio-Adaptativo (v6.2) & Digital Twin.
+- **Feito:**
+  - **Motor Nutricional Adaptativo:** Criado motor que calcula TDEE dinâmico (Mifflin-St Jeor) com bônus de recuperação pós-treino automático (+100 a +250 kcal/dia).
+  - **Carb Cycling Inteligente:** Implementada lógica de alternância de carboidratos (high carb em dias de treino / low carb em descanso) ligada ao calendário de treinos.
+  - **Busca de Alimentos Híbrida:** Integração local (Firestore TACO) + remota (Open Food Facts API) via pacote `http`.
+  - **Interface Nutricional:** Dashboard com gráficos de rosca e barras de macros (Syncfusion), tela de busca com debounce e tela de configurações manuais.
+  - **Ajustes de Estabilidade:** Resolvidos problemas de inicialização infinita no Web e corrigida a localização `pt_BR` para compatibilidade total.
+  - **Sync de Deploy:** Sincronizados os builds de Flutter Web com a pasta `/public/treino` da landing page na Vercel.
+- **Status:** Ecossistema Saúde + Treino 100% integrado. Nutrição funcional e adaptativa ativada para usuários Pro.
