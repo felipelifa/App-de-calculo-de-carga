@@ -570,6 +570,200 @@ C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\C
 - **Status:** Motor v5.0 entregue com 949 exercícios 100% funcionais. Alpha testing iniciado.
 
   - **Upgrade Motor v5.1 (Integração Teórica Bompa & NSCA):**
+---
+
+## Tema Neo-Tactile (app_theme.dart)
+
+| Token | Hex | Uso |
+|-------|-----|-----|
+| background | #0A0A0F | Fundo geral |
+| surface | #181822 | Cards |
+| surfaceHighlight | #232332 | Inputs |
+| accent | #3B82FF | Azul primário |
+| accentVariant | #1E5AD6 | Azul escuro |
+| success | #22C55E | Verde |
+| danger | #EF4444 | Vermelho / deload |
+| textPrimary | #F3F4F6 | Texto principal |
+| textSecondary | #9CA3AF | Texto auxiliar |
+
+---
+
+## O que já está implementado (✅)
+
+- ✅ Firebase backend completo (rules, indexes, 8 functions, volumeEngine, push notifications, pro token)
+- ✅ Auth (login, cadastro, logout)
+- ✅ Roteamento com GoRouter + redirect por auth
+- ✅ Tema escuro global Neo-Tactile
+- ✅ Dashboard com volume semanal, comparação semana anterior, volume por músculo, atalhos
+- ✅ Tela de Exercícios (lista, busca, filtro, adicionar, detalhe, editar)
+- ✅ ExerciseCard com GIF + placeholder por grupo muscular
+- ✅ ProgressionService — sugestões de carga
+- ✅ ProgressionScreen — duas abas: motor RIR + histórico
+- ✅ WorkoutScreen — sessão ativa com timer, FAB, RIR por exercício
+- ✅ WorkoutProvider — estado da sessão
+- ✅ WorkoutHistoryScreen
+- ✅ Analytics com gráficos Syncfusion
+- ✅ Sistema de PR — detecção, celebração animada, histórico
+- ✅ Gestão de rotinas — templates A/B/C
+- ✅ Anamnese — 4 passos
+- ✅ Motor de Prescrição v4 — 10 divisões (FB, UL, UL Str, PPL 3, PPL 5 hídrido, PPL 6, PPL Str, Arnold)
+- ✅ Biblioteca de 80+ exercícios com reabilitação, fadiga, length bias
+- ✅ PrescribedWorkoutScreen — RIR, cadência, cues, fase DUP, aquecimento, barras de fadiga
+- ✅ Motor de Progressão v2 — RIR, deload automático, plateau, bodyweight chain
+- ✅ ProgressionProvider — estado global de progressão
+- ✅ Arnold Split — Chest/Back, Shoulders/Arms, Legs
+- ✅ PPL+UL Híbrido — Push/Pull/Legs/Upper/Lower (5 dias)
+- ✅ Exercise Rotation Manager
+- ✅ Session Fatigue Accumulator + Pattern History Tracker
+- ✅ Notificações Push (FCM + local) — PR, deload, inatividade
+- ✅ Sistema Freemium Free/Pro com token de resgate
+- ✅ Landing Page Next.js na Vercel com download APK
+- ✅ Firestore rules — progression_state + personalRecords + proTokens
+- ✅ Firestore indexes
+- ✅ Integração de GIFs Anatômicos (gifdotreino.com) — 30+ exercícios principais atualizados com mapa muscular em vermelho para melhor visualização técnica. (2026-04-07)
+
+---
+
+## O que está pendente (⏳)
+
+- ⏳ Stripe integração (pagamentos reais para Pro)
+- ⏳ Deploy Flutter web na Vercel (caminho `/app`)
+- ⏳ Deploy Firebase Functions em produção (hoje emuladores)
+- ⏳ Remover botão "Ativar Pro (teste local)" do ProGate antes de produção
+- ⏳ Criar tokens Pro iniciais no Firestore para beta testers
+
+---
+
+## Como rodar localmente
+
+**Terminal 1 — Backend:**
+```bash
+cd "d:\App de calculo de carga\firebase\functions"
+npm install
+cd ..
+firebase emulators:start
+```
+Emulator UI: http://localhost:4000
+
+**Terminal 2 — App:**
+```bash
+cd "d:\App de calculo de carga\app"
+flutter pub get
+flutter run -d chrome
+```
+
+**Terminal 3 — Landing Page:**
+```bash
+cd "d:\App de calculo de carga\website"
+npm install
+npm run dev
+```
+→ http://localhost:3000
+
+**ATENÇÃO:** O main.dart atual tem os emuladores comentados.
+Para desenvolvimento local, descomentar em main.dart:
+```dart
+const String host = '127.0.0.1';
+FirebaseFirestore.instance.useFirestoreEmulator(host, 8080);
+FirebaseAuth.instance.useAuthEmulator(host, 9099);
+```
+
+---
+
+## Rodar no celular (Android)
+
+**Pré-requisitos:**
+1. Android Studio instalado (para os drivers do ADB)
+2. Celular com modo desenvolvedor ativado + depuração USB ativada
+3. Cabo USB conectado
+
+**Passos:**
+```bash
+flutter devices          # confirma que o celular aparece
+flutter run -d <device_id>
+```
+
+**IMPORTANTE para celular com Firebase real (não emulador):**
+- Descomentar as linhas de emulador em main.dart
+- Garantir que google-services.json está em app/android/app/
+- O firebase_options.dart já está configurado com o projeto real
+
+---
+
+## Deploy Vercel
+
+**Projeto:** https://vercel.com → buildfit-nine
+**URL:** https://buildfit-nine.vercel.app/
+
+**Configurações necessárias no dashboard Vercel:**
+- Build Command: `cd website && npm install && npm run build`
+- Output Directory: `website/.next/standalone`
+- Root Directory: vazio (projeto no root, vercel.json cuida do resto)
+
+**Após push para GitHub**, a Vercel detecta mudanças e rebuildar automaticamente.
+
+---
+
+## MCP configurado (Claude Desktop)
+
+Config em:
+```
+C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\Claude\claude_desktop_config.json
+```
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "C:\\Users\\Felipe\\AppData\\Roaming\\npm\\mcp-server-filesystem.cmd",
+      "args": ["d:\\App de calculo de carga"]
+    }
+  }
+}
+```
+
+---
+
+## Padrões de código
+
+- Sem lógica de negócio nas telas — tudo via Provider ou Service
+- Providers estendem ChangeNotifier
+- StreamSubscription sempre cancelado no dispose()
+- UIDs sempre de FirebaseAuth.instance.currentUser?.uid
+- Queries Firestore usando índices compostos existentes
+- Erros em português amigável
+- withValues(alpha:) em vez de withOpacity()
+- FCM: `fcmToken` armazenado em `users/{uid}.fcmToken` no Firestore
+- FCM bypass em web: `if (!kIsWeb)` antes de qualquer chamada FirebaseMessaging
+- `<receiver>` tags sempre dentro de `<application>` no AndroidManifest
+- Features PRO: gate via `ProGate.show(context)` + `ProService.isPro()`
+
+---
+
+## Registro de Progresso Diário
+
+### 📅 2026-04-07
+- **Foco:** Visual Assets & Exercise Guidance.
+- **Feito:**
+  - Avaliação de fontes de GIFs (Kaggle vs ExRx vs Gif do Treino).
+  - Substituição massiva de links de GIFs no `exercise_library.dart`.
+  - Migração para a CDN do `gifdotreino.com` — agora os GIFs mostram os músculos em vermelho (anatomical highlights).
+  - Adição de URLs para exercícios que estavam sem imagem (Puxadas, Remadas, Agachamentos).
+- **Pendências de hoje:** Finalizar mapeamento dos exercícios de reabilitação (rehab) com o novo site.
+
+### 📅 2026-04-09
+- **Foco:** Motor de Prescrição v5.0 & Reclassificação Universal da Biblioteca.
+- **Feito:**
+  - Implementação do `SportPlanBuilders` com suporte a Corrida, Futebol, MMA, BJJ, Natação, Bike e Calistenia.
+  - Atualização da Anamnese para capturar 12 objetivos esportivos e modalidades específicas.
+  - **Auditoria & Fix:** Identificado que 52% da biblioteca era inacessível (full_body generic).
+  - **Reclassificação Massiva:** Criado script inteligente que reclassificou 896 exercícios em segundos baseado em biomecânica e nomes em português.
+  - **Meta-data Injection:** Todos os 949 exercícios agora possuem perfis de fadiga (Spinal, Shoulder, Knee Load) e Length Bias (Schoenfeld 2021).
+  - **100% de Cobertura:** Realizada auditoria final confirmando que todos os 949 candidatos são agora selecionáveis pelo motor.
+  - Sincronização e Build final para Web concluídos.
+- **Status:** Motor v5.0 entregue com 949 exercícios 100% funcionais. Alpha testing iniciado.
+
+  - **Upgrade Motor v5.1 (Integração Teórica Bompa & NSCA):**
     - **Adaptação Anatômica Automática (Bompa):** Iniciantes têm volumes e intensidades forçados (RIR elevado, repetições 12-15) para fortificação de ligamentos antes do uso de cargas neurais.
     - **Sistemas de Energia Avançados (Bompa):** Redirecionamento da lógica de Endurance focando em Lactic/Power Endurance vs Aerobic Capacity (ME Long), ajustando volume automaticamente.
     - **Aquecimento RAMP (NSCA):** Substituiu aquecimentos genéricos. Adiciona protocolos estratificados de *Raise*, *Activate/Mobilize* e *Potentiate* (com *Power Skips* e *High-Knees*) focados na mecânica do esporte.
@@ -589,7 +783,7 @@ C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\C
 - **Status:** Ecossistema Saúde + Treino 100% integrado. Nutrição funcional e adaptativa ativada para usuários Pro.
 
 ### 📅 2026-04-12
-- **Foco:** Bio-Gestão Energética 7.0 & Estabilização Flutter Web.
+- **Foco:** Bio-Gestão Energética 7.0, Estabilização da API Nutricional e UX/UI.
 - **Feito:**
   - **Correção de Crash de Inicialização:** Removidos erros de "Null check operator" e corrigidos guards `kIsWeb` no `NotificationService`.
   - **Bio-Gestão 7.0 (Orçamento Semanal):** Evolução do módulo de nutrição de metas diárias fixas para orçamento energético semanal dinâmico.
