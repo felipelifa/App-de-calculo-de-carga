@@ -20,10 +20,6 @@ class NutritionProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool _isDisposed = false;
 
-  bool _isTrainingDay = false;
-  int? _postWorkoutBonusKcal;
-  double _adherenceScore = 1.0;
-
   String? _lastError;
   String? get lastError => _lastError;
 
@@ -48,117 +44,32 @@ class NutritionProvider extends ChangeNotifier {
     });
   }
 
-  // --- Getters ---
+  // --- Getters Adaptativos ---
   NutritionProfile? get profile => _profile;
   List<MealEntry> get todayMeals => _todayMeals;
   bool get isLoading => _isLoading;
-  bool get isTrainingDay => _isTrainingDay;
-  int? get postWorkoutBonusKcal => _postWorkoutBonusKcal;
-  double get adherenceScore => _adherenceScore;
 
-  // Cálculos diários
-  int get targetCalories => (_profile?.targetCalories ?? 0) + (_postWorkoutBonusKcal ?? 0);
-  int get consumedCalories {
-    try {
-      return _todayMeals.fold(0, (sum, m) => sum + m.calories.round());
-    } catch (_) {
-      return 0;
-    }
+  int get todayWeekday => DateTime.now().weekday;
+
+  /// Meta de calorias para hoje (já adaptada pelo motor se houver desvios)
+  int get targetCalories {
+    if (_profile == null) return 2000;
+    return _profile!.weeklyGoals[todayWeekday]?.calories ?? _profile!.targetCalories;
   }
 
-  // --- Orçamento Semanal (Pilar da Bio-Gestão) ---
-  int get weeklyBudget => _profile?.weeklyBudgetKcal ?? (targetCalories * 7);
-  
-  int get weeklyConsumed {
-    int total = 0;
-    _weeklyLogs.forEach((date, meals) {
-      for (var m in meals) {
-        total += m.calories.round();
-      }
-    });
-    return total;
-  }
+  double get targetProtein => _profile?.weeklyGoals[todayWeekday]?.protein ?? (_profile?.targetProtein ?? 150);
+  double get targetCarb => _profile?.weeklyGoals[todayWeekday]?.carb ?? (_profile?.targetCarb ?? 200);
+  double get targetFat => _profile?.weeklyGoals[todayWeekday]?.fat ?? (_profile?.targetFat ?? 66);
 
-  int get weeklyRemaining => weeklyBudget - weeklyConsumed;
+  int get consumedCalories => _todayMeals.fold(0, (sum, m) => sum + m.calories.round());
+  int get remainingCalories => targetCalories - consumedCalories;
 
-  /// Calcula a meta calórica para HOJE baseada no orçamento restante.
-  /// Se houve excesso ontem, a meta de hoje já vem ajustada.
-  int get adjustedDailyTarget {
-    final base = targetCalories;
-    final profile = _profile;
-    if (profile == null || profile.compensationStrategy == 'none') return base;
-
-    // Se estamos no modo automático/linear, calculamos o desvio da semana até ontem
-    // Para simplificar: (Orçamento total - Consumo até agora) / dias restantes
-    int remainingDays = NutritionEngine.daysRemainingInWeek();
-    if (remainingDays <= 0) remainingDays = 1;
-
-    // Se o consumo semanal está muito acima, redistribui
-    return (weeklyRemaining / remainingDays).round();
-  }
-
-  int get remainingCalories => adjustedDailyTarget - consumedCalories;
-
-  double get consumedProtein {
-    try {
-      return _todayMeals.fold(0.0, (sum, m) => sum + m.protein);
-    } catch (_) {
-      return 0.0;
-    }
-  }
-
-  double get consumedCarb {
-    try {
-      return _todayMeals.fold(0.0, (sum, m) => sum + m.carb);
-    } catch (_) {
-      return 0.0;
-    }
-  }
-
-  double get consumedFat {
-    try {
-      return _todayMeals.fold(0.0, (sum, m) => sum + m.fat);
-    } catch (_) {
-      return 0.0;
-    }
-  }
-
-  // Metas do dia (com adaptações de Carb Cycling e Bônus)
-  double get activeTargetProtein {
-    final pProfile = _profile;
-    if (pProfile == null) return 0;
-    double p = pProfile.targetProtein;
-    if (_postWorkoutBonusKcal == 250) p += 15;
-    else if (_postWorkoutBonusKcal == 150) p += 10;
-    return p;
-  }
-
-  double get activeTargetCarb {
-    final pProfile = _profile;
-    if (pProfile == null) return 0;
-    double c = pProfile.targetCarb;
-    if (pProfile.carbCyclingEnabled) {
-      c = NutritionEngine.applyCarbCycling(pProfile, _isTrainingDay)['carb'] as double? ?? c;
-    }
-    if (_postWorkoutBonusKcal == 250) c += 50;
-    else if (_postWorkoutBonusKcal == 150) c += 30;
-    else if (_postWorkoutBonusKcal == 100) c += 20;
-    return c;
-  }
-
-  double get activeTargetFat {
-    final pProfile = _profile;
-    if (pProfile == null) return 0;
-    double f = pProfile.targetFat;
-    if (pProfile.carbCyclingEnabled) {
-      f = NutritionEngine.applyCarbCycling(pProfile, _isTrainingDay)['fat'] as double? ?? f;
-    }
-    return f;
-  }
+  // --- Atributos de Monitoramento ---
+  double get adherenceScore => _profile?.adherenceScore ?? 1.0;
+  int get fatigueLevel => _profile?.nutritionalFatigueLevel ?? 0;
 
   // --- Actions ---
 
-  /// Inicia o perfil nutricional a partir do WorkoutProfile.
   Future<void> initFromProfile(WorkoutProfile wp) async {
     if (_isLoading) return;
     _isLoading = true;
@@ -166,43 +77,23 @@ class NutritionProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final user = _auth.currentUser;
-      if (user == null || user.uid.isEmpty) {
-        _lastError = 'Usuário não autenticado no Firebase';
-        debugPrint('NutritionProvider: UID is null or empty');
-        return;
-      }
-      final uid = user.uid;
+      final uid = _auth.currentUser?.uid;
+      if (uid == null) return;
 
-      debugPrint('NutritionProvider: Initializing for UID: $uid');
-
-      // Tenta carregar config salva
       final settingsRef = _db.doc('users/$uid/nutrition/settings');
-      debugPrint('NutritionProvider: Checking settings at ${settingsRef.path}');
-      
       final doc = await settingsRef.get();
+      
       if (doc.exists) {
-        debugPrint('NutritionProvider: Settings found, calculating profile...');
-        final savedMap = doc.data() ?? {};
-        _profile = NutritionEngine.calculateProfile(
-          wp,
-          macroMode: savedMap['macroMode'] as String? ?? 'automatic',
-          dynamicAdaptationEnabled: savedMap['dynamicAdaptationEnabled'] as bool? ?? false,
-          carbCyclingEnabled: savedMap['carbCyclingEnabled'] as bool? ?? false,
-        );
+        _profile = NutritionProfile.fromMap(doc.data());
       } else {
-        debugPrint('NutritionProvider: No settings found, creating default...');
+        // Gera o perfil inicial com a Bio-Gestão 7.0
         _profile = NutritionEngine.calculateProfile(wp);
         await saveSettings();
       }
 
-      if (_mealsSub == null) {
-        await loadToday();
-        await loadWeeklyIntake();
-      }
+      await loadToday();
     } catch (e) {
-      debugPrint('!!! Error initializing nutrition: $e');
-      _lastError = 'Erro de Acesso: $e';
+      _lastError = 'Erro ao carregar nutrição: $e';
     } finally {
       if (!_isDisposed) {
         _isLoading = false;
@@ -214,55 +105,60 @@ class NutritionProvider extends ChangeNotifier {
   Future<void> saveSettings() async {
     final uid = _auth.currentUser?.uid;
     if (uid == null || _profile == null) return;
-    final prof = _profile;
-    if (prof == null) return;
-    await _db.doc('users/$uid/nutrition/settings').set(prof.toMap(), SetOptions(merge: true));
+    await _db.doc('users/$uid/nutrition/settings').set(_profile!.toMap(), SetOptions(merge: true));
   }
 
-  /// Chamado pelo WorkoutProvider quando finaliza uma sessão
-  void applyPostWorkoutBonus({
-    required int durationMinutes,
-    required int exerciseCount,
-    required double totalVolume,
-  }) {
-    final p = _profile;
-    if (p == null || !p.dynamicAdaptationEnabled) return;
+  /// Registra uma refeição e aciona a recalibração automática do orçamento
+  Future<void> addMeal(MealEntry meal) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null || _profile == null) return;
 
-    _isTrainingDay = true;
-    _postWorkoutBonusKcal = NutritionEngine.calculatePostWorkoutBonus(
-      durationMinutes: durationMinutes,
-      exerciseCount: exerciseCount,
-      totalVolume: totalVolume,
+    final docRef = _db.collection('users/$uid/nutrition/logs/${_todayFormat(DateTime.now())}/meals').doc();
+    await docRef.set(meal.copyWith(id: docRef.id).toMap());
+    
+    // Recalibra o orçamento semanal com base no novo consumo
+    _triggerRecalibration();
+  }
+
+  Future<void> removeMeal(String mealId) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+    await _db.doc('users/$uid/nutrition/logs/${_todayFormat(DateTime.now())}/meals/$mealId').delete();
+    _triggerRecalibration();
+  }
+
+  /// Motor de Recalibração: Ajusta dias futuros se houver desvio hoje
+  void _triggerRecalibration() {
+    if (_profile == null) return;
+    
+    final updatedProfile = NutritionEngine.recalibrateRemainingBudget(
+      _profile!,
+      todayWeekday: todayWeekday,
+      actualCaloriesToday: consumedCalories,
     );
+    
+    if (updatedProfile != _profile) {
+      _profile = updatedProfile;
+      saveSettings();
+      notifyListeners();
+    }
+  }
+
+  /// Permite edição manual de um dia específico (respeita autonomia do usuário)
+  void updateDailyManualGoal(int weekday, DailyNutritionalGoal newGoal) {
+    if (_profile == null) return;
+    
+    final updatedGoals = Map<int, DailyNutritionalGoal>.from(_profile!.weeklyGoals);
+    updatedGoals[weekday] = newGoal.copyWith(isManual: true);
+    
+    _profile = _profile!.copyWith(weeklyGoals: updatedGoals);
+    saveSettings();
     notifyListeners();
   }
 
-  /// Controle de Features Adaptativas
-  Future<void> toggleDynamicAdaptation(bool value) async {
-    final p = _profile;
-    if (p == null) return;
-    _profile = p.copyWith(dynamicAdaptationEnabled: value);
-    await saveSettings();
-    notifyListeners();
-  }
+  // --- Helpers e Streams ---
 
-  Future<void> toggleCarbCycling(bool value) async {
-    final p = _profile;
-    if (p == null) return;
-    _profile = p.copyWith(carbCyclingEnabled: value);
-    await saveSettings();
-    notifyListeners();
-  }
-
-  Future<void> updateProfile(NutritionProfile newProfile) async {
-    _profile = newProfile;
-    await saveSettings();
-    notifyListeners();
-  }
-
-  // --- Meals Logging (Dia Atual) ---
-
-  String get _todayKey => DateFormat('yyyy-MM-dd').format(DateTime.now());
+  String _todayFormat(DateTime d) => DateFormat('yyyy-MM-dd').format(d);
 
   Future<void> loadToday() async {
     final uid = _auth.currentUser?.uid;
@@ -270,73 +166,12 @@ class NutritionProvider extends ChangeNotifier {
 
     _mealsSub?.cancel();
     _mealsSub = _db
-        .collection('users/$uid/nutrition/logs/$_todayKey/meals')
-        .orderBy('loggedAt', descending: true)
+        .collection('users/$uid/nutrition/logs/${_todayFormat(DateTime.now())}/meals')
         .snapshots()
         .listen((snap) {
-      _todayMeals = snap.docs.map((d) {
-        final data = d.data();
-        return MealEntry.fromMap(data, d.id);
-      }).toList();
-      
-      // Atualiza também no mapa semanal para consistência imediata
-      _weeklyLogs[_todayKey] = List.from(_todayMeals);
-      
+      _todayMeals = snap.docs.map((d) => MealEntry.fromMap(d.data(), d.id)).toList();
       if (!_isDisposed) notifyListeners();
-    }, onError: (e) => debugPrint('Error loading meals: $e'));
-  }
-
-  /// Carrega o consumo da semana inteira para calcular o orçamento
-  Future<void> loadWeeklyIntake() async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-
-    try {
-      // Pega os últimos 7 dias
-      final now = DateTime.now();
-      for (int i = 0; i < 7; i++) {
-        final date = now.subtract(Duration(days: i));
-        final dateKey = DateFormat('yyyy-MM-dd').format(date);
-        
-        // Evita recarregar o dia de hoje que já tem stream
-        if (dateKey == _todayKey) continue;
-
-        final snap = await _db
-            .collection('users/$uid/nutrition/logs/$dateKey/meals')
-            .get();
-        
-        _weeklyLogs[dateKey] = snap.docs.map((d) => MealEntry.fromMap(d.data(), d.id)).toList();
-      }
-      notifyListeners();
-    } catch (e) {
-      debugPrint('Error loading weekly intake: $e');
-    }
-  }
-
-  Future<void> addMeal(MealEntry meal) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-
-    final docRef = _db.collection('users/$uid/nutrition/logs/$_todayKey/meals').doc();
-    final newMeal = MealEntry(
-      id: docRef.id,
-      foodId: meal.foodId,
-      foodName: meal.foodName,
-      portionG: meal.portionG,
-      calories: meal.calories,
-      protein: meal.protein,
-      carb: meal.carb,
-      fat: meal.fat,
-      mealType: meal.mealType,
-      loggedAt: meal.loggedAt,
-    );
-    await docRef.set(newMeal.toMap());
-  }
-
-  Future<void> removeMeal(String mealId) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-    await _db.doc('users/$uid/nutrition/logs/$_todayKey/meals/$mealId').delete();
+    });
   }
 
   @override

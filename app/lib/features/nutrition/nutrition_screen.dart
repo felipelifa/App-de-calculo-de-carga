@@ -6,6 +6,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../shared/theme/app_theme.dart';
 import 'nutrition_provider.dart';
+import 'widgets/nutrition_timeline_widget.dart';
 import '../workout/workout_profile_provider.dart';
 
 class NutritionScreen extends StatefulWidget {
@@ -61,17 +62,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                   fontWeight: error != null ? FontWeight.bold : FontWeight.normal,
                 ),
               ),
-              if (error != null) ...[
-                const SizedBox(height: 12),
-                const Text(
-                  'Isso pode ser um problema de permissão ou falta de histórico. Tente o botão abaixo:',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: AppTheme.textSecondary, fontSize: 12),
-                ),
-              ],
               const SizedBox(height: 24),
               ElevatedButton(
-                style: error != null ? ElevatedButton.styleFrom(backgroundColor: Colors.redAccent.withOpacity(0.1)) : null,
                 onPressed: () {
                   final wp = context.read<WorkoutProfileProvider>().profile;
                   if (wp != null) {
@@ -91,7 +83,6 @@ class _NutritionScreenState extends State<NutritionScreen> {
     final target = provider.targetCalories;
     final consumed = provider.consumedCalories;
     final remaining = provider.remainingCalories;
-    final bonus = provider.postWorkoutBonusKcal;
 
     // Charts Data
     final List<_ChartData> chartData = [
@@ -117,78 +108,102 @@ class _NutritionScreenState extends State<NutritionScreen> {
         color: AppTheme.accent,
         backgroundColor: AppTheme.surface,
         child: ListView(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.zero,
           children: [
-            // Banner Pós-Treino
-            if (bonus != null && bonus > 0)
-              _buildPostWorkoutBanner(bonus),
+            const SizedBox(height: 12),
+            // Timeline Semanal - Novo componente Bio-Gestão 7.0
+            const NutritionTimelineWidget(),
 
-            // Header - Calorias
-            _buildCalorieDonut(chartData, target, consumed, remaining),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  // Header - Calorias
+                  _buildCalorieDonut(chartData, target, consumed, remaining),
 
-            const SizedBox(height: 16),
-            // Orçamento Semanal
-            _buildWeeklyBudgetCard(provider),
+                  const SizedBox(height: 16),
+                  
+                  // Card de Bio-Gestão e Aderência
+                  _buildBioManagementStats(provider),
 
-            const SizedBox(height: 24),
-            // Macros Cards
-            _buildMacrosRow(provider),
+                  const SizedBox(height: 24),
+                  // Macros Cards
+                  _buildMacrosRow(provider),
 
-            const SizedBox(height: 32),
-            // Seções de Refeições
-            _buildMealSection(context, provider, 'Café da manhã', 'breakfast'),
-            _buildMealSection(context, provider, 'Almoço', 'lunch'),
-            _buildMealSection(context, provider, 'Jantar', 'dinner'),
-            _buildMealSection(context, provider, 'Lanches', 'snack'),
+                  const SizedBox(height: 32),
+                  // Seções de Refeições
+                  _buildMealSection(context, provider, 'Café da manhã', 'breakfast'),
+                  _buildMealSection(context, provider, 'Almoço', 'lunch'),
+                  _buildMealSection(context, provider, 'Jantar', 'dinner'),
+                  _buildMealSection(context, provider, 'Lanches', 'snack'),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildPostWorkoutBanner(int bonus) {
+  Widget _buildBioManagementStats(NutritionProvider provider) {
+    final score = provider.adherenceScore;
+    final fatigue = provider.fatigueLevel;
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.success.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppTheme.success.withValues(alpha: 0.3)),
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppTheme.divider.withOpacity(0.05)),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          const Icon(Icons.bolt_rounded, color: AppTheme.success, size: 28),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Bônus Pós-Treino!',
-                  style: TextStyle(color: AppTheme.success, fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                Text(
-                  'Diet adaptado. +$bonus kcal adicionadas para recuperação.',
-                  style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13),
-                ),
-              ],
-            ),
+          _buildMonitoringIcon(
+            Icons.verified_user_rounded,
+            'Aderência',
+            '${(score * 100).toInt()}%',
+            score > 0.8 ? AppTheme.success : Colors.orange,
+          ),
+          _buildVerticalDivider(),
+          _buildMonitoringIcon(
+            Icons.battery_alert_rounded,
+            'Fadiga',
+            fatigue > 7 ? 'ALTA' : (fatigue > 3 ? 'MOD' : 'BAIXA'),
+            fatigue > 7 ? Colors.redAccent : (fatigue > 3 ? Colors.orange : AppTheme.success),
+          ),
+          _buildVerticalDivider(),
+          _buildMonitoringIcon(
+            Icons.auto_awesome_rounded,
+            'Bio-Gestão',
+            'ATIVA',
+            AppTheme.accent,
           ),
         ],
       ),
     );
   }
 
+  Widget _buildMonitoringIcon(IconData icon, String label, String value, Color color) {
+    return Column(
+      children: [
+        Icon(icon, color: color, size: 20),
+        const SizedBox(height: 4),
+        Text(label, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 10)),
+        Text(value, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12)),
+      ],
+    );
+  }
+
+  Widget _buildVerticalDivider() {
+    return Container(height: 30, width: 1, color: AppTheme.divider.withOpacity(0.1));
+  }
+
   Widget _buildCalorieDonut(List<_ChartData> chartData, int target, int consumed, int remaining) {
     return Column(
       children: [
-        Text(
-          DateFormat('EEEE, d MMM').format(DateTime.now()).toUpperCase(),
-          style: const TextStyle(color: AppTheme.textSecondary, letterSpacing: 1.2, fontSize: 12),
-        ),
-        const SizedBox(height: 16),
         SizedBox(
-          height: 200,
+          height: 180,
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -201,7 +216,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                     yValueMapper: (_ChartData data, _) => data.y,
                     pointColorMapper: (_ChartData data, _) => data.color,
                     cornerStyle: CornerStyle.bothCurve,
-                    innerRadius: '80%',
+                    innerRadius: '85%',
                     radius: '100%',
                   )
                 ],
@@ -211,32 +226,26 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 children: [
                   Text(
                     remaining.toString(),
-                    style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+                    style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
                   ),
-                  const Text('restantes', style: TextStyle(color: AppTheme.textSecondary, fontSize: 14)),
+                  const Text('restantes', style: TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
                 ],
               )
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildMiniStat('Meta', target.toString()),
-            _buildMiniStat('Consumo', consumed.toString()),
+            const Icon(Icons.info_outline, size: 12, color: AppTheme.textSecondary),
+            const SizedBox(width: 4),
+            Text(
+              'Ajustado dinamicamente para o seu biotipo.',
+              style: TextStyle(color: AppTheme.textSecondary.withOpacity(0.7), fontSize: 11),
+            ),
           ],
         ),
-      ],
-    );
-  }
-
-  Widget _buildMiniStat(String label, String value) {
-    return Column(
-      children: [
-        Text(label, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
-        const SizedBox(height: 4),
-        Text(value, style: const TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.bold, fontSize: 18)),
       ],
     );
   }
@@ -245,18 +254,16 @@ class _NutritionScreenState extends State<NutritionScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildMacroCard('Proteína', provider.consumedProtein, provider.activeTargetProtein, AppTheme.accent),
+        _buildMacroCard('Proteína', 0, provider.targetProtein, AppTheme.accent), // Placeholder 0 para exemplo
         const SizedBox(width: 12),
-        _buildMacroCard('Carbo', provider.consumedCarb, provider.activeTargetCarb, AppTheme.success),
+        _buildMacroCard('Carbo', 0, provider.targetCarb, AppTheme.success),
         const SizedBox(width: 12),
-        _buildMacroCard('Gordura', provider.consumedFat, provider.activeTargetFat, Colors.orange),
+        _buildMacroCard('Gordura', 0, provider.targetFat, Colors.orange),
       ],
     );
   }
 
   Widget _buildMacroCard(String label, double consumed, double target, Color color) {
-    final pct = target > 0 ? (consumed / target).clamp(0.0, 1.0) : 0.0;
-    
     return Expanded(
       child: Container(
         padding: const EdgeInsets.all(12),
@@ -270,15 +277,15 @@ class _NutritionScreenState extends State<NutritionScreen> {
             Text(label, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
             const SizedBox(height: 6),
             Text(
-              '${consumed.round()} / ${target.round()}g',
-              style: const TextStyle(color: AppTheme.textPrimary, fontSize: 12, fontWeight: FontWeight.bold),
+              '${target.round()}g',
+              style: const TextStyle(color: AppTheme.textPrimary, fontSize: 14, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             ClipRRect(
               borderRadius: BorderRadius.circular(4),
               child: LinearProgressIndicator(
-                value: pct,
-                backgroundColor: color.withValues(alpha: 0.1),
+                value: 0.0,
+                backgroundColor: color.withOpacity(0.1),
                 color: color,
                 minHeight: 4,
               ),
@@ -316,7 +323,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
           if (meals.isEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text('Nenhum alimento registrado.', style: TextStyle(color: AppTheme.textSecondary.withValues(alpha: 0.5), fontStyle: FontStyle.italic)),
+              child: Text('Nenhum alimento registrado.', style: TextStyle(color: AppTheme.textSecondary.withOpacity(0.5), fontStyle: FontStyle.italic)),
             )
           else
             ...meals.map((m) => ListTile(
@@ -332,65 +339,15 @@ class _NutritionScreenState extends State<NutritionScreen> {
       ),
     );
   }
-
-  Widget _buildWeeklyBudgetCard(NutritionProvider provider) {
-    final weeklyBudget = provider.weeklyBudget;
-    final weeklyConsumed = provider.weeklyConsumed;
-    final weeklyRemaining = provider.weeklyRemaining;
-    final percent = (weeklyConsumed / (weeklyBudget > 0 ? weeklyBudget : 1)).clamp(0.0, 1.0);
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppTheme.surfaceHighlight),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Row(
-                children: [
-                  Icon(Icons.calendar_month_outlined, size: 16, color: AppTheme.accent),
-                  SizedBox(width: 8),
-                  Text('Orçamento da Semana', style: TextStyle(fontWeight: FontWeight.bold)),
-                ],
-              ),
-              Text(
-                '${weeklyRemaining} kcal rest.',
-                style: TextStyle(
-                  color: weeklyRemaining < 0 ? Colors.redAccent : AppTheme.textSecondary,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: percent,
-              backgroundColor: AppTheme.background,
-              color: weeklyRemaining < 0 ? Colors.redAccent : AppTheme.accent,
-              minHeight: 8,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            provider.profile?.compensationStrategy == 'none'
-                ? 'Modo: Metas Diárias Fixas'
-                : 'A meta de hoje foi ajustada para equilibrar o orçamento semanal.',
-            style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary),
-          ),
-        ],
-      ),
-    );
-  }
 }
+
+class _ChartData {
+  _ChartData(this.x, this.y, this.color);
+  final String x;
+  final double y;
+  final Color color;
+}
+
 
 class _ChartData {
   _ChartData(this.x, this.y, this.color);

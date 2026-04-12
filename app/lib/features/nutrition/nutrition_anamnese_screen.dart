@@ -14,12 +14,10 @@ class NutritionAnamneseScreen extends StatefulWidget {
 }
 
 class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
-  String _goal = 'maintenance'; // 'cutting', 'bulking', 'maintenance'
-  String _activityLevel = 'moderate'; // 'sedentary', 'light', 'moderate', 'active', 'very_active'
+  String _goal = 'maintenance'; 
   String _macroMode = 'automatic';
   String _compensationStrategy = 'automatic';
-  int _mealsPerDay = 4;
-  bool _weeklyBudgetEnabled = true;
+  bool _dynamicAdaptationEnabled = true;
   bool _isLoading = false;
 
   @override
@@ -42,23 +40,24 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
     try {
       final wp = context.read<WorkoutProfileProvider>().profile;
       if (wp == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Por favor, complete a anamnese de treino primeiro.')),
-        );
         context.go('/anamnese');
         return;
       }
 
       final provider = context.read<NutritionProvider>();
-      final newProfile = NutritionEngine.calculateProfile(
+      
+      // Gera o perfil Bio-Gestão 7.0
+      final initialProfile = NutritionEngine.calculateProfile(
         wp,
         macroMode: _macroMode,
-        dynamicAdaptationEnabled: _weeklyBudgetEnabled,
-      ).copyWith(
+        dynamicAdaptationEnabled: _dynamicAdaptationEnabled,
+      );
+      
+      final finalProfile = initialProfile.copyWith(
         compensationStrategy: _compensationStrategy,
       );
 
-      await provider.updateProfile(newProfile);
+      await provider.updateProfile(finalProfile);
       if (mounted) context.go('/nutrition');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -74,85 +73,97 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
     return Scaffold(
       backgroundColor: AppTheme.background,
       appBar: AppBar(
-        title: const Text('Anamnese Nutricional'),
+        title: const Text('Configuração Bio-Gestão', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: AppTheme.surface,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Vamos configurar sua dieta',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Estes dados ajudam a calcular seus macros com precisão científica.',
-              style: TextStyle(color: AppTheme.textSecondary),
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [AppTheme.accent, AppTheme.accent.withOpacity(0.7)],
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.auto_awesome, color: Colors.white, size: 32),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Nutrição Adaptativa 7.0',
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                        Text(
+                          'Sua dieta agora se ajusta aos seus treinos e falhas automaticamente.',
+                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 32),
 
-            _buildSectionTitle('Qual seu objetivo atual?'),
+            _buildSectionTitle('Objetivo Fisiológico'),
             _buildChoiceChip<String>(
               options: {
-                'cutting': 'Cutting (Perder Gordura)',
-                'maintenance': 'Manutenção',
-                'bulking': 'Bulking (Ganhar Músculo)',
+                'cutting': 'Perda de Gordura',
+                'maintenance': 'Estabilização / Performance',
+                'bulking': 'Hipertrofia Ativa',
               },
               currentValue: _goal,
               onSelected: (val) => setState(() => _goal = val),
             ),
 
             const SizedBox(height: 24),
-            _buildSectionTitle('Frequência de refeições'),
-            Row(
-              children: [
-                Expanded(
-                  child: Slider(
-                    value: _mealsPerDay.toDouble(),
-                    min: 2,
-                    max: 8,
-                    divisions: 6,
-                    label: '$_mealsPerDay refeições',
-                    activeColor: AppTheme.accent,
-                    onChanged: (v) => setState(() => _mealsPerDay = v.toInt()),
-                  ),
-                ),
-                Text('$_mealsPerDay refeições', style: const TextStyle(fontWeight: FontWeight.bold)),
-              ],
-            ),
-
-            const SizedBox(height: 24),
-            _buildSectionTitle('Distribuição de Macronutrientes'),
+            _buildSectionTitle('Distribuição de Macros'),
             _buildChoiceChip<String>(
               options: {
-                'automatic': 'Equilibrada (Sugerido)',
-                'low_carb': 'Low Carb',
-                'high_protein': 'Alta Proteína',
+                'automatic': 'Prioridade Proteica (Sugestão)',
+                'percentage': 'Divisão Percentual',
+                'grams': 'Ajuste Manual em Gramas',
               },
               currentValue: _macroMode,
               onSelected: (val) => setState(() => _macroMode = val),
             ),
 
             const SizedBox(height: 24),
-            _buildSectionTitle('Bio-Gestão: Como lidar com deslizes?'),
+            _buildSectionTitle('Motor de Compensação'),
             const Text(
-              'Caso você saia da dieta hoje, como o sistema deve agir?',
+              'Como o sistema deve reagir se você comer a mais em um dia?',
               style: TextStyle(color: AppTheme.textSecondary, fontSize: 13),
             ),
             const SizedBox(height: 12),
             _buildChoiceChip<String>(
               options: {
-                'automatic': 'Diluir nos próximos dias (Suave)',
-                'linear': 'Compensar no dia seguinte (Rígido)',
-                'none': 'Ignorar e seguir o plano',
+                'automatic': 'Redistribuição Suave (Flexível)',
+                'linear': 'Compensação Direta (Focada)',
+                'none': 'Meta Fixa (Sem compensação)',
               },
               currentValue: _compensationStrategy,
               onSelected: (val) => setState(() => _compensationStrategy = val),
             ),
 
-            const SizedBox(height: 48),
+            const SizedBox(height: 12),
+            SwitchListTile(
+              title: const Text('Timeline Adaptativa', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+              subtitle: const Text('Ajusta calorias conforme os dias de treino da semana.', style: TextStyle(fontSize: 12)),
+              value: _dynamicAdaptationEnabled,
+              activeColor: AppTheme.accent,
+              onChanged: (v) => setState(() => _dynamicAdaptationEnabled = v),
+            ),
+
+            const SizedBox(height: 40),
             SizedBox(
               width: double.infinity,
               height: 56,
@@ -161,11 +172,13 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.accent,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  elevation: 8,
+                  shadowColor: AppTheme.accent.withOpacity(0.4),
                 ),
                 child: _isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
                     : const Text(
-                        'GERAR MINHA DIETA',
+                        'ATUALIZAR MEU PLANO',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
               ),
@@ -181,7 +194,7 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
       padding: const EdgeInsets.only(bottom: 12),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
       ),
     );
   }
@@ -200,17 +213,19 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
           label: Text(e.value),
           selected: isSelected,
           onSelected: (_) => onSelected(e.key),
-          selectedColor: AppTheme.accent.withOpacity(0.2),
+          selectedColor: AppTheme.accent.withOpacity(0.15),
           labelStyle: TextStyle(
             color: isSelected ? AppTheme.accent : AppTheme.textSecondary,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            fontSize: 13,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: isSelected ? AppTheme.accent : Colors.transparent),
+            side: BorderSide(color: isSelected ? AppTheme.accent : AppTheme.divider.withOpacity(0.1)),
           ),
         );
       }).toList(),
     );
   }
 }
+
