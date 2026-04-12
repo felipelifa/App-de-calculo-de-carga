@@ -211,8 +211,9 @@ class ProgressionEngine {
   Future<ProgressionState?> loadState() async {
     try {
       final doc = await _db.doc(_stateDoc).get();
-      if (!doc.exists || doc.data() == null) return null;
-      return ProgressionState.fromMap(doc.data()!);
+      final data = doc.data();
+      if (!doc.exists || data == null) return null;
+      return ProgressionState.fromMap(data);
     } catch (e) {
       debugPrint('ProgressionEngine.loadState error: $e');
       return null;

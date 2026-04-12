@@ -115,10 +115,10 @@ class WorkoutProfileProvider extends ChangeNotifier {
         .snapshots()
         .listen((snap) {
       if (snap.exists && snap.data() != null) {
-        _progressionState = ProgressionState.fromMap(snap.data()!);
+        _progressionState = ProgressionState.fromMap(snap.data() ?? {});
         notifyListeners();
       }
-    });
+    }, onError: (e) => debugPrint('ProgressionSub Error: $e'));
   }
 
   void _cleanup() {
@@ -178,7 +178,7 @@ class WorkoutProfileProvider extends ChangeNotifier {
 
     // Se temos dados brutos do listener, hidratamos imediatamente
     if (_currentWorkoutRaw != null) {
-      _currentWorkout = GeneratedWorkout.fromMap(_currentWorkoutRaw!, getById);
+      _currentWorkout = GeneratedWorkout.fromMap(_currentWorkoutRaw ?? {}, getById);
       _notifyAfter();
       return;
     }

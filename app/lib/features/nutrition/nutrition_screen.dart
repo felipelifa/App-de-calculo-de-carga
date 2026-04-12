@@ -96,9 +96,10 @@ class _NutritionScreenState extends State<NutritionScreen> {
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            // Banner Pós-Treino
-            if (provider.postWorkoutBonusKcal != null && provider.postWorkoutBonusKcal! > 0)
-              _buildPostWorkoutBanner(provider.postWorkoutBonusKcal!),
+            // Banner P\xf3s-Treino
+            final bonus = provider.postWorkoutBonusKcal;
+            if (bonus != null && bonus > 0)
+              _buildPostWorkoutBanner(bonus),
 
             // Header - Calorias
             _buildCalorieDonut(chartData, target, consumed, remaining),

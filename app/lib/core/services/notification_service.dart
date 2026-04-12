@@ -174,8 +174,8 @@ class NotificationService {
         .doc('users/$uid/progression_state/current')
         .get();
 
-    if (!doc.exists || doc.data() == null) return;
-    final data = doc.data()!;
+    final data = doc.data();
+    if (!doc.exists || data == null) return;
     if (data['isDeloadWeek'] != true) return;
 
     await showLocalNotification(

@@ -70,13 +70,13 @@ class ExerciseModel {
   });
 
   factory ExerciseModel.fromDoc(DocumentSnapshot doc) {
-    final d = doc.data() as Map<String, dynamic>;
+    final d = doc.data() as Map<String, dynamic>? ?? {};
     return ExerciseModel(
       id: doc.id,
       name: d['name'] as String? ?? '',
       nameEn: d['nameEn'] as String? ?? '',
-      primaryMuscles: List<String>.from(d['primaryMuscles'] ?? []),
-      secondaryMuscles: List<String>.from(d['secondaryMuscles'] ?? []),
+      primaryMuscles: (d['primaryMuscles'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      secondaryMuscles: (d['secondaryMuscles'] as List?)?.map((e) => e.toString()).toList() ?? [],
       movementPattern: d['movementPattern'] as String? ?? 'isolation',
       equipment: List<String>.from(d['equipment'] ?? []),
       environment: List<String>.from(d['environment'] ?? []),

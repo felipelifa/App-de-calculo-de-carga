@@ -111,7 +111,7 @@ class WorkoutProfile {
   });
 
   factory WorkoutProfile.fromDoc(DocumentSnapshot doc) {
-    final d = doc.data() as Map<String, dynamic>;
+    final d = doc.data() as Map<String, dynamic>? ?? {};
     return WorkoutProfile(
       uid: doc.id,
       age: (d['age'] as num?)?.toInt() ?? 25,

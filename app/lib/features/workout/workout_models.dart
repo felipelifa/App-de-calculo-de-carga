@@ -79,7 +79,7 @@ class WorkoutSession {
       exercises.fold(0, (acc, e) => acc + e.totalVolume);
 
   factory WorkoutSession.fromDoc(DocumentSnapshot doc) {
-    final d = doc.data() as Map<String, dynamic>;
+    final d = doc.data() as Map<String, dynamic>? ?? {};
     final rawExercises = (d['exercises'] as List<dynamic>?) ?? [];
     return WorkoutSession(
       id: doc.id,

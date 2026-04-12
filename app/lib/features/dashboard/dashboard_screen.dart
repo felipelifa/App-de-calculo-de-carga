@@ -130,13 +130,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final nutritionProvider = context.read<NutritionProvider>();
     
     profileProvider.loadCurrentWorkout(exerciseProvider.getById).then((_) {
+      if (!mounted) return;
       final profile = profileProvider.profile;
       if (profile != null) {
-        nutritionProvider.initFromProfile(profile);
+        // Usa microtask para evitar problemas de sincronia de estado no build
+        Future.microtask(() {
+          if (mounted) {
+            context.read<NutritionProvider>().initFromProfile(profile);
+          }
+        });
       }
     });
-
-    nutritionProvider.loadToday();
 
     final future = _DashboardService(
       db: FirebaseFirestore.instance,
@@ -201,10 +205,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 if (snap.connectionState == ConnectionState.waiting) {
                   return const _StatsShimmer();
                 }
-                if (snap.hasError || !snap.hasData) {
-                  return _ErrorBanner(onRetry: _load);
+                final data = snap.data;
+                if (snap.hasError || data == null) {
+                  return const SizedBox(
+                    height: 100,
+                    child: Center(child: Text('Erro ao carregar estat\xedsticas.', style: TextStyle(color: AppTheme.textSecondary))),
+                  );
                 }
-                return _StatsSection(data: snap.data!);
+                return _StatsSection(data: data);
               },
             ),
 
@@ -321,8 +329,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             FutureBuilder<DashboardData>(
               future: _future,
               builder: (context, snap) {
-                if (!snap.hasData) return const SizedBox.shrink();
-                final data = snap.data!;
+                final data = snap.data;
+                if (data == null) return const SizedBox.shrink();
                 if (data.volumeByMuscle.isEmpty) return const SizedBox.shrink();
                 return _VolumeByMuscleCard(data: data);
               },

@@ -28,7 +28,22 @@ class NutritionProvider extends ChangeNotifier {
 
   NutritionProvider({FirebaseFirestore? db, FirebaseAuth? auth})
       : _db = db ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
+        _auth = auth ?? FirebaseAuth.instance {
+    _init();
+  }
+
+  void _init() {
+    _auth.authStateChanges().listen((user) {
+      if (user == null) {
+        _profile = null;
+        _mealsSub?.cancel();
+        _mealsSub = null;
+        notifyListeners();
+      }
+      // O DashboardScreen j\xe1 chama initFromProfile quando o perfil do treino carrega.
+      // Poder\xedamos automatizar aqui tamb\xe9m se quisessemos.
+    });
+  }
 
   // --- Getters ---
   NutritionProfile? get profile => _profile;
@@ -112,7 +127,10 @@ class NutritionProvider extends ChangeNotifier {
         await saveSettings();
       }
 
-      await loadToday();
+      // Evita carregar novamente se j\xe1 estamos ouvindo por streams
+      if (_mealsSub == null) {
+        await loadToday();
+      }
     } catch (e) {
       debugPrint('Error initializing nutrition: $e');
       _lastError = e.toString();
@@ -125,7 +143,9 @@ class NutritionProvider extends ChangeNotifier {
   Future<void> saveSettings() async {
     final uid = _auth.currentUser?.uid;
     if (uid == null || _profile == null) return;
-    await _db.doc('users/$uid/nutrition/settings').set(_profile!.toMap(), SetOptions(merge: true));
+    final prof = _profile;
+    if (prof == null) return;
+    await _db.doc('users/$uid/nutrition/settings').set(prof.toMap(), SetOptions(merge: true));
   }
 
   /// Chamado pelo WorkoutProvider quando finaliza uma sessão
@@ -180,7 +200,10 @@ class NutritionProvider extends ChangeNotifier {
         .orderBy('loggedAt', descending: true)
         .snapshots()
         .listen((snap) {
-      _todayMeals = snap.docs.map((d) => MealEntry.fromMap(d.data(), d.id)).toList();
+      _todayMeals = snap.docs.map((d) {
+        final data = d.data();
+        return MealEntry.fromMap(data, d.id);
+      }).toList();
       notifyListeners();
       
       // Auto-update adherence / summary logic aqui no futuro
