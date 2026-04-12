@@ -587,3 +587,13 @@ C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\C
   - **Ajustes de Estabilidade:** Resolvidos problemas de inicialização infinita no Web e corrigida a localização `pt_BR` para compatibilidade total.
   - **Sync de Deploy:** Sincronizados os builds de Flutter Web com a pasta `/public/treino` da landing page na Vercel.
 - **Status:** Ecossistema Saúde + Treino 100% integrado. Nutrição funcional e adaptativa ativada para usuários Pro.
+
+### 📅 2026-04-12
+- **Foco:** Bio-Gestão Energética 7.0 & Estabilização Flutter Web.
+- **Feito:**
+  - **Correção de Crash de Inicialização:** Removidos erros de "Null check operator" e corrigidos guards `kIsWeb` no `NotificationService`.
+  - **Bio-Gestão 7.0 (Orçamento Semanal):** Evolução do módulo de nutrição de metas diárias fixas para orçamento energético semanal (14.000 kcal/semana).
+  - **Compensação de Desvios:** Implementada lógica de redistribuição de excessos (diluição automática de calorias extras nos dias seguintes para manter o balanço semanal).
+  - **Anamnese Nutricional:** Criada tela dedicada para configuração de dieta independente do treino.
+  - **Ajuste de Segurança (Firestore):** Reorganização das regras de segurança para evitar `permission-denied` em subcoleções no ambiente Web.
+- **Status:** Sistema adaptativo agora resiliente a variações de consumo e 100% funcional na web. Iniciando camada de registro alimentar avançado (MFP-Level).

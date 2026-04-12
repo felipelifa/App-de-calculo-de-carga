@@ -23,7 +23,74 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
   
   Timer? _debounce;
   List<FoodModel> _results = [];
+  List<FoodModel> _recentFoods = [];
   bool _isSearching = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRecents();
+  }
+
+  Future<void> _loadRecents() async {
+    // Busca do provedor ou serviço os alimentos mais usados
+    final provider = context.read<NutritionProvider>();
+    // Simulação de busca no histórico (que agora é carregado no provider)
+    setState(() {
+      _recentFoods = provider.todayMeals.map((m) => FoodModel(
+        id: m.foodId,
+        name: m.foodName,
+        caloriesPer100g: m.calories / (m.portionG / 100),
+        proteinPer100g: m.protein / (m.portionG / 100),
+        carbPer100g: m.carb / (m.portionG / 100),
+        fatPer100g: m.fat / (m.portionG / 100),
+        isVerified: true,
+      )).toList();
+    });
+  }
+
+  Future<void> _scanBarcode() async {
+    // Lógica de Scan (em Web mostra um input, em mobile abriria câmera)
+    String? code = await _showBarcodeInputDialog();
+    if (code != null && code.isNotEmpty) {
+      setState(() => _isSearching = true);
+      final food = await _service.searchByBarcode(code);
+      if (mounted) {
+        setState(() => _isSearching = false);
+        if (food != null) {
+          _openPortionSelector(context, food);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Produto não encontrado na base global.')),
+          );
+        }
+      }
+    }
+  }
+
+  Future<String?> _showBarcodeInputDialog() async {
+    String? code;
+    return showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.surface,
+        title: const Text('Escanear Produto', style: TextStyle(color: AppTheme.textPrimary)),
+        content: TextField(
+          autofocus: true,
+          style: const TextStyle(color: AppTheme.textPrimary),
+          decoration: const InputDecoration(
+            hintText: 'Digite o código de barras...',
+            hintStyle: TextStyle(color: AppTheme.textSecondary),
+          ),
+          onChanged: (v) => code = v,
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('CANCELAR')),
+          ElevatedButton(onPressed: () => Navigator.pop(context, code), child: const Text('BUSCAR')),
+        ],
+      ),
+    );
+  }
 
   void _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
@@ -76,6 +143,10 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
                 hintText: 'Buscar alimento (ex: Frango, Arroz)...',
                 hintStyle: const TextStyle(color: AppTheme.textSecondary),
                 prefixIcon: const Icon(Icons.search, color: AppTheme.textSecondary),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.qr_code_scanner, color: AppTheme.accent),
+                  onPressed: _scanBarcode,
+                ),
                 filled: true,
                 fillColor: AppTheme.background,
                 border: OutlineInputBorder(
@@ -95,29 +166,43 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
             )
           else
             Expanded(
-              child: ListView.builder(
-                itemCount: _results.length,
-                itemBuilder: (context, index) {
-                  final food = _results[index];
-                  return ListTile(
-                    title: Row(
-                      children: [
-                        Expanded(child: Text(food.name, style: const TextStyle(color: AppTheme.textPrimary))),
-                        if (food.isVerified)
-                          const Icon(Icons.verified, color: AppTheme.accent, size: 16),
-                      ],
-                    ),
-                    subtitle: Text(
-                      '${food.caloriesPer100g.round()} kcal / 100g' + (food.brand.isNotEmpty ? ' • ${food.brand}' : ''),
-                      style: const TextStyle(color: AppTheme.textSecondary),
-                    ),
-                    onTap: () => _openPortionSelector(context, food),
-                  );
-                },
+              child: ListView(
+                children: [
+                   if (_searchController.text.isEmpty && _recentFoods.isNotEmpty) ...[
+                     const Padding(
+                       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                       child: Text('FREQUENTES / RECENTES', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
+                     ),
+                     ..._recentFoods.take(5).map((food) => _buildFoodTile(food)),
+                     const Divider(color: AppTheme.surfaceHighlight),
+                     const Padding(
+                       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                       child: Text('SUGESTÕES', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
+                     ),
+                   ],
+                   ..._results.map((food) => _buildFoodTile(food)),
+                ],
               ),
             ),
         ],
       ),
+    );
+  }
+
+  Widget _buildFoodTile(FoodModel food) {
+    return ListTile(
+      title: Row(
+        children: [
+          Expanded(child: Text(food.name, style: const TextStyle(color: AppTheme.textPrimary))),
+          if (food.isVerified)
+            const Icon(Icons.verified, color: AppTheme.accent, size: 16),
+        ],
+      ),
+      subtitle: Text(
+        '${food.caloriesPer100g.round()} kcal / 100g' + (food.brand.isNotEmpty ? ' • ${food.brand}' : ''),
+        style: const TextStyle(color: AppTheme.textSecondary),
+      ),
+      onTap: () => _openPortionSelector(context, food),
     );
   }
 

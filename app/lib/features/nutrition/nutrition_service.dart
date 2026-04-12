@@ -18,8 +18,22 @@ class NutritionService {
     if (queryLower.isEmpty) return [];
 
     List<FoodModel> results = [];
+    final uid = _auth.currentUser?.uid;
 
-    // 1. Busca Local (Firestore - Base principal)
+    // 1. Busca em Alimentos Customizados do Usuário
+    if (uid != null) {
+      try {
+        final userSnap = await _db
+            .collection('users/$uid/nutrition/custom_foods')
+            .where('name', isGreaterThanOrEqualTo: queryLower)
+            .where('name', isLessThanOrEqualTo: '$queryLower\uf8ff')
+            .limit(5)
+            .get();
+        results.addAll(userSnap.docs.map((d) => FoodModel.fromMap(d.data(), d.id)));
+      } catch (_) {}
+    }
+
+    // 2. Busca Local (Firestore - Base principal Verificada)
     try {
       final snap = await _db
           .collection('foods')
@@ -28,34 +42,74 @@ class NutritionService {
           .limit(10)
           .get();
       
-      results.addAll(snap.docs.map((doc) => FoodModel.fromMap(doc.data(), doc.id)));
-    } catch (_) {
-      // Ignora erro local e tenta API
-    }
+      for (final doc in snap.docs) {
+        final f = FoodModel.fromMap(doc.data(), doc.id);
+        if (!results.any((r) => r.id == f.id)) {
+          results.add(f);
+        }
+      }
+    } catch (_) {}
 
-    // 2. Tenta Open Food Facts se não houver muitos resultados locais
+    // 3. Tenta Open Food Facts se não houver muitos resultados locais
     if (results.length < 5) {
       try {
         final offResults = await _searchOpenFoodFacts(queryLower);
-        // Filtra duplicatas básicas por nome
         for (final food in offResults) {
           if (!results.any((r) => r.name.toLowerCase() == food.name.toLowerCase())) {
             results.add(food);
           }
         }
-      } catch (_) {
-        // Ignora erro da API
-      }
+      } catch (_) {}
     }
 
-    // Ordena priorizando "Verificados"
+    // Ordenação Inteligente: 
+    // 1. Frequência de Uso (timesConsumed)
+    // 2. Verificação (isVerified)
+    // 3. Nome
     results.sort((a, b) {
+      if (b.timesConsumed != a.timesConsumed) return b.timesConsumed.compareTo(a.timesConsumed);
       if (a.isVerified && !b.isVerified) return -1;
       if (!a.isVerified && b.isVerified) return 1;
-      return 0;
+      return a.name.compareTo(b.name);
     });
 
     return results;
+  }
+
+  /// Busca alimento pelo código de barras
+  Future<FoodModel?> searchByBarcode(String code) async {
+    // 1. Tenta local
+    final local = await _db.collection('foods').where('barcode', isEqualTo: code).limit(1).get();
+    if (local.docs.isNotEmpty) {
+      return FoodModel.fromMap(local.docs.first.data(), local.docs.first.id);
+    }
+
+    // 2. Tenta API Global (Open Food Facts)
+    try {
+      final uri = Uri.parse('https://world.openfoodfacts.org/api/v0/product/$code.json');
+      final response = await http.get(uri);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['status'] == 1) {
+          final p = data['product'];
+          final nutriments = p['nutriments'];
+          if (nutriments != null) {
+            return FoodModel(
+              id: 'off_$code',
+              name: p['product_name_pt'] ?? p['product_name'] ?? 'Produto Desconhecido',
+              brand: p['brands'] ?? '',
+              caloriesPer100g: (nutriments['energy-kcal_100g'] ?? 0).toDouble(),
+              proteinPer100g: (nutriments['proteins_100g'] ?? 0).toDouble(),
+              carbPer100g: (nutriments['carbohydrates_100g'] ?? 0).toDouble(),
+              fatPer100g: (nutriments['fat_100g'] ?? 0).toDouble(),
+              barcode: code,
+            );
+          }
+        }
+      }
+    } catch (_) {}
+    
+    return null;
   }
 
   Future<List<FoodModel>> _searchOpenFoodFacts(String query) async {

@@ -10,6 +10,8 @@ class FoodModel {
   final double defaultPortionG;
   final bool isVerified;
   final bool isUserCreated;
+  final String? barcode;
+  final int timesConsumed;
 
   FoodModel({
     required this.id,
@@ -23,6 +25,8 @@ class FoodModel {
     this.defaultPortionG = 100.0,
     this.isVerified = false,
     this.isUserCreated = false,
+    this.barcode,
+    this.timesConsumed = 0,
   });
 
   factory FoodModel.fromMap(Map<String, dynamic> map, String id) {
@@ -38,6 +42,8 @@ class FoodModel {
       defaultPortionG: (map['defaultPortionG'] as num?)?.toDouble() ?? 100.0,
       isVerified: map['isVerified'] ?? false,
       isUserCreated: map['isUserCreated'] ?? false,
+      barcode: map['barcode'] as String?,
+      timesConsumed: (map['timesConsumed'] as num?)?.toInt() ?? 0,
     );
   }
 
@@ -53,6 +59,8 @@ class FoodModel {
       'defaultPortionG': defaultPortionG,
       'isVerified': isVerified,
       'isUserCreated': isUserCreated,
+      'barcode': barcode,
+      'timesConsumed': timesConsumed,
     };
   }
 }
