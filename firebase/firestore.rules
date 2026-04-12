@@ -108,11 +108,11 @@ service cloud.firestore {
       match /personalRecords/{exId} {
         allow read, write: if isOwner(uid);
       }
-    }
 
-    // ── NUTRITION RULES (Standalone for reliability) ─────────────
-    match /users/{userId}/nutrition/{allPaths=**} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      // ── NUTRITION RULES (Inside user scope) ─────────────────────
+      match /nutrition/{allPaths=**} {
+        allow read, write: if isOwner(uid);
+      }
     }
 
     // ── global foods library — read-only for authenticated ───────
