@@ -9,6 +9,7 @@ import '../../shared/theme/app_theme.dart';
 import '../workout/workout_profile_provider.dart';
 import '../workout/progression_provider.dart';
 import '../exercises/exercise_provider.dart';
+import '../nutrition/nutrition_provider.dart';
 
 class DashboardData {
   final double weekVolume;
@@ -135,6 +136,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       }
     });
 
+    nutritionProvider.loadToday();
+
     final future = _DashboardService(
       db: FirebaseFirestore.instance,
       uid: uid,
@@ -217,6 +220,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             const SizedBox(height: 20),
 
+            // NOVO: Card de Nutrição
+            Consumer<NutritionProvider>(
+              builder: (context, np, _) {
+                if (np.profile == null) return const SizedBox.shrink();
+                return _NutritionSummaryCard(provider: np);
+              },
+            ),
+
+            const SizedBox(height: 20),
+
+            const SizedBox(height: 20),
+
             const _SectionLabel('ATALHOS'),
             const SizedBox(height: 12),
 
@@ -256,6 +271,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               subtitle: 'Catálogo e progressão de carga',
               color: AppTheme.accent,
               onTap: () => context.go('/exercises'),
+            ),
+            const SizedBox(height: 10),
+            _NavCard(
+              icon: Icons.local_dining_rounded,
+              label: 'Dieta e Nutrição',
+              subtitle: 'Planejamento adaptativo e contagem de macros',
+              color: AppTheme.success,
+              onTap: () => context.push('/nutrition'),
             ),
             const SizedBox(height: 10),
             _NavCard(
@@ -605,6 +628,86 @@ const Map<String, Color> _muscleColors = {
   'Core': Color(0xFFF97316),
   'Panturrilha': Color(0xFF84CC16),
 };
+
+class _NutritionSummaryCard extends StatelessWidget {
+  final NutritionProvider provider;
+  const _NutritionSummaryCard({required this.provider});
+
+  @override
+  Widget build(BuildContext context) {
+    final remaining = provider.remainingCalories;
+    final target = provider.targetCalories;
+    final pct = target > 0 ? (provider.consumedCalories / target).clamp(0.0, 1.0) : 0.0;
+    
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const _SectionLabel('NUTRIÇÃO DO DIA'),
+              GestureDetector(
+                onTap: () => context.push('/nutrition'),
+                child: const Text('DETALHES', style: TextStyle(color: AppTheme.accent, fontSize: 11, fontWeight: FontWeight.bold)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '$remaining',
+                      style: const TextStyle(color: AppTheme.textPrimary, fontSize: 32, fontWeight: FontWeight.bold),
+                    ),
+                    const Text('kcal restantes', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 16),
+              _buildMacroMini('P', provider.consumedProtein, provider.activeTargetProtein, AppTheme.accent),
+              const SizedBox(width: 8),
+              _buildMacroMini('C', provider.consumedCarb, provider.activeTargetCarb, AppTheme.success),
+              const SizedBox(width: 8),
+              _buildMacroMini('G', provider.consumedFat, provider.activeTargetFat, Colors.orange),
+            ],
+          ),
+          const SizedBox(height: 16),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: pct,
+              backgroundColor: AppTheme.accent.withValues(alpha: 0.1),
+              color: AppTheme.accent,
+              minHeight: 6,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMacroMini(String label, double consumed, double target, Color color) {
+    return Column(
+      children: [
+        Text(label, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 10)),
+        const SizedBox(height: 2),
+        Text('${consumed.round()}g', style: const TextStyle(color: AppTheme.textPrimary, fontSize: 12, fontWeight: FontWeight.bold)),
+        Text('${target.round()}g', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 9)),
+      ],
+    );
+  }
+}
 
 class _VolumeByMuscleCard extends StatelessWidget {
   final DashboardData data;

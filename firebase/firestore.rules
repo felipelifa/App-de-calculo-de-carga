@@ -108,6 +108,17 @@ service cloud.firestore {
       match /personalRecords/{exId} {
         allow read, write: if isOwner(uid);
       }
+
+      // nutrition
+      match /nutrition/{document=**} {
+        allow read, write: if isOwner(uid);
+      }
+    }
+
+    // ── global foods library — read-only for authenticated ───────
+    match /foods/{foodId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
     }
 
     // ── proTokens — apenas leitura, resgate é via Cloud Function ─
