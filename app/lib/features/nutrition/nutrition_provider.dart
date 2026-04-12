@@ -15,6 +15,8 @@ class NutritionProvider extends ChangeNotifier {
 
   NutritionProfile? _profile;
   List<MealEntry> _todayMeals = [];
+  Map<String, List<MealEntry>> _weeklyLogs = {}; // Data -> Refeições
+  
   bool _isLoading = false;
   bool _isDisposed = false;
 
@@ -63,7 +65,39 @@ class NutritionProvider extends ChangeNotifier {
       return 0;
     }
   }
-  int get remainingCalories => targetCalories - consumedCalories;
+
+  // --- Orçamento Semanal (Pilar da Bio-Gestão) ---
+  int get weeklyBudget => _profile?.weeklyBudgetKcal ?? (targetCalories * 7);
+  
+  int get weeklyConsumed {
+    int total = 0;
+    _weeklyLogs.forEach((date, meals) {
+      for (var m in meals) {
+        total += m.calories.round();
+      }
+    });
+    return total;
+  }
+
+  int get weeklyRemaining => weeklyBudget - weeklyConsumed;
+
+  /// Calcula a meta calórica para HOJE baseada no orçamento restante.
+  /// Se houve excesso ontem, a meta de hoje já vem ajustada.
+  int get adjustedDailyTarget {
+    final base = targetCalories;
+    final profile = _profile;
+    if (profile == null || profile.compensationStrategy == 'none') return base;
+
+    // Se estamos no modo automático/linear, calculamos o desvio da semana até ontem
+    // Para simplificar: (Orçamento total - Consumo até agora) / dias restantes
+    int remainingDays = NutritionEngine.daysRemainingInWeek();
+    if (remainingDays <= 0) remainingDays = 1;
+
+    // Se o consumo semanal está muito acima, redistribui
+    return (weeklyRemaining / remainingDays).round();
+  }
+
+  int get remainingCalories => adjustedDailyTarget - consumedCalories;
 
   double get consumedProtein {
     try {
@@ -164,6 +198,7 @@ class NutritionProvider extends ChangeNotifier {
 
       if (_mealsSub == null) {
         await loadToday();
+        await loadWeeklyIntake();
       }
     } catch (e) {
       debugPrint('!!! Error initializing nutrition: $e');
@@ -243,8 +278,39 @@ class NutritionProvider extends ChangeNotifier {
         final data = d.data();
         return MealEntry.fromMap(data, d.id);
       }).toList();
+      
+      // Atualiza também no mapa semanal para consistência imediata
+      _weeklyLogs[_todayKey] = List.from(_todayMeals);
+      
       if (!_isDisposed) notifyListeners();
     }, onError: (e) => debugPrint('Error loading meals: $e'));
+  }
+
+  /// Carrega o consumo da semana inteira para calcular o orçamento
+  Future<void> loadWeeklyIntake() async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+
+    try {
+      // Pega os últimos 7 dias
+      final now = DateTime.now();
+      for (int i = 0; i < 7; i++) {
+        final date = now.subtract(Duration(days: i));
+        final dateKey = DateFormat('yyyy-MM-dd').format(date);
+        
+        // Evita recarregar o dia de hoje que já tem stream
+        if (dateKey == _todayKey) continue;
+
+        final snap = await _db
+            .collection('users/$uid/nutrition/logs/$dateKey/meals')
+            .get();
+        
+        _weeklyLogs[dateKey] = snap.docs.map((d) => MealEntry.fromMap(d.data(), d.id)).toList();
+      }
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error loading weekly intake: $e');
+    }
   }
 
   Future<void> addMeal(MealEntry meal) async {

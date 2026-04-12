@@ -17,7 +17,9 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
   String _goal = 'maintenance'; // 'cutting', 'bulking', 'maintenance'
   String _activityLevel = 'moderate'; // 'sedentary', 'light', 'moderate', 'active', 'very_active'
   String _macroMode = 'automatic';
+  String _compensationStrategy = 'automatic';
   int _mealsPerDay = 4;
+  bool _weeklyBudgetEnabled = true;
   bool _isLoading = false;
 
   @override
@@ -46,9 +48,9 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
       final newProfile = NutritionEngine.calculateProfile(
         wp,
         macroMode: _macroMode,
-        dynamicAdaptationEnabled: true,
+        dynamicAdaptationEnabled: _weeklyBudgetEnabled,
       ).copyWith(
-        // Aqui poderíamos customizar mais baseado nos inputs exclusivos da nutrição
+        compensationStrategy: _compensationStrategy,
       );
 
       await provider.updateProfile(newProfile);
@@ -126,6 +128,23 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
               },
               currentValue: _macroMode,
               onSelected: (val) => setState(() => _macroMode = val),
+            ),
+
+            const SizedBox(height: 24),
+            _buildSectionTitle('Bio-Gestão: Como lidar com deslizes?'),
+            const Text(
+              'Caso você saia da dieta hoje, como o sistema deve agir?',
+              style: TextStyle(color: AppTheme.textSecondary, fontSize: 13),
+            ),
+            const SizedBox(height: 12),
+            _buildChoiceChip<String>(
+              options: {
+                'automatic': 'Diluir nos próximos dias (Suave)',
+                'linear': 'Compensar no dia seguinte (Rígido)',
+                'none': 'Ignorar e seguir o plano',
+              },
+              currentValue: _compensationStrategy,
+              onSelected: (val) => setState(() => _compensationStrategy = val),
             ),
 
             const SizedBox(height: 48),

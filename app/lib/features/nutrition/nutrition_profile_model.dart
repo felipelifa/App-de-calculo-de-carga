@@ -10,6 +10,12 @@ class NutritionProfile {
   final String macroMode; // 'automatic', 'percentage', 'grams', 'hybrid'
   final bool dynamicAdaptationEnabled; // Ativa a distribuição semanal preditiva (Bio-energia)
   final bool carbCyclingEnabled;
+  
+  // -- Novos campos para Orçamento Semanal --
+  final int weeklyBudgetKcal;
+  final String compensationStrategy; // 'automatic', 'linear', 'manual', 'none'
+  final String distributionMode; // 'balanced', 'aggressive_carb_cycling', 'fat_focus'
+  
   final DateTime calculatedAt;
 
   NutritionProfile({
@@ -22,6 +28,9 @@ class NutritionProfile {
     this.macroMode = 'automatic',
     this.dynamicAdaptationEnabled = false,
     this.carbCyclingEnabled = false,
+    this.weeklyBudgetKcal = 0,
+    this.compensationStrategy = 'automatic',
+    this.distributionMode = 'balanced',
     DateTime? calculatedAt,
   }) : calculatedAt = calculatedAt ?? DateTime.now();
 
@@ -45,6 +54,9 @@ class NutritionProfile {
       macroMode: map['macroMode'] as String? ?? 'automatic',
       dynamicAdaptationEnabled: map['dynamicAdaptationEnabled'] as bool? ?? false,
       carbCyclingEnabled: map['carbCyclingEnabled'] as bool? ?? false,
+      weeklyBudgetKcal: (map['weeklyBudgetKcal'] as num?)?.toInt() ?? ((map['targetCalories'] as num?)?.toInt() ?? 2000) * 7,
+      compensationStrategy: map['compensationStrategy'] as String? ?? 'automatic',
+      distributionMode: map['distributionMode'] as String? ?? 'balanced',
       calculatedAt: getCalcAt(),
     );
   }
@@ -60,6 +72,9 @@ class NutritionProfile {
       'macroMode': macroMode,
       'dynamicAdaptationEnabled': dynamicAdaptationEnabled,
       'carbCyclingEnabled': carbCyclingEnabled,
+      'weeklyBudgetKcal': weeklyBudgetKcal,
+      'compensationStrategy': compensationStrategy,
+      'distributionMode': distributionMode,
       'calculatedAt': calculatedAt.millisecondsSinceEpoch,
     };
   }
@@ -74,6 +89,9 @@ class NutritionProfile {
     String? macroMode,
     bool? dynamicAdaptationEnabled,
     bool? carbCyclingEnabled,
+    int? weeklyBudgetKcal,
+    String? compensationStrategy,
+    String? distributionMode,
     DateTime? calculatedAt,
   }) {
     return NutritionProfile(
@@ -86,6 +104,9 @@ class NutritionProfile {
       macroMode: macroMode ?? this.macroMode,
       dynamicAdaptationEnabled: dynamicAdaptationEnabled ?? this.dynamicAdaptationEnabled,
       carbCyclingEnabled: carbCyclingEnabled ?? this.carbCyclingEnabled,
+      weeklyBudgetKcal: weeklyBudgetKcal ?? this.weeklyBudgetKcal,
+      compensationStrategy: compensationStrategy ?? this.compensationStrategy,
+      distributionMode: distributionMode ?? this.distributionMode,
       calculatedAt: calculatedAt ?? this.calculatedAt,
     );
   }

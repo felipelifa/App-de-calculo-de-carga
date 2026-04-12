@@ -58,6 +58,9 @@ class NutritionEngine {
       macroMode: macroMode,
       dynamicAdaptationEnabled: dynamicAdaptationEnabled,
       carbCyclingEnabled: carbCyclingEnabled,
+      weeklyBudgetKcal: targetCalories * 7,
+      compensationStrategy: 'automatic',
+      distributionMode: 'balanced',
     );
   }
 
@@ -132,6 +135,57 @@ class NutritionEngine {
     return {
       'carb': adjustedCarb,
       'fat': adjustedFat,
+    };
+  }
+
+  /// --- Lógica de Orçamento Semanal Adaptativo ---
+
+  /// Calcula quantos dias restam na semana corrente (considerando reset na segunda-feira)
+  static int daysRemainingInWeek() {
+    int weekday = DateTime.now().weekday; // 1 = Monday, 7 = Sunday
+    return 7 - (weekday - 1);
+  }
+
+  /// Redistribui um excedente ou déficit calórico entre os dias restantes da semana.
+  /// [excessKcal]: Positivo se excedeu a meta, negativo se consumiu menos.
+  /// [remainingDays]: Dias que restam para compensar.
+  /// [strategy]: 'automatic', 'linear'
+  static int calculateAdjustmentForRemainingDays({
+    required int excessKcal,
+    required int remainingDays,
+    String strategy = 'automatic',
+  }) {
+    if (remainingDays <= 0) return 0;
+
+    if (strategy == 'linear') {
+      return -(excessKcal ~/ remainingDays);
+    }
+
+    // Estratégia 'automatic': se o excesso for muito grande (>1000), 
+    // tenta diluir em mais dias ou limita a redução diária a 15% para não quebrar a aderência.
+    double adjustment = -(excessKcal / remainingDays);
+    
+    // Limite de segurança: não reduzir mais que 300kcal por dia para compensar
+    if (adjustment < -300) return -300;
+    if (adjustment > 300) return 300;
+
+    return adjustment.round();
+  }
+
+  /// Alinha a distribuição semanal com a carga de treino.
+  /// Se hoje foi um treino "Pesado" (bonus > 200), o sistema pode sugerir 
+  /// "puxar" 150kcal dos dias de descanso da própria semana.
+  static Map<String, int> redistributeForHighDemand({
+    required int bonusKcal,
+    required int remainingDays,
+  }) {
+    if (bonusKcal < 200 || remainingDays < 1) return {'today': bonusKcal, 'nextDays': 0};
+
+    // Puxa metade do bônus de dias futuros para garantir performance hoje sem estourar a semana
+    int pullFromFuture = (bonusKcal * 0.5).round();
+    return {
+      'today': bonusKcal,
+      'nextDays': -(pullFromFuture ~/ remainingDays),
     };
   }
 }

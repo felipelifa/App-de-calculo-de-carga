@@ -126,6 +126,10 @@ class _NutritionScreenState extends State<NutritionScreen> {
             // Header - Calorias
             _buildCalorieDonut(chartData, target, consumed, remaining),
 
+            const SizedBox(height: 16),
+            // Orçamento Semanal
+            _buildWeeklyBudgetCard(provider),
+
             const SizedBox(height: 24),
             // Macros Cards
             _buildMacrosRow(provider),
@@ -324,6 +328,64 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 provider.removeMeal(m.id);
               },
             )),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWeeklyBudgetCard(NutritionProvider provider) {
+    final weeklyBudget = provider.weeklyBudget;
+    final weeklyConsumed = provider.weeklyConsumed;
+    final weeklyRemaining = provider.weeklyRemaining;
+    final percent = (weeklyConsumed / (weeklyBudget > 0 ? weeklyBudget : 1)).clamp(0.0, 1.0);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.surfaceHighlight),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Row(
+                children: [
+                  Icon(Icons.calendar_month_outlined, size: 16, color: AppTheme.accent),
+                  SizedBox(width: 8),
+                  Text('Orçamento da Semana', style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
+              Text(
+                '${weeklyRemaining} kcal rest.',
+                style: TextStyle(
+                  color: weeklyRemaining < 0 ? Colors.redAccent : AppTheme.textSecondary,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: percent,
+              backgroundColor: AppTheme.background,
+              color: weeklyRemaining < 0 ? Colors.redAccent : AppTheme.accent,
+              minHeight: 8,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            provider.profile?.compensationStrategy == 'none'
+                ? 'Modo: Metas Diárias Fixas'
+                : 'A meta de hoje foi ajustada para equilibrar o orçamento semanal.',
+            style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary),
+          ),
         ],
       ),
     );
