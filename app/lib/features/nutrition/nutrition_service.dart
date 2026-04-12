@@ -94,14 +94,21 @@ class NutritionService {
           final p = data['product'];
           final nutriments = p['nutriments'];
           if (nutriments != null) {
+            double parseNum(dynamic val) {
+              if (val == null) return 0.0;
+              if (val is num) return val.toDouble();
+              if (val is String) return double.tryParse(val) ?? 0.0;
+              return 0.0;
+            }
+
             return FoodModel(
               id: 'off_$code',
               name: p['product_name_pt'] ?? p['product_name'] ?? 'Produto Desconhecido',
               brand: p['brands'] ?? '',
-              caloriesPer100g: (nutriments['energy-kcal_100g'] ?? 0).toDouble(),
-              proteinPer100g: (nutriments['proteins_100g'] ?? 0).toDouble(),
-              carbPer100g: (nutriments['carbohydrates_100g'] ?? 0).toDouble(),
-              fatPer100g: (nutriments['fat_100g'] ?? 0).toDouble(),
+              caloriesPer100g: parseNum(nutriments['energy-kcal_100g']),
+              proteinPer100g: parseNum(nutriments['proteins_100g']),
+              carbPer100g: parseNum(nutriments['carbohydrates_100g']),
+              fatPer100g: parseNum(nutriments['fat_100g']),
               barcode: code,
             );
           }
@@ -116,39 +123,51 @@ class NutritionService {
     final uri = Uri.parse(
         'https://world.openfoodfacts.org/cgi/search.pl?search_terms=$query&search_simple=1&action=process&json=1&lc=pt&page_size=10');
     
-    final response = await http.get(uri);
-    if (response.statusCode != 200) return [];
+    try {
+      final response = await http.get(uri);
+      if (response.statusCode != 200) return [];
 
-    final data = json.decode(response.body);
-    final products = data['products'] as List?;
-    if (products == null) return [];
+      final data = json.decode(response.body);
+      final products = data['products'] as List?;
+      if (products == null) return [];
 
-    List<FoodModel> parsed = [];
-    for (var p in products) {
-      final nutriments = p['nutriments'];
-      if (nutriments == null) continue;
+      List<FoodModel> parsed = [];
+      for (var p in products) {
+        final nutriments = p['nutriments'];
+        if (nutriments == null) continue;
 
-      // Pega valores / 100g
-      final energy = (nutriments['energy-kcal_100g'] ?? 0).toDouble();
-      final protein = (nutriments['proteins_100g'] ?? 0).toDouble();
-      final carb = (nutriments['carbohydrates_100g'] ?? 0).toDouble();
-      final fat = (nutriments['fat_100g'] ?? 0).toDouble();
-      
-      final nameStr = p['product_name_pt'] ?? p['product_name'] ?? '';
-      if (nameStr.isEmpty || energy == 0) continue; // Ignora cadastro inútil
+        double parseNum(dynamic val) {
+          if (val == null) return 0.0;
+          if (val is num) return val.toDouble();
+          if (val is String) return double.tryParse(val) ?? 0.0;
+          return 0.0;
+        }
 
-      parsed.add(FoodModel(
-        id: 'off_${p['code']}',
-        name: nameStr,
-        brand: p['brands'] ?? '',
-        caloriesPer100g: energy,
-        proteinPer100g: protein,
-        carbPer100g: carb,
-        fatPer100g: fat,
-        isVerified: false,
-      ));
+        // Pega valores / 100g
+        final energy = parseNum(nutriments['energy-kcal_100g']);
+        final protein = parseNum(nutriments['proteins_100g']);
+        final carb = parseNum(nutriments['carbohydrates_100g']);
+        final fat = parseNum(nutriments['fat_100g']);
+        
+        final nameStr = p['product_name_pt'] ?? p['product_name'] ?? '';
+        if (nameStr.isEmpty || energy == 0) continue; // Ignora cadastro inútil
+
+        parsed.add(FoodModel(
+          id: 'off_${p['code']}',
+          name: nameStr,
+          brand: p['brands'] ?? '',
+          caloriesPer100g: energy,
+          proteinPer100g: protein,
+          carbPer100g: carb,
+          fatPer100g: fat,
+          isVerified: false,
+        ));
+      }
+      return parsed;
+    } catch (e) {
+      print('Erro no Open Food Facts: $e');
+      return [];
     }
-    return parsed;
   }
 
   Future<void> addCustomFood(FoodModel food) async {
