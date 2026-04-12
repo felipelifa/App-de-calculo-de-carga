@@ -27,8 +27,13 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
     super.initState();
     final wp = context.read<WorkoutProfileProvider>().profile;
     if (wp != null) {
-      _goal = wp.goal;
-      // Map activity level from workout profile if possible
+      if (wp.primaryGoal == 'fat_loss') {
+        _goal = 'cutting';
+      } else if (wp.primaryGoal == 'hypertrophy') {
+        _goal = 'bulking';
+      } else {
+        _goal = 'maintenance';
+      }
     }
   }
 
