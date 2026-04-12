@@ -43,14 +43,18 @@ class NutritionTimelineWidget extends StatelessWidget {
                   final goal = profile.weeklyGoals[weekday];
                   if (goal == null) return const SizedBox.shrink();
 
-                  final isToday = weekday == today;
+                  final isToday = weekday == DateTime.now().weekday;
+                  final isSelected = weekday == provider.selectedWeekday;
                   final dayLabel = _getWeekdayLabel(weekday);
 
-                  return _TimelineDayCard(
-                    label: dayLabel,
-                    goal: goal,
-                    isToday: isToday,
-                    isPast: weekday < today,
+                  return GestureDetector(
+                    onTap: () => provider.selectWeekday(weekday),
+                    child: _TimelineDayCard(
+                      label: dayLabel,
+                      goal: goal,
+                      isToday: isToday,
+                      isSelected: isSelected,
+                    ),
                   );
                 },
               ),
@@ -79,32 +83,33 @@ class _TimelineDayCard extends StatelessWidget {
   final String label;
   final DailyNutritionalGoal goal;
   final bool isToday;
-  final bool isPast;
+  final bool isSelected;
 
   const _TimelineDayCard({
     required this.label,
     required this.goal,
     required this.isToday,
-    required this.isPast,
+    required this.isSelected,
   });
 
   @override
   Widget build(BuildContext context) {
     final bool isHighDemand = goal.label == 'Alta Demanda';
+    final Color activeColor = isToday ? AppTheme.accent : AppTheme.accent.withOpacity(0.6);
 
     return Container(
       width: 80,
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
       decoration: BoxDecoration(
-        color: isToday ? AppTheme.accent : AppTheme.surface,
+        color: isSelected ? activeColor : AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isToday ? AppTheme.accent : AppTheme.divider.withOpacity(0.1),
+          color: isSelected ? activeColor : AppTheme.divider.withOpacity(0.1),
           width: 2,
         ),
-        boxShadow: isToday ? [
+        boxShadow: isSelected ? [
           BoxShadow(
-            color: AppTheme.accent.withOpacity(0.3),
+            color: activeColor.withOpacity(0.3),
             blurRadius: 10,
             offset: const Offset(0, 4),
           )
@@ -113,20 +118,27 @@ class _TimelineDayCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          if (isToday)
+            Container(
+              margin: const EdgeInsets.only(bottom: 2),
+              width: 4,
+              height: 4,
+              decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+            ),
           Text(
             label,
             style: TextStyle(
-              color: isToday ? Colors.white : AppTheme.textSecondary,
+              color: isSelected ? Colors.white : AppTheme.textSecondary,
               fontSize: 10,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
             '${goal.calories}',
             style: TextStyle(
-              color: isToday ? Colors.white : AppTheme.textPrimary,
-              fontSize: 16,
+              color: isSelected ? Colors.white : AppTheme.textPrimary,
+              fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -134,13 +146,13 @@ class _TimelineDayCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: isToday ? Colors.white.withOpacity(0.2) : (isHighDemand ? AppTheme.accent.withOpacity(0.1) : Colors.transparent),
+              color: isSelected ? Colors.white.withOpacity(0.2) : (isHighDemand ? AppTheme.accent.withOpacity(0.1) : Colors.transparent),
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
-              isHighDemand ? 'TREINO' : 'RELAS',
+              isHighDemand ? 'TREINO' : 'DESC.',
               style: TextStyle(
-                color: isToday ? Colors.white : (isHighDemand ? AppTheme.accent : AppTheme.textSecondary.withOpacity(0.5)),
+                color: isSelected ? Colors.white : (isHighDemand ? AppTheme.accent : AppTheme.textSecondary.withOpacity(0.5)),
                 fontSize: 8,
                 fontWeight: FontWeight.bold,
               ),
@@ -151,3 +163,4 @@ class _TimelineDayCard extends StatelessWidget {
     );
   }
 }
+

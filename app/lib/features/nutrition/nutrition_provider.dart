@@ -49,20 +49,34 @@ class NutritionProvider extends ChangeNotifier {
   List<MealEntry> get todayMeals => _todayMeals;
   bool get isLoading => _isLoading;
 
-  int get todayWeekday => DateTime.now().weekday;
+  int _selectedWeekday = DateTime.now().weekday;
+  int get selectedWeekday => _selectedWeekday;
 
-  /// Meta de calorias para hoje (já adaptada pelo motor se houver desvios)
-  int get targetCalories {
-    if (_profile == null) return 2000;
-    return _profile!.weeklyGoals[todayWeekday]?.calories ?? _profile!.targetCalories;
+  void selectWeekday(int day) {
+    _selectedWeekday = day;
+    loadSelectedDay();
+    notifyListeners();
   }
 
-  double get targetProtein => _profile?.weeklyGoals[todayWeekday]?.protein ?? (_profile?.targetProtein ?? 150);
-  double get targetCarb => _profile?.weeklyGoals[todayWeekday]?.carb ?? (_profile?.targetCarb ?? 200);
-  double get targetFat => _profile?.weeklyGoals[todayWeekday]?.fat ?? (_profile?.targetFat ?? 66);
+  /// Meta de calorias para o dia selecionado
+  int get targetCalories {
+    if (_profile == null) return 2000;
+    return _profile!.weeklyGoals[_selectedWeekday]?.calories ?? _profile!.targetCalories;
+  }
 
-  int get consumedCalories => _todayMeals.fold(0, (sum, m) => sum + m.calories.round());
+  double get targetProtein => _profile?.weeklyGoals[_selectedWeekday]?.protein ?? (_profile?.targetProtein ?? 150);
+  double get targetCarb => _profile?.weeklyGoals[_selectedWeekday]?.carb ?? (_profile?.targetCarb ?? 200);
+  double get targetFat => _profile?.weeklyGoals[_selectedWeekday]?.fat ?? (_profile?.targetFat ?? 66);
+
+  List<MealEntry> _selectedDayMeals = [];
+  List<MealEntry> get selectedDayMeals => _selectedWeekday == DateTime.now().weekday ? _todayMeals : _selectedDayMeals;
+
+  int get consumedCalories => selectedDayMeals.fold(0, (sum, m) => sum + m.calories.round());
   int get remainingCalories => targetCalories - consumedCalories;
+
+  double get consumedProtein => selectedDayMeals.fold(0, (sum, m) => sum + m.protein);
+  double get consumedCarb => selectedDayMeals.fold(0, (sum, m) => sum + m.carb);
+  double get consumedFat => selectedDayMeals.fold(0, (sum, m) => sum + m.fat);
 
   // --- Atributos de Monitoramento ---
   double get adherenceScore => _profile?.adherenceScore ?? 1.0;
@@ -154,6 +168,32 @@ class NutritionProvider extends ChangeNotifier {
     _profile = _profile!.copyWith(weeklyGoals: updatedGoals);
     saveSettings();
     notifyListeners();
+  }
+
+  Future<void> loadSelectedDay() async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+
+    // Calcula a data baseada no dia selecionado (considerando a semana atual)
+    final now = DateTime.now();
+    final firstDayOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    final targetDate = firstDayOfWeek.add(Duration(days: _selectedWeekday - 1));
+    final dateKey = _todayFormat(targetDate);
+
+    if (_selectedWeekday == now.weekday) {
+        await loadToday();
+        return;
+    }
+
+    try {
+      final snap = await _db
+          .collection('users/$uid/nutrition/logs/$dateKey/meals')
+          .get();
+      _selectedDayMeals = snap.docs.map((d) => MealEntry.fromMap(d.data(), d.id)).toList();
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error loading day $dateKey: $e');
+    }
   }
 
   // --- Helpers e Streams ---

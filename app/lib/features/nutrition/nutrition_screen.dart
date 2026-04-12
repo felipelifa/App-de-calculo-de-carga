@@ -83,6 +83,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
     final target = provider.targetCalories;
     final consumed = provider.consumedCalories;
     final remaining = provider.remainingCalories;
+    final meals = provider.selectedDayMeals;
 
     // Charts Data
     final List<_ChartData> chartData = [
@@ -96,12 +97,6 @@ class _NutritionScreenState extends State<NutritionScreen> {
         title: const Text('Nutrição Inteligente', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: AppTheme.surface,
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings_outlined, color: AppTheme.textSecondary),
-            onPressed: () => context.push('/nutrition/settings'),
-          )
-        ],
       ),
       body: RefreshIndicator(
         onRefresh: () async => provider.loadToday(),
@@ -111,17 +106,40 @@ class _NutritionScreenState extends State<NutritionScreen> {
           padding: EdgeInsets.zero,
           children: [
             const SizedBox(height: 12),
-            // Timeline Semanal - Novo componente Bio-Gestão 7.0
+            // Timeline Semanal Interativa
             const NutritionTimelineWidget(),
 
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  // Header - Calorias
+                  // Header - Gráfico de Calorias
                   _buildCalorieDonut(chartData, target, consumed, remaining),
 
                   const SizedBox(height: 16),
+                  
+                  // Botões de Ação Rápida (Visibilidade Superior)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildActionButton(
+                          icon: Icons.tune_rounded,
+                          label: 'Ajustar Macros',
+                          onTap: () => context.push('/nutrition/settings'),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _buildActionButton(
+                          icon: Icons.refresh_rounded,
+                          label: 'Refazer Anamnese',
+                          onTap: () => context.push('/nutrition/anamnese'),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
                   
                   // Card de Bio-Gestão e Aderência
                   _buildBioManagementStats(provider),
@@ -131,14 +149,36 @@ class _NutritionScreenState extends State<NutritionScreen> {
                   _buildMacrosRow(provider),
 
                   const SizedBox(height: 32),
-                  // Seções de Refeições
-                  _buildMealSection(context, provider, 'Café da manhã', 'breakfast'),
-                  _buildMealSection(context, provider, 'Almoço', 'lunch'),
-                  _buildMealSection(context, provider, 'Jantar', 'dinner'),
-                  _buildMealSection(context, provider, 'Lanches', 'snack'),
+                  // Seções de Refeições (do dia selecionado)
+                  _buildMealSection(context, provider, 'Café da manhã', 'breakfast', meals),
+                  _buildMealSection(context, provider, 'Almoço', 'lunch', meals),
+                  _buildMealSection(context, provider, 'Jantar', 'dinner', meals),
+                  _buildMealSection(context, provider, 'Lanches', 'snack', meals),
                 ],
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionButton({required IconData icon, required String label, required VoidCallback onTap}) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          color: AppTheme.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppTheme.accent.withOpacity(0.2)),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, color: AppTheme.accent, size: 20),
+            const SizedBox(height: 4),
+            Text(label, style: const TextStyle(color: AppTheme.textPrimary, fontSize: 11, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -199,11 +239,59 @@ class _NutritionScreenState extends State<NutritionScreen> {
     return Container(height: 30, width: 1, color: AppTheme.divider.withOpacity(0.1));
   }
 
+  Widget _buildMacrosRow(NutritionProvider provider) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _buildMacroCard('Proteína', provider.consumedProtein, provider.targetProtein, AppTheme.accent),
+        const SizedBox(width: 12),
+        _buildMacroCard('Carbo', provider.consumedCarb, provider.targetCarb, AppTheme.success),
+        const SizedBox(width: 12),
+        _buildMacroCard('Gordura', provider.consumedFat, provider.targetFat, Colors.orange),
+      ],
+    );
+  }
+
+  Widget _buildMacroCard(String label, double consumed, double target, Color color) {
+    final pct = target > 0 ? (consumed / target).clamp(0.0, 1.0) : 0.0;
+    
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: AppTheme.surface,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 6),
+            Text(
+              '${consumed.round()} / ${target.round()}g',
+              style: const TextStyle(color: AppTheme.textPrimary, fontSize: 11, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: pct,
+                backgroundColor: color.withOpacity(0.1),
+                color: color,
+                minHeight: 4,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildCalorieDonut(List<_ChartData> chartData, int target, int consumed, int remaining) {
     return Column(
       children: [
         SizedBox(
-          height: 180,
+          height: 190,
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -216,7 +304,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                     yValueMapper: (_ChartData data, _) => data.y,
                     pointColorMapper: (_ChartData data, _) => data.color,
                     cornerStyle: CornerStyle.bothCurve,
-                    innerRadius: '85%',
+                    innerRadius: '82%',
                     radius: '100%',
                   )
                 ],
@@ -224,81 +312,44 @@ class _NutritionScreenState extends State<NutritionScreen> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                   const Text('META DIÁRIA', style: TextStyle(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.1)),
                   Text(
-                    remaining.toString(),
-                    style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+                    target.toString(),
+                    style: const TextStyle(fontSize: 42, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
                   ),
-                  const Text('restantes', style: TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
+                  const Text('kcal', style: TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
                 ],
               )
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.info_outline, size: 12, color: AppTheme.textSecondary),
-            const SizedBox(width: 4),
-            Text(
-              'Ajustado dinamicamente para o seu biotipo.',
-              style: TextStyle(color: AppTheme.textSecondary.withOpacity(0.7), fontSize: 11),
-            ),
+            _buildMiniStat('CONSUMIDO', consumed.toString(), AppTheme.accent),
+            const SizedBox(width: 40),
+            _buildMiniStat('RESTANTE', remaining.toString(), remaining >= 0 ? AppTheme.textSecondary : Colors.redAccent),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildMacrosRow(NutritionProvider provider) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildMiniStat(String label, String value, Color color) {
+    return Column(
       children: [
-        _buildMacroCard('Proteína', 0, provider.targetProtein, AppTheme.accent), // Placeholder 0 para exemplo
-        const SizedBox(width: 12),
-        _buildMacroCard('Carbo', 0, provider.targetCarb, AppTheme.success),
-        const SizedBox(width: 12),
-        _buildMacroCard('Gordura', 0, provider.targetFat, Colors.orange),
+        Text(label, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 4),
+        Text(value, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 20)),
       ],
     );
   }
 
-  Widget _buildMacroCard(String label, double consumed, double target, Color color) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: AppTheme.surface,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(label, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
-            const SizedBox(height: 6),
-            Text(
-              '${target.round()}g',
-              style: const TextStyle(color: AppTheme.textPrimary, fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: LinearProgressIndicator(
-                value: 0.0,
-                backgroundColor: color.withOpacity(0.1),
-                color: color,
-                minHeight: 4,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMealSection(BuildContext context, NutritionProvider provider, String title, String type) {
-    final meals = provider.todayMeals.where((m) => m.mealType == type).toList();
+  Widget _buildMealSection(BuildContext context, NutritionProvider provider, String title, String type, List<MealEntry> allMeals) {
+    final meals = allMeals.where((m) => m.mealType == type).toList();
     final totalKcal = meals.fold(0, (sum, m) => sum + m.calories.round());
+    final bool isFuture = provider.selectedWeekday > DateTime.now().weekday;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 24),
@@ -312,10 +363,11 @@ class _NutritionScreenState extends State<NutritionScreen> {
               Row(
                 children: [
                   Text('$totalKcal kcal', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 14)),
-                  IconButton(
-                    icon: const Icon(Icons.add_circle, color: AppTheme.accent),
-                    onPressed: () => context.push('/nutrition/search?type=$type'),
-                  ),
+                  if (!isFuture)
+                    IconButton(
+                      icon: const Icon(Icons.add_circle, color: AppTheme.accent),
+                      onPressed: () => context.push('/nutrition/search?type=$type'),
+                    ),
                 ],
               ),
             ],
@@ -323,7 +375,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
           if (meals.isEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text('Nenhum alimento registrado.', style: TextStyle(color: AppTheme.textSecondary.withOpacity(0.5), fontStyle: FontStyle.italic)),
+              child: Text(isFuture ? 'Planejamento pendente.' : 'Nenhum registro hoje.', style: TextStyle(color: AppTheme.textSecondary.withOpacity(0.5), fontStyle: FontStyle.italic, fontSize: 13)),
             )
           else
             ...meals.map((m) => ListTile(
@@ -331,9 +383,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
               title: Text(m.foodName, style: const TextStyle(color: AppTheme.textPrimary, fontSize: 14)),
               subtitle: Text('${m.portionG}g • ${m.protein.round()}g P | ${m.carb.round()}g C | ${m.fat.round()}g G', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
               trailing: Text('${m.calories.round()} kcal', style: const TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
-              onLongPress: () {
-                provider.removeMeal(m.id);
-              },
+              onLongPress: isFuture ? null : () => provider.removeMeal(m.id),
             )),
         ],
       ),
