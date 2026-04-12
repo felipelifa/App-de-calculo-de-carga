@@ -592,8 +592,37 @@ C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\C
 - **Foco:** Bio-Gestão Energética 7.0 & Estabilização Flutter Web.
 - **Feito:**
   - **Correção de Crash de Inicialização:** Removidos erros de "Null check operator" e corrigidos guards `kIsWeb` no `NotificationService`.
-  - **Bio-Gestão 7.0 (Orçamento Semanal):** Evolução do módulo de nutrição de metas diárias fixas para orçamento energético semanal (14.000 kcal/semana).
-  - **Compensação de Desvios:** Implementada lógica de redistribuição de excessos (diluição automática de calorias extras nos dias seguintes para manter o balanço semanal).
-  - **Anamnese Nutricional:** Criada tela dedicada para configuração de dieta independente do treino.
-  - **Ajuste de Segurança (Firestore):** Reorganização das regras de segurança para evitar `permission-denied` em subcoleções no ambiente Web.
-- **Status:** Sistema adaptativo agora resiliente a variações de consumo e 100% funcional na web. Iniciando camada de registro alimentar avançado (MFP-Level).
+  - **Bio-Gestão 7.0 (Orçamento Semanal):** Evolução do módulo de nutrição de metas diárias fixas para orçamento energético semanal dinâmico.
+  - **Motor de Compensação Inteligente:** Implementada lógica de redistribuição de excessos. Se o usuário consome > meta hoje, o sistema dilui o excedente nos dias restantes da semana (estratégia suave) ou compensa no dia seguinte (estratégia rígida).
+  - **Linha do Tempo Adaptativa:** Cada dia da semana (Seg-Dom) possui uma meta específica dependente da carga de treino (Alta Demanda = +20% Carbo / Descanso = -15% Carbo).
+  - **Monitoramento de Evolução:** Adição de `adherenceScore` (consistência real) e `nutritionalFatigueLevel` (alerta de estafa metabólica após longos déficits).
+  - **Interface de Timeline:** Widget interativo no topo da tela de nutrição para visualização clara do planejamento semanal.
+- **Status:** Sistema adaptativo agora resiliente a variações de consumo e 100% funcional na web.
+
+---
+
+## Módulos e Lógica Interna
+
+### 1. Bio-Gestão 7.0 (Gestão Energética Adaptativa)
+O sistema trata a nutrição como um ecossistema semanal, não como fatias diárias isoladas.
+
+#### Algoritmo de Orçamento:
+- **Orçamento Base:** $TDEE \times 7$ (Total Daily Energy Expenditure).
+- **Redistribuição Inicial:** 
+  - Dias com treino (`wp.availableDaysPerWeek`) são marcados como "Alta Demanda".
+  - Multiplicador de Alta Demanda: $1.10 \times$ calorias diárias (foco em Carboidratos).
+  - Multiplicador de Descanso: $0.85 \times$ calorias diárias.
+  - O sistema calibra a soma dos 7 dias para bater exatamente o `weeklyBudgetKcal`.
+
+#### Motor de Compensação (Triggered o Meal Log):
+1. **Detecta Desvio:** $ConsumoReal - MetaDiária = Desvio$.
+2. **Calcula Dias Restantes:** $DiasAtéDomingo = 7 - DiaAtual$.
+3. **Distribui Excesso:** 
+   - Se $Desvio > 0$, o excesso é dividido pelos dias restantes e subtraído de suas metas.
+   - **Trava de Segurança:** As calorias nunca caem abaixo da Taxa Metabólica Basal (TMB), preservando a saúde do usuário mesmo em grandes excessos.
+   - **Prioridade de Corte:** O ajuste atua prioritariamente sobre os Carboidratos, mantendo Proteína e Gordura dentro das margens de segurança fisiológica.
+
+#### Indicadores de Saúde Metabólica:
+- **Aderência:** Média ponderada dos desvios absolutos. $Score < 0.7$ sugere que a estratégia atual está muito rígida.
+- **Fadiga Nutricional:** Contador que sobe se o usuário permanece em déficit agressivo por > 6 semanas. Gatilha sugestão de "Refeed" ou manutenção.
+- **Disponibilidade Energética:** Sincronização em tempo real com o volume de treino do `WorkoutProvider`.
