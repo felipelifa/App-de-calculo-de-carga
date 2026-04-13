@@ -68,94 +68,143 @@ class NutritionService {
   Future<List<FoodModel>> searchFoods(String query) async {
     final queryLower = query.toLowerCase().trim();
     if (queryLower.isEmpty) return [];
-    final normalizedQuery = _normalize(queryLower);
+    
+    final normalizedQuery = _normalizeQuery(queryLower);
+    final terms = normalizedQuery.split(' ').where((t) => t.length > 2).toList();
+    if (terms.isEmpty && normalizedQuery.isNotEmpty) terms.add(normalizedQuery);
 
     List<FoodModel> results = [];
     final uid = _auth.currentUser?.uid;
 
-    // 1. Search Local Custom Foods (Firestore)
+    // --- STEP 1: INITIAL INTERNAL SEARCH (LOCAL & FIRESTORE) ---
+    // This is the fastest tier. We check our own database first.
+    final internalFutures = <Future<List<FoodModel>>>[
+      _getEmergencyStaples(queryLower), // TBCA & Basics
+    ];
+
     if (uid != null) {
-      try {
-        final userSnap = await _db
-            .collection('users/$uid/nutrition/custom_foods')
-            .get(); // Get all and filter locally for better normalization
-        results.addAll(userSnap.docs
-            .map((d) => FoodModel.fromMap(d.data(), d.id))
-            .where((f) => _normalize(f.name).contains(normalizedQuery)));
-      } catch (_) {}
+      internalFutures.add(_searchCollection('users/$uid/nutrition/custom_foods', normalizedQuery));
+    }
+    internalFutures.add(_searchCollection('foods', normalizedQuery));
+
+    final internalResults = await Future.wait(internalFutures);
+    for (var list in internalResults) {
+      results.addAll(list);
     }
 
-    // 2. Search TBCA (Brazilian Gold Standard)
-    final tbcaResults = await _getEmergencyStaples(queryLower);
-    for (final food in tbcaResults) {
-      if (!results.any((r) => _normalize(r.name) == _normalize(food.name))) {
-        results.add(food);
-      }
-    }
-
-    // 3. Search Cloud Foods (Firestore)
-    try {
-      final snap = await _db
-          .collection('foods')
-          .limit(50)
-          .get(); // Ideally we'd have a search index, but for now we filter locally or use prefix
-      final cloudResults = snap.docs
-          .map((d) => FoodModel.fromMap(d.data(), d.id))
-          .where((f) => _normalize(f.name).contains(normalizedQuery));
-      
-      for (final f in cloudResults) {
-        if (!results.any((r) => r.id == f.id)) results.add(f);
-      }
-    } catch (_) {}
-
-    // 4. Search External (Open Food Facts - Recommended for Industrialized)
-    if (results.length < 20) {
-      final offResults = await _searchOpenFoodFacts(queryLower);
-      for (final f in offResults) {
-        if (!results.any((r) => _normalize(r.name) == _normalize(f.name))) {
-          results.add(f);
-        }
-      }
-    }
-
-    // 5. Search External Fallback (FatSecret)
+    // --- STEP 2: EXTERNAL PARALLEL SEARCH (IF NEEDED) ---
+    // If we don't have enough high-quality results, hit external APIs in parallel.
     if (results.length < 10) {
-      try {
-        final fsResults = await _searchFatSecret(queryLower);
-        for (final food in fsResults) {
-          if (!results.any((r) => _normalize(r.name) == _normalize(food.name))) {
+      final externalFutures = <Future<List<FoodModel>>>[
+        _searchOpenFoodFacts(queryLower),
+        _searchFatSecret(queryLower),
+      ];
+
+      final externalResults = await Future.wait(externalFutures);
+      for (var list in externalResults) {
+        // Only add if not already in results (deduplication)
+        for (var food in list) {
+          final isDuplicate = results.any((r) => 
+            _normalizeQuery(r.name) == _normalizeQuery(food.name) && 
+            _normalizeQuery(r.brand) == _normalizeQuery(food.brand)
+          );
+          if (!isDuplicate) {
             results.add(food);
+            // PERSISTENCE HOOK: "Todo resultado encontrado em APIs externas deve ser salvo automaticamente"
+            _persistExternalFood(food);
           }
         }
-      } catch (_) {}
+      }
     }
 
-    // Ranking Logic:
-    // 1. Exact Name Match (Normalized)
-    // 2. Starts with query
-    // 3. Verified / TBCA
-    // 4. Others
-    results.sort((a, b) {
-      final aNorm = _normalize(a.name);
-      final bNorm = _normalize(b.name);
-      
-      bool aExact = aNorm == normalizedQuery;
-      bool bExact = bNorm == normalizedQuery;
-      if (aExact && !bExact) return -1;
-      if (!aExact && bExact) return 1;
+    // --- STEP 3: RANKING & SCORING ---
+    final scoredResults = results.map((food) => {
+      'food': food,
+      'score': _calculateScore(food, normalizedQuery),
+    }).toList();
 
-      bool aStarts = aNorm.startsWith(normalizedQuery);
-      bool bStarts = bNorm.startsWith(normalizedQuery);
-      if (aStarts && !bStarts) return -1;
-      if (!aStarts && bStarts) return 1;
+    scoredResults.sort((a, b) => (b['score'] as int).compareTo(a['score'] as int));
 
-      if (a.isVerified && !b.isVerified) return -1;
-      if (!a.isVerified && b.isVerified) return 1;
+    return scoredResults.map((e) => e['food'] as FoodModel).take(50).toList();
+  }
 
-      return a.name.length.compareTo(b.name.length); // Shorter names usually more relevant
-    });
+  int _calculateScore(FoodModel food, String normalizedQuery) {
+    int score = 0;
+    final foodNameNorm = _normalizeQuery(food.name);
+    final foodBrandNorm = _normalizeQuery(food.brand);
+    
+    // 1. Exact Match (Top Priority)
+    if (foodNameNorm == normalizedQuery) score += 200;
+    
+    // 2. Exact Match in Name + Brand
+    if ("$foodNameNorm $foodBrandNorm".trim() == normalizedQuery) score += 250;
 
-    return results.take(40).toList();
+    // 3. Starts With
+    if (foodNameNorm.startsWith(normalizedQuery)) score += 100;
+
+    // 4. Term presence
+    final queryTerms = normalizedQuery.split(' ');
+    for (var term in queryTerms) {
+      if (foodNameNorm.contains(term)) score += 30;
+      if (foodBrandNorm.contains(term)) score += 20;
+    }
+
+    // 5. Source Reliability
+    if (food.source == 'tbca' || food.isVerified) score += 50;
+    if (food.source == 'local') score += 30;
+
+    // 6. Popularity (Legacy usage)
+    score += (food.timesConsumed * 2);
+
+    // 7. Data Completeness
+    if (food.caloriesPer100g > 0) score += 10;
+    if (food.proteinPer100g > 0 && food.carbPer100g > 0) score += 10;
+
+    return score;
+  }
+
+  Future<List<FoodModel>> _searchCollection(String path, String normalizedQuery) async {
+    try {
+      // Optimization: In a real scale app, we'd use Algolia/ElasticSearch.
+      // For Firestore, we fetch a batch and filter locally to support normalized search.
+      final snap = await _db.collection(path).limit(40).get();
+      return snap.docs
+          .map((d) => FoodModel.fromMap(d.data(), d.id))
+          .where((f) {
+            final fName = _normalizeQuery(f.name);
+            final fBrand = _normalizeQuery(f.brand);
+            return fName.contains(normalizedQuery) || fBrand.contains(normalizedQuery);
+          })
+          .toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  void _persistExternalFood(FoodModel food) {
+    // Save to global 'foods' collection to "learn" and enrich the local database
+    if (food.source == 'local' || food.source == 'tbca') return;
+    
+    // Non-blocking fire and forget
+    _db.collection('foods').doc(food.id).set(food.toMap(), SetOptions(merge: true)).catchError((e) => print("Persist error: $e"));
+  }
+
+  String _normalizeQuery(String s) {
+    String normalized = s.toLowerCase()
+      .replaceAll(RegExp(r'[áàâãä]'), 'a')
+      .replaceAll(RegExp(r'[éèêë]'), 'e')
+      .replaceAll(RegExp(r'[íìîï]'), 'i')
+      .replaceAll(RegExp(r'[óòôõö]'), 'o')
+      .replaceAll(RegExp(r'[úùûü]'), 'u')
+      .replaceAll('ç', 'c')
+      .replaceAll(RegExp(r'[^a-z0-9\s]'), ''); // Remove special chars but keep spaces
+
+    // Remove common Portuguese stop words that don't help in search
+    final stopWords = {'de', 'com', 'da', 'do', 'em', 'para', 'um', 'uma'};
+    return normalized.split(' ')
+        .where((word) => !stopWords.contains(word))
+        .join(' ')
+        .trim();
   }
 
   Future<List<FoodModel>> _searchOpenFoodFacts(String query) async {
@@ -184,6 +233,8 @@ class NutritionService {
             fatPer100g: parseNum(nutriments['fat_100g']),
             category: 'Industrializado',
             isVerified: true,
+            source: 'off',
+            barcode: p['code']?.toString(),
           );
         }).whereType<FoodModel>().toList();
       }
@@ -215,6 +266,8 @@ class NutritionService {
               carbPer100g: parseNum(nutriments['carbohydrates_100g']),
               fatPer100g: parseNum(nutriments['fat_100g']),
               isVerified: true,
+              source: 'off',
+              barcode: code,
             );
           }
         }
@@ -276,20 +329,12 @@ class NutritionService {
           carbPer100g: c,
           fatPer100g: fat,
           category: f['food_type'] == 'Brand' ? 'Industrializado' : 'Genérico',
+          source: 'fs',
         );
       }).toList();
     } catch (_) { return []; }
   }
 
-  String _normalize(String s) {
-    return s.toLowerCase()
-      .replaceAll(RegExp(r'[áàâãä]'), 'a')
-      .replaceAll(RegExp(r'[éèêë]'), 'e')
-      .replaceAll(RegExp(r'[íìîï]'), 'i')
-      .replaceAll(RegExp(r'[óòôõö]'), 'o')
-      .replaceAll(RegExp(r'[úùûü]'), 'u')
-      .replaceAll('ç', 'c');
-  }
 
   Future<List<FoodModel>> _getEmergencyStaples(String query) async {
     await _loadTbcaCache();
@@ -316,7 +361,11 @@ class NutritionService {
     ];
 
     final List<FoodModel> combined = [...allStaples, ...(_cachedTbca ?? [])];
-    final normalizedQuery = _normalize(query);
-    return combined.where((s) => _normalize(s.name).contains(normalizedQuery)).take(30).toList();
+    final normalizedQuery = _normalizeQuery(query);
+    return combined
+        .map((f) => f.copyWith(source: 'tbca'))
+        .where((s) => _normalizeQuery(s.name).contains(normalizedQuery))
+        .take(30)
+        .toList();
   }
 }

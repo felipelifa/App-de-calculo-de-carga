@@ -231,15 +231,20 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
 
     String sourceLabel = '';
     Color sourceColor = AppTheme.textSecondary;
-    if (food.id.startsWith('st_') || food.isVerified) {
+    
+    // Logic based on the new 'source' field
+    if (food.source == 'tbca' || food.id.startsWith('st_') || food.isVerified) {
       sourceLabel = 'OFICIAL';
       sourceColor = AppTheme.accent;
-    } else if (food.id.startsWith('off_')) {
+    } else if (food.source == 'off' || food.id.startsWith('off_')) {
       sourceLabel = 'OPEN FOOD';
       sourceColor = Colors.orange;
-    } else if (food.id.startsWith('fs_')) {
+    } else if (food.source == 'fs' || food.id.startsWith('fs_')) {
       sourceLabel = 'FATSECRET';
       sourceColor = Colors.green;
+    } else if (food.source == 'local') {
+      sourceLabel = 'MEU ITEM';
+      sourceColor = Colors.blue;
     }
 
     return ListTile(

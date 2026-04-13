@@ -174,7 +174,23 @@ class NutritionProvider extends ChangeNotifier {
     final uid = _auth.currentUser?.uid;
     if (uid == null) return;
     final dateKey = _todayFormat(entry.loggedAt);
+    
+    // 1. Save meal to logs
     await _db.collection('users/$uid/nutrition/logs/$dateKey/meals').add(entry.toMap());
+    
+    // 2. Learning Loop: Update popularity (timesConsumed)
+    // We update both in users' recent collection and global library if applicable
+    final globalRef = _db.collection('foods').doc(entry.foodId);
+    final globalDoc = await globalRef.get();
+    if (globalDoc.exists) {
+      globalRef.update({'timesConsumed': FieldValue.increment(1)});
+    }
+
+    // 3. Update User-Specific Recent/Frequency
+    await _db.collection('users/$uid/nutrition/metrics').doc('frequency').set({
+      entry.foodId: FieldValue.increment(1),
+    }, SetOptions(merge: true));
+
     _triggerRecalibration();
     await loadSelectedDay();
     await _fetchWeeklyPlants();

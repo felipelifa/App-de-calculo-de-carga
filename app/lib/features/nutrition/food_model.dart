@@ -16,6 +16,7 @@ class FoodModel {
   final String category;
   final Map<String, double> commonPortions;
   final int timesConsumed;
+  final String source; // 'local', 'off', 'fs', 'tbca', 'usda'
 
   FoodModel({
     required this.id,
@@ -35,6 +36,7 @@ class FoodModel {
     this.category = 'Geral',
     this.commonPortions = const {},
     this.timesConsumed = 0,
+    this.source = 'local',
   });
 
   factory FoodModel.fromMap(Map<String, dynamic> map, String id) {
@@ -64,6 +66,7 @@ class FoodModel {
       category: map['category'] as String? ?? 'Geral',
       commonPortions: parsedPortions,
       timesConsumed: map['timesConsumed'] ?? 0,
+      source: map['source'] ?? 'local',
     );
   }
 
@@ -85,6 +88,7 @@ class FoodModel {
       'category': category,
       'commonPortions': commonPortions,
       'timesConsumed': timesConsumed,
+      'source': source,
     };
   }
 
@@ -101,6 +105,7 @@ class FoodModel {
     bool? isRecipe,
     List<Map<String, dynamic>>? recipeIngredients,
     String? category,
+    String? source,
   }) {
     return FoodModel(
       id: id ?? this.id,
@@ -115,6 +120,7 @@ class FoodModel {
       isRecipe: isRecipe ?? this.isRecipe,
       recipeIngredients: recipeIngredients ?? this.recipeIngredients,
       category: category ?? this.category,
+      source: source ?? this.source,
     );
   }
 }
