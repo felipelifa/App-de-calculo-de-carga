@@ -168,6 +168,16 @@ class NutritionService {
     } catch (_) { return []; }
   }
 
+  String _normalize(String s) {
+    return s.toLowerCase()
+      .replaceAll(RegExp(r'[áàâãä]'), 'a')
+      .replaceAll(RegExp(r'[éèêë]'), 'e')
+      .replaceAll(RegExp(r'[íìîï]'), 'i')
+      .replaceAll(RegExp(r'[óòôõö]'), 'o')
+      .replaceAll(RegExp(r'[úùûü]'), 'u')
+      .replaceAll('ç', 'c');
+  }
+
   List<FoodModel> _getEmergencyStaples(String query) {
     final allStaples = [
        FoodModel(id: 'st_1', name: 'Frango (Peito Grelhado)', caloriesPer100g: 165, proteinPer100g: 31, carbPer100g: 0, fatPer100g: 3.6, isVerified: true, category: 'Carnes'),
@@ -178,7 +188,19 @@ class NutritionService {
        FoodModel(id: 'st_6', name: 'Whey Protein (Médio)', caloriesPer100g: 400, proteinPer100g: 80, carbPer100g: 5, fatPer100g: 6, isVerified: true, category: 'Suplementos'),
        FoodModel(id: 'st_7', name: 'Pão de Forma Branco', caloriesPer100g: 265, proteinPer100g: 9, carbPer100g: 49, fatPer100g: 3, isVerified: true, category: 'Padaria'),
        FoodModel(id: 'st_8', name: 'Leite Desnatado', caloriesPer100g: 35, proteinPer100g: 3.4, carbPer100g: 5, fatPer100g: 0, isVerified: true, category: 'Laticínios'),
+       FoodModel(id: 'st_9', name: 'Macarrão Cozido (Trigo)', caloriesPer100g: 157, proteinPer100g: 5.8, carbPer100g: 30.9, fatPer100g: 0.9, isVerified: true, category: 'Massas'),
+       FoodModel(id: 'st_10', name: 'Pão Francês', caloriesPer100g: 300, proteinPer100g: 8, carbPer100g: 58.6, fatPer100g: 3.1, isVerified: true, category: 'Padaria'),
+       FoodModel(id: 'st_11', name: 'Carne Moída (Patinho)', caloriesPer100g: 219, proteinPer100g: 35.9, carbPer100g: 0, fatPer100g: 7.3, isVerified: true, category: 'Carnes'),
+       FoodModel(id: 'st_12', name: 'Aveia em Flocos', caloriesPer100g: 394, proteinPer100g: 13.9, carbPer100g: 66.6, fatPer100g: 8.5, isVerified: true, category: 'Grãos'),
+       FoodModel(id: 'st_13', name: 'Batata Doce Cozida', caloriesPer100g: 77, proteinPer100g: 0.6, carbPer100g: 18.4, fatPer100g: 0.1, isVerified: true, category: 'Raízes'),
+       FoodModel(id: 'st_14', name: 'Tapioca', caloriesPer100g: 336, proteinPer100g: 0, carbPer100g: 83, fatPer100g: 0, isVerified: true, category: 'Raízes'),
+       FoodModel(id: 'st_15', name: 'Leite Integral', caloriesPer100g: 60, proteinPer100g: 3.2, carbPer100g: 4.8, fatPer100g: 3.2, isVerified: true, category: 'Laticínios'),
+       FoodModel(id: 'st_16', name: 'Azeite de Oliva', caloriesPer100g: 884, proteinPer100g: 0, carbPer100g: 0, fatPer100g: 100, isVerified: true, category: 'Óleos'),
+       FoodModel(id: 'st_17', name: 'Manteiga', caloriesPer100g: 717, proteinPer100g: 0.8, carbPer100g: 0.1, fatPer100g: 81.1, isVerified: true, category: 'Laticínios'),
+       FoodModel(id: 'st_18', name: 'Maçã (Fuji/Gala)', caloriesPer100g: 52, proteinPer100g: 0.3, carbPer100g: 13.8, fatPer100g: 0.2, isVerified: true, category: 'Frutas'),
     ];
-    return allStaples.where((s) => s.name.toLowerCase().contains(query)).toList();
+
+    final normalizedQuery = _normalize(query);
+    return allStaples.where((s) => _normalize(s.name).contains(normalizedQuery)).toList();
   }
 }

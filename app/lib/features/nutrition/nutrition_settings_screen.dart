@@ -42,10 +42,27 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
       _useDailyGoals = profile.useDailyGoals;
       _dailySpecificGoals = Map.from(profile.dailySpecificGoals);
     }
+    
+    _proteinController.addListener(_updateKcalFromMacros);
+    _carbController.addListener(_updateKcalFromMacros);
+    _fatController.addListener(_updateKcalFromMacros);
+  }
+
+  void _updateKcalFromMacros() {
+    double p = double.tryParse(_proteinController.text) ?? 0;
+    double c = double.tryParse(_carbController.text) ?? 0;
+    double f = double.tryParse(_fatController.text) ?? 0;
+    final derivedKcal = ((p * 4) + (c * 4) + (f * 9)).round().toString();
+    if (_kcalController.text != derivedKcal) {
+      _kcalController.text = derivedKcal;
+    }
   }
 
   @override
   void dispose() {
+    _proteinController.removeListener(_updateKcalFromMacros);
+    _carbController.removeListener(_updateKcalFromMacros);
+    _fatController.removeListener(_updateKcalFromMacros);
     _kcalController.dispose();
     _proteinController.dispose();
     _carbController.dispose();
@@ -60,10 +77,10 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
     if (current == null) return;
     setState(() => _isLoading = true);
 
-    int newKcal = int.tryParse(_kcalController.text) ?? current.targetCalories;
     double newP = double.tryParse(_proteinController.text) ?? current.targetProtein;
     double newC = double.tryParse(_carbController.text) ?? current.targetCarb;
     double newF = double.tryParse(_fatController.text) ?? current.targetFat;
+    int newKcal = ((newP * 4) + (newC * 4) + (newF * 9)).round();
 
     final updated = current.copyWith(
       targetCalories: newKcal,
@@ -147,7 +164,7 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
   Widget _buildFixedMetaInputs() {
     return Column(
       children: [
-        _buildTextField('Calorias Base (kcal)', _kcalController, AppTheme.accent),
+        _buildTextField('Calorias Totais (Auto)', _kcalController, AppTheme.accent, readOnly: true),
         const SizedBox(height: 12),
         Row(
           children: [
@@ -184,7 +201,7 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
               const SizedBox(height: 12),
               Row(
                 children: [
-                  Expanded(child: _buildMiniField('kcal', goal.calories.toString(), (v) => _updateGoal(weekday, calories: int.tryParse(v)))),
+                  Expanded(child: _buildMiniField('kcal', goal.calories.toString(), (v) {}, readOnly: true)),
                   const SizedBox(width: 8),
                   Expanded(child: _buildMiniField('P', goal.protein.round().toString(), (v) => _updateGoal(weekday, protein: double.tryParse(v)))),
                   const SizedBox(width: 8),
@@ -200,45 +217,61 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
     );
   }
 
-  void _updateGoal(int weekday, {int? calories, double? protein, double? carb, double? fat}) {
+  void _updateGoal(int weekday, {double? protein, double? carb, double? fat}) {
     final current = _dailySpecificGoals[weekday] ?? const DailyNutritionalGoal(calories: 2000, protein: 150, carb: 200, fat: 66);
+    
+    double p = protein ?? current.protein;
+    double c = carb ?? current.carb;
+    double f = fat ?? current.fat;
+    int newCals = ((p * 4) + (c * 4) + (f * 9)).round();
+
     setState(() {
       _dailySpecificGoals[weekday] = current.copyWith(
-        calories: calories ?? current.calories,
-        protein: protein ?? current.protein,
-        carb: carb ?? current.carb,
-        fat: fat ?? current.fat,
+        calories: newCals,
+        protein: p,
+        carb: c,
+        fat: f,
       );
     });
   }
 
-  Widget _buildMiniField(String label, String initial, Function(String) onChanged) {
+  Widget _buildMiniField(String label, String initial, Function(String) onChanged, {bool readOnly = false}) {
     return TextFormField(
+      key: ValueKey('${label}_$initial'),
       initialValue: initial,
+      readOnly: readOnly,
       keyboardType: TextInputType.number,
       onChanged: onChanged,
-      style: const TextStyle(color: AppTheme.textPrimary, fontSize: 13, fontWeight: FontWeight.bold),
+      style: TextStyle(
+          color: readOnly ? AppTheme.accent : AppTheme.textPrimary, 
+          fontSize: 13, 
+          fontWeight: FontWeight.bold
+      ),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: const TextStyle(color: AppTheme.textSecondary, fontSize: 10),
         isDense: true,
         filled: true,
-        fillColor: AppTheme.background,
+        fillColor: readOnly ? AppTheme.accent.withValues(alpha: 0.05) : AppTheme.background,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
       ),
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller, Color color) {
+  Widget _buildTextField(String label, TextEditingController controller, Color color, {bool readOnly = false}) {
     return TextField(
       controller: controller,
+      readOnly: readOnly,
       keyboardType: TextInputType.number,
-      style: const TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.bold),
+      style: TextStyle(
+          color: readOnly ? color : AppTheme.textPrimary, 
+          fontWeight: FontWeight.bold
+      ),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: color, fontSize: 12),
         filled: true,
-        fillColor: AppTheme.surface,
+        fillColor: readOnly ? color.withValues(alpha: 0.05) : AppTheme.surface,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
       ),
     );
