@@ -183,94 +183,115 @@ class _WorkoutPlanCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color: isActive ? AppTheme.accent.withOpacity(0.5) : Colors.white10,
-          width: isActive ? 2 : 1,
+          color: isActive ? AppTheme.accent.withOpacity(0.6) : Colors.white10,
+          width: isActive ? 2.5 : 1,
         ),
-        boxShadow: isActive ? [BoxShadow(color: AppTheme.accent.withOpacity(0.1), blurRadius: 20)] : [],
+        boxShadow: isActive ? [
+          BoxShadow(color: AppTheme.accent.withOpacity(0.15), blurRadius: 30, offset: const Offset(0, 10))
+        ] : [],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(28),
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
+              padding: const EdgeInsets.all(24),
+              child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: (isActive ? AppTheme.accent : AppTheme.surfaceHighlight).withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      isActive ? Icons.auto_awesome : Icons.fitness_center_rounded,
-                      color: isActive ? AppTheme.accent : AppTheme.textSecondary,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                   Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: (isActive ? AppTheme.accent : AppTheme.surfaceHighlight).withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Icon(
+                          isActive ? Icons.auto_awesome_rounded : Icons.fitness_center_rounded,
+                          color: isActive ? AppTheme.accent : AppTheme.textSecondary,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               workout.name,
                               style: GoogleFonts.outfit(
                                 color: AppTheme.textPrimary,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w900,
                               ),
                             ),
-                            if (isActive) ...[
-                              const SizedBox(width: 8),
+                            if (isActive)
                               Container(
+                                margin: const EdgeInsets.only(top: 4),
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                decoration: BoxDecoration(color: AppTheme.accent, borderRadius: BorderRadius.circular(8)),
-                                child: Text('ATIVO', style: GoogleFonts.outfit(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black)),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.accent.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(color: AppTheme.accent.withOpacity(0.3))
+                                ),
+                                child: Text('PLANO ATIVO', style: GoogleFonts.outfit(fontSize: 9, fontWeight: FontWeight.w900, color: AppTheme.accent, letterSpacing: 1)),
                               ),
-                            ],
                           ],
                         ),
-                        Text(
-                          '${_formatSplit(workout.splitType)} • ${workout.mesocycleDurationWeeks} Semanas',
-                          style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12),
-                        ),
-                      ],
-                    ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete_outline_rounded, color: Colors.redAccent, size: 22),
+                        onPressed: onDelete,
+                        tooltip: 'Excluir Treino',
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.delete_outline_rounded, color: Colors.redAccent, size: 20),
-                    onPressed: onDelete,
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildInfoField('Divisão', _formatSplit(workout.splitType), Icons.grid_view_rounded),
+                      _buildInfoField('Período', '${workout.mesocycleDurationWeeks} Semanas', Icons.calendar_month_rounded),
+                      _buildInfoField('Estilo', _formatStyle(workout.preferredStyle), Icons.psychology_rounded),
+                    ],
                   ),
                 ],
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              color: Colors.white.withOpacity(0.02),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              color: Colors.white.withOpacity(0.03),
               child: Row(
                 children: [
                   if (!isActive)
                     Expanded(
-                      child: TextButton(
+                      child: OutlinedButton(
                         onPressed: onSelect,
-                        child: const Text('ATIVAR PLANO'),
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: AppTheme.accent),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        ),
+                        child: const Text('ATIVAR ESTE PLANO', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
                       ),
                     ),
+                  if (!isActive) const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: onView,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: isActive ? AppTheme.accent : AppTheme.surfaceHighlight,
                         foregroundColor: isActive ? Colors.black : AppTheme.textPrimary,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
-                      child: const Text('VER SESSÕES'),
+                      child: Text(isActive ? 'VER SESSÕES DE HOJE' : 'DETALHES', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
                     ),
                   ),
                 ],
@@ -281,7 +302,34 @@ class _WorkoutPlanCard extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildInfoField(String label, String value, IconData icon) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, size: 12, color: AppTheme.textSecondary),
+            const SizedBox(width: 4),
+            Text(label.toUpperCase(), style: GoogleFonts.outfit(fontSize: 10, color: AppTheme.textSecondary, fontWeight: FontWeight.bold, letterSpacing: 0.5)),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(value, style: GoogleFonts.outfit(fontSize: 13, color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
+      ],
+    );
+  }
 }
+
+String _formatStyle(String? s) {
+  switch (s) {
+    case 'compound_focus': return 'Poliarticular';
+    case 'isolation_focus': return 'Isoladores';
+    case 'circuit': return 'Circuito';
+    default: return 'Equilibrado';
+  }
+}
+
 
 class _WorkoutSessionsSheet extends StatelessWidget {
   final GeneratedWorkout workout;

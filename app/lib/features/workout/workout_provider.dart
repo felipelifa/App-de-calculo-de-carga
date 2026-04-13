@@ -24,6 +24,7 @@ class WorkoutProvider extends ChangeNotifier {
 
   bool _isSessionActive = false;
   DateTime? _sessionStart;
+  String? _activeSessionName;
   final List<WorkoutExerciseEntry> _currentExercises = [];
 
   // RIR reportado por exercício (exerciseId → RIR 0-5)
@@ -53,6 +54,7 @@ class WorkoutProvider extends ChangeNotifier {
 
   bool get isSessionActive => _isSessionActive;
   DateTime? get sessionStart => _sessionStart;
+  String? get activeSessionName => _activeSessionName;
   List<WorkoutExerciseEntry> get currentExercises =>
       List.unmodifiable(_currentExercises);
 
@@ -89,6 +91,7 @@ class WorkoutProvider extends ChangeNotifier {
   void startSession() {
     _isSessionActive = true;
     _sessionStart = DateTime.now();
+    _activeSessionName = 'Treino Livre';
     _currentExercises.clear();
     _rirByExercise.clear();
     _exerciseMetadata.clear();
@@ -98,6 +101,7 @@ class WorkoutProvider extends ChangeNotifier {
   void startSessionFromRoutine(WorkoutRoutine routine) {
     _isSessionActive = true;
     _sessionStart = DateTime.now();
+    _activeSessionName = routine.name;
     _currentExercises.clear();
     _rirByExercise.clear();
     _exerciseMetadata.clear();
@@ -125,6 +129,7 @@ class WorkoutProvider extends ChangeNotifier {
   }) {
     _isSessionActive = true;
     _sessionStart = DateTime.now();
+    _activeSessionName = sessionName;
     _currentExercises.clear();
     _rirByExercise.clear();
     _exerciseMetadata.clear();
@@ -357,6 +362,7 @@ class WorkoutProvider extends ChangeNotifier {
 
     _isSessionActive = false;
     _sessionStart = null;
+    _activeSessionName = null;
     _currentExercises.clear();
     _rirByExercise.clear();
     _exerciseMetadata.clear();
@@ -366,6 +372,7 @@ class WorkoutProvider extends ChangeNotifier {
   void cancelSession() {
     _isSessionActive = false;
     _sessionStart = null;
+    _activeSessionName = null;
     _currentExercises.clear();
     _rirByExercise.clear();
     _exerciseMetadata.clear();

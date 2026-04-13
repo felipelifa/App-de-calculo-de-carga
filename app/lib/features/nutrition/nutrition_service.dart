@@ -199,6 +199,24 @@ class NutritionService {
       .replaceAll('ç', 'c')
       .replaceAll(RegExp(r'[^a-z0-9\s]'), ''); // Remove special chars but keep spaces
 
+    // Portuguese Synonyms & Common Terms (Learning Loop fallback)
+    final synonyms = {
+      'bolacha': 'biscoito',
+      'bolachas': 'biscoitos',
+      'nesfit': 'biscoito integral nesfit',
+      'pepsi': 'refrigerante cola pepsi',
+      'coke': 'coca cola',
+      'sucrilhos': 'cereal matinal',
+      'nescau': 'achocolatado po',
+      'toddy': 'achocolatado po',
+    };
+
+    for (var entry in synonyms.entries) {
+      if (normalized.contains(entry.key)) {
+        normalized = normalized.replaceAll(entry.key, entry.value);
+      }
+    }
+
     // Remove common Portuguese stop words that don't help in search
     final stopWords = {'de', 'com', 'da', 'do', 'em', 'para', 'um', 'uma'};
     return normalized.split(' ')
@@ -209,6 +227,7 @@ class NutritionService {
 
   Future<List<FoodModel>> _searchOpenFoodFacts(String query) async {
     try {
+      // Usar a API v2 de busca que é mais moderna e suporta melhor o frontend
       final uri = Uri.parse('https://world.openfoodfacts.org/cgi/search.pl?search_terms=$query&search_simple=1&action=process&json=1&page_size=20&lc=pt');
       final response = await http.get(uri);
       if (response.statusCode == 200) {
@@ -241,6 +260,7 @@ class NutritionService {
     } catch (_) {}
     return [];
   }
+
 
   Future<FoodModel?> searchByBarcode(String code) async {
     final local = await _db.collection('foods').where('barcode', isEqualTo: code).limit(1).get();

@@ -83,6 +83,18 @@ class NutritionProvider extends ChangeNotifier {
 
   String get smartInsight {
     if (_profile == null) return "Configure seu perfil.";
+    
+    // Check if workout happened today
+    final now = DateTime.now();
+    final isWorkoutToday = _profile!.lastWorkoutDate != null &&
+        _profile!.lastWorkoutDate!.year == now.year &&
+        _profile!.lastWorkoutDate!.month == now.month &&
+        _profile!.lastWorkoutDate!.day == now.day;
+
+    if (isWorkoutToday) {
+      return "Treino concluído: ${_profile!.lastWorkoutName}. Suas metas foram ajustadas para recuperação.";
+    }
+
     final goal = _profile!.useDailyGoals 
       ? _profile!.dailySpecificGoals[_selectedWeekday] 
       : _profile!.weeklyGoals[_selectedWeekday];
@@ -232,12 +244,24 @@ class NutritionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> syncWorkout({required String name, required DateTime date}) async {
+    if (_profile == null) return;
+    _profile = _profile!.copyWith(lastWorkoutName: name, lastWorkoutDate: date);
+    await saveSettings();
+    notifyListeners();
+  }
+
   void applyPostWorkoutBonus({
+    required String sessionName,
     required int durationMinutes,
     required int exerciseCount,
     required double totalVolume,
   }) {
     if (_profile == null || !_profile!.dynamicAdaptationEnabled) return;
+    
+    // Register the workout first
+    syncWorkout(name: sessionName, date: DateTime.now());
+
     int bonusCals = (durationMinutes * 5) + (totalVolume / 1000 * 50).round();
     if (bonusCals <= 0) return;
 
@@ -249,7 +273,7 @@ class NutritionProvider extends ChangeNotifier {
     final updatedGoal = currentGoal.copyWith(
       calories: currentGoal.calories + bonusCals,
       carb: currentGoal.carb + (bonusCals / 4.0),
-      label: 'Treino Concluído (+${bonusCals}kcal)',
+      label: 'Treino Concluído ($sessionName: +${bonusCals}kcal)',
     );
 
     updateDailyManualGoal(todayWeekday, updatedGoal);
@@ -263,6 +287,7 @@ class NutritionProvider extends ChangeNotifier {
     saveSettings();
     notifyListeners();
   }
+
 
   void resetDailyGoal(int weekday) {
     if (_profile == null) return;

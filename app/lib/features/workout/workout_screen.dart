@@ -190,6 +190,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         if (context.mounted) {
           // Notifica o NutritionProvider sobre o treino concluído
           context.read<NutritionProvider>().applyPostWorkoutBonus(
+            sessionName: provider.activeSessionName ?? 'Treino',
             durationMinutes: durationMinutes,
             exerciseCount: exCount,
             totalVolume: vol,

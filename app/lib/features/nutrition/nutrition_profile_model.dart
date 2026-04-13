@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class DailyNutritionalGoal {
   final int calories;
   final double protein;
@@ -76,6 +78,8 @@ class NutritionProfile {
   final Map<int, int> dailyWater;
   final double adherenceScore;
   final int nutritionalFatigueLevel;
+  final String? lastWorkoutName;
+  final DateTime? lastWorkoutDate;
 
   NutritionProfile({
     required this.id,
@@ -97,6 +101,8 @@ class NutritionProfile {
     this.dailyWater = const {},
     this.adherenceScore = 1.0,
     this.nutritionalFatigueLevel = 0,
+    this.lastWorkoutName,
+    this.lastWorkoutDate,
   });
 
   factory NutritionProfile.fromMap(Map<String, dynamic> map, String id) {
@@ -129,6 +135,8 @@ class NutritionProfile {
       dailyWater: dailyWater,
       adherenceScore: (map['adherenceScore'] as num?)?.toDouble() ?? 1.0,
       nutritionalFatigueLevel: map['nutritionalFatigueLevel'] as int? ?? 0,
+      lastWorkoutName: map['lastWorkoutName'] as String?,
+      lastWorkoutDate: map['lastWorkoutDate'] != null ? (map['lastWorkoutDate'] as Timestamp).toDate() : null,
     );
   }
 
@@ -152,6 +160,8 @@ class NutritionProfile {
       'dailyWater': dailyWater.map((key, value) => MapEntry(key.toString(), value)),
       'adherenceScore': adherenceScore,
       'nutritionalFatigueLevel': nutritionalFatigueLevel,
+      'lastWorkoutName': lastWorkoutName,
+      'lastWorkoutDate': lastWorkoutDate,
     };
   }
 
@@ -174,6 +184,8 @@ class NutritionProfile {
     Map<int, int>? dailyWater,
     double? adherenceScore,
     int? nutritionalFatigueLevel,
+    String? lastWorkoutName,
+    DateTime? lastWorkoutDate,
   }) {
     return NutritionProfile(
       id: this.id,
@@ -195,6 +207,9 @@ class NutritionProfile {
       dailyWater: dailyWater ?? this.dailyWater,
       adherenceScore: adherenceScore ?? this.adherenceScore,
       nutritionalFatigueLevel: nutritionalFatigueLevel ?? this.nutritionalFatigueLevel,
+      lastWorkoutName: lastWorkoutName ?? this.lastWorkoutName,
+      lastWorkoutDate: lastWorkoutDate ?? this.lastWorkoutDate,
     );
   }
 }
+

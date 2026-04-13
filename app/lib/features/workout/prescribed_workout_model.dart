@@ -185,6 +185,7 @@ class GeneratedWorkout {
   final String periodizationModel;
   final List<PrescribedSession> sessions;
   final int mesocycleDurationWeeks;
+  final String? preferredStyle;
   final DateTime generatedAt;
   final bool isActive;
 
@@ -196,6 +197,7 @@ class GeneratedWorkout {
     required this.periodizationModel,
     required this.sessions,
     required this.mesocycleDurationWeeks,
+    this.preferredStyle,
     required this.generatedAt,
     this.isActive = false,
   });
@@ -208,6 +210,7 @@ class GeneratedWorkout {
         'periodizationModel': periodizationModel,
         'sessions': sessions.map((s) => s.toMap()).toList(),
         'mesocycleDurationWeeks': mesocycleDurationWeeks,
+        'preferredStyle': preferredStyle,
         'generatedAt': generatedAt.toIso8601String(),
         'isActive': isActive,
       };
@@ -228,6 +231,7 @@ class GeneratedWorkout {
           .toList(),
       mesocycleDurationWeeks:
           (map['mesocycleDurationWeeks'] as num?)?.toInt() ?? 8,
+      preferredStyle: map['preferredStyle'] as String?,
       generatedAt:
           DateTime.tryParse(map['generatedAt'] as String? ?? '') ??
               DateTime.now(),
