@@ -9,6 +9,7 @@ import 'nutrition_profile_model.dart';
 import 'meal_model.dart';
 import 'food_model.dart';
 import 'nutrition_engine.dart';
+import 'bio_intelligence.dart';
 
 class NutritionProvider extends ChangeNotifier {
   final FirebaseFirestore _db;
@@ -39,6 +40,38 @@ class NutritionProvider extends ChangeNotifier {
   double get consumedProtein => selectedDayMeals.fold(0, (sum, m) => sum + m.protein);
   double get consumedCarb => selectedDayMeals.fold(0, (sum, m) => sum + m.carb);
   double get consumedFat => selectedDayMeals.fold(0, (sum, m) => sum + m.fat);
+
+  // --- Atributos de Gamificação / Microbiota ---
+  int _weeklyPlantScore = 0;
+  int get weeklyPlantScore => _weeklyPlantScore;
+  Set<String> _weeklyPlantSpecies = {};
+  Set<String> get weeklyPlantSpecies => _weeklyPlantSpecies;
+
+  Future<void> _fetchWeeklyPlants() async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+    try {
+      final now = DateTime.now();
+      final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+      final startStr = DateFormat('yyyy-MM-dd').format(startOfWeek);
+      // Busca a pasta de logs onde a data no nome id (yyyy-MM-dd) é >= startStr
+      // O firestore snapshot que você usa salva os meals dentro dos docs de logs.
+      // Ops, estruturalmente a collection 'logs' possui os docs yyyy-MM-dd com a source 'meals' em uma subcollection. 
+      // Não temos collectionGroup query aqui configurado, então vou iterar os 7 dias passados/até hoje
+      _weeklyPlantSpecies.clear();
+      for (int i = 0; i < now.weekday; i++) {
+        final dKey = _todayFormat(startOfWeek.add(Duration(days: i)));
+        final snap = await _db.collection('users/$uid/nutrition/logs/$dKey/meals').get();
+        for (var doc in snap.docs) {
+          final m = MealEntry.fromMap(doc.data(), doc.id);
+          if (BioIntelligence.isPlantSpecies(m.foodName, '')) {
+            _weeklyPlantSpecies.add(BioIntelligence.extractPlantSpeciesRoot(m.foodName));
+          }
+        }
+      }
+      _weeklyPlantScore = _weeklyPlantSpecies.length;
+    } catch (_) {}
+  }
 
   // --- Atributos de Monitoramento ---
   double get adherenceScore => _profile?.adherenceScore ?? 1.0;
@@ -116,6 +149,7 @@ class NutritionProvider extends ChangeNotifier {
       await loadToday();
       await loadFavorites();
       await loadSelectedDay();
+      await _fetchWeeklyPlants();
     } catch (e) {
       _lastError = e.toString();
     } finally {
@@ -143,6 +177,7 @@ class NutritionProvider extends ChangeNotifier {
     await _db.collection('users/$uid/nutrition/logs/$dateKey/meals').add(entry.toMap());
     _triggerRecalibration();
     await loadSelectedDay();
+    await _fetchWeeklyPlants();
   }
 
   Future<void> removeMeal(String mealId) async {
@@ -153,6 +188,7 @@ class NutritionProvider extends ChangeNotifier {
     await _db.doc('users/$uid/nutrition/logs/$dateKey/meals/$mealId').delete();
     _triggerRecalibration();
     await loadSelectedDay();
+    await _fetchWeeklyPlants();
   }
 
   void _triggerRecalibration() {

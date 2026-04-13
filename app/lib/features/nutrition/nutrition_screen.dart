@@ -9,6 +9,7 @@ import 'nutrition_provider.dart';
 import 'widgets/nutrition_timeline_widget.dart';
 import 'meal_model.dart';
 import '../workout/workout_profile_provider.dart';
+import 'bio_intelligence.dart';
 
 class NutritionScreen extends StatefulWidget {
   const NutritionScreen({super.key});
@@ -116,6 +117,9 @@ class _NutritionScreenState extends State<NutritionScreen> {
 
             // Insight do Gêmeo Digital
             _buildInsightPanel(provider),
+
+            // Escudo Metabólico e Diversidade Plant Based
+            BioIntelligence.buildPlantGamificationPanel(provider.weeklyPlantScore),
 
             Padding(
               padding: const EdgeInsets.all(20),
@@ -436,30 +440,49 @@ class _NutritionScreenState extends State<NutritionScreen> {
               child: Text('Nenhum alimento registrado.', style: TextStyle(color: AppTheme.textSecondary.withOpacity(0.5), fontStyle: FontStyle.italic, fontSize: 13)),
             )
           else
-            ...meals.map((m) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            ...meals.map((m) {
+              final tags = BioIntelligence.analyzeFood(m.foodName, category: '');
+              final discountedKcal = BioIntelligence.calculateDiscountedCalories(m.calories.round(), tags);
+              final hasDiscount = discountedKcal < m.calories.round();
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(child: Text(m.foodName, style: const TextStyle(color: AppTheme.textPrimary, fontSize: 14))),
+                              if (tags.isNotEmpty) const SizedBox(width: 6),
+                              ...tags.map((t) => BioIntelligence.buildBadge(t, context)),
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          Text('${m.portionG}g • ${m.protein.round()}P | ${m.carb.round()}C | ${m.fat.round()}G', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11)),
+                        ],
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(m.foodName, style: const TextStyle(color: AppTheme.textPrimary, fontSize: 14)),
-                        const SizedBox(height: 2),
-                        Text('${m.portionG}g • ${m.protein.round()}P | ${m.carb.round()}C | ${m.fat.round()}G', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11)),
+                        if (hasDiscount)
+                          Text('${m.calories.round()} kcal', style: TextStyle(color: AppTheme.textSecondary.withValues(alpha: 0.6), fontSize: 10, decoration: TextDecoration.lineThrough)),
+                        Text('$discountedKcal kcal', style: TextStyle(color: hasDiscount ? Colors.greenAccent : AppTheme.textPrimary, fontWeight: FontWeight.w600)),
                       ],
                     ),
-                  ),
-                  Text('${m.calories.round()} kcal', style: const TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
-                  IconButton(
-                    icon: const Icon(Icons.close, size: 16, color: Colors.redAccent),
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                    onPressed: () => provider.removeMeal(m.id),
-                  ),
-                ],
-              ),
-            )),
+                    IconButton(
+                      icon: const Icon(Icons.close, size: 16, color: Colors.redAccent),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      onPressed: () => provider.removeMeal(m.id),
+                    ),
+                  ],
+                ),
+              );
+            }),
         ],
       ),
     );

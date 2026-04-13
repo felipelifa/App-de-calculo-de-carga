@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'food_model.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class NutritionService {
   final FirebaseFirestore _db;
@@ -16,6 +17,28 @@ class NutritionService {
   final String _fatSecretClientSecret = const String.fromEnvironment('FATSECRET_CLIENT_SECRET', defaultValue: '');
   String? _fatSecretToken;
   DateTime? _fatSecretTokenExpiry;
+
+  static List<FoodModel>? _cachedTbca;
+
+  Future<void> _loadTbcaCache() async {
+    if (_cachedTbca != null) return;
+    try {
+      final String jsonString = await rootBundle.loadString('assets/data/tbca_minified.json');
+      final List<dynamic> data = json.decode(jsonString);
+      _cachedTbca = data.map((item) => FoodModel(
+        id: item['id'],
+        name: item['name'],
+        caloriesPer100g: (item['kcal'] as num).toDouble(),
+        proteinPer100g: (item['p'] as num).toDouble(),
+        carbPer100g: (item['c'] as num).toDouble(),
+        fatPer100g: (item['f'] as num).toDouble(),
+        category: item['cat'],
+        isVerified: true,
+      )).toList();
+    } catch (_) {
+      _cachedTbca = [];
+    }
+  }
 
   Future<List<FoodModel>> getRecentFoods() async {
     final uid = _auth.currentUser?.uid;
@@ -75,7 +98,7 @@ class NutritionService {
     } catch (_) {}
 
     if (results.length < 5) {
-      final staples = _getEmergencyStaples(queryLower);
+      final staples = await _getEmergencyStaples(queryLower);
       for (final staple in staples) {
         if (!results.any((r) => r.name.toLowerCase().contains(staple.name.toLowerCase()))) {
           results.add(staple);
@@ -178,7 +201,9 @@ class NutritionService {
       .replaceAll('ç', 'c');
   }
 
-  List<FoodModel> _getEmergencyStaples(String query) {
+  Future<List<FoodModel>> _getEmergencyStaples(String query) async {
+    await _loadTbcaCache();
+
     final allStaples = [
        FoodModel(id: 'st_1', name: 'Frango (Peito Grelhado)', caloriesPer100g: 165, proteinPer100g: 31, carbPer100g: 0, fatPer100g: 3.6, isVerified: true, category: 'Carnes'),
        FoodModel(id: 'st_2', name: 'Arroz Branco Cozido', caloriesPer100g: 130, proteinPer100g: 2.7, carbPer100g: 28, fatPer100g: 0.3, isVerified: true, category: 'Grãos'),
@@ -200,7 +225,8 @@ class NutritionService {
        FoodModel(id: 'st_18', name: 'Maçã (Fuji/Gala)', caloriesPer100g: 52, proteinPer100g: 0.3, carbPer100g: 13.8, fatPer100g: 0.2, isVerified: true, category: 'Frutas'),
     ];
 
+    final List<FoodModel> combined = [...allStaples, ...(_cachedTbca ?? [])];
     final normalizedQuery = _normalize(query);
-    return allStaples.where((s) => _normalize(s.name).contains(normalizedQuery)).toList();
+    return combined.where((s) => _normalize(s.name).contains(normalizedQuery)).take(30).toList();
   }
 }
