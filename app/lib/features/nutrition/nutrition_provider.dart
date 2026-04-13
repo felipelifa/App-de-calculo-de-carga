@@ -73,6 +73,13 @@ class NutritionProvider extends ChangeNotifier {
   double get activeTargetCarb => targetCarb;
   double get activeTargetFat => targetFat;
 
+  bool get isCaloriesAdjusted => _profile != null && targetCalories != _profile!.targetCalories;
+  bool get isProteinAdjusted => _profile != null && (targetProtein - _profile!.targetProtein).abs() > 1.0;
+  bool get isCarbAdjusted => _profile != null && (targetCarb - _profile!.targetCarb).abs() > 1.0;
+  bool get isFatAdjusted => _profile != null && (targetFat - _profile!.targetFat).abs() > 1.0;
+
+  String get currentGoalLabel => _profile?.weeklyGoals[_selectedWeekday]?.label ?? 'Normal';
+
   List<MealEntry> _selectedDayMeals = [];
   List<MealEntry> get selectedDayMeals => _selectedWeekday == DateTime.now().weekday ? _todayMeals : _selectedDayMeals;
 

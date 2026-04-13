@@ -24,6 +24,7 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
   Timer? _debounce;
   List<FoodModel> _results = [];
   List<FoodModel> _recentFoods = [];
+  List<FoodModel> _favoriteFoods = [];
   bool _isSearching = false;
 
   @override
@@ -33,20 +34,14 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
   }
 
   Future<void> _loadRecents() async {
-    // Busca do provedor ou serviço os alimentos mais usados
-    final provider = context.read<NutritionProvider>();
-    // Simulação de busca no histórico (que agora é carregado no provider)
-    setState(() {
-      _recentFoods = provider.todayMeals.map((m) => FoodModel(
-        id: m.foodId,
-        name: m.foodName,
-        caloriesPer100g: m.calories / (m.portionG / 100),
-        proteinPer100g: m.protein / (m.portionG / 100),
-        carbPer100g: m.carb / (m.portionG / 100),
-        fatPer100g: m.fat / (m.portionG / 100),
-        isVerified: true,
-      )).toList();
-    });
+    final recents = await _service.getRecentFoods();
+    final favs = await _service.getFavoriteFoods();
+    if (mounted) {
+      setState(() {
+        _recentFoods = recents;
+        _favoriteFoods = favs;
+      });
+    }
   }
 
   Future<void> _scanBarcode() async {
@@ -168,17 +163,30 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
             Expanded(
               child: ListView(
                 children: [
-                   if (_searchController.text.isEmpty && _recentFoods.isNotEmpty) ...[
-                     const Padding(
-                       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                       child: Text('FREQUENTES / RECENTES', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
-                     ),
-                     ..._recentFoods.take(5).map((food) => _buildFoodTile(food)),
-                     const Divider(color: AppTheme.surfaceHighlight),
-                     const Padding(
-                       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                       child: Text('SUGESTÕES', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
-                     ),
+                   if (_searchController.text.isEmpty) ...[
+                     if (_favoriteFoods.isNotEmpty) ...[
+                       const Padding(
+                         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                         child: Text('FAVORITOS', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
+                       ),
+                       ..._favoriteFoods.map((food) => _buildFoodTile(food)),
+                       const Divider(color: AppTheme.surfaceHighlight),
+                     ],
+                     if (_recentFoods.isNotEmpty) ...[
+                       const Padding(
+                         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                         child: Text('RECENTEMENTE CONSUMIDOS', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
+                       ),
+                       ..._recentFoods.take(5).map((food) => _buildFoodTile(food)),
+                       const Divider(color: AppTheme.surfaceHighlight),
+                     ],
+                     if (_favoriteFoods.isEmpty && _recentFoods.isEmpty)
+                       const Padding(
+                         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                         child: Center(
+                           child: Text('Comece a buscar para registrar seus alimentos.', style: TextStyle(color: AppTheme.textSecondary, fontStyle: FontStyle.italic)),
+                         ),
+                       ),
                    ],
                    ..._results.map((food) => _buildFoodTile(food)),
                 ],

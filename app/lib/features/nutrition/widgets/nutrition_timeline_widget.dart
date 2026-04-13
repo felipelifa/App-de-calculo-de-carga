@@ -33,12 +33,11 @@ class NutritionTimelineWidget extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 110,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: 7,
-                itemBuilder: (context, index) {
+              height: 180,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: List.generate(7, (index) {
                   final weekday = index + 1;
                   final goal = profile.weeklyGoals[weekday];
                   if (goal == null) return const SizedBox.shrink();
@@ -46,6 +45,10 @@ class NutritionTimelineWidget extends StatelessWidget {
                   final isToday = weekday == DateTime.now().weekday;
                   final isSelected = weekday == provider.selectedWeekday;
                   final dayLabel = _getWeekdayLabel(weekday);
+                  
+                  // Encontra a cota máxima da semana para nivelar os gráficos
+                  final maxCals = profile.weeklyGoals.values.fold(0, (maxVal, g) => g.calories > maxVal ? g.calories : maxVal);
+                  final ratio = maxCals > 0 ? (goal.calories / maxCals) : 0.0;
 
                   return GestureDetector(
                     onTap: () => provider.selectWeekday(weekday),
@@ -54,9 +57,10 @@ class NutritionTimelineWidget extends StatelessWidget {
                       goal: goal,
                       isToday: isToday,
                       isSelected: isSelected,
+                      fillRatio: ratio.toDouble(),
                     ),
                   );
-                },
+                }),
               ),
             ),
           ],
@@ -84,79 +88,99 @@ class _TimelineDayCard extends StatelessWidget {
   final DailyNutritionalGoal goal;
   final bool isToday;
   final bool isSelected;
+  final double fillRatio;
 
   const _TimelineDayCard({
     required this.label,
     required this.goal,
     required this.isToday,
     required this.isSelected,
+    required this.fillRatio,
   });
 
   @override
   Widget build(BuildContext context) {
-    final bool isHighDemand = goal.label == 'Alta Demanda';
-    final Color activeColor = isToday ? AppTheme.accent : AppTheme.accent.withOpacity(0.6);
+    final bool isHighDemand = goal.label.contains('Treino') || goal.label == 'Alta Demanda';
+    final Color activeColor = isToday ? AppTheme.accent : AppTheme.accent.withOpacity(0.4);
 
     return Container(
-      width: 80,
-      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-      decoration: BoxDecoration(
-        color: isSelected ? activeColor : AppTheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isSelected ? activeColor : AppTheme.divider.withOpacity(0.1),
-          width: 2,
-        ),
-        boxShadow: isSelected ? [
-          BoxShadow(
-            color: activeColor.withOpacity(0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          )
-        ] : [],
-      ),
+      width: 45,
+      margin: const EdgeInsets.symmetric(horizontal: 2),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (isToday)
-            Container(
-              margin: const EdgeInsets.only(bottom: 2),
-              width: 4,
-              height: 4,
-              decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-            ),
-          Text(
-            label,
-            style: TextStyle(
-              color: isSelected ? Colors.white : AppTheme.textSecondary,
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 6),
+          // Valor Calórico
           Text(
             '${goal.calories}',
             style: TextStyle(
-              color: isSelected ? Colors.white : AppTheme.textPrimary,
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
+              color: isSelected ? AppTheme.accent : AppTheme.textPrimary,
+              fontSize: 10,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 4),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            decoration: BoxDecoration(
-              color: isSelected ? Colors.white.withOpacity(0.2) : (isHighDemand ? AppTheme.accent.withOpacity(0.1) : Colors.transparent),
-              borderRadius: BorderRadius.circular(4),
+          const SizedBox(height: 6),
+          // Barra Proporcional
+          Expanded(
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Container(
+                  width: 32,
+                  decoration: BoxDecoration(
+                    color: AppTheme.surface,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppTheme.divider.withOpacity(0.1)),
+                  ),
+                ),
+                FractionallySizedBox(
+                  alignment: Alignment.bottomCenter,
+                  heightFactor: fillRatio.clamp(0.1, 1.0),
+                  child: Container(
+                    width: 32,
+                    decoration: BoxDecoration(
+                      color: isSelected ? AppTheme.accent : activeColor,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: isSelected ? [
+                        BoxShadow(color: AppTheme.accent.withOpacity(0.4), blurRadius: 8, offset: const Offset(0, 2))
+                      ] : null,
+                    ),
+                  ),
+                ),
+                // Indicador de Treino ou Compensação
+                if (isHighDemand || goal.label.contains('Excesso'))
+                  Positioned(
+                    bottom: 4,
+                    child: Icon(
+                      goal.label.contains('Excesso') ? Icons.warning_rounded : Icons.fitness_center_rounded,
+                      size: 10,
+                      color: Colors.white.withOpacity(0.8),
+                    ),
+                  ),
+              ],
             ),
-            child: Text(
-              isHighDemand ? 'TREINO' : 'DESC.',
-              style: TextStyle(
-                color: isSelected ? Colors.white : (isHighDemand ? AppTheme.accent : AppTheme.textSecondary.withOpacity(0.5)),
-                fontSize: 8,
-                fontWeight: FontWeight.bold,
+          ),
+          const SizedBox(height: 8),
+          // Dia da Semana e Bolinha de Hoje
+          Column(
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  color: isSelected ? AppTheme.accent : AppTheme.textSecondary,
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
+              const SizedBox(height: 4),
+              Container(
+                width: 4,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: isToday ? AppTheme.accent : Colors.transparent,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ],
           ),
         ],
       ),

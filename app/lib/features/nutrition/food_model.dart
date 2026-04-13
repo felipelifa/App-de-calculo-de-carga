@@ -11,6 +11,8 @@ class FoodModel {
   final bool isVerified;
   final bool isUserCreated;
   final String? barcode;
+  final String category;
+  final Map<String, double> commonPortions;
   final int timesConsumed;
 
   FoodModel({
@@ -26,10 +28,20 @@ class FoodModel {
     this.isVerified = false,
     this.isUserCreated = false,
     this.barcode,
+    this.category = 'Geral',
+    this.commonPortions = const {},
     this.timesConsumed = 0,
   });
 
   factory FoodModel.fromMap(Map<String, dynamic> map, String id) {
+    Map<String, double> parsedPortions = {};
+    if (map['commonPortions'] != null) {
+      final cp = map['commonPortions'] as Map;
+      cp.forEach((k, v) {
+        parsedPortions[k.toString()] = (v as num).toDouble();
+      });
+    }
+
     return FoodModel(
       id: id,
       name: map['name'] ?? '',
@@ -43,6 +55,8 @@ class FoodModel {
       isVerified: map['isVerified'] ?? false,
       isUserCreated: map['isUserCreated'] ?? false,
       barcode: map['barcode'] as String?,
+      category: map['category'] as String? ?? 'Geral',
+      commonPortions: parsedPortions,
       timesConsumed: (map['timesConsumed'] as num?)?.toInt() ?? 0,
     );
   }
@@ -60,6 +74,8 @@ class FoodModel {
       'isVerified': isVerified,
       'isUserCreated': isUserCreated,
       'barcode': barcode,
+      'category': category,
+      'commonPortions': commonPortions,
       'timesConsumed': timesConsumed,
     };
   }

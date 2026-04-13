@@ -674,20 +674,49 @@ class _NutritionSummaryCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '$remaining',
-                      style: const TextStyle(color: AppTheme.textPrimary, fontSize: 32, fontWeight: FontWeight.bold),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          '$target',
+                          style: const TextStyle(color: AppTheme.textPrimary, fontSize: 32, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 4),
+                        const Text(
+                          'kcal',
+                          style: TextStyle(color: AppTheme.textSecondary, fontSize: 14),
+                        ),
+                      ],
                     ),
-                    const Text('kcal restantes', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+                    if (provider.isCaloriesAdjusted)
+                      Row(
+                        children: [
+                          const Icon(Icons.bolt_rounded, color: AppTheme.accent, size: 12),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              'Ajustada (${provider.currentGoalLabel})',
+                              style: const TextStyle(color: AppTheme.accent, fontSize: 10, fontWeight: FontWeight.w600),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      )
+                    else
+                      const Text('Meta de hoje', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+                    const SizedBox(height: 8),
+                    Text('$remaining kcal restantes', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11)),
                   ],
                 ),
               ),
               const SizedBox(width: 16),
-              _buildMacroMini('P', provider.consumedProtein, provider.activeTargetProtein, AppTheme.accent),
+              _buildMacroMini('P', provider.consumedProtein, provider.activeTargetProtein, AppTheme.accent, isAdjusted: provider.isProteinAdjusted),
               const SizedBox(width: 8),
-              _buildMacroMini('C', provider.consumedCarb, provider.activeTargetCarb, AppTheme.success),
+              _buildMacroMini('C', provider.consumedCarb, provider.activeTargetCarb, AppTheme.success, isAdjusted: provider.isCarbAdjusted),
               const SizedBox(width: 8),
-              _buildMacroMini('G', provider.consumedFat, provider.activeTargetFat, Colors.orange),
+              _buildMacroMini('G', provider.consumedFat, provider.activeTargetFat, Colors.orange, isAdjusted: provider.isFatAdjusted),
             ],
           ),
           const SizedBox(height: 16),
@@ -705,12 +734,28 @@ class _NutritionSummaryCard extends StatelessWidget {
     );
   }
 
-  Widget _buildMacroMini(String label, double consumed, double target, Color color) {
+  Widget _buildMacroMini(String label, double consumed, double target, Color color, {bool isAdjusted = false}) {
+    final pct = target > 0 ? (consumed / target).clamp(0.0, 1.0) : 0.0;
+    final isDone = pct >= 1.0;
+    final displayColor = isDone ? AppTheme.success : color;
+
     return Column(
       children: [
-        Text(label, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 10)),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(label, style: TextStyle(color: displayColor, fontWeight: FontWeight.bold, fontSize: 10)),
+            if (isAdjusted) ...[
+              const SizedBox(width: 2),
+              Tooltip(
+                message: 'Ajustado pelo algoritmo',
+                child: Icon(Icons.bolt_rounded, size: 10, color: displayColor),
+              ),
+            ],
+          ],
+        ),
         const SizedBox(height: 2),
-        Text('${consumed.round()}g', style: const TextStyle(color: AppTheme.textPrimary, fontSize: 12, fontWeight: FontWeight.bold)),
+        Text('${consumed.round()}g', style: TextStyle(color: isDone ? AppTheme.success : AppTheme.textPrimary, fontSize: 12, fontWeight: FontWeight.bold)),
         Text('${target.round()}g', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 9)),
       ],
     );

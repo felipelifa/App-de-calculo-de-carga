@@ -147,8 +147,19 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
             
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Sensibilidade de Treino (Motor Digital)', style: TextStyle(color: AppTheme.textPrimary)),
-              subtitle: const Text('Adiciona calorias automaticamente de acordo com o volume do seu treino diário para regeneração celular.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+              title: Row(
+                children: [
+                  const Text('Sensibilidade de Treino (Motor Digital)', style: TextStyle(color: AppTheme.textPrimary)),
+                  const SizedBox(width: 8),
+                  Tooltip(
+                    message: 'Adiciona ~10% das kcal na Meta do Dia baseando-se no volume/duração do treino recém-concluído.',
+                    preferBelow: false,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Icon(Icons.info_outline, color: AppTheme.accent.withOpacity(0.7), size: 16),
+                  ),
+                ],
+              ),
+              subtitle: const Text('Aumenta calorias automaticamente de acordo com o treino diário para regeneração celular.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
               value: _dynamicAdaptation,
               activeColor: AppTheme.accent,
               onChanged: (val) => setState(() => _dynamicAdaptation = val),
@@ -158,7 +169,18 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
 
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Ciclagem de Carboidratos (Carb Cycling)', style: TextStyle(color: AppTheme.textPrimary)),
+              title: Row(
+                children: [
+                  const Text('Ciclagem de Carboidratos', style: TextStyle(color: AppTheme.textPrimary)),
+                  const SizedBox(width: 8),
+                  Tooltip(
+                    message: 'Dias de treino: +10% de calorias puxadas dos Carbos. Dias de descanso: -15% de calorias e carbos. Se as duas estratégias estiverem ligadas, esta dita a divisão inicial da semana, e a Sensibilidade bonifica o Custo do Treino no dia.',
+                    preferBelow: false,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Icon(Icons.info_outline, color: AppTheme.accent.withOpacity(0.7), size: 16),
+                  ),
+                ],
+              ),
               subtitle: const Text('Aumenta os carboidratos em dias de treino e os reduz em dias de descanso.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
               value: _carbCycling,
               activeColor: AppTheme.accent,

@@ -109,6 +109,29 @@ class _NutritionScreenState extends State<NutritionScreen> {
             const SizedBox(height: 12),
             // Timeline Semanal Interativa
             const NutritionTimelineWidget(),
+            
+            if (provider.currentGoalLabel.contains('TMB'))
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.orange.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.orange.withOpacity(0.3)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.shield_rounded, color: Colors.orange, size: 20),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Meta de hoje travada no limite mínimo de segurança (TMB). O restante do excesso foi diluído nos próximos dias.',
+                        style: TextStyle(color: Colors.orange.shade300, fontSize: 11, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
             Padding(
               padding: const EdgeInsets.all(20),
@@ -244,17 +267,19 @@ class _NutritionScreenState extends State<NutritionScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildMacroCard('Proteína', provider.consumedProtein, provider.targetProtein, AppTheme.accent),
+        _buildMacroCard('Proteína', provider.consumedProtein, provider.targetProtein, AppTheme.accent, isAdjusted: provider.isProteinAdjusted),
         const SizedBox(width: 12),
-        _buildMacroCard('Carbo', provider.consumedCarb, provider.targetCarb, AppTheme.success),
+        _buildMacroCard('Carbo', provider.consumedCarb, provider.targetCarb, AppTheme.success, isAdjusted: provider.isCarbAdjusted),
         const SizedBox(width: 12),
-        _buildMacroCard('Gordura', provider.consumedFat, provider.targetFat, Colors.orange),
+        _buildMacroCard('Gordura', provider.consumedFat, provider.targetFat, Colors.orange, isAdjusted: provider.isFatAdjusted),
       ],
     );
   }
 
-  Widget _buildMacroCard(String label, double consumed, double target, Color color) {
+  Widget _buildMacroCard(String label, double consumed, double target, Color color, {bool isAdjusted = false}) {
     final pct = target > 0 ? (consumed / target).clamp(0.0, 1.0) : 0.0;
+    final isDone = pct >= 1.0;
+    final displayColor = isDone ? AppTheme.success : color;
     
     return Expanded(
       child: Container(
@@ -262,23 +287,35 @@ class _NutritionScreenState extends State<NutritionScreen> {
         decoration: BoxDecoration(
           color: AppTheme.surface,
           borderRadius: BorderRadius.circular(16),
+          border: isDone ? Border.all(color: AppTheme.success.withOpacity(0.3)) : null,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.bold)),
+            Row(
+              children: [
+                Text(label, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.bold)),
+                if (isAdjusted) ...[
+                  const SizedBox(width: 4),
+                  Tooltip(
+                    message: 'Ajustado',
+                    child: Icon(Icons.bolt_rounded, size: 12, color: displayColor),
+                  ),
+                ],
+              ],
+            ),
             const SizedBox(height: 6),
             Text(
               '${consumed.round()} / ${target.round()}g',
-              style: const TextStyle(color: AppTheme.textPrimary, fontSize: 11, fontWeight: FontWeight.bold),
+              style: TextStyle(color: isDone ? AppTheme.success : AppTheme.textPrimary, fontSize: 11, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             ClipRRect(
               borderRadius: BorderRadius.circular(4),
               child: LinearProgressIndicator(
                 value: pct,
-                backgroundColor: color.withOpacity(0.1),
-                color: color,
+                backgroundColor: displayColor.withOpacity(0.1),
+                color: displayColor,
                 minHeight: 4,
               ),
             ),
@@ -313,7 +350,9 @@ class _NutritionScreenState extends State<NutritionScreen> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                   const Text('META DIÁRIA', style: TextStyle(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.1)),
+                  Text(context.read<NutritionProvider>().isCaloriesAdjusted ? 'META AJUSTADA' : 'META DIÁRIA', 
+                    style: TextStyle(color: context.read<NutritionProvider>().isCaloriesAdjusted ? AppTheme.accent : AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.1)
+                  ),
                   Text(
                     target.toString(),
                     style: const TextStyle(fontSize: 42, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
@@ -360,17 +399,12 @@ class _NutritionScreenState extends State<NutritionScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title, style: const TextStyle(color: AppTheme.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
-              Row(
-                children: [
-                  Text('$totalKcal kcal', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 14)),
-                  if (!isFuture)
-                    IconButton(
-                      icon: const Icon(Icons.add_circle, color: AppTheme.accent),
-                      onPressed: () => context.push('/nutrition/search?type=$type'),
-                    ),
-                ],
-              ),
+              Text('$title - $totalKcal kcal', style: const TextStyle(color: AppTheme.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
+              if (!isFuture)
+                IconButton(
+                  icon: const Icon(Icons.add_circle, color: AppTheme.accent),
+                  onPressed: () => context.push('/nutrition/search?type=$type'),
+                ),
             ],
           ),
           if (meals.isEmpty)

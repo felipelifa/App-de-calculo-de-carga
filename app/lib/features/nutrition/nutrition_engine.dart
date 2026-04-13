@@ -127,15 +127,20 @@ class NutritionEngine {
         if (g.isManual) continue; // Respeita edições manuais do usuário
 
         int newCals = (g.calories + dailyAdjustment).round();
-        
+        bool hitTmbLimit = false;
+
         // Segurança: não permitir que as calorias caiam abaixo da TMB
-        newCals = math.max(newCals, profile.tmb);
-        
+        if (newCals < profile.tmb) {
+          newCals = profile.tmb;
+          hitTmbLimit = true;
+        }
+
         double newCarb = (newCals - (g.protein * 4) - (g.fat * 9)) / 4.0;
         
         updatedGoals[i] = g.copyWith(
             calories: newCals,
             carb: math.max(10, newCarb),
+            label: hitTmbLimit ? 'Trava de Segurança (TMB)' : 'Compensado',
         );
     }
 
