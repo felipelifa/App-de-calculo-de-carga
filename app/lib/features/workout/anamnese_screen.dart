@@ -111,7 +111,7 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
       final exerciseProvider = context.read<ExerciseProvider>();
 
       await profileProvider.saveProfile(profile);
-      await profileProvider.generateAndSaveWorkout(exerciseProvider.filteredExercises);
+      await profileProvider.generateAndSaveWorkout();
 
       if (mounted) {
         Navigator.pop(context);

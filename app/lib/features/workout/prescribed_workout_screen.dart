@@ -238,7 +238,7 @@ class _WorkoutPlanCard extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          '${workout.splitType.toUpperCase()} • ${workout.mesocycleDurationWeeks} Semanas',
+                          '${_formatSplit(workout.splitType)} • ${workout.mesocycleDurationWeeks} Semanas',
                           style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12),
                         ),
                       ],
@@ -361,8 +361,12 @@ class _WorkoutSessionsSheet extends StatelessWidget {
                          child: ElevatedButton(
                            onPressed: () {
                              // Lógica para iniciar o treino
-                             context.read<WorkoutProvider>().startSession(session, workout.id);
-                             context.go('/workout/active');
+                             context.read<WorkoutProvider>().startSessionFromPrescribed(
+                               sessionId: session.id,
+                               sessionName: session.name,
+                               prescribedExercises: session.exercises.map((e) => e.toMap()).toList(),
+                             );
+                             context.go('/workout');
                            },
                            child: const Text('COMEÇAR TREINO'),
                          ),
@@ -377,30 +381,31 @@ class _WorkoutSessionsSheet extends StatelessWidget {
       ),
     );
   }
-  String _formatPeriodization(String p) {
-    switch (p) {
-      case 'linear': return 'Linear';
-      case 'dup': return 'Ondulatória (DUP)';
-      case 'block': return 'Em Bloco';
-      default: return p.toUpperCase();
-    }
-  }
+}
 
-  String _formatSplit(String s) {
-    switch (s) {
-      case 'full_body': return 'Corpo Todo';
-      case 'upper_lower': return 'Superior/Inferior';
-      case 'ppl': return 'Empurrar/Puxar/Pernas';
-      default: return s;
-    }
+String _formatPeriodization(String p) {
+  switch (p) {
+    case 'linear': return 'Linear';
+    case 'dup': return 'Ondulatória (DUP)';
+    case 'block': return 'Em Bloco';
+    default: return p.toUpperCase();
   }
+}
 
-  String _periodizationExplainer(String p) {
-    switch (p) {
-      case 'linear': return 'Ideal para progressão de força constante.';
-      case 'dup': return 'Variação diária para evitar estagnação.';
-      case 'block': return 'Fases específicas de força e volume.';
-      default: return '';
-    }
+String _formatSplit(String s) {
+  switch (s) {
+    case 'full_body': return 'Corpo Todo';
+    case 'upper_lower': return 'Superior/Inferior';
+    case 'ppl': return 'Empurrar/Puxar/Pernas';
+    default: return s;
+  }
+}
+
+String _periodizationExplainer(String p) {
+  switch (p) {
+    case 'linear': return 'Ideal para progressão de força constante.';
+    case 'dup': return 'Variação diária para evitar estagnação.';
+    case 'block': return 'Fases específicas de força e volume.';
+    default: return '';
   }
 }

@@ -132,18 +132,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final exerciseProvider = context.read<ExerciseProvider>();
     final nutritionProvider = context.read<NutritionProvider>();
     
-    profileProvider.loadCurrentWorkout(exerciseProvider.getById).then((_) {
-      if (!mounted) return;
-      final profile = profileProvider.profile;
-      if (profile != null) {
-        // Usa microtask para evitar problemas de sincronia de estado no build
-        Future.microtask(() {
-          if (mounted) {
-            context.read<NutritionProvider>().initFromProfile(profile);
-          }
-        });
-      }
-    });
+    final profile = profileProvider.profile;
+    if (profile != null && nutritionProvider.profile == null) {
+      Future.microtask(() {
+        if (mounted) nutritionProvider.initFromProfile(profile);
+      });
+    }
 
     final future = _DashboardService(
       db: FirebaseFirestore.instance,
