@@ -41,7 +41,7 @@ class NutritionDashboardScreen extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               title: Text(
-                'Bio-Analytics',
+                'Bio-Analítica',
                 style: GoogleFonts.outfit(
                   color: AppTheme.textPrimary,
                   fontSize: 24,
@@ -76,9 +76,9 @@ class NutritionDashboardScreen extends StatelessWidget {
                       mainAxisSpacing: 16,
                       childAspectRatio: 1.1,
                       children: [
-                        _buildMetricCard('BMR / TMB', '${np.profile!.tmb}', 'kcal', AppTheme.accentOrange, Icons.local_fire_department_rounded),
-                        _buildMetricCard('BMI / IMC', imc.toStringAsFixed(1), 'index', AppTheme.accentBlue, Icons.person_search_rounded),
-                        _buildMetricCard('WATER', '${np.waterTarget}', 'ml', Colors.cyan, Icons.water_drop_rounded),
+                        _buildMetricCard('TMB (Basal)', '${np.profile!.tmb}', 'kcal', AppTheme.accentOrange, Icons.local_fire_department_rounded),
+                        _buildMetricCard('IMC (Corporal)', imc.toStringAsFixed(1), 'index', AppTheme.accentBlue, Icons.person_search_rounded),
+                        _buildMetricCard('ÁGUA', '${np.waterTarget}', 'ml', Colors.cyan, Icons.water_drop_rounded),
                         _buildMetricCard('BASE-CAL', '${np.profile!.targetCalories}', 'kcal', AppTheme.accentLime, Icons.bolt_rounded),
                       ],
                    ).animate().fadeIn(delay: 400.ms),
@@ -109,11 +109,11 @@ class NutritionDashboardScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildInfoItem('${wp.heightCm.toInt()}', 'CM', 'HEIGHT'),
+          _buildInfoItem('${wp.heightCm.toInt()}', 'CM', 'ALTURA'),
           _buildDivider(),
-          _buildInfoItem('${wp.weightKg.toInt()}', 'KG', 'WEIGHT'),
+          _buildInfoItem('${wp.weightKg.toInt()}', 'KG', 'PESO'),
           _buildDivider(),
-          _buildInfoItem('${wp.age}', 'YO', 'AGE'),
+          _buildInfoItem('${wp.age}', 'ANOS', 'IDADE'),
         ],
       ),
     );
@@ -142,13 +142,13 @@ class NutritionDashboardScreen extends StatelessWidget {
   }
 
   Widget _buildGoalHeroCard(String goal) {
-    String label = 'MAINTENANCE';
+    String label = 'MANUTENÇÃO';
     IconData icon = Icons.balance_rounded;
     if (goal == 'fat_loss') {
-      label = 'FAT LOSS / CUTTING';
+      label = 'PERDA DE GORDURA';
       icon = Icons.trending_down_rounded;
     } else if (goal == 'hypertrophy') {
-      label = 'MUSCLE GAIN / BULKING';
+      label = 'GANHO DE MASSA';
       icon = Icons.fitness_center_rounded;
     }
 
@@ -165,7 +165,7 @@ class NutritionDashboardScreen extends StatelessWidget {
         children: [
           Icon(icon, color: Colors.white, size: 32),
           const SizedBox(height: 24),
-          Text('PRIMARY GOAL', style: GoogleFonts.outfit(color: Colors.white.withOpacity(0.6), fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5)),
+          Text('OBJETIVO PRINCIPAL', style: GoogleFonts.outfit(color: Colors.white.withOpacity(0.6), fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5)),
           const SizedBox(height: 8),
           Text(label, style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 24)),
         ],

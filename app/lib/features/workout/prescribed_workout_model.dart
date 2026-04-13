@@ -180,30 +180,36 @@ class PrescribedSession {
 class GeneratedWorkout {
   final String id;
   final String userId;
+  final String name;
   final String splitType;
   final String periodizationModel;
   final List<PrescribedSession> sessions;
   final int mesocycleDurationWeeks;
   final DateTime generatedAt;
+  final bool isActive;
 
   const GeneratedWorkout({
     required this.id,
     required this.userId,
+    this.name = 'Plano de Treino',
     required this.splitType,
     required this.periodizationModel,
     required this.sessions,
     required this.mesocycleDurationWeeks,
     required this.generatedAt,
+    this.isActive = false,
   });
 
   Map<String, dynamic> toMap() => {
         'id': id,
         'userId': userId,
+        'name': name,
         'splitType': splitType,
         'periodizationModel': periodizationModel,
         'sessions': sessions.map((s) => s.toMap()).toList(),
         'mesocycleDurationWeeks': mesocycleDurationWeeks,
         'generatedAt': generatedAt.toIso8601String(),
+        'isActive': isActive,
       };
 
   factory GeneratedWorkout.fromMap(
@@ -213,6 +219,7 @@ class GeneratedWorkout {
     return GeneratedWorkout(
       id: map['id'] as String? ?? '',
       userId: map['userId'] as String? ?? '',
+      name: map['name'] as String? ?? 'Plano de Treino',
       splitType: map['splitType'] as String? ?? 'full_body',
       periodizationModel: map['periodizationModel'] as String? ?? 'linear',
       sessions: (map['sessions'] as List? ?? [])
@@ -224,6 +231,7 @@ class GeneratedWorkout {
       generatedAt:
           DateTime.tryParse(map['generatedAt'] as String? ?? '') ??
               DateTime.now(),
+      isActive: map['isActive'] as bool? ?? false,
     );
   }
 }

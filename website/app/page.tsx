@@ -70,16 +70,16 @@ export default function LandingPage() {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass mb-8 border-white/10"
             >
               <span className="w-2 h-2 rounded-full bg-neon animate-pulse" />
-              <span className="text-xs font-bold tracking-widest uppercase text-neon">Bio-Adaptive Engine v7.0</span>
+              <span className="text-xs font-bold tracking-widest uppercase text-neon">Motor Bio-Adaptativo v7.0</span>
             </motion.div>
 
             <motion.h1 
               variants={fadeInUp}
               className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-8"
             >
-              BE HEALTHIER.<br />
-              <span className="text-neon underline decoration-4 underline-offset-8">BE STRONGER.</span><br />
-              BE CONFIDENT.
+              SEJA SAUDÁVEL.<br />
+              <span className="text-neon underline decoration-4 underline-offset-8">SEJA FORTE.</span><br />
+              SEJA CONFIANTE.
             </motion.h1>
 
             <motion.p 
@@ -124,7 +124,7 @@ export default function LandingPage() {
         {/* BENTO GRID FEATURES */}
         <section id="features" className="py-32 px-4 max-w-7xl mx-auto">
           <div className="mb-20">
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">ENGINE POWERED BY SCIENCE.</h2>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">MOTOR MOVIDO A CIÊNCIA.</h2>
             <p className="text-neutral-500 max-w-xl">Nosso motor não usa algoritmos simples. Ele simula a sua fisiologia para garantir resultados sem lesões.</p>
           </div>
 
@@ -164,7 +164,7 @@ export default function LandingPage() {
             {/* Bento Item 5: Wide Middle */}
             <BentoCard 
               className="md:col-span-8 md:row-span-2 glass flex flex-col md:flex-row gap-8 items-center justify-center p-8 bg-gradient-to-br from-surface to-black border-white/10"
-              icon={<div className="text-8xl font-black text-white/5 absolute -left-4 -bottom-4">GENERIC IS DEAD.</div>}
+              icon={<div className="text-8xl font-black text-white/5 absolute -left-4 -bottom-4">O GENÉRICO MORREU.</div>}
               title="Treino Individualizado"
               desc="Fim das planilhas genéricas. O algoritmo monta o treino do ZERO baseado no seu equipamento, tempo disponível e restrições médicas."
             />
@@ -187,7 +187,7 @@ export default function LandingPage() {
           
           <div className="max-w-4xl mx-auto text-center relative z-10">
             <Download className="w-20 h-20 mx-auto mb-8 text-neon" />
-            <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-8 italic">READY TO DOMINATE?</h2>
+            <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-8 italic">PRONTO PARA DOMINAR?</h2>
             <p className="text-xl text-neutral-400 mb-12">Disponível via APK para Android e WebApp para iOS/Navegador.</p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">

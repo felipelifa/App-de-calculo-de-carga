@@ -171,7 +171,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               title: Text(
-                'Progress',
+                'Evolução',
                 style: GoogleFonts.outfit(
                   color: AppTheme.textPrimary,
                   fontSize: 32,
@@ -285,7 +285,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     const Text('2', style: TextStyle(color: AppTheme.accentOrange, fontWeight: FontWeight.bold, fontSize: 10)),
                     const SizedBox(width: 4),
-                    Text('CHALLENGER', style: GoogleFonts.outfit(color: AppTheme.textPrimary, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)),
+                    Text('DESAFIANTE', style: GoogleFonts.outfit(color: AppTheme.textPrimary, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)),
                   ],
                 ),
               ),
@@ -318,9 +318,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          _TabItem(label: 'TRACKER', isSelected: true),
-          _TabItem(label: 'PB'),
-          _TabItem(label: 'ACHIEVEMENTS'),
+          _TabItem(label: 'RASTREAMENTO', isSelected: true),
+          _TabItem(label: 'RECORDES'),
+          _TabItem(label: 'CONQUISTAS'),
           _TabItem(label: '10,000'),
         ],
       ),
@@ -330,7 +330,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildTrainingHeroCard(BuildContext context) {
     return Consumer<WorkoutProfileProvider>(
       builder: (context, wp, _) {
-        final hasPro = wp.hasWorkout;
+        final activeWorkout = wp.activeWorkout;
+        final hasPro = activeWorkout != null;
+        
         return InkWell(
           onTap: () => context.push(hasPro ? '/prescribed' : '/anamnese'),
           borderRadius: BorderRadius.circular(32),
@@ -346,7 +348,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               boxShadow: [BoxShadow(color: AppTheme.accent.withOpacity(0.1), blurRadius: 40, offset: const Offset(0, 20))],
             ),
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(32),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
@@ -354,11 +356,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                  Container(
                    padding: const EdgeInsets.all(12),
                    decoration: const BoxDecoration(color: AppTheme.accent, shape: BoxShape.circle),
-                   child: const Icon(Icons.add, color: Colors.white, size: 24),
+                   child: Icon(hasPro ? Icons.play_arrow_rounded : Icons.add, color: Colors.black, size: 24),
                  ),
                  const Spacer(),
-                 Text('48', style: GoogleFonts.outfit(fontSize: 64, fontWeight: FontWeight.w900, color: AppTheme.textPrimary, height: 1)),
-                 Text('MIN TRAINED', style: GoogleFonts.outfit(fontSize: 14, fontWeight: FontWeight.bold, color: AppTheme.textSecondary, letterSpacing: 1)),
+                 Text(
+                   hasPro ? activeWorkout.name : 'Vazio', 
+                   style: GoogleFonts.outfit(fontSize: 42, fontWeight: FontWeight.w900, color: AppTheme.textPrimary, height: 1.1)
+                 ),
+                 const SizedBox(height: 8),
+                 Text(
+                   hasPro ? 'MEU PLANO ATIVO' : 'COMECE AQUI', 
+                   style: GoogleFonts.outfit(fontSize: 14, fontWeight: FontWeight.bold, color: AppTheme.accent, letterSpacing: 2)
+                 ),
               ],
             ),
           ),
@@ -374,7 +383,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
            children: [
              Expanded(
                child: _BentoCard(
-                 title: 'Technique', 
+                 title: 'Técnica', 
                  value: '16', 
                  unit: 'MIN', 
                  color: AppTheme.accent, 
@@ -385,7 +394,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
              const SizedBox(width: 16),
              Expanded(
                child: _BentoCard(
-                 title: 'Tactics', 
+                 title: 'Tática', 
                  value: '10', 
                  unit: 'MIN', 
                  color: AppTheme.accentBlue, 
@@ -397,8 +406,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         const SizedBox(height: 16),
         _BentoCard(
-          title: 'Bio-Management', 
-          value: 'ACTIVE', 
+          title: 'Bio-Gestão', 
+          value: 'ATIVO', 
           unit: '', 
           color: AppTheme.accentLime, 
           icon: Icons.auto_awesome, 

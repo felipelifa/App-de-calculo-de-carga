@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart'; // Add material for SnackBar if needed or types
 import 'workout_profile_model.dart';
 import 'prescribed_workout_model.dart';
 import 'prescription_engine.dart';
@@ -20,11 +20,10 @@ class WorkoutProfileProvider extends ChangeNotifier {
   }
 
   WorkoutProfile? _profile;
-  GeneratedWorkout? _currentWorkout;
-  Map<String, dynamic>? _currentWorkoutRaw;
+  List<GeneratedWorkout> _allWorkouts = [];
   ProgressionState? _progressionState;
   
-  StreamSubscription? _workoutSub;
+  StreamSubscription? _workoutsSub;
   StreamSubscription? _progressionSub;
   StreamSubscription? _authSub;
 
@@ -32,12 +31,21 @@ class WorkoutProfileProvider extends ChangeNotifier {
   String? _error;
 
   WorkoutProfile? get profile => _profile;
-  GeneratedWorkout? get currentWorkout => _currentWorkout;
+  List<GeneratedWorkout> get allWorkouts => _allWorkouts;
+  GeneratedWorkout? get activeWorkout {
+    if (_allWorkouts.isEmpty) return null;
+    try {
+      return _allWorkouts.firstWhere((w) => w.isActive);
+    } catch (_) {
+      return _allWorkouts.first;
+    }
+  }
+
   bool get isLoading => _isLoading;
   ProgressionState? get progressionState => _progressionState;
   String? get error => _error;
   bool get hasProfile => _profile != null;
-  bool get hasWorkout => _currentWorkout != null;
+  bool get hasWorkout => _allWorkouts.isNotEmpty;
 
   double getLatestWeightForExercise(String exerciseId) {
     if (_progressionState == null) return 0.0;
@@ -47,22 +55,26 @@ class WorkoutProfileProvider extends ChangeNotifier {
 
   Future<void> _init() async {
     _authSub?.cancel();
-    _authSub = _auth.authStateChanges().listen((user) {
+    _authSub = _auth.authStateChanges().listen((user) async {
        if (user != null) {
-         _setupListeners(user.uid);
+          await _loadProfile(user.uid);
+          _setupListeners(user.uid);
        } else {
-         _cleanup();
+          _cleanup();
        }
     });
 
-    // Carga inicial do perfil
     final uid = _auth.currentUser?.uid;
-    if (uid == null) {
+    if (uid != null) {
+      await _loadProfile(uid);
+      _setupListeners(uid);
+    } else {
       _isLoading = false;
       notifyListeners();
-      return;
     }
-    
+  }
+
+  Future<void> _loadProfile(String uid) async {
     try {
       final profileDoc = await _db
           .collection('users')
@@ -75,38 +87,28 @@ class WorkoutProfileProvider extends ChangeNotifier {
       }
     } catch (e) {
       debugPrint('Erro no init profile: $e');
-    } finally {
-      _isLoading = false;
-      notifyListeners();
     }
   }
 
   void _setupListeners(String uid) {
-    _workoutSub?.cancel();
+    _workoutsSub?.cancel();
     _progressionSub?.cancel();
 
-    // Listener para o treino atual (GeneratedWorkout)
-    _workoutSub = _db
+    _workoutsSub = _db
         .collection('users')
         .doc(uid)
         .collection('generated_workouts')
-        .doc('current')
+        .orderBy('generatedAt', descending: true)
         .snapshots()
         .listen((snap) {
-      if (snap.exists && snap.data() != null) {
-        _currentWorkoutRaw = snap.data();
-        // A hidratação acontecerá quando a UI chamar loadCurrentWorkout
-        _isLoading = false;
-        notifyListeners();
-      } else {
-        _currentWorkoutRaw = null;
-        _currentWorkout = null;
-        _isLoading = false;
-        notifyListeners();
-      }
+      _allWorkouts = snap.docs.map((doc) {
+        // Hydration logic might be needed later, for now just raw map
+        return GeneratedWorkout.fromMap(doc.data(), (id) => null); 
+      }).toList();
+      _isLoading = false;
+      notifyListeners();
     });
 
-    // Listener para as cargas recalculadas (ProgressionState)
     _progressionSub = _db
         .collection('users')
         .doc(uid)
@@ -122,11 +124,10 @@ class WorkoutProfileProvider extends ChangeNotifier {
   }
 
   void _cleanup() {
-    _workoutSub?.cancel();
+    _workoutsSub?.cancel();
     _progressionSub?.cancel();
     _profile = null;
-    _currentWorkoutRaw = null;
-    _currentWorkout = null;
+    _allWorkouts = [];
     _progressionState = null;
     notifyListeners();
   }
@@ -134,7 +135,7 @@ class WorkoutProfileProvider extends ChangeNotifier {
   @override
   void dispose() {
     _authSub?.cancel();
-    _workoutSub?.cancel();
+    _workoutsSub?.cancel();
     _progressionSub?.cancel();
     super.dispose();
   }
@@ -166,41 +167,7 @@ class WorkoutProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> loadCurrentWorkout(ExerciseModel? Function(String) getById) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-
-    // Defer notification to after the current frame to avoid
-    // calling notifyListeners() during build
-    void _notifyAfter() {
-      WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
-    }
-
-    // Se temos dados brutos do listener, hidratamos imediatamente
-    if (_currentWorkoutRaw != null) {
-      _currentWorkout = GeneratedWorkout.fromMap(_currentWorkoutRaw ?? {}, getById);
-      _notifyAfter();
-      return;
-    }
-
-    try {
-      final doc = await _db
-          .collection('users')
-          .doc(uid)
-          .collection('generated_workouts')
-          .doc('current')
-          .get();
-      if (doc.exists && doc.data() != null) {
-        _currentWorkoutRaw = doc.data();
-        _currentWorkout = GeneratedWorkout.fromMap(_currentWorkoutRaw ?? {}, getById);
-        notifyListeners();
-      }
-    } catch (e) {
-      debugPrint('Erro ao carregar workout: $e');
-    }
-  }
-
-  Future<void> generateAndSaveWorkout([List<ExerciseModel>? _unused]) async {
+  Future<void> generateAndSaveWorkout({String? customName}) async {
     final uid = _auth.currentUser?.uid;
     if (uid == null || _profile == null) return;
 
@@ -209,17 +176,31 @@ class WorkoutProfileProvider extends ChangeNotifier {
 
     try {
       final engine = WorkoutPrescriptionEngine(_profile!);
-      final workout = engine.generate(_profile!);
+      final workoutRaw = engine.generate(_profile!);
+      
+      final id = _db.collection('users').doc(uid).collection('generated_workouts').doc().id;
+      final name = customName ?? 'Treino ${DateTime.now().day}/${DateTime.now().month}';
+
+      // Set all others to inactive if this is the first one, or just set this as active
+      final workout = GeneratedWorkout(
+        id: id,
+        userId: uid,
+        name: name,
+        splitType: workoutRaw.splitType,
+        periodizationModel: workoutRaw.periodizationModel,
+        sessions: workoutRaw.sessions,
+        mesocycleDurationWeeks: workoutRaw.mesocycleDurationWeeks,
+        generatedAt: DateTime.now(),
+        isActive: _allWorkouts.isEmpty, // Auto-active if it's the first
+      );
 
       await _db
           .collection('users')
           .doc(uid)
           .collection('generated_workouts')
-          .doc('current')
+          .doc(id)
           .set(workout.toMap());
 
-      _currentWorkout = workout;
-      _currentWorkoutRaw = workout.toMap();
     } catch (e) {
       _error = 'Erro ao gerar treino: $e';
       rethrow;
@@ -229,46 +210,58 @@ class WorkoutProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteCurrentWorkout() async {
+  Future<void> setActiveWorkout(String id) async {
     final uid = _auth.currentUser?.uid;
     if (uid == null) return;
 
-    _isLoading = true;
-    notifyListeners();
+    final batch = _db.batch();
+    
+    for (var w in _allWorkouts) {
+      final ref = _db.collection('users').doc(uid).collection('generated_workouts').doc(w.id);
+      batch.update(ref, {'isActive': w.id == id});
+    }
+
+    try {
+      await batch.commit();
+    } catch (e) {
+      debugPrint('Erro ao ativar treino: $e');
+    }
+  }
+
+  Future<void> deleteWorkout(String id) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
 
     try {
       await _db
           .collection('users')
           .doc(uid)
           .collection('generated_workouts')
-          .doc('current')
+          .doc(id)
           .delete();
-      _currentWorkout = null;
-      _currentWorkoutRaw = null;
     } catch (e) {
       _error = 'Erro ao excluir treino: $e';
     } finally {
-      _isLoading = false;
       notifyListeners();
     }
   }
 
-  Future<void> swapPrescribedExercise(String sessionId, String oldExId, ExerciseModel newEx) async {
-    if (_currentWorkout == null) return;
+  Future<void> swapPrescribedExercise(String workoutId, String sessionId, String oldExId, ExerciseModel newEx) async {
     final uid = _auth.currentUser?.uid;
     if (uid == null) return;
 
+    final workout = _allWorkouts.firstWhere((w) => w.id == workoutId);
+    
     try {
-      final sessionIndex = _currentWorkout!.sessions.indexWhere((s) => s.id == sessionId);
+      final sessionIndex = workout.sessions.indexWhere((s) => s.id == sessionId);
       if (sessionIndex == -1) return;
 
-      final session = _currentWorkout!.sessions[sessionIndex];
+      final session = workout.sessions[sessionIndex];
       final exIndex = session.exercises.indexWhere((e) => e.exercise.id == oldExId);
       if (exIndex == -1) return;
 
       final oldEx = session.exercises[exIndex];
       
-      // Cria a nova prescrição baseada na anterior, mas com o novo exercício
       final swappedEx = PrescribedExercise(
         exercise: newEx,
         sets: oldEx.sets,
@@ -278,20 +271,18 @@ class WorkoutProfileProvider extends ChangeNotifier {
         restSeconds: oldEx.restSeconds,
         sessionCues: [...newEx.cues.take(2), 'Amplitude máxima controlada.'],
         tempo: oldEx.tempo,
-        progressionNote: oldEx.progressionNote, // Mantém a nota de progressão original
-        injuryNote: null, // Reset injury note as it might not apply to the new ex
+        progressionNote: oldEx.progressionNote,
+        injuryNote: null,
       );
 
-      // Atualiza localmente
       session.exercises[exIndex] = swappedEx;
       
-      // Salva no Firestore
       await _db
           .collection('users')
           .doc(uid)
           .collection('generated_workouts')
-          .doc('current')
-          .set(_currentWorkout!.toMap());
+          .doc(workoutId)
+          .set(workout.toMap());
 
       notifyListeners();
     } catch (e) {

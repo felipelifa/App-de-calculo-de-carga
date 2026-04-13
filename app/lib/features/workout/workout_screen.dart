@@ -164,13 +164,13 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: const Text(
-              'Cancelar',
+              'CONTINUAR',
               style: TextStyle(color: AppTheme.textSecondary),
             ),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Salvar'),
+            child: const Text('SALVAR TREINO'),
           ),
         ],
       ),
@@ -582,7 +582,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         backgroundColor: AppTheme.surface,
         elevation: 0,
         title: const Text(
-          'Treino',
+          'Sessão Ativa',
           style: TextStyle(
             color: AppTheme.textPrimary,
             fontWeight: FontWeight.bold,

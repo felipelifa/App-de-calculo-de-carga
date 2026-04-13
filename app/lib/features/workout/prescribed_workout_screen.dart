@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../shared/theme/app_theme.dart';
 import 'workout_profile_provider.dart';
 import 'prescribed_workout_model.dart';
 import 'workout_provider.dart';
-import 'workout_routine_model.dart';
 import '../exercises/exercise_provider.dart';
 import '../exercises/exercise_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'bio_adaptive_engine.dart';
-
-// ─────────────────────────────────────────────
-// Tela de Visualização do Treino Prescrito
-// Exibe RIR, cadência, cues e notas de progressão
-// ─────────────────────────────────────────────
 
 class PrescribedWorkoutScreen extends StatefulWidget {
   const PrescribedWorkoutScreen({super.key});
@@ -24,321 +20,260 @@ class PrescribedWorkoutScreen extends StatefulWidget {
 }
 
 class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
-  bool _isChecking = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadData();
-  }
-
-  Future<void> _loadData() async {
-    final wpAuth = context.read<WorkoutProfileProvider>();
-    final exerciseProvider = context.read<ExerciseProvider>();
-    
-    // Se o treino não estiver na memória, tenta carregar do Firestore antes de desistir
-    if (wpAuth.currentWorkout == null) {
-      await wpAuth.loadCurrentWorkout(exerciseProvider.getById);
-    }
-    
-    if (mounted) {
-      setState(() { _isChecking = false; });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final wpAuth = context.watch<WorkoutProfileProvider>();
+    final allWorkouts = wpAuth.allWorkouts;
+    final activeWorkout = wpAuth.activeWorkout;
 
-    if (wpAuth.isLoading || _isChecking) {
+    if (wpAuth.isLoading) {
       return const Scaffold(
         backgroundColor: AppTheme.background,
         body: Center(child: CircularProgressIndicator(color: AppTheme.accent)),
       );
     }
 
-    final workout = wpAuth.currentWorkout;
-    if (workout == null) {
-      // Somente redireciona após ter certeza absoluta que o workout não existe no banco
-      return Scaffold(
-        backgroundColor: AppTheme.background,
-        appBar: AppBar(
-          backgroundColor: AppTheme.background,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_rounded, color: AppTheme.textSecondary),
-            onPressed: () => context.go('/dashboard'),
-          ),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.fitness_center_rounded, size: 64, color: AppTheme.textSecondary),
-              const SizedBox(height: 24),
-              const Text('Nenhum treino gerado ainda.',
-                  style: TextStyle(color: AppTheme.textSecondary, fontSize: 18)),
-              const SizedBox(height: 8),
-              const Text('Responda a anamnese para criar seu plano.',
-                  style: TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () => context.go('/anamnese'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.accent,
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                ),
-                child: const Text('GERAR MEU TREINO'),
-              ),
-              const SizedBox(height: 16),
-              TextButton(
-                onPressed: () => context.go('/dashboard'),
-                child: const Text('VOLTAR PARA O INÍCIO', 
-                    style: TextStyle(color: AppTheme.textSecondary)),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
     return Scaffold(
       backgroundColor: AppTheme.background,
-      appBar: AppBar(
-        title: const Text('Meu Plano de Treino',
-            style: TextStyle(fontWeight: FontWeight.bold)),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded, color: AppTheme.textSecondary),
-          onPressed: () => context.go('/dashboard'),
-          tooltip: 'Página Inicial',
-        ),
-        backgroundColor: AppTheme.surface,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete_outline_rounded,
-                color: Colors.redAccent),
-            tooltip: 'Excluir Treino',
-            onPressed: () => _confirmDeletion(context),
-          )
-        ],
-      ),
       body: CustomScrollView(
         slivers: [
-          _buildHeader(context, workout),
-          _buildBioReadinessCard(context),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final session = workout.sessions[index];
-                  return _SessionCard(
-                    session: session,
-                    onShowTutorial: (ctx, e) => _showTutorial(ctx, e),
-                  );
-                },
-                childCount: workout.sessions.length,
-              ),
+          SliverAppBar(
+            backgroundColor: AppTheme.background,
+            floating: true,
+            pinned: true,
+            expandedHeight: 120,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppTheme.textPrimary, size: 20),
+              onPressed: () => context.go('/dashboard'),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 60),
-              child: TextButton.icon(
-                onPressed: () => _confirmDeletion(context),
-                icon: const Icon(Icons.refresh_rounded, size: 18),
-                label: const Text('LIMPAR TREINO E REFAZER ANAMNESE'),
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.redAccent.withValues(alpha: 0.8),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+            flexibleSpace: FlexibleSpaceBar(
+              titlePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              title: Text(
+                'Meus Treinos',
+                style: GoogleFonts.outfit(
+                  color: AppTheme.textPrimary,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -0.5,
                 ),
               ),
             ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.add_circle_outline_rounded, color: AppTheme.accent),
+                onPressed: () => _generateNewWorkout(context),
+              ),
+              const SizedBox(width: 8),
+            ],
           ),
+
+          if (allWorkouts.isEmpty)
+            SliverFillRemaining(
+              child: _buildEmptyState(context),
+            )
+          else
+            SliverPadding(
+              padding: const EdgeInsets.all(24),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final workout = allWorkouts[index];
+                    return _WorkoutPlanCard(
+                      workout: workout,
+                      isActive: workout.id == activeWorkout?.id,
+                      onDelete: () => _confirmDeletion(context, workout.id),
+                      onSelect: () => wpAuth.setActiveWorkout(workout.id),
+                      onView: () => _showWorkoutDetails(context, workout),
+                    ).animate().fadeIn(delay: (index * 100).ms).slideX(begin: 0.1);
+                  },
+                  childCount: allWorkouts.length,
+                ),
+              ),
+            ),
         ],
       ),
     );
   }
 
-  void _showTutorial(BuildContext context, ExerciseModel exercise) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppTheme.surface,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-      ),
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.7,
-        maxChildSize: 0.9,
-        expand: false,
-        builder: (context, scrollController) => SingleChildScrollView(
-          controller: scrollController,
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 40, height: 4,
-                  decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(2)),
-                ),
-              ),
-              const SizedBox(height: 24),
-              Text(exercise.name, style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppTheme.textPrimary, fontWeight: FontWeight.bold)),
-              Text(exercise.nameEn, style: const TextStyle(color: AppTheme.textSecondary)),
-              const SizedBox(height: 24),
-              // VÍDEO / GIF PLAYER
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Container(
-                  width: double.infinity,
-                  height: 250,
-                  color: AppTheme.background,
-                  child: (() {
-                    final gifUrl = context.read<ExerciseProvider>().getEffectiveGifUrl(exercise);
-                    return gifUrl != null && gifUrl.isNotEmpty
-                      ? CachedNetworkImage(
-                          imageUrl: gifUrl,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                          errorWidget: (context, url, error) => _buildNoGifPlaceholder(isError: true),
-                        )
-                      : _buildNoGifPlaceholder();
-                  }()),
-                ),
-              ),
-              const SizedBox(height: 24),
-              const Text('DICAS DE EXECUÇÃO', style: TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
-              const SizedBox(height: 12),
-              ...exercise.cues.map((cue) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(Icons.check_circle_outline_rounded, size: 18, color: AppTheme.success),
-                    const SizedBox(width: 12),
-                    Expanded(child: Text(cue, style: const TextStyle(color: AppTheme.textPrimary))),
-                  ],
-                ),
-              )),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('ENTENDI'),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNoGifPlaceholder({bool isError = false}) {
+  Widget _buildEmptyState(BuildContext context) {
     return Center(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            isError ? Icons.error_outline_rounded : Icons.video_library_rounded,
-            size: 32,
-            color: isError ? AppTheme.danger.withValues(alpha: 0.5) : AppTheme.textSecondary,
+          const Icon(Icons.fitness_center_rounded, size: 64, color: AppTheme.textSecondary),
+          const SizedBox(height: 24),
+          Text(
+            'Nenhum treino gerado ainda.',
+            style: GoogleFonts.outfit(color: AppTheme.textPrimary, fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
-            isError ? 'Erro' : 'Tutorial pendente',
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 10),
+            'Responda a anamnese para criar seu plano.',
+            style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 14),
+          ),
+          const SizedBox(height: 32),
+          ElevatedButton(
+            onPressed: () => context.go('/anamnese'),
+            child: const Text('GERAR MEU TREINO'),
           ),
         ],
       ),
     );
   }
 
-  void _confirmDeletion(BuildContext context) {
+  void _generateNewWorkout(BuildContext context) {
+     context.go('/anamnese');
+  }
+
+  void _confirmDeletion(BuildContext context, String id) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (ctx) => AlertDialog(
         backgroundColor: AppTheme.surface,
-        title: const Text('Excluir Treino?',
-            style: TextStyle(color: AppTheme.textPrimary)),
-        content: const Text(
-          'Isso apagará o mesociclo atual. Você pode refazer a anamnese e gerar um novo treino quando quiser.',
-          style: TextStyle(color: AppTheme.textSecondary),
-        ),
+        title: const Text('Excluir Plano?', style: TextStyle(color: AppTheme.textPrimary)),
+        content: const Text('Esta ação não pode ser desfeita.', style: TextStyle(color: AppTheme.textSecondary)),
         actions: [
-          TextButton(
-            child: const Text('CANCELAR',
-                style: TextStyle(color: AppTheme.textSecondary)),
-            onPressed: () => Navigator.pop(context),
-          ),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('CANCELAR')),
           ElevatedButton(
-            style:
-                ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
-            onPressed: () async {
-              Navigator.pop(context);
-              await context.read<WorkoutProfileProvider>().deleteCurrentWorkout();
-              context.go('/anamnese');
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+            onPressed: () {
+              context.read<WorkoutProfileProvider>().deleteWorkout(id);
+              Navigator.pop(ctx);
             },
-            child: const Text('EXCLUIR',
-                style: TextStyle(color: Colors.white)),
+            child: const Text('EXCLUIR'),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context, GeneratedWorkout workout) {
-    return SliverToBoxAdapter(
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: AppTheme.surfaceHighlight.withValues(alpha: 0.1),
-          border: Border(
-              bottom:
-                  BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+  void _showWorkoutDetails(BuildContext context, GeneratedWorkout workout) {
+    // Aqui poderíamos abrir uma tela com as sessões deste treino específico
+    // Para simplificar, vamos definir como ativo e mostrar as sessões.
+    context.read<WorkoutProfileProvider>().setActiveWorkout(workout.id);
+    _showSessionsList(context, workout);
+  }
+
+  void _showSessionsList(BuildContext context, GeneratedWorkout workout) {
+     showModalBottomSheet(
+       context: context,
+       isScrollControlled: true,
+       backgroundColor: AppTheme.background,
+       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(32))),
+       builder: (context) => _WorkoutSessionsSheet(workout: workout),
+     );
+  }
+}
+
+class _WorkoutPlanCard extends StatelessWidget {
+  final GeneratedWorkout workout;
+  final bool isActive;
+  final VoidCallback onDelete;
+  final VoidCallback onSelect;
+  final VoidCallback onView;
+
+  const _WorkoutPlanCard({
+    required this.workout,
+    required this.isActive,
+    required this.onDelete,
+    required this.onSelect,
+    required this.onView,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: isActive ? AppTheme.accent.withOpacity(0.5) : Colors.white10,
+          width: isActive ? 2 : 1,
         ),
+        boxShadow: isActive ? [BoxShadow(color: AppTheme.accent.withOpacity(0.1), blurRadius: 20)] : [],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
         child: Column(
           children: [
-            const Icon(Icons.auto_awesome_rounded,
-                size: 48, color: AppTheme.accent),
-            const SizedBox(height: 16),
-            const Text(
-              'Mesociclo Científico',
-              style: TextStyle(
-                  color: AppTheme.textPrimary,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '${workout.mesocycleDurationWeeks} semanas  •  ${_formatPeriodization(workout.periodizationModel)}  •  ${_formatSplit(workout.splitType)}',
-              style: const TextStyle(
-                  color: AppTheme.textSecondary, fontSize: 13),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 12),
-            // Badge de periodização
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppTheme.accent.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                    color: AppTheme.accent.withValues(alpha: 0.3)),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: (isActive ? AppTheme.accent : AppTheme.surfaceHighlight).withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      isActive ? Icons.auto_awesome : Icons.fitness_center_rounded,
+                      color: isActive ? AppTheme.accent : AppTheme.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              workout.name,
+                              style: GoogleFonts.outfit(
+                                color: AppTheme.textPrimary,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            if (isActive) ...[
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(color: AppTheme.accent, borderRadius: BorderRadius.circular(8)),
+                                child: Text('ATIVO', style: GoogleFonts.outfit(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black)),
+                              ),
+                            ],
+                          ],
+                        ),
+                        Text(
+                          '${workout.splitType.toUpperCase()} • ${workout.mesocycleDurationWeeks} Semanas',
+                          style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete_outline_rounded, color: Colors.redAccent, size: 20),
+                    onPressed: onDelete,
+                  ),
+                ],
               ),
-              child: Text(
-                _periodizationExplainer(workout.periodizationModel),
-                style: const TextStyle(
-                    color: AppTheme.accent,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500),
-                textAlign: TextAlign.center,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              color: Colors.white.withOpacity(0.02),
+              child: Row(
+                children: [
+                  if (!isActive)
+                    Expanded(
+                      child: TextButton(
+                        onPressed: onSelect,
+                        child: const Text('ATIVAR PLANO'),
+                      ),
+                    ),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: onView,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isActive ? AppTheme.accent : AppTheme.surfaceHighlight,
+                        foregroundColor: isActive ? Colors.black : AppTheme.textPrimary,
+                      ),
+                      child: const Text('VER SESSÕES'),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -346,939 +281,126 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
       ),
     );
   }
+}
 
+class _WorkoutSessionsSheet extends StatelessWidget {
+  final GeneratedWorkout workout;
+  const _WorkoutSessionsSheet({required this.workout});
+
+  @override
+  Widget build(BuildContext context) {
+    return DraggableScrollableSheet(
+      initialChildSize: 0.8,
+      maxChildSize: 0.95,
+      minChildSize: 0.5,
+      expand: false,
+      builder: (context, controller) => Column(
+        children: [
+           Container(
+             margin: const EdgeInsets.only(top: 12),
+             width: 40, height: 4,
+             decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(2)),
+           ),
+           Padding(
+             padding: const EdgeInsets.all(24),
+             child: Row(
+               children: [
+                 Text(
+                   workout.name,
+                   style: GoogleFonts.outfit(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+                 ),
+                 const Spacer(),
+                 IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close, color: AppTheme.textSecondary)),
+               ],
+             ),
+           ),
+           Expanded(
+             child: ListView.builder(
+               controller: controller,
+               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+               itemCount: workout.sessions.length,
+               itemBuilder: (context, index) {
+                 final session = workout.sessions[index];
+                 return Container(
+                   margin: const EdgeInsets.only(bottom: 16),
+                   padding: const EdgeInsets.all(20),
+                   decoration: BoxDecoration(
+                     color: AppTheme.surface,
+                     borderRadius: BorderRadius.circular(20),
+                     border: Border.all(color: Colors.white.withOpacity(0.05)),
+                   ),
+                   child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Row(
+                         children: [
+                           Expanded(
+                             child: Text(session.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AppTheme.textPrimary)),
+                           ),
+                           Text('${session.estimatedDurationMinutes} min', style: const TextStyle(color: AppTheme.accent, fontSize: 12, fontWeight: FontWeight.bold)),
+                         ],
+                       ),
+                       const SizedBox(height: 4),
+                       Text(session.objective, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
+                       const Divider(height: 32, color: Colors.white10),
+                       ...session.exercises.take(3).map((e) => Padding(
+                         padding: const EdgeInsets.only(bottom: 8),
+                         child: Row(
+                           children: [
+                             const Icon(Icons.check_circle_outline, size: 14, color: AppTheme.accent),
+                             const SizedBox(width: 8),
+                             Text(e.exercise.name, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+                           ],
+                         ),
+                       )),
+                       if (session.exercises.length > 3)
+                         Text('+ ${session.exercises.length - 3} exercícios...', style: const TextStyle(color: Colors.white24, fontSize: 10)),
+                       const SizedBox(height: 20),
+                       SizedBox(
+                         width: double.infinity,
+                         child: ElevatedButton(
+                           onPressed: () {
+                             // Lógica para iniciar o treino
+                             context.read<WorkoutProvider>().startSession(session, workout.id);
+                             context.go('/workout/active');
+                           },
+                           child: const Text('COMEÇAR TREINO'),
+                         ),
+                       ),
+                     ],
+                   ),
+                 );
+               },
+             ),
+           ),
+        ],
+      ),
+    );
+  }
   String _formatPeriodization(String p) {
     switch (p) {
-      case 'linear':
-        return 'Linear';
-      case 'dup':
-        return 'Ondulatória Diária (DUP)';
-      case 'block':
-        return 'Em Bloco';
-      default:
-        return p.toUpperCase();
+      case 'linear': return 'Linear';
+      case 'dup': return 'Ondulatória (DUP)';
+      case 'block': return 'Em Bloco';
+      default: return p.toUpperCase();
     }
   }
 
   String _formatSplit(String s) {
     switch (s) {
-      case 'full_body':
-        return 'Full Body';
-      case 'upper_lower':
-        return 'Superior/Inferior';
-      case 'ppl_3days':
-      case 'ppl_5days':
-      case 'ppl_6days':
-        return 'Push/Pull/Legs';
-      default:
-        return s;
+      case 'full_body': return 'Corpo Todo';
+      case 'upper_lower': return 'Superior/Inferior';
+      case 'ppl': return 'Empurrar/Puxar/Pernas';
+      default: return s;
     }
   }
+
   String _periodizationExplainer(String p) {
     switch (p) {
-      case 'linear':
-        return 'Foco: Aumentar o peso um pouquinho toda semana';
-      case 'dup':
-        return 'Foco: Variar entre carga pesada e mais repetições';
-      case 'block':
-        return 'Foco: Fases de força e fases de definição';
-      default:
-        return p;
+      case 'linear': return 'Ideal para progressão de força constante.';
+      case 'dup': return 'Variação diária para evitar estagnação.';
+      case 'block': return 'Fases específicas de força e volume.';
+      default: return '';
     }
   }
-
-  Widget _buildBioReadinessCard(BuildContext context) {
-    final profile = context.watch<WorkoutProfileProvider>().profile;
-    if (profile == null) return const SliverToBoxAdapter(child: SizedBox.shrink());
-
-    // Simula cálculo de prontidão (Digital Twin)
-    // Em uma versão real, puxaríamos o histórico real do Provider
-    final readiness = BioAdaptiveEngine.calculateReadiness(
-      recentHistory: [], // Placeholder v6.0
-      sleepQualityScore: profile.sleepQuality == 'good' ? 0.9 : (profile.sleepQuality == 'regular' ? 0.6 : 0.3),
-      stressLevelScore: profile.stressLevel == 'low' ? 0.9 : (profile.stressLevel == 'medium' ? 0.6 : 0.3),
-    );
-
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                AppTheme.surfaceHighlight.withValues(alpha: 0.1),
-                AppTheme.surface,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppTheme.accent.withValues(alpha: 0.15)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.psychology_outlined, color: AppTheme.accent, size: 24),
-                  const SizedBox(width: 12),
-                  const Text(
-                    'STATUS DO BIO-ORGANISMO',
-                    style: TextStyle(
-                      color: AppTheme.accent,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-                  const Spacer(),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: readiness.status == BioStatus.optimal ? AppTheme.success.withValues(alpha: 0.1) : AppTheme.danger.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      readiness.status == BioStatus.optimal ? 'OTIMIZADO' : 'RECUPERANDO',
-                      style: TextStyle(
-                        color: readiness.status == BioStatus.optimal ? AppTheme.success : AppTheme.danger,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                readiness.recommendation,
-                style: const TextStyle(color: AppTheme.textPrimary, fontSize: 14, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                   _buildSmallStat('Fadiga CNS', readiness.cnsFatigue),
-                   const SizedBox(width: 16),
-                   _buildSmallStat('Stress Articular', readiness.jointStress),
-                ],
-              ),
-               const SizedBox(height: 12),
-               const Text(
-                'Seu "Gêmeo Digital" está simulando seu estado de recuperação atual...',
-                style: TextStyle(color: AppTheme.textSecondary, fontSize: 10, fontStyle: FontStyle.italic),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSmallStat(String label, double value) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11)),
-          const SizedBox(height: 6),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: value,
-              backgroundColor: Colors.white10,
-              color: value > 0.7 ? AppTheme.danger : (value > 0.4 ? Colors.amberAccent : AppTheme.success),
-              minHeight: 4,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────
-// Card de Sessão
-// ─────────────────────────────────────────────
-
-class _SessionCard extends StatefulWidget {
-  final PrescribedSession session;
-  final Function(BuildContext, ExerciseModel) onShowTutorial;
-  const _SessionCard({required this.session, required this.onShowTutorial});
-
-  @override
-  State<_SessionCard> createState() => _SessionCardState();
-}
-
-class _SessionCardState extends State<_SessionCard> {
-  bool _expanded = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-            color: Colors.white.withValues(alpha: 0.05), width: 1),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Header
-          _buildCardHeader(),
-          // Indicador de fadiga
-          _buildFatigueIndicator(),
-          // Progressão note
-          _buildProgressionNote(),
-          // Exercícios
-          AnimatedSize(
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.easeInOut,
-            child: _expanded
-                ? _buildExercisesList()
-                : const SizedBox.shrink(),
-          ),
-          // Botões
-          _buildButtons(context),
-          const SizedBox(height: 8),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCardHeader() {
-    return InkWell(
-      onTap: () => setState(() => _expanded = !_expanded),
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: AppTheme.surfaceHighlight.withValues(alpha: 0.05),
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    widget.session.name,
-                    style: const TextStyle(
-                        color: AppTheme.textPrimary,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: AppTheme.accent.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    '${widget.session.estimatedDurationMinutes} min',
-                    style: const TextStyle(
-                        color: AppTheme.accent,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Icon(
-                  _expanded
-                      ? Icons.keyboard_arrow_up_rounded
-                      : Icons.keyboard_arrow_down_rounded,
-                  color: AppTheme.textSecondary,
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            Text(
-              widget.session.objective,
-              style: const TextStyle(
-                  color: AppTheme.textSecondary, fontSize: 13),
-            ),
-            const SizedBox(height: 12),
-            // Mini lista de exercícios (sempre visível)
-            Text(
-              '${widget.session.exercises.length} exercícios  •  ${_countCompostos()} compostos',
-              style: const TextStyle(
-                  color: AppTheme.textSecondary, fontSize: 12),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  int _countCompostos() => widget.session.exercises
-      .where((e) => e.exercise.category == 'compound')
-      .length;
-
-  Widget _buildProgressionNote() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: AppTheme.accent.withValues(alpha: 0.07),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-              color: AppTheme.accent.withValues(alpha: 0.2), width: 1),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.trending_up_rounded,
-                size: 16, color: AppTheme.accent),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                widget.session.progressionNote,
-                style: const TextStyle(
-                    color: AppTheme.accent, fontSize: 12),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFatigueIndicator() {
-    final f = widget.session.fatigue;
-    final maxVal = f.spinalLoad;
-    final maxMetric = f.spinalLoad >= f.shoulderStress && f.spinalLoad >= f.kneeStress && f.spinalLoad >= f.cnsLoad ? 'spinal' : '';
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(
-          color: AppTheme.surfaceHighlight.withValues(alpha: 0.08),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('CARGA DO TREINO',
-                style: TextStyle(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
-            const SizedBox(height: 8),
-            _FatigueBar(label: 'Carga lombar', value: f.spinalLoad, icon: Icons.back_hand_rounded, labelFn: _fatigueStatus),
-            const SizedBox(height: 6),
-            _FatigueBar(label: 'Ombro', value: f.shoulderStress, icon: Icons.accessibility_new_rounded, labelFn: _fatigueStatus),
-            const SizedBox(height: 6),
-            _FatigueBar(label: 'Joelho', value: f.kneeStress, icon: Icons.directions_walk_rounded, labelFn: _fatigueStatus),
-            const SizedBox(height: 6),
-            _FatigueBar(label: 'SNC', value: f.cnsLoad, icon: Icons.bolt_rounded, labelFn: _fatigueStatus),
-          ],
-        ),
-      ),
-    );
-  }
-
-  String _fatigueStatus(double value) {
-    final pct = (value * 100).round();
-    if (value > 0.85) return 'crítico';
-    if (value > 0.65) return 'alto';
-    if (value > 0.4) return 'moderado';
-    return pct.toString();
-  }
-
-  Color _fatigueColor(double value) {
-    if (value > 0.85) return Colors.redAccent;
-    if (value > 0.65) return Colors.orangeAccent;
-    if (value > 0.4) return Colors.amberAccent;
-    return AppTheme.success;
-  }
-
-  Widget _buildExercisesList() {
-    final profile = context.read<WorkoutProfileProvider>().profile;
-    
-    // Calcula Prontidão Bio-Adaptativa (Gêmeo Digital)
-    final readiness = BioAdaptiveEngine.calculateReadiness(
-      recentHistory: [], // Futuro: puxar do histórico real
-      sleepQualityScore: profile?.sleepQuality == 'good' ? 0.9 : (profile?.sleepQuality == 'regular' ? 0.6 : 0.3),
-      stressLevelScore: profile?.stressLevel == 'low' ? 0.9 : (profile?.stressLevel == 'medium' ? 0.6 : 0.3),
-    );
-
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-      child: Column(
-        children: [
-          // Aquecimento
-          _buildWarmupBlock(),
-          const SizedBox(height: 12),
-          // Exercícios com Bio-Adaptação
-          ...widget.session.exercises.map((ex) {
-            // APLICA O DIGITAL TWIN: adapta o exercício se necessário
-            final adaptedEx = BioAdaptiveEngine.applyBioAdaptation(ex, readiness);
-            
-            return _ExerciseRow(
-              sessionId: widget.session.id,
-              ex: adaptedEx,
-              onShowTutorial: widget.onShowTutorial,
-            );
-          }),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildWarmupBlock() {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.orange.withValues(alpha: 0.07),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-            color: Colors.orange.withValues(alpha: 0.2), width: 1),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
-            children: [
-              Icon(Icons.local_fire_department_rounded,
-                  size: 14, color: Colors.orange),
-              SizedBox(width: 6),
-              Text('AQUECIMENTO',
-                  style: TextStyle(
-                      color: Colors.orange,
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1)),
-            ],
-          ),
-          const SizedBox(height: 8),
-          ...widget.session.warmupInstructions.map((w) => Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('• ',
-                        style: TextStyle(
-                            color: Colors.orange, fontSize: 12)),
-                    Expanded(
-                      child: Text(w,
-                          style: const TextStyle(
-                              color: AppTheme.textSecondary,
-                              fontSize: 12)),
-                    ),
-                  ],
-                ),
-              )),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildButtons(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: ElevatedButton.icon(
-        onPressed: () => _startSession(context),
-        icon: const Icon(Icons.play_circle_fill_rounded),
-        label: const Text('INICIAR ESTE TREINO'),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppTheme.accent,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-        ),
-      ),
-    );
-  }
-
-  void _startSession(BuildContext context) {
-    final wp = context.read<WorkoutProvider>();
-    final profileProvider = context.read<WorkoutProfileProvider>();
-
-    // Sobrepõe os dados estáticos com as cargas calculadas pela progressão
-    final prescribedData = widget.session.exercises.map((e) {
-      final map = e.toMap();
-      final latestWeight = profileProvider.getLatestWeightForExercise(e.exercise.id);
-      
-      // Se tivermos carga na progressão, ela vira o novo default
-      if (latestWeight > 0) {
-        map['defaultWeightKg'] = latestWeight;
-      }
-      return map;
-    }).toList();
-
-    wp.startSessionFromPrescribed(
-      sessionId: widget.session.id,
-      sessionName: widget.session.name,
-      prescribedExercises: prescribedData,
-    );
-
-    context.go('/workout');
-  }
-}
-
-// ─────────────────────────────────────────────
-// Fatigue Bar Widget
-// ─────────────────────────────────────────────
-
-typedef _FatigueLabelFn = String Function(double value, double percent);
-
-class _FatigueBar extends StatelessWidget {
-  final String label;
-  final double value;
-  final IconData icon;
-  final String Function(double) labelFn;
-
-  const _FatigueBar({
-    required this.label,
-    required this.value,
-    required this.icon,
-    required this.labelFn,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final pct = value.clamp(0.0, 1.0);
-    final color = _colorFor(pct);
-    final statusText = pct < 0.01 ? 'N/A' : labelFn(value);
-
-    return Row(
-      children: [
-        Icon(icon, size: 14, color: Colors.white54),
-        const SizedBox(width: 8),
-        Text(label, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
-        const SizedBox(width: 8),
-        Expanded(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: pct,
-              backgroundColor: color.withValues(alpha: 0.1),
-              color: color,
-              minHeight: 4,
-            ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        SizedBox(
-          width: 60,
-          child: Text(statusText, style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.bold)),
-        ),
-      ],
-    );
-  }
-
-  Color _colorFor(double value) {
-    if (value > 0.85) return Colors.redAccent;
-    if (value > 0.65) return Colors.orangeAccent;
-    if (value > 0.4) return Colors.amberAccent;
-    return AppTheme.success;
-  }
-}
-
-// _FatigueBar already defined above in _SessionCardState
-
-// ─────────────────────────────────────────────
-// Linha de Exercício com detalhes completos
-// ─────────────────────────────────────────────
-
-class _ExerciseRow extends StatefulWidget {
-  final String sessionId;
-  final PrescribedExercise ex;
-  final Function(BuildContext, ExerciseModel) onShowTutorial;
-  const _ExerciseRow({required this.sessionId, required this.ex, required this.onShowTutorial});
-
-  @override
-  State<_ExerciseRow> createState() => _ExerciseRowState();
-}
-
-class _ExerciseRowState extends State<_ExerciseRow> {
-  bool _showCues = false;
-
-  Color get _categoryColor {
-    return widget.ex.exercise.category == 'compound'
-        ? AppTheme.accent
-        : AppTheme.success;
-  }
-
-  String get _categoryLabel {
-    return widget.ex.exercise.category == 'compound' ? 'COMPOSTO' : 'ISOLADOR';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final ex = widget.ex;
-    final profileProvider = context.watch<WorkoutProfileProvider>();
-    final suggestedWeight = (profileProvider.getLatestWeightForExercise(ex.exercise.id) as num?)?.toDouble() ?? 0.0;
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: AppTheme.background,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-              color: _categoryColor.withValues(alpha: 0.15), width: 1),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Nome + badge
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    ex.exercise.name,
-                    style: const TextStyle(
-                        color: AppTheme.textPrimary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14),
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: _categoryColor.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    _categoryLabel,
-                    style: TextStyle(
-                        color: _categoryColor,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                InkWell(
-                  onTap: () => widget.onShowTutorial(context, ex.exercise),
-                  borderRadius: BorderRadius.circular(8),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.play_circle_fill_rounded,
-                          color: AppTheme.accent,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 4),
-                        const Text(
-                          'Tutorial',
-                          style: TextStyle(
-                            color: AppTheme.accent,
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                IconButton(
-                  icon: const Icon(Icons.swap_horiz_rounded, size: 20, color: AppTheme.textSecondary),
-                  onPressed: () => _showSwapDialog(context, ex),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  visualDensity: VisualDensity.compact,
-                  tooltip: 'Trocar este exercício',
-                ),
-              ],
-            ),
-            
-            // Alerta de Lesão/Segurança
-            if (ex.injuryNote != null) ...[
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                decoration: BoxDecoration(
-                  color: AppTheme.danger.withValues(alpha: 0.08),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppTheme.danger.withValues(alpha: 0.2)),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.warning_amber_rounded, size: 14, color: AppTheme.danger),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        ex.injuryNote!,
-                        style: const TextStyle(
-                          color: AppTheme.danger,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-
-            const SizedBox(height: 10),
-            // Métricas em linha
-            Wrap(
-              spacing: 8,
-              runSpacing: 6,
-              children: [
-                _MetricChip(
-                    icon: Icons.layers_rounded,
-                    label: '${ex.sets} séries'),
-                _MetricChip(
-                    icon: Icons.repeat_rounded,
-                    label: '${ex.repsMin}–${ex.repsMax} reps'),
-                _MetricChip(
-                    icon: Icons.timer_outlined,
-                    label: '${ex.restSeconds}s descanso'),
-                if (suggestedWeight > 0)
-                  _MetricChip(
-                      icon: Icons.fitness_center_rounded,
-                      label: '${suggestedWeight.toStringAsFixed(1)} kg',
-                      highlight: true),
-                _MetricChip(
-                    icon: Icons.speed_rounded,
-                    label: _friendlyRir(ex.rir),
-                    highlight: true),
-                _MetricChip(
-                    icon: Icons.av_timer_rounded,
-                    label: ex.tempo),
-              ],
-            ),
-            const SizedBox(height: 12),
-            // NOVO: Botão de Tutorial
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () => widget.onShowTutorial(context, ex.exercise),
-                icon: const Icon(Icons.play_circle_outline_rounded, size: 20),
-                label: const Text('VER TUTORIAL EM VÍDEO', 
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppTheme.accent,
-                  side: BorderSide(color: AppTheme.accent.withValues(alpha: 0.3)),
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-              ),
-            ),
-            // Cues expansíveis
-            if (ex.sessionCues.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              InkWell(
-                onTap: () => setState(() => _showCues = !_showCues),
-                child: Row(
-                  children: [
-                    Icon(
-                      _showCues
-                          ? Icons.keyboard_arrow_up_rounded
-                          : Icons.lightbulb_outline_rounded,
-                      size: 14,
-                      color: AppTheme.textSecondary,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      _showCues ? 'Ocultar dicas' : 'Ver dicas técnicas',
-                      style: const TextStyle(
-                          color: AppTheme.textSecondary, fontSize: 12),
-                    ),
-                  ],
-                ),
-              ),
-              if (_showCues) ...[
-                const SizedBox(height: 8),
-                ...ex.sessionCues.map((cue) => Padding(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('→ ',
-                              style: TextStyle(
-                                  color: AppTheme.accent, fontSize: 12)),
-                          Expanded(
-                            child: Text(cue,
-                                style: const TextStyle(
-                                    color: AppTheme.textSecondary,
-                                    fontSize: 12)),
-                          ),
-                        ],
-                      ),
-                    )),
-              ],
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showSwapDialog(BuildContext context, PrescribedExercise oldRx) {
-    final oldEx = oldRx.exercise;
-    final exerciseProvider = context.read<ExerciseProvider>();
-    final profileProvider = context.read<WorkoutProfileProvider>();
-    
-    // Busca substitutos
-    List<ExerciseModel> replacements = [];
-    
-    // 1. Substitutos diretos, regressões e progressões
-    final directIds = [...oldEx.substituteIds, ...oldEx.regressionIds, ...oldEx.progressionIds];
-    for (final id in directIds) {
-      final ex = exerciseProvider.getById(id);
-      if (ex != null && !replacements.any((r) => r.id == ex.id)) replacements.add(ex);
-    }
-    
-    // 2. Fallback por padrão e músculo (respeitando ambiente)
-    if (replacements.length < 4) {
-      final profile = profileProvider.profile;
-      final fallbacks = exerciseProvider.filteredExercises.where((ex) {
-        final samePattern = ex.primaryMuscles.contains(oldEx.primaryMuscles.first) &&
-                            ex.movementPattern == oldEx.movementPattern;
-        final alreadyIn = replacements.any((r) => r.id == ex.id);
-        final isSelf = ex.id == oldEx.id;
-        
-        // Se for iniciante, evita exercícios avançados
-        final tooHard = profile?.experienceLevel == 'beginner' && ex.difficulty == 'advanced';
-        
-        return samePattern && !alreadyIn && !isSelf && !tooHard;
-      }).take(6);
-      replacements.addAll(fallbacks);
-    }
-
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppTheme.surface,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Trocar exercício', style: TextStyle(color: AppTheme.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Text('Sugestões para substituir ${oldEx.name}:', style: const TextStyle(color: AppTheme.textSecondary)),
-            const SizedBox(height: 20),
-            if (replacements.isEmpty)
-              const Center(child: Text('Nenhuma alternativa encontrada.', style: TextStyle(color: AppTheme.textSecondary)))
-            else
-              Flexible(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: replacements.length,
-                  itemBuilder: (context, i) {
-                    final ex = replacements[i];
-                    return ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      title: Text(ex.name, style: const TextStyle(color: AppTheme.textPrimary)),
-                      subtitle: Text('${ex.category == 'compound' ? 'Composto' : 'Isolador'} • ${ex.difficulty}', 
-                        style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
-                      trailing: const Icon(Icons.swap_horiz_rounded, color: AppTheme.accent),
-                      onTap: () {
-                        profileProvider.swapPrescribedExercise(widget.sessionId, oldEx.id, ex);
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Exercício trocado por ${ex.name}!'), backgroundColor: AppTheme.accent),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNoGifPlaceholder({bool isError = false}) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            isError ? Icons.error_outline_rounded : Icons.video_library_rounded,
-            size: 32,
-            color: isError ? AppTheme.danger.withValues(alpha: 0.5) : AppTheme.textSecondary,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            isError ? 'Erro' : 'Tutorial pendente',
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 10),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MetricChip extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final bool highlight;
-
-  const _MetricChip({
-    required this.icon,
-    required this.label,
-    this.highlight = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final color = highlight ? AppTheme.accent : AppTheme.textSecondary;
-    final bg = highlight
-        ? AppTheme.accent.withValues(alpha: 0.12)
-        : AppTheme.surfaceHighlight.withValues(alpha: 0.3);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 12, color: color),
-          const SizedBox(width: 4),
-          Text(label, style: TextStyle(color: color, fontSize: 12)),
-        ],
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────
-// Helpers de Idioma e Simplicidade
-// ─────────────────────────────────────────────
-
-String _translateMuscle(String m) {
-  final map = {
-    'chest': 'Peitoral',
-    'back': 'Costas',
-    'shoulders': 'Ombros',
-    'side_delt': 'Ombro Lateral',
-    'rear_delt': 'Ombro Posterior',
-    'biceps': 'Bíceps',
-    'triceps': 'Tríceps',
-    'quads': 'Coxa (Frente)',
-    'hamstrings': 'Coxa (Atrás)',
-    'glutes': 'Glúteos',
-    'calves': 'Panturrilha',
-    'abs': 'Abdômen',
-    'core': 'Abdominal',
-  };
-  return map[m.toLowerCase()] ?? m;
-}
-
-String _friendlyRir(int rir) {
-  if (rir <= 0) return 'Até o limite (Difícil)';
-  if (rir == 1) return 'Quase no limite';
-  if (rir == 2) return 'Esforço intenso';
-  if (rir == 3) return 'Carga moderada';
-  return 'Carga leve';
 }
