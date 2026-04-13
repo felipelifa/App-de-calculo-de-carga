@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../shared/theme/app_theme.dart';
 import 'nutrition_provider.dart';
 import 'widgets/nutrition_timeline_widget.dart';
+import 'meal_model.dart';
 import '../workout/workout_profile_provider.dart';
 
 class NutritionScreen extends StatefulWidget {
@@ -390,14 +391,6 @@ class _NutritionScreenState extends State<NutritionScreen> {
     );
   }
 }
-
-class _ChartData {
-  _ChartData(this.x, this.y, this.color);
-  final String x;
-  final double y;
-  final Color color;
-}
-
 
 class _ChartData {
   _ChartData(this.x, this.y, this.color);

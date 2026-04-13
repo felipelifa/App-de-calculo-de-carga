@@ -58,6 +58,7 @@ class NutritionProfile {
   final int tdee;
   final String macroMode; // 'automatic', 'percentage', 'grams'
   final bool dynamicAdaptationEnabled; // Ativa a Bio-Gestão adaptativa
+  final bool carbCyclingEnabled; // Se ativa ciclagem de carbos
   
   // -- Gestão Energética Semanal --
   final int weeklyBudgetKcal;
@@ -80,6 +81,7 @@ class NutritionProfile {
     required this.tdee,
     this.macroMode = 'automatic',
     this.dynamicAdaptationEnabled = false,
+    this.carbCyclingEnabled = false,
     this.weeklyBudgetKcal = 0,
     this.compensationStrategy = 'automatic',
     this.weeklyGoals = const {},
@@ -104,6 +106,7 @@ class NutritionProfile {
       tdee: (map['tdee'] as num?)?.toInt() ?? 2000,
       macroMode: map['macroMode'] as String? ?? 'automatic',
       dynamicAdaptationEnabled: map['dynamicAdaptationEnabled'] as bool? ?? false,
+      carbCyclingEnabled: map['carbCyclingEnabled'] as bool? ?? false,
       weeklyBudgetKcal: (map['weeklyBudgetKcal'] as num?)?.toInt() ?? 14000,
       compensationStrategy: map['compensationStrategy'] as String? ?? 'automatic',
       weeklyGoals: goals,
@@ -124,6 +127,7 @@ class NutritionProfile {
       'tdee': tdee,
       'macroMode': macroMode,
       'dynamicAdaptationEnabled': dynamicAdaptationEnabled,
+      'carbCyclingEnabled': carbCyclingEnabled,
       'weeklyBudgetKcal': weeklyBudgetKcal,
       'compensationStrategy': compensationStrategy,
       'weeklyGoals': weeklyGoals.map((key, value) => MapEntry(key.toString(), value.toMap())),
@@ -143,6 +147,7 @@ class NutritionProfile {
     int? tdee,
     String? macroMode,
     bool? dynamicAdaptationEnabled,
+    bool? carbCyclingEnabled,
     int? weeklyBudgetKcal,
     String? compensationStrategy,
     Map<int, DailyNutritionalGoal>? weeklyGoals,
@@ -160,6 +165,7 @@ class NutritionProfile {
       tdee: tdee ?? this.tdee,
       macroMode: macroMode ?? this.macroMode,
       dynamicAdaptationEnabled: dynamicAdaptationEnabled ?? this.dynamicAdaptationEnabled,
+      carbCyclingEnabled: carbCyclingEnabled ?? this.carbCyclingEnabled,
       weeklyBudgetKcal: weeklyBudgetKcal ?? this.weeklyBudgetKcal,
       compensationStrategy: compensationStrategy ?? this.compensationStrategy,
       weeklyGoals: weeklyGoals ?? this.weeklyGoals,

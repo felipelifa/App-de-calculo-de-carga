@@ -8,6 +8,7 @@ class NutritionEngine {
     WorkoutProfile wp, {
     String macroMode = 'automatic',
     bool dynamicAdaptationEnabled = true,
+    bool carbCyclingEnabled = true,
   }) {
     // 1. TMB e TDEE (Mifflin-St Jeor)
     double tmb = 10 * wp.weightKg + 6.25 * wp.heightCm - 5 * wp.age;
@@ -36,6 +37,7 @@ class NutritionEngine {
       protein: protein,
       fat: fat,
       trainingDaysPerWeek: wp.availableDaysPerWeek,
+      carbCyclingEnabled: carbCyclingEnabled,
     );
 
     return NutritionProfile(
@@ -47,6 +49,7 @@ class NutritionEngine {
       tdee: tdee,
       macroMode: macroMode,
       dynamicAdaptationEnabled: dynamicAdaptationEnabled,
+      carbCyclingEnabled: carbCyclingEnabled,
       weeklyBudgetKcal: targetCalories * 7,
       weeklyGoals: weeklyGoals,
       lastWeightKg: wp.weightKg,
@@ -60,6 +63,7 @@ class NutritionEngine {
     required double protein,
     required double fat,
     required int trainingDaysPerWeek,
+    required bool carbCyclingEnabled,
   }) {
     Map<int, DailyNutritionalGoal> goals = {};
     
@@ -68,7 +72,7 @@ class NutritionEngine {
     // No app real, isso será sincronizado com o calendário de treinos.
     for (int i = 1; i <= 7; i++) {
         bool isHighDemand = (i <= trainingDaysPerWeek);
-        double multiplier = isHighDemand ? 1.1 : 0.85;
+        double multiplier = carbCyclingEnabled ? (isHighDemand ? 1.1 : 0.85) : 1.0;
         
         // Mantém proteína e gordura estáveis, varia Carbo
         int dailyCals = (targetCalories * multiplier).round();

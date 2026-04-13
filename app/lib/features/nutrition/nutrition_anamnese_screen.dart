@@ -18,6 +18,7 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
   String _macroMode = 'automatic';
   String _compensationStrategy = 'automatic';
   bool _dynamicAdaptationEnabled = true;
+  bool _carbCyclingEnabled = true;
   bool _isLoading = false;
 
   @override
@@ -51,6 +52,7 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
         wp,
         macroMode: _macroMode,
         dynamicAdaptationEnabled: _dynamicAdaptationEnabled,
+        carbCyclingEnabled: _carbCyclingEnabled,
       );
       
       final finalProfile = initialProfile.copyWith(
@@ -156,11 +158,19 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
 
             const SizedBox(height: 12),
             SwitchListTile(
-              title: const Text('Timeline Adaptativa', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-              subtitle: const Text('Ajusta calorias conforme os dias de treino da semana.', style: TextStyle(fontSize: 12)),
+              title: const Text('Compensação Inteligente', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+              subtitle: const Text('Ajusta o orçamento de amanhã se você errar hoje (Bio-Gestão).', style: TextStyle(fontSize: 12)),
               value: _dynamicAdaptationEnabled,
               activeColor: AppTheme.accent,
               onChanged: (v) => setState(() => _dynamicAdaptationEnabled = v),
+            ),
+            
+            SwitchListTile(
+              title: const Text('Ciclagem de Carboidratos', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+              subtitle: const Text('Distribui mais carboidratos nos seus dias de treino.', style: TextStyle(fontSize: 12)),
+              value: _carbCyclingEnabled,
+              activeColor: AppTheme.success,
+              onChanged: (v) => setState(() => _carbCyclingEnabled = v),
             ),
 
             const SizedBox(height: 40),

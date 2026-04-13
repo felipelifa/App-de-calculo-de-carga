@@ -62,4 +62,30 @@ class MealEntry {
       'loggedAt': loggedAt.millisecondsSinceEpoch,
     };
   }
+
+  MealEntry copyWith({
+    String? id,
+    String? foodId,
+    String? foodName,
+    double? portionG,
+    double? calories,
+    double? protein,
+    double? carb,
+    double? fat,
+    String? mealType,
+    DateTime? loggedAt,
+  }) {
+    return MealEntry(
+      id: id ?? this.id,
+      foodId: foodId ?? this.foodId,
+      foodName: foodName ?? this.foodName,
+      portionG: portionG ?? this.portionG,
+      calories: calories ?? this.calories,
+      protein: protein ?? this.protein,
+      carb: carb ?? this.carb,
+      fat: fat ?? this.fat,
+      mealType: mealType ?? this.mealType,
+      loggedAt: loggedAt ?? this.loggedAt,
+    );
+  }
 }

@@ -68,6 +68,11 @@ class NutritionProvider extends ChangeNotifier {
   double get targetCarb => _profile?.weeklyGoals[_selectedWeekday]?.carb ?? (_profile?.targetCarb ?? 200);
   double get targetFat => _profile?.weeklyGoals[_selectedWeekday]?.fat ?? (_profile?.targetFat ?? 66);
 
+  // Aliases para compatibilidade com Dashboard
+  double get activeTargetProtein => targetProtein;
+  double get activeTargetCarb => targetCarb;
+  double get activeTargetFat => targetFat;
+
   List<MealEntry> _selectedDayMeals = [];
   List<MealEntry> get selectedDayMeals => _selectedWeekday == DateTime.now().weekday ? _todayMeals : _selectedDayMeals;
 
@@ -147,7 +152,7 @@ class NutritionProvider extends ChangeNotifier {
     
     final updatedProfile = NutritionEngine.recalibrateRemainingBudget(
       _profile!,
-      todayWeekday: todayWeekday,
+      todayWeekday: DateTime.now().weekday,
       actualCaloriesToday: consumedCalories,
     );
     
@@ -156,6 +161,45 @@ class NutritionProvider extends ChangeNotifier {
       saveSettings();
       notifyListeners();
     }
+  }
+
+  Future<void> updateProfile(NutritionProfile newProfile) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+    
+    _profile = newProfile;
+    await saveSettings();
+    notifyListeners();
+  }
+
+  /// Bônus Pós-Treino: Reajusta a meta do dia com base no esforço real
+  void applyPostWorkoutBonus({
+    required int durationMinutes,
+    required int exerciseCount,
+    required double totalVolume,
+  }) {
+    if (_profile == null || !_profile!.dynamicAdaptationEnabled) return;
+
+    // Heurística de Gasto Calórico Adicional (Estimativa conservadora)
+    // 5 kcal por minuto + bônus por volume (50 kcal por 1000kg)
+    int bonusCals = (durationMinutes * 5) + (totalVolume / 1000 * 50).round();
+    
+    if (bonusCals <= 0) return;
+
+    final todayWeekday = DateTime.now().weekday;
+    final currentGoal = _profile!.weeklyGoals[todayWeekday];
+    if (currentGoal == null) return;
+
+    // Adiciona o bônus majoritariamente em carboidratos (combustível glicolítico)
+    double extraCarb = bonusCals / 4.0;
+    
+    final updatedGoal = currentGoal.copyWith(
+      calories: currentGoal.calories + bonusCals,
+      carb: currentGoal.carb + extraCarb,
+      label: 'Treino Concluído (+${bonusCals}kcal)',
+    );
+
+    updateDailyManualGoal(todayWeekday, updatedGoal);
   }
 
   /// Permite edição manual de um dia específico (respeita autonomia do usuário)

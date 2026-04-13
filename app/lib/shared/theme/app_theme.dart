@@ -12,6 +12,7 @@ class AppTheme {
   static const Color danger = Color(0xFFEF4444); // Usado para Deload
   static const Color textPrimary = Color(0xFFF3F4F6);
   static const Color textSecondary = Color(0xFF9CA3AF);
+  static const Color divider = Color(0x1FFFFFFF);
 
   static ThemeData get darkTheme {
     return ThemeData(
@@ -37,7 +38,7 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: Color(0x1FFFFFFF), width: 1),
+          side: const BorderSide(color: divider, width: 1),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
