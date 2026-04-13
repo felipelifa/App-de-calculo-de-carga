@@ -4,12 +4,15 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../core/services/auth_service.dart';
 import '../../shared/theme/app_theme.dart';
 import '../workout/workout_profile_provider.dart';
 import '../workout/progression_provider.dart';
 import '../exercises/exercise_provider.dart';
 import '../nutrition/nutrition_provider.dart';
+import '../exercises/exercise_model.dart';
 
 class DashboardData {
   final double weekVolume;
@@ -220,7 +223,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     // Grid de Módulos (Bento Style)
                     _buildBentoModules(context),
 
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 24),
+
+                    // NOVO: Card de Download do APK
+                    _NavCard(
+                      icon: Icons.android_rounded,
+                      label: 'APLICATIVO PARA CELULAR',
+                      subtitle: 'Baixe o APK para instalar e usar como um app nativo',
+                      color: const Color(0xFF3DDC84), // Android Green
+                      onTap: () => _showDownloadDialog(context),
+                      isFeatured: true,
+                    ).animate().fadeIn(delay: 600.ms),
+
+                    const SizedBox(height: 24),
+
+                    FutureBuilder<DashboardData>(
+                      future: _future,
+                      builder: (context, snap) {
+                        final data = snap.data;
+                        if (data == null) return const SizedBox.shrink();
+                        if (data.volumeByMuscle.isEmpty) return const SizedBox.shrink();
+                        return _VolumeByMuscleCard(data: data);
+                      },
+                    ).animate().fadeIn(delay: 800.ms),
+
+                    const SizedBox(height: 48),
                   ],
                 ),
               ),
@@ -382,34 +409,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-            // NOVO: Card de Download do APK
-            _NavCard(
-              icon: Icons.android_rounded,
-              label: 'APLICATIVO PARA CELULAR',
-              subtitle: 'Baixe o APK para instalar e usar como um app nativo',
-              color: const Color(0xFF3DDC84), // Android Green
-              onTap: () => _showDownloadDialog(context),
-              isFeatured: true,
-            ),
-
-            const SizedBox(height: 28),
-
-            FutureBuilder<DashboardData>(
-              future: _future,
-              builder: (context, snap) {
-                final data = snap.data;
-                if (data == null) return const SizedBox.shrink();
-                if (data.volumeByMuscle.isEmpty) return const SizedBox.shrink();
-                return _VolumeByMuscleCard(data: data);
-              },
-            ),
-
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
-    );
-  }
 
   void _showDownloadDialog(BuildContext context) {
     showModalBottomSheet(

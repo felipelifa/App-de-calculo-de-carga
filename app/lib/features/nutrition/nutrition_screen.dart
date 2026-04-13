@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../shared/theme/app_theme.dart';
 import 'nutrition_provider.dart';
@@ -792,4 +794,28 @@ class _ChartData {
   final String x;
   final double y;
   final Color color;
+}
+
+class _SectionHeader extends StatelessWidget {
+  final String title;
+  const _SectionHeader({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(width: 4, height: 20, decoration: BoxDecoration(color: AppTheme.accent, borderRadius: BorderRadius.circular(2))),
+        const SizedBox(width: 12),
+        Text(
+          title.toUpperCase(),
+          style: GoogleFonts.outfit(
+            color: AppTheme.textPrimary,
+            fontSize: 14,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1,
+          ),
+        ),
+      ],
+    );
+  }
 }
