@@ -1,18 +1,19 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-  }
+@theme {
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+  --color-neon-lime: #CCFF00;
+  --color-tiktok-red: #FE2D55;
+  --color-tactical-blue: #007AFF;
 }
 
-body {
-  background-color: black;
-  color: white;
-  -webkit-font-smoothing: antialiased;
+@layer base {
+  body {
+    background-color: black;
+    color: white;
+    -webkit-font-smoothing: antialiased;
+  }
 }
 
 /* Custom Scrollbar */
