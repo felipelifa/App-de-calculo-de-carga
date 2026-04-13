@@ -193,10 +193,15 @@ class NutritionProvider extends ChangeNotifier {
 
   void _triggerRecalibration() {
     if (_profile == null) return;
+    
+    // Calcula calorias de besteira contabilizadas hoje
+    final cheatMealCalories = _todayMeals.where((m) => m.isCheatMeal).fold(0.0, (sum, m) => sum + m.calories);
+
     final updated = NutritionEngine.recalibrateRemainingBudget(
       _profile!,
       todayWeekday: DateTime.now().weekday,
       actualCaloriesToday: consumedCalories,
+      cheatMealCalories: cheatMealCalories,
     );
     if (updated != _profile) {
       _profile = updated;

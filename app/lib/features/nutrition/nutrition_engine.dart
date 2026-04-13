@@ -96,8 +96,9 @@ class NutritionEngine {
     NutritionProfile profile, {
     required int todayWeekday,
     required double actualCaloriesToday, // Changed to double to match provider
+    double cheatMealCalories = 0.0,
   }) {
-    if (!profile.dynamicAdaptationEnabled) return profile;
+    if (!profile.dynamicAdaptationEnabled && cheatMealCalories == 0.0) return profile;
 
     final todayGoal = profile.weeklyGoals[todayWeekday];
     if (todayGoal == null) return profile;
@@ -105,10 +106,19 @@ class NutritionEngine {
     double deviation = actualCaloriesToday - todayGoal.calories;
     int remainingDays = 7 - todayWeekday;
     
-    if (remainingDays <= 0 || deviation == 0) return profile;
+    // Se a pessoa marcou uma besteira explicitamente, forçamos a diluição da besteira.
+    // Se a divergência total exceder a besteira isolada, diluímos tudo para segurança.
+    double amountToDilute = 0;
+    if (cheatMealCalories > 0 && deviation > 0) {
+      amountToDilute = deviation > cheatMealCalories ? deviation : cheatMealCalories;
+    } else if (profile.dynamicAdaptationEnabled) {
+      amountToDilute = deviation;
+    }
+
+    if (remainingDays <= 0 || amountToDilute <= 0) return profile;
 
     Map<int, DailyNutritionalGoal> updatedGoals = Map.from(profile.weeklyGoals);
-    double dailyAdjustment = -(deviation / remainingDays);
+    double dailyAdjustment = -(amountToDilute / remainingDays);
     
     for (int i = todayWeekday + 1; i <= 7; i++) {
         final g = updatedGoals[i]!;
@@ -127,7 +137,7 @@ class NutritionEngine {
         updatedGoals[i] = g.copyWith(
             calories: newCals,
             carb: math.max(10, newCarb),
-            label: hitTmbLimit ? 'Trava de Segurança (TMB)' : 'Compensado',
+            label: hitTmbLimit ? 'Trava de Segurança (TMB)' : (cheatMealCalories > 0 ? 'Diluição de Besteira' : 'Compensado'),
         );
     }
 

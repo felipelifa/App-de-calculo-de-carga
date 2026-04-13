@@ -9,6 +9,7 @@ class MealEntry {
   final double fat;
   final String mealType; // 'breakfast', 'lunch', 'dinner', 'snack'
   final DateTime loggedAt;
+  final bool isCheatMeal;
 
   MealEntry({
     required this.id,
@@ -21,6 +22,7 @@ class MealEntry {
     required this.fat,
     required this.mealType,
     required this.loggedAt,
+    this.isCheatMeal = false,
   });
 
   factory MealEntry.fromMap(Map<String, dynamic>? map, String id) {
@@ -46,6 +48,7 @@ class MealEntry {
       fat: (map['fat'] as num?)?.toDouble() ?? 0.0,
       mealType: map['mealType'] as String? ?? 'snack',
       loggedAt: getLoggedAt(),
+      isCheatMeal: map['isCheatMeal'] as bool? ?? false,
     );
   }
 
@@ -60,6 +63,7 @@ class MealEntry {
       'fat': fat,
       'mealType': mealType,
       'loggedAt': loggedAt.millisecondsSinceEpoch,
+      'isCheatMeal': isCheatMeal,
     };
   }
 
@@ -74,6 +78,7 @@ class MealEntry {
     double? fat,
     String? mealType,
     DateTime? loggedAt,
+    bool? isCheatMeal,
   }) {
     return MealEntry(
       id: id ?? this.id,
@@ -86,6 +91,7 @@ class MealEntry {
       fat: fat ?? this.fat,
       mealType: mealType ?? this.mealType,
       loggedAt: loggedAt ?? this.loggedAt,
+      isCheatMeal: isCheatMeal ?? this.isCheatMeal,
     );
   }
 }

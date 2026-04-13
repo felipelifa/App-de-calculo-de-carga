@@ -277,6 +277,7 @@ class _PortionSelectorSheet extends StatefulWidget {
 
 class _PortionSelectorSheetState extends State<_PortionSelectorSheet> {
   double _portionG = 100.0;
+  bool _isCheatMeal = false;
   final TextEditingController _gController = TextEditingController(text: '100');
 
   @override
@@ -335,7 +336,22 @@ class _PortionSelectorSheetState extends State<_PortionSelectorSheet> {
               _buildMacroInfo('Gord', '${f.round()}g', Colors.orange),
             ],
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 16),
+          CheckboxListTile(
+            title: const Text('Marcar como Besteira (Furo na dieta)', style: TextStyle(color: AppTheme.textPrimary, fontSize: 13, fontWeight: FontWeight.bold)),
+            subtitle: const Text('O app irá diluir os macros excedentes nos próximos dias.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 11)),
+            value: _isCheatMeal,
+            activeColor: AppTheme.accent,
+            checkColor: Colors.white,
+            contentPadding: EdgeInsets.zero,
+            controlAffinity: ListTileControlAffinity.leading,
+            onChanged: (val) {
+              setState(() {
+                _isCheatMeal = val ?? false;
+              });
+            },
+          ),
+          const SizedBox(height: 24),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -357,6 +373,7 @@ class _PortionSelectorSheetState extends State<_PortionSelectorSheet> {
                   fat: f,
                   mealType: widget.mealType,
                   loggedAt: DateTime.now(),
+                  isCheatMeal: _isCheatMeal,
                 );
                 
                 await context.read<NutritionProvider>().addMeal(entry);
