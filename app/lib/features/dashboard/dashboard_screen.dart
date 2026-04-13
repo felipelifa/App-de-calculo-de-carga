@@ -156,163 +156,231 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Scaffold(
       backgroundColor: AppTheme.background,
-      appBar: AppBar(
-        backgroundColor: AppTheme.surface,
-        elevation: 0,
-        title: const Text(
-          'Início',
-          style: TextStyle(
-            color: AppTheme.textPrimary,
-            fontWeight: FontWeight.bold,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: AppTheme.background,
+            floating: true,
+            pinned: true,
+            expandedHeight: 140,
+            leadingWidth: 0,
+            leading: const SizedBox.shrink(),
+            flexibleSpace: FlexibleSpaceBar(
+              titlePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              title: Text(
+                'Progress',
+                style: GoogleFonts.outfit(
+                  color: AppTheme.textPrimary,
+                  fontSize: 32,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -1,
+                ),
+              ).animate().fadeIn(duration: 600.ms).slideX(begin: -0.2),
+              background: _buildHeaderTopBar(user, auth),
+            ),
           ),
-        ),
-        actions: [
+          
+          SliverToBoxAdapter(
+            child: RefreshIndicator(
+              color: AppTheme.accent,
+              backgroundColor: AppTheme.surface,
+              onRefresh: () async => _load(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Bio-Metric Selector (Tracker, PB, Achievements, etc)
+                    _buildQuickTabSelector().animate().fadeIn(delay: 200.ms),
+                    
+                    const SizedBox(height: 32),
+
+                    // Daily Statistics (Cards com Física)
+                    FutureBuilder<DashboardData>(
+                      future: _future,
+                      builder: (context, snap) {
+                        if (snap.connectionState == ConnectionState.waiting) {
+                          return const _StatsShimmer();
+                        }
+                        final data = snap.data;
+                        if (snap.hasError || data == null) {
+                          return const _ErrorCard();
+                        }
+                        return _StatsSection(data: data);
+                      },
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Main Training Card (Destaque)
+                    _buildTrainingHeroCard(context).animate().scale(delay: 400.ms, curve: Curves.elasticOut),
+
+                    const SizedBox(height: 24),
+
+                    // Grid de Módulos (Bento Style)
+                    _buildBentoModules(context),
+
+                    const SizedBox(height: 40),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeaderTopBar(User? user, AuthService auth) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 60, 24, 0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: AppTheme.surfaceHighlight,
+            backgroundImage: user?.photoURL != null ? NetworkImage(user!.photoURL!) : null,
+            child: user?.photoURL == null ? const Icon(Icons.person, color: AppTheme.textSecondary) : null,
+          ),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppTheme.accentOrange.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    const Text('2', style: TextStyle(color: AppTheme.accentOrange, fontWeight: FontWeight.bold, fontSize: 10)),
+                    const SizedBox(width: 4),
+                    Text('CHALLENGER', style: GoogleFonts.outfit(color: AppTheme.textPrimary, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  const Icon(Icons.local_fire_department_rounded, color: AppTheme.accent, size: 14),
+                  const SizedBox(width: 4),
+                  Text('145', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontWeight: FontWeight.bold, fontSize: 13)),
+                ],
+              ),
+            ],
+          ),
+          const Spacer(),
           IconButton(
-            icon: const Icon(Icons.refresh_rounded, color: AppTheme.textSecondary),
-            onPressed: _load,
+            icon: const Icon(Icons.notifications_outlined, color: AppTheme.textPrimary),
+            onPressed: () {},
           ),
           IconButton(
-            icon: const Icon(Icons.logout, color: AppTheme.textSecondary),
+            icon: const Icon(Icons.logout_rounded, color: AppTheme.textSecondary, size: 20),
             onPressed: () => auth.logout(),
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(height: 1, color: Colors.white.withValues(alpha: 0.06)),
-        ),
       ),
-      body: RefreshIndicator(
-        color: AppTheme.accent,
-        backgroundColor: AppTheme.surface,
-        onRefresh: () async => _load(),
-        child: ListView(
-          padding: const EdgeInsets.all(20),
-          children: [
-            Text(
-              'Olá, ${user?.displayName ?? 'Atleta'} 👋',
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
-            const SizedBox(height: 4),
-            const Text(
-              'Como está seu progresso esta semana:',
-              style: TextStyle(color: AppTheme.textSecondary),
-            ),
-            const SizedBox(height: 24),
+    );
+  }
 
-            FutureBuilder<DashboardData>(
-              future: _future,
-              builder: (context, snap) {
-                if (snap.connectionState == ConnectionState.waiting) {
-                  return const _StatsShimmer();
-                }
-                final data = snap.data;
-                if (snap.hasError || data == null) {
-                  return const SizedBox(
-                    height: 100,
-                    child: Center(child: Text('Erro ao carregar estat\xedsticas.', style: TextStyle(color: AppTheme.textSecondary))),
-                  );
-                }
-                return _StatsSection(data: data);
-              },
-            ),
+  Widget _buildQuickTabSelector() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          _TabItem(label: 'TRACKER', isSelected: true),
+          _TabItem(label: 'PB'),
+          _TabItem(label: 'ACHIEVEMENTS'),
+          _TabItem(label: '10,000'),
+        ],
+      ),
+    );
+  }
 
-            const SizedBox(height: 20),
+  Widget _buildTrainingHeroCard(BuildContext context) {
+    return Consumer<WorkoutProfileProvider>(
+      builder: (context, wp, _) {
+        final hasPro = wp.hasWorkout;
+        return InkWell(
+          onTap: () => context.push(hasPro ? '/prescribed' : '/anamnese'),
+          borderRadius: BorderRadius.circular(32),
+          child: Container(
+            height: 280,
+            decoration: BoxDecoration(
+              color: AppTheme.surface,
+              borderRadius: BorderRadius.circular(32),
+              image: const DecorationImage(
+                image: NetworkImage('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop'),
+                fit: BoxFit.cover,
+                opacity: 0.3,
+              ),
+              boxShadow: [BoxShadow(color: AppTheme.accent.withOpacity(0.1), blurRadius: 40, offset: const Offset(0, 20))],
+            ),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                 Container(
+                   padding: const EdgeInsets.all(12),
+                   decoration: const BoxDecoration(color: AppTheme.accent, shape: BoxShape.circle),
+                   child: const Icon(Icons.add, color: Colors.white, size: 24),
+                 ),
+                 const Spacer(),
+                 Text('48', style: GoogleFonts.outfit(fontSize: 64, fontWeight: FontWeight.w900, color: AppTheme.textPrimary, height: 1)),
+                 Text('MIN TRAINED', style: GoogleFonts.outfit(fontSize: 14, fontWeight: FontWeight.bold, color: AppTheme.textSecondary, letterSpacing: 1)),
+              ],
+            ),
+          ),
+        );
+      }
+    );
+  }
 
-            // Card de deload / fase do ciclo
-            Consumer<ProgressionProvider>(
-              builder: (context, pp, _) {
-                if (pp.state == null) return const SizedBox.shrink();
-                return _CycleStatusCard(provider: pp);
-              },
-            ),
-
-            const SizedBox(height: 20),
-
-            // NOVO: Card de Nutrição
-            Consumer<NutritionProvider>(
-              builder: (context, np, _) {
-                if (np.profile == null) return const SizedBox.shrink();
-                return _NutritionSummaryCard(provider: np);
-              },
-            ),
-
-            const SizedBox(height: 20),
-
-            const SizedBox(height: 20),
-
-            const _SectionLabel('ATALHOS'),
-            const SizedBox(height: 12),
-
-            Consumer<WorkoutProfileProvider>(
-              builder: (context, wp, child) {
-                final hasPro = wp.hasWorkout;
-                return _NavCard(
-                  icon: Icons.auto_awesome_rounded,
-                  label: hasPro ? 'MEU TREINO INTELIGENTE' : 'MONTAR MEU TREINO',
-                  subtitle: hasPro ? 'Ver meu plano de exercícios' : 'Deixa nossa IA montar seu treino completo',
-                  color: AppTheme.accent,
-                  onTap: () => context.push(hasPro ? '/prescribed' : '/anamnese'),
-                  isFeatured: true,
-                );
-              },
-            ),
-            const SizedBox(height: 12),
-            _NavCard(
-              icon: Icons.assignment_rounded,
-              label: 'Meus Treinos (Manual)',
-              subtitle: 'Templates que você mesmo montou',
-              color: const Color(0xFF10B981),
-              onTap: () => context.push('/routines'),
-            ),
-            const SizedBox(height: 10),
-            _NavCard(
-              icon: Icons.play_circle_rounded,
-              label: 'Treino Rápido',
-              subtitle: 'Iniciar sessão livre agora',
-              color: AppTheme.success,
-              onTap: () => context.go('/workout'),
-            ),
-            const SizedBox(height: 10),
-            _NavCard(
-              icon: Icons.fitness_center_rounded,
-              label: 'Exercícios',
-              subtitle: 'Catálogo e progressão de carga',
-              color: AppTheme.accent,
-              onTap: () => context.go('/exercises'),
-            ),
-            const SizedBox(height: 10),
-            _NavCard(
-              icon: Icons.local_dining_rounded,
-              label: 'Dieta e Nutrição',
-              subtitle: 'Planejamento adaptativo e contagem de macros',
-              color: AppTheme.success,
-              onTap: () => context.push('/nutrition'),
-            ),
-            const SizedBox(height: 10),
-            _NavCard(
-              icon: Icons.insights_rounded,
-              label: 'Progressão de Carga',
-              subtitle: 'Sugestões inteligentes baseadas no seu histórico',
-              color: const Color(0xFFF59E0B),
-              onTap: () => context.push('/progression'),
-            ),
-            const SizedBox(height: 10),
-            _NavCard(
-              icon: Icons.bar_chart_rounded,
-              label: 'Estatísticas',
-              subtitle: 'Gráficos de volume, carga e evolução muscular',
-              color: const Color(0xFF6366F1),
-              onTap: () => context.push('/analytics'),
-            ),
-            const SizedBox(height: 10),
-            _NavCard(
-              icon: Icons.history_rounded,
-              label: 'Histórico',
-              subtitle: 'Treinos anteriores registrados',
-              color: const Color(0xFF8B5CF6),
-              onTap: () => context.push('/workout/history'),
-            ),
-            const SizedBox(height: 12),
+  Widget _buildBentoModules(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+           children: [
+             Expanded(
+               child: _BentoCard(
+                 title: 'Technique', 
+                 value: '16', 
+                 unit: 'MIN', 
+                 color: AppTheme.accent, 
+                 icon: Icons.directions_run,
+                 onTap: () => context.push('/exercises'),
+               ),
+             ),
+             const SizedBox(width: 16),
+             Expanded(
+               child: _BentoCard(
+                 title: 'Tactics', 
+                 value: '10', 
+                 unit: 'MIN', 
+                 color: AppTheme.accentBlue, 
+                 icon: Icons.psychology,
+                 onTap: () => context.push('/progression'),
+               ),
+             ),
+           ],
+        ),
+        const SizedBox(height: 16),
+        _BentoCard(
+          title: 'Bio-Management', 
+          value: 'ACTIVE', 
+          unit: '', 
+          color: AppTheme.accentLime, 
+          icon: Icons.auto_awesome, 
+          fullWidth: true,
+          onTap: () => context.push('/nutrition'),
+        ),
+      ],
+    );
+  }
 
             // NOVO: Card de Download do APK
             _NavCard(
@@ -415,26 +483,26 @@ class _StatsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _VolumeCard(data: data),
-        const SizedBox(height: 12),
+        _VolumeCard(data: data).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1),
+        const SizedBox(height: 16),
         Row(
           children: [
             Expanded(
               child: _SmallStat(
                 icon: Icons.calendar_today_rounded,
-                label: 'Treinos\nesta semana',
+                label: 'SESSIONS',
                 value: '${data.weekSessions}',
-                color: AppTheme.accent,
-              ),
+                color: AppTheme.accentBlue,
+              ).animate().fadeIn(delay: 400.ms).slideX(begin: -0.1),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 16),
             Expanded(
               child: _SmallStat(
                 icon: Icons.emoji_events_rounded,
-                label: 'Total de\ntreinos',
+                label: 'RECORDS',
                 value: '${data.totalSessions}',
-                color: const Color(0xFFF59E0B),
-              ),
+                color: AppTheme.accentOrange,
+              ).animate().fadeIn(delay: 500.ms).slideX(begin: 0.1),
             ),
           ],
         ),
@@ -577,43 +645,41 @@ class _SmallStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
+              color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, color: color, size: 18),
+            child: Icon(icon, color: color, size: 20),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  value,
-                  style: const TextStyle(
-                    color: AppTheme.textPrimary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                  ),
-                ),
-                Text(
-                  label,
-                  style: const TextStyle(
-                    color: AppTheme.textSecondary,
-                    fontSize: 11,
-                  ),
-                ),
-              ],
+          const SizedBox(height: 16),
+          Text(
+            value,
+            style: GoogleFonts.outfit(
+              color: AppTheme.textPrimary,
+              fontWeight: FontWeight.w900,
+              fontSize: 28,
+              height: 1,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: GoogleFonts.outfit(
+              color: AppTheme.textSecondary,
+              fontSize: 10,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1,
             ),
           ),
         ],
@@ -978,70 +1044,181 @@ class _NavCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: isFeatured ? color.withValues(alpha: 0.15) : AppTheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: isFeatured ? color.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.05),
-          width: isFeatured ? 2 : 1,
-        ),
-        boxShadow: isFeatured ? [
-          BoxShadow(
-            color: color.withValues(alpha: 0.2),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          )
-        ] : null,
-      ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+        borderRadius: BorderRadius.circular(24),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: isFeatured ? color.withOpacity(0.05) : AppTheme.surface,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: isFeatured ? color.withOpacity(0.3) : Colors.white.withOpacity(0.05),
+              width: isFeatured ? 2 : 1.5,
+            ),
+          ),
           child: Row(
             children: [
               Container(
-                width: 44,
-                height: 44,
+                width: 52,
+                height: 52,
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12),
+                  color: color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                child: Icon(icon, color: color, size: 22),
+                child: Icon(icon, color: color, size: 24),
               ),
-              const SizedBox(width: 14),
+              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       label,
-                      style: const TextStyle(
+                      style: GoogleFonts.outfit(
                         color: AppTheme.textPrimary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       subtitle,
-                      style: const TextStyle(
+                      style: GoogleFonts.outfit(
                         color: AppTheme.textSecondary,
                         fontSize: 12,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right_rounded,
-                  color: AppTheme.textSecondary),
+              Icon(Icons.chevron_right_rounded, color: color.withOpacity(0.5)),
             ],
           ),
+        ).animate(onPlay: (controller) => controller.repeat(reverse: true))
+         .shimmer(delay: isFeatured ? 2.seconds : 100.seconds, duration: 2.seconds, color: color.withOpacity(0.2)),
+      ),
+    );
+  }
+}
+
+class _TabItem extends StatelessWidget {
+  final String label;
+  final bool isSelected;
+  const _TabItem({required this.label, this.isSelected = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      decoration: BoxDecoration(
+        color: isSelected ? Colors.transparent : AppTheme.surface,
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(color: isSelected ? AppTheme.textPrimary : Colors.white.withOpacity(0.1), width: 1.5),
+      ),
+      child: Text(
+        label,
+        style: GoogleFonts.outfit(
+          color: isSelected ? AppTheme.textPrimary : AppTheme.textSecondary,
+          fontWeight: FontWeight.w900,
+          fontSize: 12,
+          letterSpacing: 1,
         ),
       ),
     );
   }
+}
+
+class _BentoCard extends StatelessWidget {
+  final String title;
+  final String value;
+  final String unit;
+  final Color color;
+  final IconData icon;
+  final VoidCallback onTap;
+  final bool fullWidth;
+
+  const _BentoCard({
+    required this.title,
+    required this.value,
+    required this.unit,
+    required this.color,
+    required this.icon,
+    required this.onTap,
+    this.fullWidth = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(24),
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: color.withOpacity(0.2), width: 1.5),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.outfit(
+                    color: color,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 13,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                Icon(icon, color: color, size: 20),
+              ],
+            ),
+            const SizedBox(height: 24),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  value,
+                  style: GoogleFonts.outfit(
+                    color: AppTheme.textPrimary,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 32,
+                    height: 1,
+                  ),
+                ),
+                if (unit.isNotEmpty) ...[
+                  const SizedBox(width: 4),
+                  Text(
+                    unit,
+                    style: GoogleFonts.outfit(
+                      color: AppTheme.textSecondary,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ErrorCard extends StatelessWidget {
+  const _ErrorCard();
+  @override
+  Widget build(BuildContext context) => const SizedBox(height: 100, child: Center(child: Icon(Icons.error_outline, color: AppTheme.textSecondary)));
 }
 
 // ─── Card de status do ciclo de periodização ──

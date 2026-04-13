@@ -39,44 +39,51 @@ class _NutritionScreenState extends State<NutritionScreen> {
     final provider = context.watch<NutritionProvider>();
 
     if (provider.isLoading) {
-      return const Center(child: CircularProgressIndicator(color: AppTheme.accent));
+      return const Scaffold(
+        backgroundColor: AppTheme.background,
+        body: Center(child: CircularProgressIndicator(color: AppTheme.accent)),
+      );
     }
 
     if (provider.profile == null) {
       final error = provider.lastError;
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                error != null ? Icons.error_outline : Icons.no_meals_outlined,
-                size: 64,
-                color: error != null ? Colors.redAccent : AppTheme.textSecondary,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                error ?? 'Perfil Nutricional não inicializado.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: error != null ? Colors.redAccent : AppTheme.textSecondary,
-                  fontWeight: error != null ? FontWeight.bold : FontWeight.normal,
+      return Scaffold(
+        backgroundColor: AppTheme.background,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  error != null ? Icons.error_outline : Icons.no_meals_outlined,
+                  size: 64,
+                  color: error != null ? AppTheme.accent : AppTheme.textSecondary,
+                ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
+                const SizedBox(height: 24),
+                Text(
+                  error ?? 'Configure seu perfil nutricional para começar a Bio-Gestão baseada em ciência.',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.outfit(
+                    color: AppTheme.textSecondary,
+                    fontSize: 16,
+                    height: 1.5,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {
-                  final wp = context.read<WorkoutProfileProvider>().profile;
-                  if (wp != null) {
-                    context.push('/nutrition/anamnese');
-                  } else {
-                    context.go('/anamnese');
-                  }
-                },
-                child: Text(error != null ? 'TENTAR NOVAMENTE' : 'CONFIGURAR DIETA'),
-              ),
-            ],
+                const SizedBox(height: 32),
+                ElevatedButton(
+                  onPressed: () {
+                    final wp = context.read<WorkoutProfileProvider>().profile;
+                    if (wp != null) {
+                      context.push('/nutrition/anamnese');
+                    } else {
+                      context.go('/anamnese');
+                    }
+                  },
+                  child: Text(error != null ? 'TENTAR NOVAMENTE' : 'CONFIGURAR BIO-DIETA'),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -95,95 +102,108 @@ class _NutritionScreenState extends State<NutritionScreen> {
 
     return Scaffold(
       backgroundColor: AppTheme.background,
-      appBar: AppBar(
-        title: const Text('Nutrição Inteligente', style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: AppTheme.surface,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.account_circle_outlined, color: AppTheme.accent),
-            onPressed: () => context.push('/nutrition/dashboard'),
-          ),
-          const SizedBox(width: 8),
-        ],
-      ),
-      body: RefreshIndicator(
-        onRefresh: () async => provider.loadToday(),
-        color: AppTheme.accent,
-        backgroundColor: AppTheme.surface,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const SizedBox(height: 12),
-            // Calendário Action Strip (Navegação de Dias)
-            _buildCalendarStrip(context, provider),
-
-            const SizedBox(height: 12),
-            // Timeline Semanal Interativa
-            const NutritionTimelineWidget(),
-
-            // Insight do Gêmeo Digital
-            _buildInsightPanel(provider),
-
-            // Escudo Metabólico e Diversidade Plant Based
-            BioIntelligence.buildPlantGamificationPanel(provider.weeklyPlantScore),
-
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  // Header - Gráfico de Calorias com Suporte a Overides
-                  GestureDetector(
-                    onTap: () => _showManualOverrideDialog(context, provider),
-                    child: _buildCalorieDonut(chartData, target, consumed.toInt(), remaining.toInt(), provider),
-                  ),
-
-                  const SizedBox(height: 16),
-                  
-                  // Botões de Ação Rápida (Visibilidade Superior)
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildActionButton(
-                          icon: Icons.tune_rounded,
-                          label: 'Ajustar Macros',
-                          onTap: () => context.push('/nutrition/settings'),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _buildActionButton(
-                          icon: Icons.refresh_rounded,
-                          label: 'Refazer Anamnese',
-                          onTap: () => context.push('/nutrition/anamnese'),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  // Card de Hidratação Inteligente (Premium)
-                  _buildHydrationCard(provider),
-
-                  const SizedBox(height: 20),
-                  
-                  // Card de Bio-Gestão e Aderência
-                  _buildBioManagementStats(provider),
-
-                  const SizedBox(height: 24),
-                  // Macros Cards
-                  _buildMacrosRow(provider),
-
-                  const SizedBox(height: 32),
-                  // Seções de Refeições (do dia selecionado)
-                  _buildMealSection(context, provider, 'Café da manhã', 'breakfast', meals),
-                  _buildMealSection(context, provider, 'Almoço', 'lunch', meals),
-                  _buildMealSection(context, provider, 'Jantar', 'dinner', meals),
-                  _buildMealSection(context, provider, 'Lanches', 'snack', meals),
-                ],
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: AppTheme.background,
+            expandedHeight: 120,
+            floating: true,
+            pinned: true,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppTheme.textPrimary, size: 20),
+              onPressed: () => context.pop(),
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.insights_rounded, color: AppTheme.accentLime),
+                onPressed: () => context.push('/nutrition/dashboard'),
+              ),
+              const SizedBox(width: 8),
+            ],
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: false,
+              titlePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              title: Text(
+                'Bio-Management',
+                style: GoogleFonts.outfit(
+                  color: AppTheme.textPrimary,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -0.5,
+                ),
               ),
             ),
-          ],
-        ),
+          ),
+          
+          SliverToBoxAdapter(
+            child: RefreshIndicator(
+              onRefresh: () async => provider.loadToday(),
+              color: AppTheme.accent,
+              backgroundColor: AppTheme.surface,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    // Calendário Action Strip (Navegação de Dias)
+                    _buildCalendarStrip(context, provider).animate().fadeIn(duration: 400.ms),
+
+                    const SizedBox(height: 12),
+                    // Timeline Semanal Interativa
+                    const NutritionTimelineWidget().animate().slideX(begin: 0.1, duration: 500.ms),
+
+                    const SizedBox(height: 24),
+
+                    // Insight do Gêmeo Digital (Destaque Neon)
+                    _buildInsightPanel(provider).animate().scale(delay: 200.ms, curve: Curves.easeOutBack),
+
+                    const SizedBox(height: 24),
+
+                    // Header - Gráfico de Calorias
+                    GestureDetector(
+                      onTap: () => _showManualOverrideDialog(context, provider),
+                      child: _buildCalorieDonut(chartData, target, consumed.toInt(), remaining.toInt(), provider)
+                          .animate()
+                          .fadeIn(delay: 400.ms),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Macros Row (Estilo Challenger)
+                    _buildMacrosRow(provider).animate().slideY(begin: 0.2, delay: 600.ms),
+
+                    const SizedBox(height: 32),
+
+                    // Diversidade Plant Based (Gamificação)
+                    BioIntelligence.buildPlantGamificationPanel(provider.weeklyPlantScore),
+
+                    const SizedBox(height: 24),
+
+                    // Bento Grid para Hidratação e Bio-Gestão
+                    Row(
+                      children: [
+                        Expanded(child: _buildHydrationCard(provider)),
+                        const SizedBox(width: 16),
+                        Expanded(child: _buildBioManagementStats(provider)),
+                      ],
+                    ),
+
+                    const SizedBox(height: 40),
+                    
+                    // Seções de Refeições
+                    _SectionHeader(title: 'Protocolo de Hoje'),
+                    const SizedBox(height: 16),
+                    _buildMealSection(context, provider, 'Café da manhã', 'breakfast', meals),
+                    _buildMealSection(context, provider, 'Almoço', 'lunch', meals),
+                    _buildMealSection(context, provider, 'Jantar', 'dinner', meals),
+                    _buildMealSection(context, provider, 'Lanches', 'snack', meals),
+                    
+                    const SizedBox(height: 40),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

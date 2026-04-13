@@ -1,38 +1,46 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-body {
-  background: #0A0A0F;
-  color: #F3F4F6;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0A0A0F;
-    --foreground: #F3F4F6;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
   }
 }
 
-html {
-  scroll-behavior: smooth;
+body {
+  background-color: black;
+  color: white;
+  -webkit-font-smoothing: antialiased;
 }
 
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #CCFF00;
 }
 
-.animate-in {
-  animation: fade-in 0.6s ease-out both;
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.2s; }
-.delay-3 { animation-delay: 0.3s; }
-.delay-4 { animation-delay: 0.4s; }
-.delay-5 { animation-delay: 0.5s; }
-.delay-6 { animation-delay: 0.6s; }
+.neon-glow {
+  box-shadow: 0 0 20px rgba(204, 255, 0, 0.2);
+}
+
+.tiktok-glow {
+  box-shadow: 0 0 20px rgba(254, 45, 85, 0.2);
+}

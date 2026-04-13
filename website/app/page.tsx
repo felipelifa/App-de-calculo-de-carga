@@ -1,308 +1,341 @@
 'use client';
 
+import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { 
+  Zap, 
+  Target, 
+  TrendingUp, 
+  ShieldCheck, 
+  Activity, 
+  Download, 
+  ChevronRight, 
+  Menu, 
+  X,
+  Stethoscope,
+  Dumbbell,
+  Trophy,
+  Users
+} from 'lucide-react';
 
-// Cores do tema Neo-Tactile
-const bg = '#0A0A0F';
-const surface = '#181822';
-const surfaceH = '#232332';
-const accent = '#3B82FF';
-const accentV = '#2563EB';
-const success = '#22C55E';
-const danger = '#EF4444';
-const textP = '#F3F4F6';
-const textS = '#9CA3AF';
+// Animation Variants
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+};
 
-export default function Home() {
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+export default function LandingPage() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   return (
-    <main style={{ background: bg, minHeight: '100vh' }}>
-      {/* NAV */}
-      <nav style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '20px 40px', maxWidth: 1200, margin: '0 auto',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{
-            width: 36, height: 36, borderRadius: 10,
-            background: `linear-gradient(135deg, ${accent}, ${accentV})`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
-              <path d="M6.5 6.5h11M6.5 17.5h11M12 6.5v11" strokeLinecap="round"/>
-            </svg>
+    <div className="bg-black text-white selection:bg-neon selection:text-black">
+      {/* Scroll Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-neon z-[100] origin-left"
+        style={{ scaleX }}
+      />
+
+      <Navbar />
+
+      <main>
+        {/* HERO SECTION */}
+        <section className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden pt-20">
+          {/* Background Ambient Glows */}
+          <div className="absolute top-1/4 -left-20 w-96 h-96 bg-tiktok/20 blur-[120px] rounded-full" />
+          <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-neon/10 blur-[120px] rounded-full" />
+          
+          <motion.div 
+            initial="initial"
+            animate="animate"
+            variants={staggerContainer}
+            className="relative z-10 text-center max-w-5xl"
+          >
+            <motion.div 
+              variants={fadeInUp}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass mb-8 border-white/10"
+            >
+              <span className="w-2 h-2 rounded-full bg-neon animate-pulse" />
+              <span className="text-xs font-bold tracking-widest uppercase text-neon">Bio-Adaptive Engine v7.0</span>
+            </motion.div>
+
+            <motion.h1 
+              variants={fadeInUp}
+              className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-8"
+            >
+              BE HEALTHIER.<br />
+              <span className="text-neon underline decoration-4 underline-offset-8">BE STRONGER.</span><br />
+              BE CONFIDENT.
+            </motion.h1>
+
+            <motion.p 
+              variants={fadeInUp}
+              className="text-lg md:text-xl text-neutral-400 max-w-2xl mx-auto mb-12 leading-relaxed"
+            >
+              O sistema definitivo de treinamento bio-adaptativo. 
+              Geração automática de prescrições baseadas em ciência, 
+              periodização DUP e controle real de fadiga.
+            </motion.p>
+
+            <motion.div 
+              variants={fadeInUp}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            >
+              <Link 
+                href="/treino/index.html"
+                className="group relative px-10 py-5 bg-neon text-black font-black rounded-2xl transition-all hover:scale-105 active:scale-95"
+              >
+                COMEÇAR AGORA
+                <div className="absolute inset-0 bg-white/20 scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-2xl" />
+              </Link>
+              <a 
+                href="#features"
+                className="px-10 py-5 glass font-bold rounded-2xl border-white/10 hover:bg-white/5 transition-all"
+              >
+                VER RECURSOS
+              </a>
+            </motion.div>
+          </motion.div>
+
+          {/* Floating Elements (Physics-like look) */}
+          <motion.div 
+            animate={{ y: [0, -20, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-30"
+          >
+            <div className="w-px h-20 bg-gradient-to-b from-neon to-transparent" />
+          </motion.div>
+        </section>
+
+        {/* BENTO GRID FEATURES */}
+        <section id="features" className="py-32 px-4 max-w-7xl mx-auto">
+          <div className="mb-20">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">ENGINE POWERED BY SCIENCE.</h2>
+            <p className="text-neutral-500 max-w-xl">Nosso motor não usa algoritmos simples. Ele simula a sua fisiologia para garantir resultados sem lesões.</p>
           </div>
-          <span style={{ fontSize: 20, fontWeight: 800, color: textP }}>Controle de Carga</span>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 auto-rows-[240px]">
+            {/* Bento Item 1: Wide */}
+            <BentoCard 
+              className="md:col-span-8 md:row-span-2 bg-tiktok flex flex-col justify-end p-8 group overflow-hidden"
+              icon={<Zap className="w-12 h-12 mb-4" />}
+              title="Prescrição DUP Inteligente"
+              desc="Daily Undulating Periodization que varia entre Força, Hipertrofia e Resistência a cada sessão, otimizando o estímulo sem estagnar o SNC."
+            />
+
+            {/* Bento Item 2: Square */}
+            <BentoCard 
+              className="md:col-span-4 md:row-span-1 bg-surface-muted border border-white/5 flex flex-col justify-center p-8"
+              icon={<TrendingUp className="text-neon mb-4" />}
+              title="Progressão RIR"
+              desc="Controle real de esforço."
+            />
+
+            {/* Bento Item 3: Square */}
+            <BentoCard 
+              className="md:col-span-4 md:row-span-1 bg-tactical flex flex-col justify-center p-8"
+              icon={<ShieldCheck className="mb-4" />}
+              title="Filtro de Lesões"
+              desc="Proteção articular ativa."
+            />
+
+            {/* Bento Item 4: Long Vertical */}
+            <BentoCard 
+              className="md:col-span-4 md:row-span-2 bg-surface border border-white/5 group flex flex-col justify-between p-8"
+              icon={<Activity className="text-tiktok w-10 h-10" />}
+              title="Nutrição Bio-Adaptive"
+              desc="O primeiro app que ajusta seu orçamento semanal de calorias com base no que você realmente comeu e na carga do treino do dia."
+            />
+
+            {/* Bento Item 5: Wide Middle */}
+            <BentoCard 
+              className="md:col-span-8 md:row-span-2 glass flex flex-col md:flex-row gap-8 items-center justify-center p-8 bg-gradient-to-br from-surface to-black border-white/10"
+              icon={<div className="text-8xl font-black text-white/5 absolute -left-4 -bottom-4">GENERIC IS DEAD.</div>}
+              title="Treino Individualizado"
+              desc="Fim das planilhas genéricas. O algoritmo monta o treino do ZERO baseado no seu equipamento, tempo disponível e restrições médicas."
+            />
+          </div>
+        </section>
+
+        {/* STATS STORYTELLING */}
+        <section className="py-20 border-y border-white/5 bg-surface/30">
+          <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-12">
+            <StatItem num="949" label="Exercícios no Banco" />
+            <StatItem num="10k+" label="Usuários Ativos" />
+            <StatItem num="100%" label="Baseado em Evidência" />
+            <StatItem num="500m²" label="De Conhecimento" />
+          </div>
+        </section>
+
+        {/* DOWNLOAD CTA */}
+        <section id="download" className="py-40 px-4 relative overflow-hidden">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-neon/10 blur-[150px] rounded-full pointer-events-none" />
+          
+          <div className="max-w-4xl mx-auto text-center relative z-10">
+            <Download className="w-20 h-20 mx-auto mb-8 text-neon" />
+            <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-8 italic">READY TO DOMINATE?</h2>
+            <p className="text-xl text-neutral-400 mb-12">Disponível via APK para Android e WebApp para iOS/Navegador.</p>
+            
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Link 
+                href="/download/apk"
+                className="px-12 py-6 bg-white text-black font-black rounded-3xl hover:bg-neon transition-colors text-lg"
+              >
+                BAIXAR APK (v7.0)
+              </Link>
+              <Link 
+                href="/treino/index.html"
+                className="px-12 py-6 glass font-black rounded-3xl border-white/10 hover:bg-white/10 transition-colors text-lg"
+              >
+                ABRIR NO NAVEGADOR
+              </Link>
+            </div>
+            <p className="mt-8 text-neutral-600 text-sm">Sem assinaturas escondidas. Sem firulas. Apenas resultados.</p>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
+
+// Subcomponents
+
+function Navbar() {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 transition-all duration-300">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 glass rounded-3xl border-white/5">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-neon rounded-xl flex items-center justify-center rotate-3 group-hover:rotate-12 transition-transform">
+            <Dumbbell className="text-black w-6 h-6 -rotate-3" />
+          </div>
+          <span className="text-xl font-black tracking-tighter">TITAN ENGINE</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <a href="#features" style={{ color: textS, textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>Recursos</a>
-          <a href="#download" style={{ color: textS, textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>Download</a>
-          <a href="#science" style={{ color: textS, textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>Ciência</a>
-          <Link href="/treino/index.html" style={{
-            background: accent,
-            color: 'white',
-            padding: '8px 20px',
-            borderRadius: 8,
-            textDecoration: 'none',
-            fontSize: 14,
-            fontWeight: 600,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-          }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            Entrar
+
+        <div className="hidden md:flex items-center gap-8">
+          <NavLink href="#features">Recursos</NavLink>
+          <NavLink href="#science">Ciência</NavLink>
+          <NavLink href="#download">Download</NavLink>
+          <Link href="/treino/index.html" className="px-6 py-2 bg-white text-black text-sm font-black rounded-xl hover:bg-neon transition-colors">
+            ENTRAR
           </Link>
         </div>
-      </nav>
 
-      {/* HERO */}
-      <section style={{
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
-        textAlign: 'center', padding: '80px 20px 60px',
-      }}>
-        <div className="animate-in" style={{
-          display: 'inline-flex', alignItems: 'center', gap: 8,
-          background: surfaceH, borderRadius: 100, padding: '6px 16px',
-          marginBottom: 24, fontSize: 13, color: accent, fontWeight: 600,
-        }}>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: success }}></span>
-          Treino inteligente baseado em ciência
-        </div>
+        <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <X /> : <Menu />}
+        </button>
+      </div>
 
-        <h1 className="animate-in delay-1" style={{
-          fontSize: 'clamp(36px, 6vw, 64px)', fontWeight: 800, lineHeight: 1.1,
-          maxWidth: 700, color: textP, marginBottom: 20,
-        }}>
-          Seu treino com{' '}
-          <span style={{
-            background: `linear-gradient(135deg, ${accent}, #6366F1)`,
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-          }}>
-            periodização DUP
-          </span>
-        </h1>
-
-        <p className="animate-in delay-2" style={{
-          fontSize: 18, color: textS, maxWidth: 560, marginBottom: 40, lineHeight: 1.6,
-        }}>
-          Prescrição automática que alterna força, hipertrofia e resistência.
-          Rotação inteligente de exercícios. Progressão real por RIR.
-          Tudo baseado em Schoenfeld, Israetel e Bompa.
-        </p>
-
-        <div className="animate-in delay-3" style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <a href="#download" style={{
-            background: accent, color: 'white', padding: '14px 32px',
-            borderRadius: 12, textDecoration: 'none', fontWeight: 700, fontSize: 16,
-            boxShadow: `0 0 30px ${accent}40`,
-          }}>
-            Baixar APK Grátis
-          </a>
-          <a href="#features" style={{
-            background: surface, color: textP, padding: '14px 32px',
-            borderRadius: 12, textDecoration: 'none', fontWeight: 600, fontSize: 16,
-            border: `1px solid ${surfaceH}`,
-          }}>
-            Ver Recursos
-          </a>
-        </div>
-
-        {/* Stats */}
-        <div className="animate-in delay-4" style={{
-          display: 'flex', gap: 48, marginTop: 60, flexWrap: 'wrap', justifyContent: 'center',
-        }}>
-          <Stat num="80+" label="Exercícios" />
-          <Stat num="6" label="Divisões" />
-          <Stat num="DUP" label="Periodização" />
-          <Stat num="RIR" label="Progressão" />
-        </div>
-      </section>
-
-      {/* FEATURES */}
-      <section id="features" style={{ padding: '60px 20px', maxWidth: 1200, margin: '0 auto' }}>
-        <h2 className="animate-in" style={{
-          textAlign: 'center', fontSize: 36, fontWeight: 800,
-          marginBottom: 12, color: textP,
-        }}>
-          Recursos que fazem diferença
-        </h2>
-        <p className="animate-in delay-1" style={{
-          textAlign: 'center', color: textS, marginBottom: 48, fontSize: 16, maxWidth: 500, margin: '0 auto 48px',
-        }}>
-          Não é só um timer de treino. É um sistema completo de prescrição e progressão.
-        </p>
-
-        <div style={{
-          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: 20,
-        }}>
-          <FeatureCard
-            icon="🎯"
-            title="Prescrição Inteligente"
-            desc="Motor DUP: alterna sessões de força (4×6), hipertrofia (3×10) e resistência (2×15) automaticamente baseado no seu nível e objetivo."
-          />
-          <FeatureCard
-            icon="📈"
-            title="Progressão por RIR"
-            desc="Baseado em Schoenfeld 2021: aumento de carga quando RIR ≥ 3, consolidar quando 1-2, reduzir 10% quando falha por 2 sessões."
-          />
-          <FeatureCard
-            icon="🔄"
-            title="Rotação Semanal"
-            desc="1-2 exercícios trocados por semana para estimular ângulos diferentes. Não troca favoritos. Evita platô de adaptação."
-          />
-          <FeatureCard
-            icon="🛡️"
-            title="Controle de Fadiga"
-            desc="Acumulador de fadiga multiarticular: previne sobrecarga lombar, ombros e joelhos durante montagem da sessão."
-          />
-          <FeatureCard
-            icon="🏥"
-            title="Reabilitação"
-            desc="Filtro de lesões: remove exercícios agravantes e injeta bloco de reabilitação para ombro, joelho, lombar, punho e cotovelo."
-          />
-          <FeatureCard
-            icon="📊"
-            title="Analytics Avançado"
-            desc="Gráficos de volume por músculo, progressão de carga, histórico de sessões e detecção automática de recordes pessoais."
-          />
-        </div>
-      </section>
-
-      {/* SCIENCE SECTION */}
-      <section id="science" style={{
-        padding: '60px 20px', maxWidth: 1200, margin: '0 auto',
-        borderTop: `1px solid ${surfaceH}`,
-      }}>
-        <h2 className="animate-in" style={{
-          textAlign: 'center', fontSize: 36, fontWeight: 800,
-          marginBottom: 48, color: textP,
-        }}>
-          Baseado em ciência, não em achismo
-        </h2>
-        <div style={{
-          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 24,
-        }}>
-          <RefCard
-            tag="Volume"
-            title="Israetel — MEV/MAV/MRV"
-            desc="Faixas de volume semanal calibradas por nível de experiência e capacidade de recuperação."
-          />
-          <RefCard
-            tag="Progressão"
-            title="Schoenfeld 2021 — IUSCA"
-            desc="Variação de posição alongada vs encurtada, rotação de exercícios e tabela de decisão por RIR."
-          />
-          <RefCard
-            tag="Periodização"
-            title="Bompa 2015 — Periodization"
-            desc="Estrutura de mesociclos com fases de acumulação, intensificação, pico e deload."
-          />
-          <RefCard
-            tag="Lesões"
-            title="Murer 2019 / Doral 2012"
-            desc="Regras de proporção push:pull, limite de isoladores para iniciantes e adaptações por restrição."
-          />
-        </div>
-      </section>
-
-      {/* DOWNLOAD */}
-      <section id="download" style={{
-        padding: '80px 20px', textAlign: 'center',
-        borderTop: `1px solid ${surfaceH}`,
-      }}>
-        <div className="animate-in">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="2" style={{ marginBottom: 24 }}>
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
-        <h2 className="animate-in delay-1" style={{
-          fontSize: 36, fontWeight: 800, marginBottom: 12, color: textP,
-        }}>
-          Baixe o app
-        </h2>
-        <p className="animate-in delay-2" style={{
-          color: textS, fontSize: 16, maxWidth: 450, margin: '0 auto 32px',
-        }}>
-          Android APK — instalação direta, sem loja de aplicativos.
-        </p>
-        <div className="animate-in delay-3" style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
-          <a
-            href="/download/apk"
-            download
-            style={{
-              background: accent, color: 'white', padding: '14px 32px',
-              borderRadius: 12, textDecoration: 'none', fontWeight: 700, fontSize: 16,
-              boxShadow: `0 0 30px ${accent}40`,
-            }}
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden absolute top-24 left-6 right-6 p-8 glass rounded-3xl border-white/5 flex flex-col gap-6 text-center"
           >
-            Download APK (v1.0.0)
-          </a>
-          <a
-            href="/treino/index.html"
-            style={{
-              background: surface, color: textP, padding: '14px 32px',
-              borderRadius: 12, textDecoration: 'none', fontWeight: 600, fontSize: 16,
-              border: `1px solid ${surfaceH}`,
-            }}
-          >
-            Usar no Navegador
-          </a>
+            <a href="#features" className="text-xl font-bold" onClick={() => setIsOpen(false)}>Recursos</a>
+            <a href="#science" className="text-xl font-bold" onClick={() => setIsOpen(false)}>Ciência</a>
+            <a href="#download" className="text-xl font-bold" onClick={() => setIsOpen(false)}>Download</a>
+            <Link href="/treino/index.html" className="py-4 bg-neon text-black font-black rounded-2xl">
+              ENTRAR
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+}
+
+function NavLink({ href, children }: { href: string, children: React.ReactNode }) {
+  return (
+    <a href={href} className="text-sm font-bold text-neutral-400 hover:text-neon transition-colors">
+      {children}
+    </a>
+  );
+}
+
+function BentoCard({ className, icon, title, desc }: { className: string, icon: React.ReactNode, title: string, desc: string }) {
+  return (
+    <motion.div 
+      whileHover={{ scale: 0.985 }}
+      transition={{ duration: 0.2 }}
+      className={`rounded-[32px] cursor-pointer group relative ${className}`}
+    >
+      <div className="relative z-10">
+        <div className="group-hover:scale-110 transition-transform duration-500 origin-left">
+          {icon}
         </div>
-        <p className="animate-in delay-4" style={{
-          color: textS, fontSize: 13, marginTop: 16,
-        }}>
-          Requer Android 9+. Permissão "fontes desconhecidas" pode ser necessária.
-        </p>
-      </section>
-
-      {/* FOOTER */}
-      <footer style={{
-        padding: '24px 20px', borderTop: `1px solid ${surfaceH}`,
-        textAlign: 'center', color: textS, fontSize: 13,
-      }}>
-        Controle de Carga — App de treino inteligente. Feito com ciência e dedicação.
-      </footer>
-    </main>
+        <h3 className="text-2xl font-black mb-2 tracking-tight">{title}</h3>
+        <p className="text-sm opacity-60 leading-relaxed">{desc}</p>
+      </div>
+      {/* Gloss Effect */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-[32px]" />
+    </motion.div>
   );
 }
 
-function Stat({ num, label }: { num: string; label: string }) {
+function StatItem({ num, label }: { num: string, label: string }) {
   return (
-    <div style={{ textAlign: 'center' }}>
-      <div style={{ fontSize: 32, fontWeight: 800, color: accent }}>{num}</div>
-      <div style={{ color: textS, fontSize: 14, marginTop: 4 }}>{label}</div>
+    <div className="text-center group">
+      <div className="text-4xl md:text-5xl font-black text-white group-hover:text-neon transition-colors mb-2 tracking-tighter italic">
+        {num}
+      </div>
+      <div className="text-xs uppercase font-bold tracking-[3px] text-neutral-500">
+        {label}
+      </div>
     </div>
   );
 }
 
-function FeatureCard({ icon, title, desc }: { icon: string; title: string; desc: string }) {
+function Footer() {
   return (
-    <div className="animate-in" style={{
-      background: surface, borderRadius: 16, padding: 24,
-      border: `1px solid ${surfaceH}`, transition: 'border-color 0.2s',
-    }}>
-      <div style={{ fontSize: 32, marginBottom: 12 }}>{icon}</div>
-      <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8, color: textP }}>{title}</h3>
-      <p style={{ fontSize: 14, color: textS, lineHeight: 1.6 }}>{desc}</p>
-    </div>
-  );
-}
-
-function RefCard({ tag, title, desc }: { tag: string; title: string; desc: string }) {
-  return (
-    <div className="animate-in" style={{
-      background: surfaceH, borderRadius: 14, padding: 20,
-      border: `1px solid #333344`,
-    }}>
-      <span style={{
-        fontSize: 11, fontWeight: 700, color: accent, textTransform: 'uppercase',
-        letterSpacing: 1, marginBottom: 8, display: 'block',
-      }}>{tag}</span>
-      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8, color: textP }}>{title}</h3>
-      <p style={{ fontSize: 13, color: textS, lineHeight: 1.6 }}>{desc}</p>
-    </div>
+    <footer className="py-20 px-4 border-t border-white/5">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+        <div className="text-center md:text-left">
+          <div className="text-2xl font-black tracking-tighter mb-4">TITAN ENGINE</div>
+          <p className="text-neutral-500 max-w-sm">O futuro do treinamento inteligente. Construído por atletas para quem quer resultados reais.</p>
+        </div>
+        <div className="flex gap-12 text-center md:text-right">
+          <div>
+            <div className="font-bold mb-4">SISTEMA</div>
+            <ul className="text-sm text-neutral-500 space-y-2">
+              <li>App Treino</li>
+              <li>Nutrição Inteligente</li>
+              <li>Gêmeo Digital</li>
+            </ul>
+          </div>
+          <div>
+            <div className="font-bold mb-4">SCIENCE</div>
+            <ul className="text-sm text-neutral-500 space-y-2">
+              <li>Periodização DUP</li>
+              <li>Schoenfeld Lab</li>
+              <li>Bio-Adaptation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="mt-20 text-center text-[10px] text-neutral-800 uppercase tracking-widest font-black">
+        © 2026 TITAN ENGINE / CONTROLE DE CARGA — TRANSFORMING DATA INTO MUSCLE.
+      </div>
+    </footer>
   );
 }
