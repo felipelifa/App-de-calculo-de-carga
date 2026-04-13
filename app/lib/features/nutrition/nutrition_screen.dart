@@ -124,7 +124,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                   // Header - Gráfico de Calorias com Suporte a Overides
                   GestureDetector(
                     onTap: () => _showManualOverrideDialog(context, provider),
-                    child: _buildCalorieDonut(chartData, target, consumed, remaining, provider),
+                    child: _buildCalorieDonut(chartData, target, consumed.toInt(), remaining.toInt(), provider),
                   ),
 
                   const SizedBox(height: 16),

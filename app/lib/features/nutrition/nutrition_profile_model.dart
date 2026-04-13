@@ -1,43 +1,50 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class DailyNutritionalGoal {
   final int calories;
   final double protein;
   final double carb;
   final double fat;
-  final String label; // 'High Demand', 'Rest', 'Normal'
-  final bool isManual; // Se o usuário editou este dia manualmente
+  final String label;
+  final bool isManual;
 
   const DailyNutritionalGoal({
     required this.calories,
     required this.protein,
     required this.carb,
     required this.fat,
-    this.label = 'Normal',
+    this.label = '',
     this.isManual = false,
   });
 
   factory DailyNutritionalGoal.fromMap(Map<String, dynamic> map) {
     return DailyNutritionalGoal(
       calories: (map['calories'] as num?)?.toInt() ?? 2000,
-      protein: (map['protein'] as num?)?.toDouble() ?? 150.0,
-      carb: (map['carb'] as num?)?.toDouble() ?? 200.0,
-      fat: (map['fat'] as num?)?.toDouble() ?? 66.0,
-      label: map['label'] as String? ?? 'Normal',
+      protein: (map['protein'] as num?)?.toDouble() ?? 150,
+      carb: (map['carb'] as num?)?.toDouble() ?? 200,
+      fat: (map['fat'] as num?)?.toDouble() ?? 66,
+      label: map['label'] as String? ?? '',
       isManual: map['isManual'] as bool? ?? false,
     );
   }
 
-  Map<String, dynamic> toMap() => {
-    'calories': calories,
-    'protein': protein,
-    'carb': carb,
-    'fat': fat,
-    'label': label,
-    'isManual': isManual,
-  };
+  Map<String, dynamic> toMap() {
+    return {
+      'calories': calories,
+      'protein': protein,
+      'carb': carb,
+      'fat': fat,
+      'label': label,
+      'isManual': isManual,
+    };
+  }
 
-  DailyNutritionalGoal copyWith({int? calories, double? protein, double? carb, double? fat, String? label, bool? isManual}) {
+  DailyNutritionalGoal copyWith({
+    int? calories,
+    double? protein,
+    double? carb,
+    double? fat,
+    String? label,
+    bool? isManual,
+  }) {
     return DailyNutritionalGoal(
       calories: calories ?? this.calories,
       protein: protein ?? this.protein,
@@ -50,30 +57,29 @@ class DailyNutritionalGoal {
 }
 
 class NutritionProfile {
+  final String id;
+  final String goal; // 'loss', 'gain', 'maintenance'
   final int targetCalories;
   final double targetProtein;
   final double targetCarb;
   final double targetFat;
   final int tmb;
   final int tdee;
-  final String macroMode; // 'automatic', 'percentage', 'grams'
-  final bool dynamicAdaptationEnabled; // Ativa a Bio-Gestão adaptativa
-  final bool carbCyclingEnabled; // Se ativa ciclagem de carbos
-  final Map<int, int> dailyWater; // 1-7 dia da semana -> ml consumidos
-  
-  // -- Gestão Energética Semanal --
+  final String macroMode;
+  final bool dynamicAdaptationEnabled;
+  final bool carbCyclingEnabled;
+  final bool useDailyGoals;
+  final Map<int, DailyNutritionalGoal> dailySpecificGoals;
   final int weeklyBudgetKcal;
-  final String compensationStrategy; // 'automatic', 'linear', 'none'
-  final Map<int, DailyNutritionalGoal> weeklyGoals; // 1 (Segunda) a 7 (Domingo)
-  
-  // -- Monitoramento de Evolução --
-  final double adherenceScore; // 0.0 a 1.0
-  final int nutritionalFatigueLevel; // 0 (Descansado) a 10 (Exausto)
-  final double lastWeightKg;
-  
-  final DateTime calculatedAt;
+  final String compensationStrategy;
+  final Map<int, DailyNutritionalGoal> weeklyGoals;
+  final Map<int, int> dailyWater;
+  final double adherenceScore;
+  final int nutritionalFatigueLevel;
 
   NutritionProfile({
+    required this.id,
+    required this.goal,
     required this.targetCalories,
     required this.targetProtein,
     required this.targetCarb,
@@ -81,50 +87,54 @@ class NutritionProfile {
     required this.tmb,
     required this.tdee,
     this.macroMode = 'automatic',
-    this.dynamicAdaptationEnabled = false,
+    this.dynamicAdaptationEnabled = true,
+    this.useDailyGoals = false,
+    this.dailySpecificGoals = const {},
     this.carbCyclingEnabled = false,
     this.weeklyBudgetKcal = 0,
     this.compensationStrategy = 'automatic',
     this.weeklyGoals = const {},
+    this.dailyWater = const {},
     this.adherenceScore = 1.0,
     this.nutritionalFatigueLevel = 0,
-    this.lastWeightKg = 0,
-    this.dailyWater = const {},
-    DateTime? calculatedAt,
-  }) : calculatedAt = calculatedAt ?? DateTime.now();
+  });
 
-  factory NutritionProfile.fromMap(Map<String, dynamic>? map) {
-    if (map == null) return NutritionProfile(targetCalories: 2000, targetProtein: 150, targetCarb: 200, targetFat: 66, tmb: 1600, tdee: 2000);
-    
+  factory NutritionProfile.fromMap(Map<String, dynamic> map, String id) {
     final goalsRaw = map['weeklyGoals'] as Map<String, dynamic>? ?? {};
     final goals = goalsRaw.map((key, value) => MapEntry(int.parse(key), DailyNutritionalGoal.fromMap(value as Map<String, dynamic>)));
+
+    final specRaw = map['dailySpecificGoals'] as Map<String, dynamic>? ?? {};
+    final specGoals = specRaw.map((key, value) => MapEntry(int.parse(key), DailyNutritionalGoal.fromMap(value as Map<String, dynamic>)));
 
     final waterRaw = map['dailyWater'] as Map<String, dynamic>? ?? {};
     final dailyWater = waterRaw.map((key, value) => MapEntry(int.parse(key), value as int));
 
     return NutritionProfile(
+      id: id,
+      goal: map['goal'] ?? 'maintenance',
       targetCalories: (map['targetCalories'] as num?)?.toInt() ?? 2000,
-      targetProtein: (map['targetProtein'] as num?)?.toDouble() ?? 150.0,
-      targetCarb: (map['targetCarb'] as num?)?.toDouble() ?? 200.0,
-      targetFat: (map['targetFat'] as num?)?.toDouble() ?? 66.0,
+      targetProtein: (map['targetProtein'] as num?)?.toDouble() ?? 150,
+      targetCarb: (map['targetCarb'] as num?)?.toDouble() ?? 200,
+      targetFat: (map['targetFat'] as num?)?.toDouble() ?? 66,
       tmb: (map['tmb'] as num?)?.toInt() ?? 1600,
       tdee: (map['tdee'] as num?)?.toInt() ?? 2000,
       macroMode: map['macroMode'] as String? ?? 'automatic',
-      dynamicAdaptationEnabled: map['dynamicAdaptationEnabled'] as bool? ?? false,
+      dynamicAdaptationEnabled: map['dynamicAdaptationEnabled'] as bool? ?? true,
+      useDailyGoals: map['useDailyGoals'] as bool? ?? false,
+      dailySpecificGoals: specGoals,
       carbCyclingEnabled: map['carbCyclingEnabled'] as bool? ?? false,
       weeklyBudgetKcal: (map['weeklyBudgetKcal'] as num?)?.toInt() ?? 14000,
       compensationStrategy: map['compensationStrategy'] as String? ?? 'automatic',
       weeklyGoals: goals,
-      adherenceScore: (map['adherenceScore'] as num?)?.toDouble() ?? 1.0,
-      nutritionalFatigueLevel: (map['nutritionalFatigueLevel'] as num?)?.toInt() ?? 0,
-      lastWeightKg: (map['lastWeightKg'] as num?)?.toDouble() ?? 0,
       dailyWater: dailyWater,
-      calculatedAt: map['calculatedAt'] != null ? (map['calculatedAt'] is Timestamp ? (map['calculatedAt'] as Timestamp).toDate() : DateTime.fromMillisecondsSinceEpoch(map['calculatedAt'])) : DateTime.now(),
+      adherenceScore: (map['adherenceScore'] as num?)?.toDouble() ?? 1.0,
+      nutritionalFatigueLevel: map['nutritionalFatigueLevel'] as int? ?? 0,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'goal': goal,
       'targetCalories': targetCalories,
       'targetProtein': targetProtein,
       'targetCarb': targetCarb,
@@ -133,19 +143,20 @@ class NutritionProfile {
       'tdee': tdee,
       'macroMode': macroMode,
       'dynamicAdaptationEnabled': dynamicAdaptationEnabled,
+      'useDailyGoals': useDailyGoals,
+      'dailySpecificGoals': dailySpecificGoals.map((key, value) => MapEntry(key.toString(), value.toMap())),
       'carbCyclingEnabled': carbCyclingEnabled,
       'weeklyBudgetKcal': weeklyBudgetKcal,
       'compensationStrategy': compensationStrategy,
       'weeklyGoals': weeklyGoals.map((key, value) => MapEntry(key.toString(), value.toMap())),
+      'dailyWater': dailyWater.map((key, value) => MapEntry(key.toString(), value)),
       'adherenceScore': adherenceScore,
       'nutritionalFatigueLevel': nutritionalFatigueLevel,
-      'lastWeightKg': lastWeightKg,
-      'dailyWater': dailyWater.map((key, value) => MapEntry(key.toString(), value)),
-      'calculatedAt': calculatedAt.millisecondsSinceEpoch,
     };
   }
 
   NutritionProfile copyWith({
+    String? goal,
     int? targetCalories,
     double? targetProtein,
     double? targetCarb,
@@ -154,17 +165,19 @@ class NutritionProfile {
     int? tdee,
     String? macroMode,
     bool? dynamicAdaptationEnabled,
+    bool? useDailyGoals,
+    Map<int, DailyNutritionalGoal>? dailySpecificGoals,
     bool? carbCyclingEnabled,
     int? weeklyBudgetKcal,
     String? compensationStrategy,
     Map<int, DailyNutritionalGoal>? weeklyGoals,
+    Map<int, int>? dailyWater,
     double? adherenceScore,
     int? nutritionalFatigueLevel,
-    double? lastWeightKg,
-    Map<int, int>? dailyWater,
-    DateTime? calculatedAt,
   }) {
     return NutritionProfile(
+      id: this.id,
+      goal: goal ?? this.goal,
       targetCalories: targetCalories ?? this.targetCalories,
       targetProtein: targetProtein ?? this.targetProtein,
       targetCarb: targetCarb ?? this.targetCarb,
@@ -173,16 +186,15 @@ class NutritionProfile {
       tdee: tdee ?? this.tdee,
       macroMode: macroMode ?? this.macroMode,
       dynamicAdaptationEnabled: dynamicAdaptationEnabled ?? this.dynamicAdaptationEnabled,
+      useDailyGoals: useDailyGoals ?? this.useDailyGoals,
+      dailySpecificGoals: dailySpecificGoals ?? this.dailySpecificGoals,
       carbCyclingEnabled: carbCyclingEnabled ?? this.carbCyclingEnabled,
       weeklyBudgetKcal: weeklyBudgetKcal ?? this.weeklyBudgetKcal,
       compensationStrategy: compensationStrategy ?? this.compensationStrategy,
       weeklyGoals: weeklyGoals ?? this.weeklyGoals,
+      dailyWater: dailyWater ?? this.dailyWater,
       adherenceScore: adherenceScore ?? this.adherenceScore,
       nutritionalFatigueLevel: nutritionalFatigueLevel ?? this.nutritionalFatigueLevel,
-      lastWeightKg: lastWeightKg ?? this.lastWeightKg,
-      dailyWater: dailyWater ?? this.dailyWater,
-      calculatedAt: calculatedAt ?? this.calculatedAt,
     );
   }
 }
-

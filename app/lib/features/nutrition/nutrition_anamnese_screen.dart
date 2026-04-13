@@ -5,6 +5,7 @@ import 'nutrition_provider.dart';
 import '../workout/workout_profile_provider.dart';
 import 'nutrition_engine.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class NutritionAnamneseScreen extends StatefulWidget {
   const NutritionAnamneseScreen({super.key});
@@ -45,11 +46,13 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
         return;
       }
 
+      final uid = FirebaseAuth.instance.currentUser?.uid ?? 'anon';
       final provider = context.read<NutritionProvider>();
       
       // Gera o perfil Bio-Gestão 7.0
-      final initialProfile = NutritionEngine.calculateProfile(
+      final initialProfile = NutritionEngine.generateInitialProfile(
         wp,
+        id: uid,
         macroMode: _macroMode,
         dynamicAdaptationEnabled: _dynamicAdaptationEnabled,
         carbCyclingEnabled: _carbCyclingEnabled,

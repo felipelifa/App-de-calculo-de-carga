@@ -118,83 +118,111 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.background,
-      appBar: AppBar(
-        title: const Text('Adicionar Alimento'),
-        backgroundColor: AppTheme.surface,
-        elevation: 0,
-      ),
-      body: Column(
-        children: [
-          Container(
-            color: AppTheme.surface,
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              onChanged: _onSearchChanged,
-              style: const TextStyle(color: AppTheme.textPrimary),
-              decoration: InputDecoration(
-                hintText: 'Buscar alimento (ex: Frango, Arroz)...',
-                hintStyle: const TextStyle(color: AppTheme.textSecondary),
-                prefixIcon: const Icon(Icons.search, color: AppTheme.textSecondary),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.qr_code_scanner, color: AppTheme.accent),
-                  onPressed: _scanBarcode,
-                ),
-                filled: true,
-                fillColor: AppTheme.background,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        backgroundColor: AppTheme.background,
+        appBar: AppBar(
+          title: const Text('Adicionar Alimento'),
+          backgroundColor: AppTheme.surface,
+          elevation: 0,
+          bottom: const TabBar(
+            indicatorColor: AppTheme.accent,
+            labelColor: AppTheme.accent,
+            unselectedLabelColor: AppTheme.textSecondary,
+            tabs: [
+              Tab(text: 'RECENTES'),
+              Tab(text: 'MEUS ITENS'),
+              Tab(text: 'BIBLIOTECA'),
+            ],
+          ),
+        ),
+        body: Column(
+          children: [
+            Container(
+              color: AppTheme.surface,
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _searchController,
+                onChanged: _onSearchChanged,
+                style: const TextStyle(color: AppTheme.textPrimary),
+                decoration: InputDecoration(
+                  hintText: 'Buscar na biblioteca...',
+                  hintStyle: const TextStyle(color: AppTheme.textSecondary),
+                  prefixIcon: const Icon(Icons.search, color: AppTheme.textSecondary),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.qr_code_scanner, color: AppTheme.accent),
+                    onPressed: _scanBarcode,
+                  ),
+                  filled: true,
+                  fillColor: AppTheme.background,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
             ),
-          ),
-          if (_isSearching)
-            const Expanded(child: Center(child: CircularProgressIndicator(color: AppTheme.accent)))
-          else if (_results.isEmpty && _searchController.text.isNotEmpty)
-            const Expanded(
-              child: Center(
-                child: Text('Nenhum alimento encontrado.', style: TextStyle(color: AppTheme.textSecondary)),
-              ),
-            )
-          else
             Expanded(
-              child: ListView(
+              child: TabBarView(
                 children: [
-                   if (_searchController.text.isEmpty) ...[
-                     if (_favoriteFoods.isNotEmpty) ...[
-                       const Padding(
-                         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                         child: Text('FAVORITOS', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
-                       ),
-                       ..._favoriteFoods.map((food) => _buildFoodTile(food)),
-                       const Divider(color: AppTheme.surfaceHighlight),
-                     ],
-                     if (_recentFoods.isNotEmpty) ...[
-                       const Padding(
-                         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                         child: Text('RECENTEMENTE CONSUMIDOS', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
-                       ),
-                       ..._recentFoods.take(5).map((food) => _buildFoodTile(food)),
-                       const Divider(color: AppTheme.surfaceHighlight),
-                     ],
-                     if (_favoriteFoods.isEmpty && _recentFoods.isEmpty)
-                       const Padding(
-                         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                         child: Center(
-                           child: Text('Comece a buscar para registrar seus alimentos.', style: TextStyle(color: AppTheme.textSecondary, fontStyle: FontStyle.italic)),
-                         ),
-                       ),
-                   ],
-                   ..._results.map((food) => _buildFoodTile(food)),
+                  // Tab 1: RECENTES
+                  _recentFoods.isEmpty 
+                    ? _buildEmptyState('Nenhum consumo recente.')
+                    : ListView(children: _recentFoods.map((f) => _buildFoodTile(f)).toList()),
+                  
+                  // Tab 2: MEUS ITENS (Favoritos + Receitas)
+                  ListView(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: ElevatedButton.icon(
+                          onPressed: () => _showCreateRecipeDialog(context),
+                          icon: const Icon(Icons.add_circle_outline),
+                          label: const Text('CRIAR NOVA RECEITA'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.accent.withValues(alpha: 0.1),
+                            foregroundColor: AppTheme.accent,
+                            side: const BorderSide(color: AppTheme.accent),
+                            padding: const EdgeInsets.all(16),
+                          ),
+                        ),
+                      ),
+                      if (_favoriteFoods.isNotEmpty) ...[
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          child: Text('FAVORITOS', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
+                        ),
+                        ..._favoriteFoods.map((f) => _buildFoodTile(f)),
+                      ],
+                      // Aqui poderiam entrar receitas salvas filtradas do NutritionProvider
+                    ],
+                  ),
+
+                  // Tab 3: BIBLIOTECA (Busca)
+                  _isSearching 
+                    ? const Center(child: CircularProgressIndicator(color: AppTheme.accent))
+                    : _results.isEmpty 
+                      ? _buildEmptyState('Busque frango, arroz, etc.')
+                      : ListView(children: _results.map((f) => _buildFoodTile(f)).toList()),
                 ],
               ),
             ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  Widget _buildEmptyState(String msg) {
+    return Center(
+      child: Text(msg, style: const TextStyle(color: AppTheme.textSecondary, fontStyle: FontStyle.italic)),
+    );
+  }
+
+  void _showCreateRecipeDialog(BuildContext context) {
+    // Placeholder para abertura de tela de receita ou diálogo simples
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Módulo de criação de receitas em breve!')));
   }
 
   Widget _buildFoodTile(FoodModel food) {

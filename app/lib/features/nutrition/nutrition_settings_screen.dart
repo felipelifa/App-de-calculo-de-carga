@@ -21,9 +21,10 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
   final TextEditingController _fatController = TextEditingController();
 
   String _macroMode = 'automatic';
-  bool _dynamicAdaptation = false;
+  bool _dynamicAdaptation = true;
   bool _carbCycling = false;
-
+  bool _useDailyGoals = false;
+  Map<int, DailyNutritionalGoal> _dailySpecificGoals = {};
   bool _isLoading = false;
 
   @override
@@ -38,6 +39,8 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
       _macroMode = profile.macroMode;
       _dynamicAdaptation = profile.dynamicAdaptationEnabled;
       _carbCycling = profile.carbCyclingEnabled;
+      _useDailyGoals = profile.useDailyGoals;
+      _dailySpecificGoals = Map.from(profile.dailySpecificGoals);
     }
   }
 
@@ -55,20 +58,12 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
     final current = provider.profile;
 
     if (current == null) return;
-
     setState(() => _isLoading = true);
 
     int newKcal = int.tryParse(_kcalController.text) ?? current.targetCalories;
     double newP = double.tryParse(_proteinController.text) ?? current.targetProtein;
     double newC = double.tryParse(_carbController.text) ?? current.targetCarb;
     double newF = double.tryParse(_fatController.text) ?? current.targetFat;
-
-    // Se continuar no automático, as mudanças manuais de macro não são salvas forçadas 
-    // mas por garantia a gente vai forçar o modo "grams" (manual) se quisermos metas personalizadas fixas.
-    if (_macroMode == 'automatic') {
-      // Automatico recalcula pelo motor quando initFromProfile rodar novamente, 
-      // mas vamos salvar a caloria base e deixar o engine entender da próxima vez, ou apenas forçar o novo macro.
-    }
 
     final updated = current.copyWith(
       targetCalories: newKcal,
@@ -78,13 +73,14 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
       macroMode: _macroMode,
       dynamicAdaptationEnabled: _dynamicAdaptation,
       carbCyclingEnabled: _carbCycling,
+      useDailyGoals: _useDailyGoals,
+      dailySpecificGoals: _dailySpecificGoals,
     );
 
-    // Save bypassing provider just to force immediate write, and reload
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null) {
       await FirebaseFirestore.instance.doc('users/$uid/nutrition/settings').set(updated.toMap(), SetOptions(merge: true));
-      await provider.updateProfile(updated); // We need to add this method in Provider
+      await provider.updateProfile(updated);
     }
 
     if (mounted) {
@@ -101,138 +97,161 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
         title: const Text('Configurações Nutricionais'),
         backgroundColor: AppTheme.surface,
         elevation: 0,
+        actions: [
+          if (_isLoading)
+            const Center(child: Padding(padding: EdgeInsets.only(right: 16), child: CircularProgressIndicator(strokeWidth: 2)))
+          else
+            IconButton(icon: const Icon(Icons.check, color: AppTheme.accent), onPressed: _saveSettings),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Metas Diárias Fixas', style: TextStyle(color: AppTheme.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            _buildTextField('Calorias (kcal)', _kcalController, AppTheme.accent),
-            const SizedBox(height: 12),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(child: _buildTextField('Proteína (g)', _proteinController, AppTheme.accent)),
-                const SizedBox(width: 12),
-                Expanded(child: _buildTextField('Carboidratos (g)', _carbController, AppTheme.success)),
-                const SizedBox(width: 12),
-                Expanded(child: _buildTextField('Gorduras (g)', _fatController, Colors.orange)),
+                const Text('Configuração de Metas', style: TextStyle(color: AppTheme.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
+                Switch(
+                  value: _useDailyGoals,
+                  onChanged: (v) => setState(() => _useDailyGoals = v),
+                  activeColor: AppTheme.accent,
+                ),
               ],
             ),
-            
-            const SizedBox(height: 24),
-            const Text('Modo de Criação de Dieta', style: TextStyle(color: AppTheme.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
-              value: _macroMode,
-              dropdownColor: AppTheme.surfaceHighlight,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: AppTheme.surface,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-              ),
-              items: const [
-                DropdownMenuItem(value: 'automatic', child: Text('Automático (Gêmeo Digital)', style: TextStyle(color: AppTheme.textPrimary))),
-                DropdownMenuItem(value: 'grams', child: Text('Manual (Respeita números acima)', style: TextStyle(color: AppTheme.textPrimary))),
-              ],
-              onChanged: (val) {
-                if (val != null) setState(() => _macroMode = val);
-              },
+            Text(
+              _useDailyGoals ? 'Seletor de Metas Diárias (Personalizado)' : 'Meta Única Fixa (Todos os dias)',
+              style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13),
             ),
+            const SizedBox(height: 20),
+
+            if (_useDailyGoals)
+              _buildDailySelector()
+            else
+              _buildFixedMetaInputs(),
 
             const SizedBox(height: 32),
-            const Text('Estratégias Avançadas (Adaptativas)', style: TextStyle(color: AppTheme.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text('Comportamento', style: TextStyle(color: AppTheme.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
+            _buildSwitch('Adaptação Dinâmica (Bio-Gestão 7.5)', 'Ajusta macros se você sair da meta ontem.', _dynamicAdaptation, (v) => setState(() => _dynamicAdaptation = v)),
+            _buildSwitch('Ciclo de Carboidratos', 'Alterna entre metas altas e baixas de carbo automaticamente.', _carbCycling, (v) => setState(() => _carbCycling = v)),
             
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Row(
-                children: [
-                  const Text('Sensibilidade de Treino (Motor Digital)', style: TextStyle(color: AppTheme.textPrimary)),
-                  const SizedBox(width: 8),
-                  Tooltip(
-                    message: 'Adiciona ~10% das kcal na Meta do Dia baseando-se no volume/duração do treino recém-concluído.',
-                    preferBelow: false,
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Icon(Icons.info_outline, color: AppTheme.accent.withOpacity(0.7), size: 16),
-                  ),
-                ],
-              ),
-              subtitle: const Text('Aumenta calorias automaticamente de acordo com o treino diário para regeneração celular.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
-              value: _dynamicAdaptation,
-              activeColor: AppTheme.accent,
-              onChanged: (val) => setState(() => _dynamicAdaptation = val),
-            ),
-            
-            const Divider(color: Colors.white12),
-
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Row(
-                children: [
-                  const Text('Ciclagem de Carboidratos', style: TextStyle(color: AppTheme.textPrimary)),
-                  const SizedBox(width: 8),
-                  Tooltip(
-                    message: 'Dias de treino: +10% de calorias puxadas dos Carbos. Dias de descanso: -15% de calorias e carbos. Se as duas estratégias estiverem ligadas, esta dita a divisão inicial da semana, e a Sensibilidade bonifica o Custo do Treino no dia.',
-                    preferBelow: false,
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Icon(Icons.info_outline, color: AppTheme.accent.withOpacity(0.7), size: 16),
-                  ),
-                ],
-              ),
-              subtitle: const Text('Aumenta os carboidratos em dias de treino e os reduz em dias de descanso.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
-              value: _carbCycling,
-              activeColor: AppTheme.accent,
-              onChanged: (val) => setState(() => _carbCycling = val),
-            ),
-
             const SizedBox(height: 48),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _isLoading ? null : _saveSettings,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.accent,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                child: _isLoading 
-                    ? const CircularProgressIndicator(color: Colors.white) 
-                    : const Text('SALVAR CONFIGURAÇÕES', style: TextStyle(fontWeight: FontWeight.bold)),
-              ),
-            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller, Color stripColor) {
+  Widget _buildFixedMetaInputs() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
-        const SizedBox(height: 6),
-        TextField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          style: const TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.bold),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.surface,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: stripColor.withValues(alpha: 0.3)),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: stripColor),
-            ),
-          ),
+        _buildTextField('Calorias Base (kcal)', _kcalController, AppTheme.accent),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(child: _buildTextField('Prot (g)', _proteinController, AppTheme.accent)),
+            const SizedBox(width: 8),
+            Expanded(child: _buildTextField('Carb (g)', _carbController, AppTheme.success)),
+            const SizedBox(width: 8),
+            Expanded(child: _buildTextField('Gord (g)', _fatController, Colors.orange)),
+          ],
         ),
       ],
+    );
+  }
+
+  Widget _buildDailySelector() {
+    final days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+    return Column(
+      children: List.generate(7, (i) {
+        final weekday = i + 1;
+        final goal = _dailySpecificGoals[weekday] ?? const DailyNutritionalGoal(calories: 2000, protein: 150, carb: 200, fat: 66);
+        
+        return Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppTheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppTheme.accent.withValues(alpha: 0.1)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(days[i], style: const TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold, fontSize: 14)),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(child: _buildMiniField('kcal', goal.calories.toString(), (v) => _updateGoal(weekday, calories: int.tryParse(v)))),
+                  const SizedBox(width: 8),
+                  Expanded(child: _buildMiniField('P', goal.protein.round().toString(), (v) => _updateGoal(weekday, protein: double.tryParse(v)))),
+                  const SizedBox(width: 8),
+                  Expanded(child: _buildMiniField('C', goal.carb.round().toString(), (v) => _updateGoal(weekday, carb: double.tryParse(v)))),
+                  const SizedBox(width: 8),
+                  Expanded(child: _buildMiniField('G', goal.fat.round().toString(), (v) => _updateGoal(weekday, fat: double.tryParse(v)))),
+                ],
+              ),
+            ],
+          ),
+        );
+      }),
+    );
+  }
+
+  void _updateGoal(int weekday, {int? calories, double? protein, double? carb, double? fat}) {
+    final current = _dailySpecificGoals[weekday] ?? const DailyNutritionalGoal(calories: 2000, protein: 150, carb: 200, fat: 66);
+    setState(() {
+      _dailySpecificGoals[weekday] = current.copyWith(
+        calories: calories ?? current.calories,
+        protein: protein ?? current.protein,
+        carb: carb ?? current.carb,
+        fat: fat ?? current.fat,
+      );
+    });
+  }
+
+  Widget _buildMiniField(String label, String initial, Function(String) onChanged) {
+    return TextFormField(
+      initialValue: initial,
+      keyboardType: TextInputType.number,
+      onChanged: onChanged,
+      style: const TextStyle(color: AppTheme.textPrimary, fontSize: 13, fontWeight: FontWeight.bold),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: AppTheme.textSecondary, fontSize: 10),
+        isDense: true,
+        filled: true,
+        fillColor: AppTheme.background,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+      ),
+    );
+  }
+
+  Widget _buildTextField(String label, TextEditingController controller, Color color) {
+    return TextField(
+      controller: controller,
+      keyboardType: TextInputType.number,
+      style: const TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.bold),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: color, fontSize: 12),
+        filled: true,
+        fillColor: AppTheme.surface,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+      ),
+    );
+  }
+
+  Widget _buildSwitch(String title, String subtitle, bool value, Function(bool) onChanged) {
+    return SwitchListTile(
+      value: value,
+      onChanged: onChanged,
+      title: Text(title, style: const TextStyle(color: AppTheme.textPrimary, fontSize: 14)),
+      subtitle: Text(subtitle, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11)),
+      contentPadding: EdgeInsets.zero,
+      activeColor: AppTheme.accent,
     );
   }
 }
