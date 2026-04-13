@@ -126,7 +126,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
               centerTitle: false,
               titlePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               title: Text(
-                'Bio-Management',
+                'Bio-Gestão',
                 style: GoogleFonts.outfit(
                   color: AppTheme.textPrimary,
                   fontSize: 24,
@@ -608,7 +608,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppTheme.surface,
-        title: const Text('Meta Manual (Manual Override)', style: TextStyle(color: AppTheme.textPrimary)),
+        title: const Text('Meta Manual', style: TextStyle(color: AppTheme.textPrimary)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -753,7 +753,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Gêmeo Digital Insights', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.bold, fontSize: 13)),
+                const Text('Insights do Gêmeo Digital', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.bold, fontSize: 13)),
                 const SizedBox(height: 4),
                 Text(
                   provider.smartInsight,

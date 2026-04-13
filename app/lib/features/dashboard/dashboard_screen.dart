@@ -498,7 +498,7 @@ class _StatsSection extends StatelessWidget {
             Expanded(
               child: _SmallStat(
                 icon: Icons.calendar_today_rounded,
-                label: 'SESSIONS',
+                label: 'SESSÕES',
                 value: '${data.weekSessions}',
                 color: AppTheme.accentBlue,
               ).animate().fadeIn(delay: 400.ms).slideX(begin: -0.1),
@@ -507,7 +507,7 @@ class _StatsSection extends StatelessWidget {
             Expanded(
               child: _SmallStat(
                 icon: Icons.emoji_events_rounded,
-                label: 'RECORDS',
+                label: 'RECORDE',
                 value: '${data.totalSessions}',
                 color: AppTheme.accentOrange,
               ).animate().fadeIn(delay: 500.ms).slideX(begin: 0.1),
