@@ -198,17 +198,29 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
   }
 
   Widget _buildFoodTile(FoodModel food) {
+    final provider = context.watch<NutritionProvider>();
+    final isFav = provider.isFoodFavorite(food.id);
+    
     return ListTile(
       title: Row(
         children: [
           Expanded(child: Text(food.name, style: const TextStyle(color: AppTheme.textPrimary))),
           if (food.isVerified)
-            const Icon(Icons.verified, color: AppTheme.accent, size: 16),
+            const Padding(
+              padding: EdgeInsets.only(left: 4),
+              child: Icon(Icons.verified, color: AppTheme.accent, size: 16),
+            ),
         ],
       ),
       subtitle: Text(
         '${food.caloriesPer100g.round()} kcal / 100g' + (food.brand.isNotEmpty ? ' • ${food.brand}' : ''),
         style: const TextStyle(color: AppTheme.textSecondary),
+      ),
+      trailing: IconButton(
+        icon: Icon(isFav ? Icons.favorite : Icons.favorite_border, color: isFav ? Colors.redAccent : AppTheme.textSecondary, size: 20),
+        onPressed: () {
+          provider.toggleFavoriteFood(food);
+        },
       ),
       onTap: () => _openPortionSelector(context, food),
     );

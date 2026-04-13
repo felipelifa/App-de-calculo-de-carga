@@ -59,6 +59,7 @@ class NutritionProfile {
   final String macroMode; // 'automatic', 'percentage', 'grams'
   final bool dynamicAdaptationEnabled; // Ativa a Bio-Gestão adaptativa
   final bool carbCyclingEnabled; // Se ativa ciclagem de carbos
+  final Map<int, int> dailyWater; // 1-7 dia da semana -> ml consumidos
   
   // -- Gestão Energética Semanal --
   final int weeklyBudgetKcal;
@@ -88,6 +89,7 @@ class NutritionProfile {
     this.adherenceScore = 1.0,
     this.nutritionalFatigueLevel = 0,
     this.lastWeightKg = 0,
+    this.dailyWater = const {},
     DateTime? calculatedAt,
   }) : calculatedAt = calculatedAt ?? DateTime.now();
 
@@ -96,6 +98,9 @@ class NutritionProfile {
     
     final goalsRaw = map['weeklyGoals'] as Map<String, dynamic>? ?? {};
     final goals = goalsRaw.map((key, value) => MapEntry(int.parse(key), DailyNutritionalGoal.fromMap(value as Map<String, dynamic>)));
+
+    final waterRaw = map['dailyWater'] as Map<String, dynamic>? ?? {};
+    final dailyWater = waterRaw.map((key, value) => MapEntry(int.parse(key), value as int));
 
     return NutritionProfile(
       targetCalories: (map['targetCalories'] as num?)?.toInt() ?? 2000,
@@ -113,6 +118,7 @@ class NutritionProfile {
       adherenceScore: (map['adherenceScore'] as num?)?.toDouble() ?? 1.0,
       nutritionalFatigueLevel: (map['nutritionalFatigueLevel'] as num?)?.toInt() ?? 0,
       lastWeightKg: (map['lastWeightKg'] as num?)?.toDouble() ?? 0,
+      dailyWater: dailyWater,
       calculatedAt: map['calculatedAt'] != null ? (map['calculatedAt'] is Timestamp ? (map['calculatedAt'] as Timestamp).toDate() : DateTime.fromMillisecondsSinceEpoch(map['calculatedAt'])) : DateTime.now(),
     );
   }
@@ -134,6 +140,7 @@ class NutritionProfile {
       'adherenceScore': adherenceScore,
       'nutritionalFatigueLevel': nutritionalFatigueLevel,
       'lastWeightKg': lastWeightKg,
+      'dailyWater': dailyWater.map((key, value) => MapEntry(key.toString(), value)),
       'calculatedAt': calculatedAt.millisecondsSinceEpoch,
     };
   }
@@ -154,6 +161,7 @@ class NutritionProfile {
     double? adherenceScore,
     int? nutritionalFatigueLevel,
     double? lastWeightKg,
+    Map<int, int>? dailyWater,
     DateTime? calculatedAt,
   }) {
     return NutritionProfile(
@@ -172,6 +180,7 @@ class NutritionProfile {
       adherenceScore: adherenceScore ?? this.adherenceScore,
       nutritionalFatigueLevel: nutritionalFatigueLevel ?? this.nutritionalFatigueLevel,
       lastWeightKg: lastWeightKg ?? this.lastWeightKg,
+      dailyWater: dailyWater ?? this.dailyWater,
       calculatedAt: calculatedAt ?? this.calculatedAt,
     );
   }

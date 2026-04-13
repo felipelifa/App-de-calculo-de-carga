@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../workout/workout_profile_model.dart';
 import 'nutrition_profile_model.dart';
 import 'meal_model.dart';
+import 'food_model.dart';
 import 'nutrition_engine.dart';
 
 class NutritionProvider extends ChangeNotifier {
@@ -93,6 +94,32 @@ class NutritionProvider extends ChangeNotifier {
   // --- Atributos de Monitoramento ---
   double get adherenceScore => _profile?.adherenceScore ?? 1.0;
   int get fatigueLevel => _profile?.nutritionalFatigueLevel ?? 0;
+
+  // --- Hidratação Inteligente ---
+  int get waterTarget => 2500; // Valor padrão, pode ser calculado depois
+  int get waterConsumed => _profile?.dailyWater[DateTime.now().weekday] ?? 0;
+
+  String get smartInsight {
+    if (_profile == null) return "Configure seu perfil para receber orientações.";
+    final goal = _profile!.weeklyGoals[_selectedWeekday];
+    if (goal == null) return "Analisando dados do dia...";
+
+    if (goal.isManual) return "Dia com meta manual definida por você. Bio-Gestão parcial.";
+    
+    if (goal.label.contains('TMB')) {
+      return "Meta travada no seu metabolismo basal (TMB) por segurança. Evite mais cortes.";
+    }
+    
+    if (targetCalories > _profile!.targetCalories) {
+      return "Sua meta está aumentada hoje (+${targetCalories - _profile!.targetCalories}kcal) para compensar treinos ou cortes anteriores.";
+    }
+
+    if (targetCalories < _profile!.targetCalories) {
+      return "Meta reduzida (-${_profile!.targetCalories - targetCalories}kcal) para manter o déficit semanal ou compensar o dia anterior.";
+    }
+
+    return "Você está no caminho certo! Mantenha a meta para atingir seu objetivo.";
+  }
 
   // --- Actions ---
 
@@ -218,6 +245,89 @@ class NutritionProvider extends ChangeNotifier {
     
     _profile = _profile!.copyWith(weeklyGoals: updatedGoals);
     saveSettings();
+    notifyListeners();
+  }
+
+  /// Copia refeições de uma data específica para a data selecionada
+  Future<void> copyMealFromPreviousDay(String mealType) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null || _profile == null) return;
+
+    // Busca o dia anterior (ou selecionado - 1)
+    final now = DateTime.now();
+    final firstDayOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    final prevDate = firstDayOfWeek.add(Duration(days: _selectedWeekday - 2));
+    final prevDateKey = _todayFormat(prevDate);
+    final targetDateKey = _todayFormat(firstDayOfWeek.add(Duration(days: _selectedWeekday - 1)));
+
+    try {
+      final snap = await _db.collection('users/$uid/nutrition/logs/$prevDateKey/meals')
+          .where('mealType', isEqualTo: mealType)
+          .get();
+          
+      if (snap.docs.isEmpty) return;
+
+      final batch = _db.batch();
+      for (var doc in snap.docs) {
+        final newRef = _db.collection('users/$uid/nutrition/logs/$targetDateKey/meals').doc();
+        final data = doc.data();
+        data['id'] = newRef.id;
+        batch.set(newRef, data);
+      }
+
+      await batch.commit();
+      await loadSelectedDay();
+      _triggerRecalibration();
+    } catch (e) {
+      debugPrint('Erro ao copiar refeição: $e');
+    }
+  }
+
+  /// Gerenciamento de Alimentos Favoritos
+  Future<void> toggleFavoriteFood(FoodModel food) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+
+    final docRef = _db.collection('users/$uid/nutrition/favorite_foods').doc(food.id);
+    final doc = await docRef.get();
+
+    if (doc.exists) {
+      await docRef.delete();
+    } else {
+      await docRef.set(food.toMap());
+    }
+    _favoriteFoodsIds.remove(food.id);
+    if (!doc.exists) _favoriteFoodsIds.add(food.id);
+    notifyListeners();
+  }
+
+  final Set<String> _favoriteFoodsIds = {};
+  bool isFoodFavorite(String id) => _favoriteFoodsIds.contains(id);
+
+  Future<void> loadFavorites() async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+    final snap = await _db.collection('users/$uid/nutrition/favorite_foods').get();
+    _favoriteFoodsIds.clear();
+    for (var d in snap.docs) {
+      _favoriteFoodsIds.add(d.id);
+    }
+    notifyListeners();
+  }
+
+  /// Adiciona água ao registro diário
+  Future<void> addWater(int ml) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null || _profile == null) return;
+
+    final today = DateTime.now().weekday;
+    final currentWater = _profile!.dailyWater[today] ?? 0;
+    
+    final updatedWater = Map<int, int>.from(_profile!.dailyWater);
+    updatedWater[today] = currentWater + ml;
+
+    _profile = _profile!.copyWith(dailyWater: updatedWater);
+    await saveSettings();
     notifyListeners();
   }
 
