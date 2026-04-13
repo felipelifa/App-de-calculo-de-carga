@@ -52,6 +52,7 @@ class NutritionTimelineWidget extends StatelessWidget {
 
                   return GestureDetector(
                     onTap: () => provider.selectWeekday(weekday),
+                    onLongPress: () => _showAdjustmentSheet(context, provider, weekday, goal),
                     child: _TimelineDayCard(
                       label: dayLabel,
                       goal: goal,
@@ -66,6 +67,109 @@ class NutritionTimelineWidget extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  void _showAdjustmentSheet(BuildContext context, NutritionProvider provider, int weekday, DailyNutritionalGoal goal) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.surface,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (context) => Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Ajustar ${_getWeekdayLabel(weekday)}', style: const TextStyle(color: AppTheme.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text('Meta atual: ${goal.calories} kcal (${goal.label})', style: const TextStyle(color: AppTheme.textSecondary)),
+            const SizedBox(height: 24),
+            _buildOption(
+              context, 
+              icon: Icons.trending_up, 
+              title: 'Dia de Alta Caloria', 
+              subtitle: '+15% calorias (Foco em Carboidratos)',
+              onTap: () {
+                final base = provider.profile?.targetCalories ?? 2000;
+                final newCals = (base * 1.15).round();
+                final newCarb = (newCals - (goal.protein * 4) - (goal.fat * 9)) / 4.0;
+                provider.updateDailyManualGoal(weekday, goal.copyWith(calories: newCals, carb: newCarb, label: 'Alta Caloria'));
+                Navigator.pop(context);
+              },
+            ),
+            _buildOption(
+              context, 
+              icon: Icons.trending_down, 
+              title: 'Dia de Baixa Caloria', 
+              subtitle: '-15% calorias (Déficit Estratégico)',
+              onTap: () {
+                final base = provider.profile?.targetCalories ?? 2000;
+                final newCals = (base * 0.85).round();
+                final newCarb = (newCals - (goal.protein * 4) - (goal.fat * 9)) / 4.0;
+                provider.updateDailyManualGoal(weekday, goal.copyWith(calories: newCals, carb: newCarb, label: 'Baixa Caloria'));
+                Navigator.pop(context);
+              },
+            ),
+            _buildOption(
+              context, 
+              icon: Icons.edit, 
+              title: 'Ajuste Manual', 
+              subtitle: 'Definir valor customizado',
+              onTap: () async {
+                Navigator.pop(context);
+                final val = await _showManualInputDialog(context, goal.calories);
+                if (val != null) {
+                  final newCarb = (val - (goal.protein * 4) - (goal.fat * 9)) / 4.0;
+                  provider.updateDailyManualGoal(weekday, goal.copyWith(calories: val, carb: newCarb, label: 'Personalizado'));
+                }
+              },
+            ),
+            _buildOption(
+              context, 
+              icon: Icons.refresh, 
+              title: 'Resetar para Padrão', 
+              subtitle: 'Voltar ao cálculo automático',
+              onTap: () {
+                provider.resetDailyGoal(weekday);
+                Navigator.pop(context);
+              },
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOption(BuildContext context, {required IconData icon, required String title, required String subtitle, required VoidCallback onTap}) {
+    return ListTile(
+      leading: Icon(icon, color: AppTheme.accent),
+      title: Text(title, style: const TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.bold)),
+      subtitle: Text(subtitle, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+      onTap: onTap,
+    );
+  }
+
+  Future<int?> _showManualInputDialog(BuildContext context, int current) async {
+    int? value;
+    return showDialog<int>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.surface,
+        title: const Text('Calorias Customizadas', style: TextStyle(color: AppTheme.textPrimary)),
+        content: TextField(
+          autofocus: true,
+          keyboardType: TextInputType.number,
+          style: const TextStyle(color: AppTheme.textPrimary),
+          decoration: InputDecoration(hintText: current.toString()),
+          onChanged: (v) => value = int.tryParse(v),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('CANCELAR')),
+          ElevatedButton(onPressed: () => Navigator.pop(context, value), child: const Text('SALVAR')),
+        ],
+      ),
     );
   }
 

@@ -68,62 +68,127 @@ class NutritionService {
   Future<List<FoodModel>> searchFoods(String query) async {
     final queryLower = query.toLowerCase().trim();
     if (queryLower.isEmpty) return [];
+    final normalizedQuery = _normalize(queryLower);
 
     List<FoodModel> results = [];
     final uid = _auth.currentUser?.uid;
 
+    // 1. Search Local Custom Foods (Firestore)
     if (uid != null) {
       try {
         final userSnap = await _db
             .collection('users/$uid/nutrition/custom_foods')
-            .where('name', isGreaterThanOrEqualTo: queryLower)
-            .where('name', isLessThanOrEqualTo: '$queryLower\uf8ff')
-            .limit(5)
-            .get();
-        results.addAll(userSnap.docs.map((d) => FoodModel.fromMap(d.data(), d.id)));
+            .get(); // Get all and filter locally for better normalization
+        results.addAll(userSnap.docs
+            .map((d) => FoodModel.fromMap(d.data(), d.id))
+            .where((f) => _normalize(f.name).contains(normalizedQuery)));
       } catch (_) {}
     }
 
+    // 2. Search TBCA (Brazilian Gold Standard)
+    final tbcaResults = await _getEmergencyStaples(queryLower);
+    for (final food in tbcaResults) {
+      if (!results.any((r) => _normalize(r.name) == _normalize(food.name))) {
+        results.add(food);
+      }
+    }
+
+    // 3. Search Cloud Foods (Firestore)
     try {
       final snap = await _db
           .collection('foods')
-          .where('name', isGreaterThanOrEqualTo: queryLower)
-          .where('name', isLessThanOrEqualTo: '$queryLower\uf8ff')
-          .limit(10)
-          .get();
-      for (final doc in snap.docs) {
-        final f = FoodModel.fromMap(doc.data(), doc.id);
+          .limit(50)
+          .get(); // Ideally we'd have a search index, but for now we filter locally or use prefix
+      final cloudResults = snap.docs
+          .map((d) => FoodModel.fromMap(d.data(), d.id))
+          .where((f) => _normalize(f.name).contains(normalizedQuery));
+      
+      for (final f in cloudResults) {
         if (!results.any((r) => r.id == f.id)) results.add(f);
       }
     } catch (_) {}
 
-    if (results.length < 5) {
-      final staples = await _getEmergencyStaples(queryLower);
-      for (final staple in staples) {
-        if (!results.any((r) => r.name.toLowerCase().contains(staple.name.toLowerCase()))) {
-          results.add(staple);
+    // 4. Search External (Open Food Facts - Recommended for Industrialized)
+    if (results.length < 20) {
+      final offResults = await _searchOpenFoodFacts(queryLower);
+      for (final f in offResults) {
+        if (!results.any((r) => _normalize(r.name) == _normalize(f.name))) {
+          results.add(f);
         }
       }
     }
 
-    if (results.length < 5) {
+    // 5. Search External Fallback (FatSecret)
+    if (results.length < 10) {
       try {
         final fsResults = await _searchFatSecret(queryLower);
         for (final food in fsResults) {
-          if (!results.any((r) => r.name.toLowerCase() == food.name.toLowerCase())) {
+          if (!results.any((r) => _normalize(r.name) == _normalize(food.name))) {
             results.add(food);
           }
         }
       } catch (_) {}
     }
 
+    // Ranking Logic:
+    // 1. Exact Name Match (Normalized)
+    // 2. Starts with query
+    // 3. Verified / TBCA
+    // 4. Others
     results.sort((a, b) {
+      final aNorm = _normalize(a.name);
+      final bNorm = _normalize(b.name);
+      
+      bool aExact = aNorm == normalizedQuery;
+      bool bExact = bNorm == normalizedQuery;
+      if (aExact && !bExact) return -1;
+      if (!aExact && bExact) return 1;
+
+      bool aStarts = aNorm.startsWith(normalizedQuery);
+      bool bStarts = bNorm.startsWith(normalizedQuery);
+      if (aStarts && !bStarts) return -1;
+      if (!aStarts && bStarts) return 1;
+
       if (a.isVerified && !b.isVerified) return -1;
       if (!a.isVerified && b.isVerified) return 1;
-      return a.name.compareTo(b.name);
+
+      return a.name.length.compareTo(b.name.length); // Shorter names usually more relevant
     });
 
-    return results;
+    return results.take(40).toList();
+  }
+
+  Future<List<FoodModel>> _searchOpenFoodFacts(String query) async {
+    try {
+      final uri = Uri.parse('https://world.openfoodfacts.org/cgi/search.pl?search_terms=$query&search_simple=1&action=process&json=1&page_size=20&lc=pt');
+      final response = await http.get(uri);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final List products = data['products'] ?? [];
+        return products.map<FoodModel?>((p) {
+          final nutriments = p['nutriments'];
+          if (nutriments == null) return null;
+          
+          double parseNum(dynamic val) => (val is num) ? val.toDouble() : 0.0;
+          
+          final name = p['product_name_pt'] ?? p['product_name'] ?? '';
+          if (name.isEmpty) return null;
+
+          return FoodModel(
+            id: 'off_${p['_id'] ?? p['code']}',
+            name: name,
+            brand: p['brands'] ?? '',
+            caloriesPer100g: parseNum(nutriments['energy-kcal_100g']),
+            proteinPer100g: parseNum(nutriments['proteins_100g']),
+            carbPer100g: parseNum(nutriments['carbohydrates_100g']),
+            fatPer100g: parseNum(nutriments['fat_100g']),
+            category: 'Industrializado',
+            isVerified: true,
+          );
+        }).whereType<FoodModel>().toList();
+      }
+    } catch (_) {}
+    return [];
   }
 
   Future<FoodModel?> searchByBarcode(String code) async {
@@ -144,10 +209,12 @@ class NutritionService {
             return FoodModel(
               id: 'off_$code',
               name: p['product_name_pt'] ?? p['product_name'] ?? 'Desconhecido',
+              brand: p['brands'] ?? '',
               caloriesPer100g: parseNum(nutriments['energy-kcal_100g']),
               proteinPer100g: parseNum(nutriments['proteins_100g']),
               carbPer100g: parseNum(nutriments['carbohydrates_100g']),
               fatPer100g: parseNum(nutriments['fat_100g']),
+              isVerified: true,
             );
           }
         }
@@ -158,7 +225,7 @@ class NutritionService {
 
   Future<void> _authenticateFatSecret() async {
     if (_fatSecretToken != null && _fatSecretTokenExpiry != null && DateTime.now().isBefore(_fatSecretTokenExpiry!)) return;
-    if (_fatSecretClientId.isEmpty) throw Exception();
+    if (_fatSecretClientId.isEmpty || _fatSecretClientSecret.isEmpty) throw Exception();
     final basicAuth = base64Encode(utf8.encode('$_fatSecretClientId:$_fatSecretClientSecret'));
     final response = await http.post(
       Uri.parse('https://oauth.fatsecret.com/connect/token'),
@@ -182,12 +249,35 @@ class NutritionService {
       final foodsData = data['foods'];
       if (foodsData == null || foodsData['food'] == null) return [];
       final items = foodsData['food'] is List ? foodsData['food'] : [foodsData['food']];
-      return items.map<FoodModel>((f) => FoodModel(
-        id: 'fs_${f['food_id']}',
-        name: f['food_name'] ?? '',
-        brand: f['brand_name'] ?? '',
-        category: f['food_type'] == 'Brand' ? 'Industrializado' : 'Genérico',
-      )).toList();
+      
+      return items.map<FoodModel>((f) {
+        // Parse food_description: "Per 100g - Calories: 123kcal | Fat: 5.00g | Carbs: 10.00g | Protein: 8.00g"
+        final desc = f['food_description'] as String? ?? '';
+        double kcal = 0, p = 0, c = 0, fat = 0;
+        
+        final kcalMatch = RegExp(r'Calories: (\d+)').firstMatch(desc);
+        if (kcalMatch != null) kcal = double.tryParse(kcalMatch.group(1)!) ?? 0;
+        
+        final fatMatch = RegExp(r'Fat: ([\d\.]+)g').firstMatch(desc);
+        if (fatMatch != null) fat = double.tryParse(fatMatch.group(1)!) ?? 0;
+        
+        final carbMatch = RegExp(r'Carbs: ([\d\.]+)g').firstMatch(desc);
+        if (carbMatch != null) c = double.tryParse(carbMatch.group(1)!) ?? 0;
+        
+        final protMatch = RegExp(r'Protein: ([\d\.]+)g').firstMatch(desc);
+        if (protMatch != null) p = double.tryParse(protMatch.group(1)!) ?? 0;
+
+        return FoodModel(
+          id: 'fs_${f['food_id']}',
+          name: f['food_name'] ?? '',
+          brand: f['brand_name'] ?? '',
+          caloriesPer100g: kcal,
+          proteinPer100g: p,
+          carbPer100g: c,
+          fatPer100g: fat,
+          category: f['food_type'] == 'Brand' ? 'Industrializado' : 'Genérico',
+        );
+      }).toList();
     } catch (_) { return []; }
   }
 

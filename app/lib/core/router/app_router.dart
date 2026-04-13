@@ -24,6 +24,7 @@ import '../../features/nutrition/food_search_screen.dart';
 import '../../features/nutrition/nutrition_settings_screen.dart';
 import '../../features/profile/profile_screen.dart';
 import '../../features/nutrition/nutrition_anamnese_screen.dart';
+import '../../features/nutrition/nutrition_dashboard_screen.dart';
 
 class AppRouter {
   static GoRouter createRouter(AuthService authService) {
@@ -88,6 +89,10 @@ class AppRouter {
         GoRoute(
           path: '/nutrition/settings',
           builder: (context, state) => const NutritionSettingsScreen(),
+        ),
+        GoRoute(
+          path: '/nutrition/dashboard',
+          builder: (context, state) => const NutritionDashboardScreen(),
         ),
         GoRoute(
           path: '/nutrition/anamnese',

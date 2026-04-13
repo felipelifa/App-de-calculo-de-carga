@@ -248,6 +248,19 @@ class NutritionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void resetDailyGoal(int weekday) {
+    if (_profile == null) return;
+    final goals = Map<int, DailyNutritionalGoal>.from(_profile!.weeklyGoals);
+    final existing = goals[weekday];
+    if (existing != null) {
+      goals[weekday] = existing.copyWith(isManual: false, label: 'Automático');
+      _profile = _profile!.copyWith(weeklyGoals: goals);
+      _triggerRecalibration(); // Re-calcula baseado no status atual
+      saveSettings();
+      notifyListeners();
+    }
+  }
+
   Future<void> copyMealFromPreviousDay(String mealType) async {
     final uid = _auth.currentUser?.uid;
     if (uid == null || _profile == null) return;

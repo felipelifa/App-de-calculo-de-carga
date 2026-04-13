@@ -99,6 +99,13 @@ class _NutritionScreenState extends State<NutritionScreen> {
         title: const Text('Nutrição Inteligente', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: AppTheme.surface,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle_outlined, color: AppTheme.accent),
+            onPressed: () => context.push('/nutrition/dashboard'),
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: () async => provider.loadToday(),

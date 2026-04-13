@@ -228,21 +228,66 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
   Widget _buildFoodTile(FoodModel food) {
     final provider = context.watch<NutritionProvider>();
     final isFav = provider.isFoodFavorite(food.id);
-    
+
+    String sourceLabel = '';
+    Color sourceColor = AppTheme.textSecondary;
+    if (food.id.startsWith('st_') || food.isVerified) {
+      sourceLabel = 'OFICIAL';
+      sourceColor = AppTheme.accent;
+    } else if (food.id.startsWith('off_')) {
+      sourceLabel = 'OPEN FOOD';
+      sourceColor = Colors.orange;
+    } else if (food.id.startsWith('fs_')) {
+      sourceLabel = 'FATSECRET';
+      sourceColor = Colors.green;
+    }
+
     return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: sourceColor.withValues(alpha: 0.1),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(_getCategoryIcon(food.category), color: sourceColor, size: 20),
+      ),
       title: Row(
         children: [
-          Expanded(child: Text(food.name, style: const TextStyle(color: AppTheme.textPrimary))),
-          if (food.isVerified)
-            const Padding(
-              padding: EdgeInsets.only(left: 4),
-              child: Icon(Icons.verified, color: AppTheme.accent, size: 16),
+          Expanded(
+            child: Text(
+              food.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600),
+            ),
+          ),
+          if (sourceLabel.isNotEmpty)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              margin: const EdgeInsets.only(left: 8),
+              decoration: BoxDecoration(
+                color: sourceColor.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(color: sourceColor.withValues(alpha: 0.3), width: 0.5),
+              ),
+              child: Text(
+                sourceLabel,
+                style: TextStyle(color: sourceColor, fontSize: 9, fontWeight: FontWeight.bold),
+              ),
             ),
         ],
       ),
-      subtitle: Text(
-        '${food.caloriesPer100g.round()} kcal / 100g' + (food.brand.isNotEmpty ? ' • ${food.brand}' : ''),
-        style: const TextStyle(color: AppTheme.textSecondary),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (food.brand.isNotEmpty)
+            Text(food.brand, style: const TextStyle(color: AppTheme.accent, fontSize: 12, fontWeight: FontWeight.w500)),
+          Text(
+            '${food.caloriesPer100g.round()} kcal • P: ${food.proteinPer100g.round()}g • C: ${food.carbPer100g.round()}g • G: ${food.fatPer100g.round()}g',
+            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
+          ),
+        ],
       ),
       trailing: IconButton(
         icon: Icon(isFav ? Icons.favorite : Icons.favorite_border, color: isFav ? Colors.redAccent : AppTheme.textSecondary, size: 20),
@@ -252,6 +297,19 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
       ),
       onTap: () => _openPortionSelector(context, food),
     );
+  }
+
+  IconData _getCategoryIcon(String category) {
+    final cat = category.toLowerCase();
+    if (cat.contains('carne') || cat.contains('frango') || cat.contains('peixe')) return Icons.restaurant;
+    if (cat.contains('fruta')) return Icons.apple;
+    if (cat.contains('grão') || cat.contains('cereais')) return Icons.grass;
+    if (cat.contains('bebida') || cat.contains('suco')) return Icons.local_drink;
+    if (cat.contains('suplemento')) return Icons.fitness_center;
+    if (cat.contains('industrializado')) return Icons.inventory_2;
+    if (cat.contains('padaria') || cat.contains('pão')) return Icons.bakery_dining;
+    if (cat.contains('laticínio') || cat.contains('leite')) return Icons.egg_alt;
+    return Icons.lunch_dining;
   }
 
   void _openPortionSelector(BuildContext context, FoodModel food) {
