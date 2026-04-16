@@ -21,6 +21,17 @@ class PrescribedWorkoutScreen extends StatefulWidget {
 
 class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
   @override
+  void initState() {
+    super.initState();
+    // Garantir hidratação dos exercícios ao abrir a tela de treinos prescritos
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final wp = context.read<WorkoutProfileProvider>();
+      final ep = context.read<ExerciseProvider>();
+      wp.connectExerciseProvider(ep);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final wpAuth = context.watch<WorkoutProfileProvider>();
     final allWorkouts = wpAuth.allWorkouts;
@@ -408,14 +419,17 @@ class _WorkoutSessionsSheet extends StatelessWidget {
                          width: double.infinity,
                          child: ElevatedButton(
                            onPressed: () {
-                             // Lógica para iniciar o treino
-                             context.read<WorkoutProvider>().startSessionFromPrescribed(
-                               sessionId: session.id,
-                               sessionName: session.name,
-                               prescribedExercises: session.exercises.map((e) => e.toMap()).toList(),
-                             );
-                             context.go('/workout');
-                           },
+                              // Carrega exercícios prescritos no WorkoutProvider
+                              context.read<WorkoutProvider>().startSessionFromPrescribed(
+                                sessionId: session.id,
+                                sessionName: session.name,
+                                prescribedExercises: session.exercises.map((e) => e.toMap()).toList(),
+                              );
+                              // Captura o router antes de fechar o bottom sheet
+                              final router = GoRouter.of(context);
+                              Navigator.of(context).pop();
+                              router.go('/workout');
+                            },
                            child: const Text('COMEÇAR TREINO'),
                          ),
                        ),

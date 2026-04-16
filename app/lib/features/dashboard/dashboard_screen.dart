@@ -132,6 +132,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final exerciseProvider = context.read<ExerciseProvider>();
     final nutritionProvider = context.read<NutritionProvider>();
     
+    // Conecta o ExerciseProvider para hidratação dos exercícios prescritos
+    profileProvider.connectExerciseProvider(exerciseProvider);
+    
     final profile = profileProvider.profile;
     if (profile != null && nutritionProvider.profile == null) {
       Future.microtask(() {

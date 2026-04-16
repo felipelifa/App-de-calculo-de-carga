@@ -7,6 +7,7 @@ import 'workout_profile_model.dart';
 import 'prescribed_workout_model.dart';
 import 'prescription_engine.dart';
 import '../exercises/exercise_model.dart';
+import '../exercises/exercise_provider.dart';
 import 'progression_engine.dart';
 
 class WorkoutProfileProvider extends ChangeNotifier {
@@ -22,6 +23,7 @@ class WorkoutProfileProvider extends ChangeNotifier {
   WorkoutProfile? _profile;
   List<GeneratedWorkout> _allWorkouts = [];
   ProgressionState? _progressionState;
+  ExerciseProvider? _exerciseProvider;
   
   StreamSubscription? _workoutsSub;
   StreamSubscription? _progressionSub;
@@ -90,6 +92,22 @@ class WorkoutProfileProvider extends ChangeNotifier {
     }
   }
 
+  /// Conecta o ExerciseProvider para hidratação dos exercícios prescritos.
+  /// Deve ser chamado assim que ambos os providers estiverem disponíveis.
+  void connectExerciseProvider(ExerciseProvider exerciseProvider) {
+    if (_exerciseProvider == exerciseProvider) return;
+    _exerciseProvider = exerciseProvider;
+    // Re-hidratar se já temos dados carregados
+    final uid = _auth.currentUser?.uid;
+    if (uid != null) {
+      _setupListeners(uid);
+    }
+  }
+
+  ExerciseModel? _resolveExercise(String id) {
+    return _exerciseProvider?.getById(id);
+  }
+
   void _setupListeners(String uid) {
     _workoutsSub?.cancel();
     _progressionSub?.cancel();
@@ -102,8 +120,7 @@ class WorkoutProfileProvider extends ChangeNotifier {
         .snapshots()
         .listen((snap) {
       _allWorkouts = snap.docs.map((doc) {
-        // Hydration logic might be needed later, for now just raw map
-        return GeneratedWorkout.fromMap(doc.data(), (id) => null); 
+        return GeneratedWorkout.fromMap(doc.data(), _resolveExercise); 
       }).toList();
       _isLoading = false;
       notifyListeners();
