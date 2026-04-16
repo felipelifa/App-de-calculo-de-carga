@@ -190,12 +190,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Bio-Metric Selector (Tracker, PB, Achievements, etc)
-                    _buildQuickTabSelector().animate().fadeIn(delay: 200.ms),
-                    
-                    const SizedBox(height: 32),
+                    // 1. Status do Dia
+                    _buildDailyStatus().animate().fadeIn(delay: 200.ms),
+                    const SizedBox(height: 24),
 
-                    // Daily Statistics (Cards com Física)
+                    // 2. Ação Principal (Treino)
+                    _buildTrainingHeroCard(context).animate().scale(delay: 300.ms, curve: Curves.elasticOut),
+                    const SizedBox(height: 24),
+
+                    // 3. Resumo da Semana
+                    Text('RESUMO DA SEMANA', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                    const SizedBox(height: 12),
                     FutureBuilder<DashboardData>(
                       future: _future,
                       builder: (context, snap) {
@@ -206,44 +211,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         if (snap.hasError || data == null) {
                           return const _ErrorCard();
                         }
-                        return _StatsSection(data: data);
+                        return _buildWeeklySummary(data);
                       },
-                    ),
+                    ).animate().fadeIn(delay: 400.ms),
 
                     const SizedBox(height: 24),
 
-                    // Main Training Card (Destaque)
-                    _buildTrainingHeroCard(context).animate().scale(delay: 400.ms, curve: Curves.elasticOut),
-
-                    const SizedBox(height: 24),
-
-                    // Grid de Módulos (Bento Style)
-                    _buildBentoModules(context),
-
-                    const SizedBox(height: 24),
-
-                    // NOVO: Card de Download do APK
-                    _NavCard(
-                      icon: Icons.android_rounded,
-                      label: 'APLICATIVO PARA CELULAR',
-                      subtitle: 'Baixe o APK para instalar e usar como um app nativo',
-                      color: const Color(0xFF3DDC84), // Android Green
-                      onTap: () => _showDownloadDialog(context),
-                      isFeatured: true,
-                    ).animate().fadeIn(delay: 600.ms),
-
-                    const SizedBox(height: 24),
-
-                    FutureBuilder<DashboardData>(
-                      future: _future,
-                      builder: (context, snap) {
-                        final data = snap.data;
-                        if (data == null) return const SizedBox.shrink();
-                        if (data.volumeByMuscle.isEmpty) return const SizedBox.shrink();
-                        return _VolumeByMuscleCard(data: data);
-                      },
-                    ).animate().fadeIn(delay: 800.ms),
-
+                    // 4. Performance (Técnica / Tática / Bio)
+                    Text('PERFORMANCE', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                    const SizedBox(height: 12),
+                    _buildPerformanceSection(context).animate().fadeIn(delay: 500.ms),
+                    
                     const SizedBox(height: 48),
                   ],
                 ),
@@ -301,26 +279,57 @@ class _DashboardScreenState extends State<DashboardScreen> {
             icon: const Icon(Icons.notifications_outlined, color: AppTheme.textPrimary),
             onPressed: () {},
           ),
-          IconButton(
-            icon: const Icon(Icons.logout_rounded, color: AppTheme.textSecondary, size: 20),
-            onPressed: () => auth.logout(),
-          ),
         ],
       ),
     );
   }
 
-  Widget _buildQuickTabSelector() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          _TabItem(label: 'RASTREAMENTO', isSelected: true),
-          _TabItem(label: 'RECORDES'),
-          _TabItem(label: 'CONQUISTAS'),
-          _TabItem(label: '10,000'),
-        ],
-      ),
+  Widget _buildDailyStatus() {
+    return Consumer<WorkoutProfileProvider>(
+      builder: (context, wp, _) {
+        final hasPro = wp.activeWorkout != null;
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+             color: AppTheme.surface,
+             borderRadius: BorderRadius.circular(20),
+             border: Border.all(color: Colors.white.withOpacity(0.05)),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: hasPro ? AppTheme.accent.withOpacity(0.15) : AppTheme.surfaceHighlight,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  hasPro ? Icons.fitness_center_rounded : Icons.bed_rounded,
+                  color: hasPro ? AppTheme.accent : AppTheme.textSecondary,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      hasPro ? 'Dia de Treino' : 'Descanso Ativo',
+                      style: GoogleFonts.outfit(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      hasPro ? 'Seu plano está pronto para hoje.' : 'Recuperação também faz parte do processo.',
+                      style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      }
     );
   }
 
@@ -339,11 +348,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               color: AppTheme.surface,
               borderRadius: BorderRadius.circular(32),
               image: const DecorationImage(
-                image: NetworkImage('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop'),
+                image: NetworkImage('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=2069&auto=format&fit=crop'),
                 fit: BoxFit.cover,
-                opacity: 0.3,
+                opacity: 0.4,
               ),
-              boxShadow: [BoxShadow(color: AppTheme.accent.withOpacity(0.1), blurRadius: 40, offset: const Offset(0, 20))],
+              boxShadow: [
+                BoxShadow(color: AppTheme.accent.withOpacity(0.15), blurRadius: 40, offset: const Offset(0, 20)),
+              ],
             ),
             padding: const EdgeInsets.all(32),
             child: Column(
@@ -353,12 +364,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                  Container(
                    padding: const EdgeInsets.all(12),
                    decoration: const BoxDecoration(color: AppTheme.accent, shape: BoxShape.circle),
-                   child: Icon(hasPro ? Icons.play_arrow_rounded : Icons.add, color: Colors.black, size: 24),
+                   child: Icon(hasPro ? Icons.play_arrow_rounded : Icons.add, color: Colors.black, size: 28),
                  ),
                  const Spacer(),
                  Text(
                    hasPro ? activeWorkout.name : 'Vazio', 
-                   style: GoogleFonts.outfit(fontSize: 42, fontWeight: FontWeight.w900, color: AppTheme.textPrimary, height: 1.1)
+                   style: GoogleFonts.outfit(fontSize: 42, fontWeight: FontWeight.w900, color: Colors.white, height: 1.1)
                  ),
                  const SizedBox(height: 8),
                  Text(
@@ -373,107 +384,75 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildBentoModules(BuildContext context) {
+  Widget _buildWeeklySummary(DashboardData data) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildCompactStat(Icons.bolt_rounded, 'Volume', '${data.weekVolume.toStringAsFixed(0)} kg', AppTheme.accent),
+          _buildCompactStat(Icons.calendar_today_rounded, 'Sessões', '${data.weekSessions}', AppTheme.accentBlue),
+          _buildCompactStat(Icons.emoji_events_rounded, 'Recorde', '${data.totalSessions}', AppTheme.accentOrange),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCompactStat(IconData icon, String label, String value, Color color) {
     return Column(
       children: [
-        Row(
-           children: [
-             Expanded(
-               child: _BentoCard(
-                 title: 'Técnica', 
-                 value: '16', 
-                 unit: 'MIN', 
-                 color: AppTheme.accent, 
-                 icon: Icons.directions_run,
-                 onTap: () => context.push('/exercises'),
-               ),
-             ),
-             const SizedBox(width: 16),
-             Expanded(
-               child: _BentoCard(
-                 title: 'Tática', 
-                 value: '10', 
-                 unit: 'MIN', 
-                 color: AppTheme.accentBlue, 
-                 icon: Icons.psychology,
-                 onTap: () => context.push('/progression'),
-               ),
-             ),
-           ],
-        ),
-        const SizedBox(height: 16),
-        _BentoCard(
-          title: 'Bio-Gestão', 
-          value: 'ATIVO', 
-          unit: '', 
-          color: AppTheme.accentLime, 
-          icon: Icons.auto_awesome, 
-          fullWidth: true,
-          onTap: () => context.push('/nutrition'),
-        ),
+        Icon(icon, color: color, size: 24),
+        const SizedBox(height: 8),
+        Text(value, style: GoogleFonts.outfit(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.textPrimary)),
+        Text(label, style: const TextStyle(fontSize: 10, color: AppTheme.textSecondary, fontWeight: FontWeight.w600)),
       ],
     );
   }
 
-
-  void _showDownloadDialog(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppTheme.surface,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-      ),
-      builder: (context) => Padding(
-        padding: const EdgeInsets.fromLTRB(24, 12, 24, 40),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40, height: 4,
-              decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(2)),
-            ),
-            const SizedBox(height: 32),
-            const Icon(Icons.install_mobile_rounded, size: 64, color: Color(0xFF3DDC84)),
-            const SizedBox(height: 20),
-            const Text(
-              'Instale o App no Android',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Acesse todos os recursos de forma nativa e muito mais rápida no seu celular Android.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: AppTheme.textSecondary, fontSize: 14),
-            ),
-            const SizedBox(height: 32),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Download iniciado...')),
-                  );
-                },
-                icon: const Icon(Icons.download_rounded, color: Colors.white),
-                label: const Text('BAIXAR INSTALADOR (APK)', 
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3DDC84), 
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Dica: Se o Android bloquear, habilite "Instalar de fontes desconhecidas".',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
-            ),
-          ],
-        ),
-      ),
+  Widget _buildPerformanceSection(BuildContext context) {
+    return Row(
+       children: [
+         Expanded(
+           child: _BentoCard(
+             title: 'Técnica', 
+             value: '16', 
+             unit: 'MIN', 
+             color: AppTheme.accent, 
+             icon: Icons.directions_run,
+             onTap: () => context.push('/exercises'),
+             fullWidth: false,
+           ),
+         ),
+         const SizedBox(width: 16),
+         Expanded(
+           child: _BentoCard(
+             title: 'Tática', 
+             value: '10', 
+             unit: 'MIN', 
+             color: AppTheme.accentBlue, 
+             icon: Icons.psychology,
+             onTap: () => context.push('/progression'),
+             fullWidth: false,
+           ),
+         ),
+         const SizedBox(width: 16),
+         Expanded(
+           child: _BentoCard(
+             title: 'Nutrição', 
+             value: 'BIO', 
+             unit: '', 
+             color: AppTheme.accentLime, 
+             icon: Icons.restaurant_rounded, 
+             onTap: () => context.push('/nutrition'),
+             fullWidth: false,
+           ),
+         ),
+       ],
     );
   }
 }
