@@ -190,22 +190,33 @@ class NutritionProvider extends ChangeNotifier {
     // 1. Save meal to logs
     await _db.collection('users/$uid/nutrition/logs/$dateKey/meals').add(entry.toMap());
     
-    // 2. Learning Loop: Update popularity (timesConsumed)
-    // We update both in users' recent collection and global library if applicable
+    // 2. Learning Loop: Update popularity and ensure existence in global library
     final globalRef = _db.collection('foods').doc(entry.foodId);
-    final globalDoc = await globalRef.get();
-    if (globalDoc.exists) {
-      globalRef.update({'timesConsumed': FieldValue.increment(1)});
-    }
+    
+    // We use set with merge and increment to handle both new and existing global foods
+    await globalRef.set({
+      'name': entry.foodName,
+      'caloriesPer100g': entry.calories / (entry.portionG / 100),
+      'proteinPer100g': entry.protein / (entry.portionG / 100),
+      'carbPer100g': entry.carb / (entry.portionG / 100),
+      'fatPer100g': entry.fat / (entry.portionG / 100),
+      'timesConsumed': FieldValue.increment(1),
+      'lastConsumedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
 
-    // 3. Update User-Specific Recent/Frequency
-    await _db.collection('users/$uid/nutrition/metrics').doc('frequency').set({
-      entry.foodId: FieldValue.increment(1),
+    // 3. Update User-Specific Metrics for immediate "Recents" access
+    await _db.collection('users/$uid/nutrition/recent_foods').doc(entry.foodId).set({
+      'name': entry.foodName,
+      'caloriesPer100g': entry.calories / (entry.portionG / 100),
+      'proteinPer100g': entry.protein / (entry.portionG / 100),
+      'carbPer100g': entry.carb / (entry.portionG / 100),
+      'fatPer100g': entry.fat / (entry.portionG / 100),
+      'lastConsumedAt': FieldValue.serverTimestamp(),
+      'timesConsumedUser': FieldValue.increment(1),
     }, SetOptions(merge: true));
 
     _triggerRecalibration();
     await loadSelectedDay();
-    await _fetchWeeklyPlants();
   }
 
   Future<void> removeMeal(String mealId) async {
