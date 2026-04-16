@@ -93,7 +93,18 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
                       workout: workout,
                       isActive: workout.id == activeWorkout?.id,
                       onDelete: () => _confirmDeletion(context, workout.id),
-                      onSelect: () => wpAuth.setActiveWorkout(workout.id),
+                      onSelect: () async {
+                        await wpAuth.setActiveWorkout(workout.id);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Plano "${workout.name}" ativado!'),
+                              backgroundColor: AppTheme.accent,
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        }
+                      },
                       onView: () => _showWorkoutDetails(context, workout),
                     ).animate().fadeIn(delay: (index * 100).ms).slideX(begin: 0.1);
                   },

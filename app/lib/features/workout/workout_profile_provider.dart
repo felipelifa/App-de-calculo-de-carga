@@ -231,8 +231,41 @@ class WorkoutProfileProvider extends ChangeNotifier {
     final uid = _auth.currentUser?.uid;
     if (uid == null) return;
 
+    // Optimistic Update
+    for (int i = 0; i < _allWorkouts.length; i++) {
+        final w = _allWorkouts[i];
+        if (w.id == id && !w.isActive) {
+           _allWorkouts[i] = GeneratedWorkout(
+             id: w.id,
+             userId: w.userId,
+             name: w.name,
+             splitType: w.splitType,
+             periodizationModel: w.periodizationModel,
+             sessions: w.sessions,
+             mesocycleDurationWeeks: w.mesocycleDurationWeeks,
+             generatedAt: w.generatedAt,
+             isActive: true,
+           );
+        } else if (w.id != id && w.isActive) {
+          _allWorkouts[i] = GeneratedWorkout(
+             id: w.id,
+             userId: w.userId,
+             name: w.name,
+             splitType: w.splitType,
+             periodizationModel: w.periodizationModel,
+             sessions: w.sessions,
+             mesocycleDurationWeeks: w.mesocycleDurationWeeks,
+             generatedAt: w.generatedAt,
+             isActive: false,
+           );
+        }
+    }
+    notifyListeners();
+
     final batch = _db.batch();
     
+    // We only need to update the documents that actually changed
+    // But for safety and simplicity, we can update all or just the involved ones
     for (var w in _allWorkouts) {
       final ref = _db.collection('users').doc(uid).collection('generated_workouts').doc(w.id);
       batch.update(ref, {'isActive': w.id == id});
@@ -240,8 +273,10 @@ class WorkoutProfileProvider extends ChangeNotifier {
 
     try {
       await batch.commit();
+      debugPrint('Treino $id ativado com sucesso no Firestore.');
     } catch (e) {
-      debugPrint('Erro ao ativar treino: $e');
+      debugPrint('Erro crítico ao ativar treino no Firestore: $e');
+      // If it fails, the next snapshot from Firestore will revert the local state
     }
   }
 
