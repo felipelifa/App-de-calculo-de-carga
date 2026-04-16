@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../shared/theme/app_theme.dart';
 import 'exercise_model.dart';
 import 'exercise_provider.dart';
@@ -102,7 +103,7 @@ class ExerciseCard extends StatelessWidget {
             // ── GIF / Placeholder ────────────────
             ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-              child: _buildImage(),
+              child: _buildImage(context),
             ),
 
             // ── Info ─────────────────────────────
@@ -136,8 +137,8 @@ class ExerciseCard extends StatelessWidget {
     );
   }
 
-  Widget _buildImage() {
-    final url = exercise.gifUrl;
+  Widget _buildImage(BuildContext context) {
+    final url = context.read<ExerciseProvider>().getEffectiveGifUrl(exercise);
 
     // No URL — show placeholder directly, no network attempt
     if (url == null || url.isEmpty) {

@@ -193,7 +193,7 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
   }
 
   Widget _buildHeroImage(ExerciseModel ex) {
-    final url = ex.gifUrl;
+    final url = context.read<ExerciseProvider>().getEffectiveGifUrl(ex);
     final primaryMuscle = ex.primaryMuscles.isNotEmpty ? ex.primaryMuscles.first : 'Geral';
     
     if (url == null || url.isEmpty) {
