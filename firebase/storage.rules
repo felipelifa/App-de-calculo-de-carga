@@ -8,6 +8,12 @@ service firebase.storage {
       allow write: if false; // Admin SDK only
     }
 
+    // GIFs na raiz do bucket — public read
+    match /{file=*.gif} {
+      allow read: if true;
+      allow write: if false;
+    }
+
     // User profile images — owner only
     match /users/{uid}/{allPaths=**} {
       allow read: if request.auth != null && request.auth.uid == uid;
@@ -17,7 +23,7 @@ service firebase.storage {
         && request.resource.contentType.matches('image/.*');
     }
 
-    // Exercise GIFs — public read
+    // Exercise GIFs em pasta — public read
     match /exercises_gifs/{allPaths=**} {
       allow read: if true;
       allow write: if false; // Admin SDK only
