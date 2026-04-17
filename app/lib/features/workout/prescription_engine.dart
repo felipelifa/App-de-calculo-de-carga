@@ -39,12 +39,12 @@ class WorkoutPrescriptionEngine {
   final int _weekNumber;
 
   WorkoutPrescriptionEngine(WorkoutProfile profile,
-      {PatternHistoryTracker? patternHistory, int? weekNumber})
-      : _library = exerciseLibrary,
+      {List<ExerciseModel>? library, PatternHistoryTracker? patternHistory, int? weekNumber})
+      : _library = library ?? exerciseLibrary,
         _seed = _computeSeed(profile),
         _patternHistory = patternHistory ?? PatternHistoryTracker(),
-        _rotation = ExerciseRotationManager(exerciseLibrary),
-        _sportBuilders = SportPlanBuilders(exerciseLibrary, _computeSeed(profile)),
+        _rotation = ExerciseRotationManager(library ?? exerciseLibrary),
+        _sportBuilders = SportPlanBuilders(library ?? exerciseLibrary, _computeSeed(profile)),
         _weekNumber = weekNumber ?? profile.currentWeek;
 
   static int _computeSeed(WorkoutProfile profile) {

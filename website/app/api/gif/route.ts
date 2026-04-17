@@ -24,7 +24,7 @@ const normalizeMatchKey = (value: string) => {
   return stripGifExtension(filename)
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[._-]+/g, ' ')
+    // NÃO substituir underscores/hífens - manter estrutura para comparação
     .replace(/\s+/g, ' ')
     .trim()
     .toLowerCase();

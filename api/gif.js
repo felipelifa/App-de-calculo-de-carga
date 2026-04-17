@@ -3,7 +3,7 @@
 // A Vercel registra qualquer arquivo em /api/ como função serverless.
 
 module.exports = async (req, res) => {
-  const { name, id } = req.query;
+  const { name, id, nameEn } = req.query;
 
   if (!name) {
     res.status(400).json({ error: 'Missing name parameter' });
