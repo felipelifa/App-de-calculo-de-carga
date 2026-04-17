@@ -57,7 +57,10 @@
       "Bash(grep -r exercises_gifs app/lib --include=*.dart)",
       "Bash(grep -r gifUrl app/lib --include=*.dart)",
       "Bash(grep -r getEffectiveGifUrl app/lib --include=*.dart)",
-      "Bash(grep -r firebasestorage app/lib --include=*.dart)"
+      "Bash(grep -r firebasestorage app/lib --include=*.dart)",
+      "Bash(grep -rn .gifUrl app/lib --include=*.dart)",
+      "Bash(grep -rn ex.gifUrl app/lib --include=*.dart)",
+      "Bash(grep -rn \"Image\\\\|NetworkImage\\\\|CachedNetworkImage\" app/lib/features/exercises --include=*.dart)"
     ]
   }
 }

@@ -158,9 +158,15 @@ class ExerciseProvider extends ChangeNotifier {
           (parsed.scheme == 'http' || parsed.scheme == 'https') &&
           parsed.host.isNotEmpty;
 
+      // BLOQUEIA URLs do Firebase Storage - sempre usar proxy
       if (isAbsoluteHttp &&
-          !rawGifUrl.contains('firebasestorage') &&
-          !rawGifUrl.contains('exercises_gifs')) {
+          (rawGifUrl.contains('firebasestorage') ||
+           rawGifUrl.contains('exercises_gifs') ||
+           rawGifUrl.contains('biblioteca de gif') ||
+           rawGifUrl.contains('biblioteca de gifs') ||
+           rawGifUrl.contains('/gifs/'))) {
+        // Usa o proxy
+      } else if (isAbsoluteHttp) {
         return rawGifUrl;
       }
     }
