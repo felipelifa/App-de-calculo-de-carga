@@ -51,7 +51,9 @@
       "Bash(npm run:*)",
       "Bash(git push:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(grep -r exercises_gifs app/ --include=*.dart)",
+      "Bash(find app/ -name *.dart -exec grep -l exercises_gifs {})"
     ]
   }
 }

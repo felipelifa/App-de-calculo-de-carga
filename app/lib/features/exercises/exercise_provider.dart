@@ -170,7 +170,8 @@ class ExerciseProvider extends ChangeNotifier {
     final resolvedName = _extractNameFromGifUrl(rawGifUrl) ?? ex.name;
     final nameParam = Uri.encodeComponent(resolvedName);
     final idParam = Uri.encodeComponent(ex.id);
-    return '$origin/api/gif?ts=7&name=$nameParam&id=$idParam';
+    final nameEnParam = ex.nameEn != null ? '&nameEn=${Uri.encodeComponent(ex.nameEn!)}' : '';
+    return '$origin/api/gif?ts=8&name=$nameParam&id=$idParam$nameEnParam';
   }
 
   String? _extractNameFromGifUrl(String? gifUrl) {
