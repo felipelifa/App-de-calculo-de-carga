@@ -141,24 +141,29 @@ class ExerciseProvider extends ChangeNotifier {
 
   /// Resolve a URL do GIF com base no modelo ou no nome do exercício
   String? getEffectiveGifUrl(ExerciseModel ex) {
-    // Primeiro, tenta usar o gifUrl já definido no modelo (mas ignora se for do firebasestorage 
-    // porque o Firestore pode estar com caminhos velhos tipo exercises_gifs/)
-    if (ex.gifUrl != null && ex.gifUrl!.isNotEmpty && !ex.gifUrl!.contains('firebasestorage')) {
+    if (kIsWeb) {
+      // Na web, SEMPRE usamos o proxy do Next.js para evitar CORS.
+      // Usamos Uri.base.origin para construir uma URL absoluta dinamicamente
+      // (não hardcoda o domínio da Vercel, então funciona em qualquer ambiente).
+      // CachedNetworkImage requer uma URL absoluta — "/api/gif" relativo não funciona!
+      final origin = Uri.base.origin; // ex: "https://buildfit.vercel.app"
+      final nameParam = Uri.encodeComponent(ex.name);
+      return '$origin/api/gif?ts=5&name=$nameParam';
+    }
+
+    // Mobile: o firebasestorage não tem CORS no nativo, então vai direto.
+    // Se o gifUrl salvo no Firestore tem exercises_gifs/ (caminho antigo) ou 
+    // qualquer URL do firebasestorage, ignoramos e construímos a URL correta.
+    if (ex.gifUrl != null && 
+        ex.gifUrl!.isNotEmpty && 
+        !ex.gifUrl!.contains('firebasestorage') &&
+        !ex.gifUrl!.contains('exercises_gifs')) {
       return ex.gifUrl;
     }
     
+    // Fallback: constrói a URL da raiz do bucket com o nome do exercício
     final filename = Uri.encodeComponent('${ex.name}.gif');
-    
-    if (kIsWeb) {
-      // Na web, usamos path relativo para o Next.js agir como proxy e evitar CORS.
-      // Desta forma, escapamos de hardcodar variáveis de ambiente ou domínios da Vercel.
-      final fileNameParams = Uri.encodeComponent(ex.name);
-      return '/api/gif?ts=3&name=$fileNameParams';
-    } else {
-      // No Mobile (Android/iOS) não há o bloqueio de CORS do navegador,
-      // então podemos consumir diretamente o Firebase CDN, poupando a Vercel.
-      return 'https://firebasestorage.googleapis.com/v0/b/appcalculotreino-51f23.firebasestorage.app/o/$filename?alt=media';
-    }
+    return 'https://firebasestorage.googleapis.com/v0/b/appcalculotreino-51f23.firebasestorage.app/o/$filename?alt=media';
   }
 
   Future<List<VolumeHistoryEntry>> getExerciseHistory(String exerciseId) async {
