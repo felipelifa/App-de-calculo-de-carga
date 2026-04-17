@@ -1,0 +1,62 @@
+export default async function handler(req: any, res: any) {
+  const { name, id, nameEn } = req.query;
+  const folders = ['', 'exercises_gifs/', 'biblioteca de gif/', 'biblioteca de gifs/', 'gifs/'];
+  const STORAGE_BASE_URL = 'https://firebasestorage.googleapis.com/v0/b/appcalculotreino-51f23.firebasestorage.app/o';
+
+  try {
+    if (!name && !id) {
+      return res.status(400).json({ error: 'Name or ID is required' });
+    }
+
+    const lookupNames = new Set<string>();
+    const addNames = (val: any) => {
+      if (!val) return;
+      const s = String(val).trim();
+      if (!s) return;
+      lookupNames.add(s);
+      lookupNames.add(s.replace(/\s+/g, '_')); // Mantém case original para busca direta
+      lookupNames.add(s.toLowerCase());
+      lookupNames.add(s.replace(/\s+/g, '_').toLowerCase());
+      lookupNames.add(s.replace(/[\/\\]/g, ' ').trim()); 
+    };
+
+    addNames(name);
+    addNames(id);
+    addNames(nameEn);
+
+    // Tentativa de localização real
+    for (const folder of folders) {
+      for (const n of lookupNames) {
+        const fileName = `${folder}${n}.gif`;
+        const url = `${STORAGE_BASE_URL}/${encodeURIComponent(fileName)}?alt=media`;
+        
+        try {
+          // Usando fetch padrão com timeout
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 3000);
+          
+          const response = await fetch(url, { signal: controller.signal });
+          clearTimeout(timeout);
+          
+          if (response.ok) {
+            res.setHeader('Cache-Control', 'public, max-age=3600');
+            return res.redirect(307, url);
+          }
+        } catch (e) {
+          continue; // Pula erros de rede individuais
+        }
+      }
+    }
+
+    // Fallback: Se não encontrou nada, tenta o nome base na pasta padrão sem verificar (último suspiro)
+    const fallbackName = (name || id || 'exercise').toString().replace(/\s+/g, '_');
+    return res.redirect(307, `${STORAGE_BASE_URL}/${encodeURIComponent('exercises_gifs/' + fallbackName + '.gif')}?alt=media`);
+
+  } catch (error: any) {
+    return res.status(500).json({ 
+      error: 'Proxy Critical Failure', 
+      message: error.message,
+      target: name || id
+    });
+  }
+}
