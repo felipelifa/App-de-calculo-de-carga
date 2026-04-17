@@ -17,6 +17,12 @@ service firebase.storage {
         && request.resource.contentType.matches('image/.*');
     }
 
+    // Exercise GIFs — public read
+    match /exercises_gifs/{allPaths=**} {
+      allow read: if true;
+      allow write: if false; // Admin SDK only
+    }
+
     // Block everything else
     match /{allPaths=**} {
       allow read, write: if false;
