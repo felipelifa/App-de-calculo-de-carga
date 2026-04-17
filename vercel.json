@@ -1,5 +1,6 @@
 {
   "buildCommand": "cd website && npm install && npm run build",
+  "outputDirectory": "website/out",
   "rewrites": [
     { "source": "/download/apk", "destination": "/download/apk.apk" },
     { "source": "/treino", "destination": "/treino/index.html" },
