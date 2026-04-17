@@ -59237,7 +59237,7 @@ try{s=B.b.rp(this.c,new A.aoU(a))
 return s}catch(r){try{s=B.b.rp($.Vu(),new A.aoV(a))
 return s}catch(r){return null}}},
 N2(a){var s=a.ax
-if(s!=null&&s.length!==0)return s
+if(s!=null&&s.length!==0&&!B.f.m(s,"firebasestorage"))return s
 s=a.b
 A.qB(2,s+".gif",B.au,!1)
 return"/api/gif?ts=3&name="+A.qB(2,s,B.au,!1)},

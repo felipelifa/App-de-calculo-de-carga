@@ -141,8 +141,9 @@ class ExerciseProvider extends ChangeNotifier {
 
   /// Resolve a URL do GIF com base no modelo ou no nome do exercício
   String? getEffectiveGifUrl(ExerciseModel ex) {
-    // Primeiro, tenta usar o gifUrl já definido no modelo
-    if (ex.gifUrl != null && ex.gifUrl!.isNotEmpty) {
+    // Primeiro, tenta usar o gifUrl já definido no modelo (mas ignora se for do firebasestorage 
+    // porque o Firestore pode estar com caminhos velhos tipo exercises_gifs/)
+    if (ex.gifUrl != null && ex.gifUrl!.isNotEmpty && !ex.gifUrl!.contains('firebasestorage')) {
       return ex.gifUrl;
     }
     
