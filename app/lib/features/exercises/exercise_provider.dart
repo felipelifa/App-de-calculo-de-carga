@@ -22,8 +22,8 @@ class ExerciseProvider extends ChangeNotifier {
   String? _error;
   StreamSubscription<QuerySnapshot>? _sub;
   
-  // 🔗 LINK DO SEU STORAGE NO FIREBASE (Firebase Storage REST API - CORS nativo)
-  static const String baseGifUrl = 'https://firebasestorage.googleapis.com/v0/b/appcalculotreino-51f23.appspot.com/o';
+  // 🔗 LINK DO SEU STORAGE NO FIREBASE (URL correta do Firebase Storage REST API)
+  static const String baseGifUrl = 'https://firebasestorage.googleapis.com/v0/b/appcalculotreino-51f23.firebasestorage.app/o';
   
   bool get isLoading => _isLoading;
   String? get error => _error;
