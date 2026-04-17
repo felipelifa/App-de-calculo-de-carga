@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Treino - Redirecionando</title>
+    <style>
+        body { background: black; color: #CCFF00; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+    </style>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h1>SISTEMA ONLINE</h1>
+        <p>Aguarde um instante...</p>
+        <a href="/treino/" style="color: white;">Clique aqui se não for redirecionado</a>
+    </div>
+    <script>
+        // Tenta ir para o treino se a landing page falhar
+        if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+            // setTimeout(() => { window.location.href = '/treino/'; }, 2000);
+        }
+    </script>
+</body>
+</html>

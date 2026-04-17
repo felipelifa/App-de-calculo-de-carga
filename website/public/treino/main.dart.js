@@ -58272,7 +58272,7 @@ p=this.awV(l)
 o=A.oh(2,p==null?a.b:p,B.at,!1)
 n=A.oh(2,a.a,B.at,!1)
 m=A.oh(2,a.c,B.at,!1)
-return q+"/api/gif_proxy?ts=9&name="+o+"&id="+n+("&nameEn="+m)},
+return q+"/api/gif?ts=9&name="+o+"&id="+n+("&nameEn="+m)},
 awV(a){var s,r,q
 if(a==null||a.length===0)return null
 s=B.b.gaq(B.b.gae(a.split("?")).split("/"))

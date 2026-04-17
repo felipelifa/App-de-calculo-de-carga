@@ -31,11 +31,14 @@ export default async function handler(req: any, res: any) {
         const url = `${STORAGE_BASE_URL}/${encodeURIComponent(fileName)}?alt=media`;
         
         try {
-          const response = await fetch(url, { method: 'HEAD' });
+          const response = await fetch(url);
           if (response.ok) {
-            // Redirecionamento é muito mais leve que processar o buffer
+            const buffer = await response.arrayBuffer();
+            res.setHeader('Content-Type', 'image/gif');
             res.setHeader('Cache-Control', 'public, max-age=3600');
-            return res.redirect(307, url);
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            // Usando Uint8Array para compatibilidade máxima com Buffer
+            return res.status(200).send(Buffer.from(new Uint8Array(buffer)));
           }
         } catch (e) {
           continue;
