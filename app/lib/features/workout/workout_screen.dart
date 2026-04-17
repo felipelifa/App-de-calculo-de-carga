@@ -6,7 +6,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../shared/theme/app_theme.dart';
 import '../exercises/exercise_provider.dart';
 import '../exercises/exercise_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+// cached_network_image removido: não suporta GIF animado.
+// Usando Image.network nativo do Flutter (suporta GIF no Android, iOS e Web).
 import 'workout_provider.dart';
 import 'workout_profile_provider.dart';
 import 'pr_celebration_dialog.dart';
@@ -304,30 +305,24 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                   style: const TextStyle(color: AppTheme.textSecondary),
                 ),
               const SizedBox(height: 24),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Container(
-                  width: double.infinity,
-                  height: 250,
-                  color: AppTheme.background,
-                  child: Builder(
-                    builder: (context) {
-                      final url = context.read<ExerciseProvider>().getEffectiveGifUrl(exercise);
-                      if (url == null || url.isEmpty) {
-                        return _buildNoGifPlaceholder();
-                      }
-                      return CachedNetworkImage(
-                        imageUrl: url,
-                        fit: BoxFit.cover,
-                        placeholder: (_, __) => const Center(child: CircularProgressIndicator(color: AppTheme.accent)),
-                        errorWidget: (_, error, ___) {
-                          debugPrint('Erro ao carregar GIF: $error');
-                          return _buildNoGifPlaceholder(isError: true);
-                        },
-                      );
-                    },
-                  ),
-                ),
+              Builder(
+                builder: (context) {
+                  final url = context.read<ExerciseProvider>().getEffectiveGifUrl(exercise);
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Container(
+                      width: double.infinity,
+                      height: 250,
+                      color: AppTheme.background,
+                      child: url == null || url.isEmpty
+                          ? _buildNoGifPlaceholder()
+                          : _AnimatedGifWidget(
+                              url: url,
+                              onError: () => debugPrint('Erro ao carregar GIF: $url'),
+                            ),
+                    ),
+                  );
+                },
               ),
               if (exercise.videoUrl != null &&
                   exercise.videoUrl!.isNotEmpty) ...[
@@ -672,6 +667,106 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             ),
         ],
       ),
+    );
+  }
+}
+
+// ── Widget de GIF animado ─────────────────────
+// Usa Image.network que suporta GIF animado nativo em todas as plataformas.
+// CachedNetworkImage NÃO anima GIFs — exibe apenas o 1º frame estático.
+
+class _AnimatedGifWidget extends StatefulWidget {
+  final String url;
+  final VoidCallback? onError;
+
+  const _AnimatedGifWidget({required this.url, this.onError});
+
+  @override
+  State<_AnimatedGifWidget> createState() => _AnimatedGifWidgetState();
+}
+
+class _AnimatedGifWidgetState extends State<_AnimatedGifWidget> {
+  bool _hasError = false;
+  bool _isLoading = true;
+
+  @override
+  Widget build(BuildContext context) {
+    if (_hasError) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline_rounded, size: 48, color: AppTheme.danger.withValues(alpha: 0.5)),
+            const SizedBox(height: 12),
+            const Text(
+              'Erro ao carregar animação',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: AppTheme.textSecondary, fontSize: 13),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Verifique sua conexão ou tente mais tarde',
+              style: TextStyle(color: AppTheme.textSecondary.withValues(alpha: 0.7), fontSize: 11),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Image.network suporta GIF animado nativamente no Flutter
+        Image.network(
+          widget.url,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+          // gaplessPlayback mantém o último frame enquanto carrega novo GIF
+          gaplessPlayback: true,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              // Carregado — oculta o indicador
+              if (_isLoading) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (mounted) setState(() => _isLoading = false);
+                });
+              }
+              return child;
+            }
+            // Calculando progresso de download
+            final progress = loadingProgress.expectedTotalBytes != null
+                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                : null;
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    value: progress,
+                    color: AppTheme.accent,
+                    strokeWidth: 3,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    progress != null
+                        ? 'Carregando ${(progress * 100).toStringAsFixed(0)}%'
+                        : 'Carregando animação...',
+                    style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
+                  ),
+                ],
+              ),
+            );
+          },
+          errorBuilder: (context, error, stackTrace) {
+            widget.onError?.call();
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) setState(() => _hasError = true);
+            });
+            return const SizedBox.shrink();
+          },
+        ),
+      ],
     );
   }
 }

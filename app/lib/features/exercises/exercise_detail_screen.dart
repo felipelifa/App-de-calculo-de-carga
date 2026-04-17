@@ -199,12 +199,15 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
     if (url == null || url.isEmpty) {
       return _placeholderHero(primaryMuscle);
     }
-    return CachedNetworkImage(
-      imageUrl: url,
+    return Image.network(
+      url,
       fit: BoxFit.cover,
       width: double.infinity,
-      placeholder: (context, url) => _shimmerBox(),
-      errorWidget: (context, url, error) => _placeholderHero(primaryMuscle),
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return _shimmerBox();
+      },
+      errorBuilder: (context, error, stackTrace) => _placeholderHero(primaryMuscle),
     );
   }
 

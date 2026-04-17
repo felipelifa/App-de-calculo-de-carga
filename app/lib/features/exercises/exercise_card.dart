@@ -146,24 +146,29 @@ class ExerciseCard extends StatelessWidget {
       return _MuscleGroupPlaceholder(muscleGroup: primaryMuscle);
     }
 
-    // URL present — use CachedNetworkImage with all three states
-    return CachedNetworkImage(
-      imageUrl: url,
+    // URL present — use Image.network to support GIF animation natively
+    return Image.network(
+      url,
       height: 140,
       width: double.infinity,
       fit: BoxFit.cover,
-      // Loading state
-      placeholder: (context, url) => SizedBox(
-        height: 140,
-        child: Center(
-          child: CircularProgressIndicator(
-            color: AppTheme.accent,
-            strokeWidth: 2.5,
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return SizedBox(
+          height: 140,
+          child: Center(
+            child: CircularProgressIndicator(
+              color: AppTheme.accent,
+              strokeWidth: 2.5,
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      (loadingProgress.expectedTotalBytes ?? 1)
+                  : null,
+            ),
           ),
-        ),
-      ),
-      // Error state — same placeholder as no-URL
-      errorWidget: (context, url, error) {
+        );
+      },
+      errorBuilder: (context, error, stackTrace) {
         final primaryMuscle = exercise.primaryMuscles.isNotEmpty ? exercise.primaryMuscles.first : 'Geral';
         return _MuscleGroupPlaceholder(muscleGroup: primaryMuscle);
       },
