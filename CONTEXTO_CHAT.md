@@ -902,3 +902,4 @@ String? getEffectiveGifUrl(ExerciseModel ex) {
 - **GIFs Locais:** Nomes compatíveis com `ExerciseModel.name`
 - **Storage Rules:** Já atualizado para permitir leitura pública (`allow read: if true`)
 - **URL Final Esperada:** `https://app-calculo-carga.vercel.app/api/gif?ts=2&name=Crucifixo%20inverso%20unilateral%20com%20cabo`
+/proi
