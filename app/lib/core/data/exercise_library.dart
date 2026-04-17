@@ -32,8 +32,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "glutes", "cable"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Abdu%C3%A7%C3%A3o%20de%20quadril%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -62,8 +60,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "glutes", "band", "home_friendly"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Abdu%C3%A7%C3%A3o%20de%20Quadril%20com%20Faixa%20(1).gif',
   ),
 
   ExerciseModel(
@@ -92,8 +88,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "glutes", "band", "home_friendly"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Abdu%C3%A7%C3%A3o%20de%20Quadril%20com%20Faixa.gif',
   ),
 
   ExerciseModel(
@@ -128,8 +122,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Abdu%C3%A7%C3%A3o%20de%20Quadril%20com%20Ponte.gif',
   ),
 
   ExerciseModel(
@@ -164,8 +156,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Abdu%C3%A7%C3%A3o%20de%20Quadril%20em%20Dec%C3%BAbito%20Lateral.gif',
   ),
 
   ExerciseModel(
@@ -200,8 +190,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Abdu%C3%A7%C3%A3o%20de%20Quadril%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -236,8 +224,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Abdu%C3%A7%C3%A3o%20de%20Quadril%20Lateral.gif',
   ),
 
   ExerciseModel(
@@ -266,8 +252,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "glutes", "band", "home_friendly"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Abdu%C3%A7%C3%A3o%20de%20Quadril%20Sentado%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -296,8 +280,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "glutes", "machine"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Abdu%C3%A7%C3%A3o%20Lateral%20do%20Quadril%20com%20Alavanca%20(1).gif',
   ),
 
   ExerciseModel(
@@ -330,8 +312,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Abra%C3%A7os%20nos%20Joelhos%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -358,8 +338,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "inner_thigh", "band", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Adu%C3%A7%C3%A3o%20de%20Ombro%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -393,8 +371,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/adu%C3%A7%C3%A3o%20de%20pernas%20(alongamento%20do%20adutor%20maior).gif',
   ),
 
   ExerciseModel(
@@ -429,8 +405,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Adu%C3%A7%C3%A3o%20de%20quadril%20deitado%20de%20lado.gif',
   ),
 
   ExerciseModel(
@@ -459,8 +433,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "inner_thigh", "cable"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Adu%C3%A7%C3%A3o%20do%20Quadril%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -489,8 +461,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "inner_thigh", "machine"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Adu%C3%A7%C3%A3o%20do%20Quadril%20Lateral%20com%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -528,8 +498,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Afundo%20Alternado%20com%20Salto.gif',
   ),
 
   ExerciseModel(
@@ -560,8 +528,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.8,
     kneeStress: 0.5,
     cnsLoad: 0.8,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Afundo%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -599,8 +565,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Afundo%20com%20Gymstick.gif',
   ),
 
   ExerciseModel(
@@ -631,8 +595,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Afundo%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -670,8 +632,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Afundo%20com%20landmine.gif',
   ),
 
   ExerciseModel(
@@ -702,8 +662,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.8,
     kneeStress: 0.5,
     cnsLoad: 0.8,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Afundo%20Lateral%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -741,8 +699,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Afundo%20Lateral.gif',
   ),
 
   ExerciseModel(
@@ -773,8 +729,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Afundo%20na%20M%C3%A1quina%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -805,8 +759,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Afundo%20no%20banco%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -844,8 +796,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Afundo%20no%20banco.gif',
   ),
 
   ExerciseModel(
@@ -883,8 +833,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Afundo%20Profundo.gif',
   ),
 
   ExerciseModel(
@@ -922,8 +870,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Afundo.gif',
   ),
 
   ExerciseModel(
@@ -954,8 +900,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.8,
     kneeStress: 0.5,
     cnsLoad: 0.8,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -993,8 +937,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20B%C3%BAlgaro%20Calistenia.gif',
   ),
 
   ExerciseModel(
@@ -1025,8 +967,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.8,
     kneeStress: 0.5,
     cnsLoad: 0.8,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20B%C3%BAlgaro%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -1057,8 +997,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20B%C3%BAlgaro%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -1096,8 +1034,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20B%C3%BAlgaro%20com%20Peso%20Corporal.gif',
   ),
 
   ExerciseModel(
@@ -1135,8 +1071,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20b%C3%BAlgaro%20com%20salto.gif',
   ),
 
   ExerciseModel(
@@ -1174,8 +1108,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Camar%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -1206,8 +1138,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.8,
     kneeStress: 0.5,
     cnsLoad: 0.8,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20barra%20e%20salto.gif',
   ),
 
   ExerciseModel(
@@ -1238,8 +1168,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.8,
     kneeStress: 0.5,
     cnsLoad: 0.8,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20barra%20no%20ch%C3%A3o%20seguido%20de%20levantamento%20militar.gif',
   ),
 
   ExerciseModel(
@@ -1270,8 +1198,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.8,
     kneeStress: 0.5,
     cnsLoad: 0.8,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20Barra%20Sobre%20a%20Cabe%C3%A7a.gif',
   ),
 
   ExerciseModel(
@@ -1309,8 +1235,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20Chute%20Lateral%20e%20Toque%20no%20Calcanhar.gif',
   ),
 
   ExerciseModel(
@@ -1348,8 +1272,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20Cinto.gif',
   ),
 
   ExerciseModel(
@@ -1387,8 +1309,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20Eleva%C3%A7%C3%A3o%20dos%20Joelhos.gif',
   ),
 
   ExerciseModel(
@@ -1419,8 +1339,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20Faixa%20El%C3%A1stica%20em%20Afundo.gif',
   ),
 
   ExerciseModel(
@@ -1451,8 +1369,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20Faixa%20El%C3%A1stica%20sobre%20a%20Cabe%C3%A7a.gif',
   ),
 
   ExerciseModel(
@@ -1490,8 +1406,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20Gymstick.gif',
   ),
 
   ExerciseModel(
@@ -1522,8 +1436,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20Halteres%20no%20Banco.gif',
   ),
 
   ExerciseModel(
@@ -1561,8 +1473,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20Joelho%20Elevado.gif',
   ),
 
   ExerciseModel(
@@ -1593,8 +1503,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -1632,8 +1540,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20salto%20ajoelhado.gif',
   ),
 
   ExerciseModel(
@@ -1664,8 +1570,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20salto%20e%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -1696,8 +1600,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.8,
     kneeStress: 0.5,
     cnsLoad: 0.8,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20Salto%20usando%20Barra%20Hexagonal.gif',
   ),
 
   ExerciseModel(
@@ -1735,8 +1637,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20Salto.gif',
   ),
 
   ExerciseModel(
@@ -1772,8 +1672,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20Sustenta%C3%A7%C3%A3o%20e%20Eleva%C3%A7%C3%A3o%20de%20Panturrilhas.gif',
   ),
 
   ExerciseModel(
@@ -1811,8 +1709,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20com%20Trava.gif',
   ),
 
   ExerciseModel(
@@ -1850,8 +1746,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Cossaco.gif',
   ),
 
   ExerciseModel(
@@ -1889,8 +1783,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Dividido%20Profundo.gif',
   ),
 
   ExerciseModel(
@@ -1921,8 +1813,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20e%20press%20com%20kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -1953,8 +1843,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20em%20pli%C3%A9%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -1985,8 +1873,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.8,
     kneeStress: 0.7,
     cnsLoad: 0.8,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Frontal%20com%20Barra%20no%20Banco.gif',
   ),
 
   ExerciseModel(
@@ -2017,8 +1903,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.8,
     kneeStress: 0.7,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Frontal%20com%20Barra%20no%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -2049,8 +1933,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.7,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Frontal%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -2081,8 +1963,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.7,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Frontal%20com%20Kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -2113,8 +1993,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.7,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Frontal%20com%20Polia.gif',
   ),
 
   ExerciseModel(
@@ -2152,8 +2030,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.7,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Frontal.gif',
   ),
 
   ExerciseModel(
@@ -2191,8 +2067,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Funcional.gif',
   ),
 
   ExerciseModel(
@@ -2223,8 +2097,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Goblet%20com%20Haltere.gif',
   ),
 
   ExerciseModel(
@@ -2255,8 +2127,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Goblet%20com%20Kettlebell%20e%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -2287,8 +2157,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.8,
     kneeStress: 0.7,
     cnsLoad: 0.8,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20hack%20com%20barra.gif',
   ),
 
   ExerciseModel(
@@ -2319,8 +2187,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.2,
     kneeStress: 0.7,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Hack%20Invertido.gif',
   ),
 
   ExerciseModel(
@@ -2358,8 +2224,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20havaiano.gif',
   ),
 
   ExerciseModel(
@@ -2397,8 +2261,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Jefferson.gif',
   ),
 
   ExerciseModel(
@@ -2429,8 +2291,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20na%20M%C3%A1quina%20Abdutora.gif',
   ),
 
   ExerciseModel(
@@ -2461,8 +2321,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.2,
     kneeStress: 0.7,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20na%20M%C3%A1quina%20Hack.gif',
   ),
 
   ExerciseModel(
@@ -2500,8 +2358,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20na%20Parede%20com%20Bola%20de%20Exerc%C3%ADcio.gif',
   ),
 
   ExerciseModel(
@@ -2539,8 +2395,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20no%20Banco%20com%20Peso%20Corporal.gif',
   ),
 
   ExerciseModel(
@@ -2578,8 +2432,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20no%20Landmine.gif',
   ),
 
   ExerciseModel(
@@ -2610,8 +2462,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20no%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -2649,8 +2499,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Pistol%20com%20TRX.gif',
   ),
 
   ExerciseModel(
@@ -2688,8 +2536,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Pistola%20Apoiado.gif',
   ),
 
   ExerciseModel(
@@ -2727,8 +2573,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Pistola%20com%20Apoio%20em%20Caixa.gif',
   ),
 
   ExerciseModel(
@@ -2759,8 +2603,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Pistola%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -2791,8 +2633,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Pistola%20com%20Kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -2830,8 +2670,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Pistola%20na%20Caixa.gif',
   ),
 
   ExerciseModel(
@@ -2869,8 +2707,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20pistola.gif',
   ),
 
   ExerciseModel(
@@ -2908,8 +2744,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Sissy%20ajoelhado%20com%20Peso%20Corporal.gif',
   ),
 
   ExerciseModel(
@@ -2947,8 +2781,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Sissy.gif',
   ),
 
   ExerciseModel(
@@ -2986,8 +2818,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Skater.gif',
   ),
 
   ExerciseModel(
@@ -3018,8 +2848,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Sum%C3%B4%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -3057,8 +2885,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Sum%C3%B4%20sem%20Pesos.gif',
   ),
 
   ExerciseModel(
@@ -3089,8 +2915,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.8,
     kneeStress: 0.5,
     cnsLoad: 0.8,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20unilateral%20cruzado%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -3121,8 +2945,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20unilateral%20cruzado%20com%20haltere.gif',
   ),
 
   ExerciseModel(
@@ -3160,8 +2982,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20unilateral%20cruzado.gif',
   ),
 
   ExerciseModel(
@@ -3199,8 +3019,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento%20Zercher.gif',
   ),
 
   ExerciseModel(
@@ -3238,8 +3056,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Agachamento.gif',
   ),
 
   ExerciseModel(
@@ -3275,8 +3091,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Airbike.gif',
   ),
 
   ExerciseModel(
@@ -3310,8 +3124,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20Abra%C3%A7o%20com%20Tapinhas%20nas%20Costas.gif',
   ),
 
   ExerciseModel(
@@ -3345,8 +3157,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20assistido%20reverso%20(peitoral%20e%20ombro).gif',
   ),
 
   ExerciseModel(
@@ -3380,8 +3190,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20Borboleta.gif',
   ),
 
   ExerciseModel(
@@ -3415,8 +3223,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20com%20PVC%20na%20Posi%C3%A7%C3%A3o%20Frontal%20de%20Rack.gif',
   ),
 
   ExerciseModel(
@@ -3450,8 +3256,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20da%20Esfinge.gif',
   ),
 
   ExerciseModel(
@@ -3486,8 +3290,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20da%20panturrilha%20agachado.gif',
   ),
 
   ExerciseModel(
@@ -3522,8 +3324,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20da%20panturrilha%20com%20descida%20do%20calcanhar.gif',
   ),
 
   ExerciseModel(
@@ -3557,8 +3357,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20da%20parte%20superior%20das%20costas.gif',
   ),
 
   ExerciseModel(
@@ -3592,8 +3390,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20das%20Costas%20com%20Rolo%20de%20Espuma.gif',
   ),
 
   ExerciseModel(
@@ -3627,8 +3423,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20Adutores%20com%20Pernas%20Afastadas%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -3663,8 +3457,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20Gl%C3%BAteos%20Deitado.gif',
   ),
 
   ExerciseModel(
@@ -3698,8 +3490,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20Isquiotibiais%20deitado.gif',
   ),
 
   ExerciseModel(
@@ -3733,8 +3523,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20Isquiotibiais%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -3768,8 +3556,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20ombro%20com%20o%20bra%C3%A7o%20cruzado.gif',
   ),
 
   ExerciseModel(
@@ -3803,8 +3589,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20ombro%20reverso%20em%20p%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -3839,8 +3623,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20Panturrilha%20com%20Corda.gif',
   ),
 
   ExerciseModel(
@@ -3875,8 +3657,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20panturrilha%20com%20uma%20perna%20esticada.gif',
   ),
 
   ExerciseModel(
@@ -3911,8 +3691,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20panturrilha%20com%20uma%20perna.gif',
   ),
 
   ExerciseModel(
@@ -3947,8 +3725,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20panturrilha%20em%20passo%20largo.gif',
   ),
 
   ExerciseModel(
@@ -3983,8 +3759,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20panturrilha%20em%20posi%C3%A7%C3%A3o%20est%C3%A1tica.gif',
   ),
 
   ExerciseModel(
@@ -4019,8 +3793,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20panturrilha%20na%20parede.gif',
   ),
 
   ExerciseModel(
@@ -4054,8 +3826,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20Pernas%20Duplo.gif',
   ),
 
   ExerciseModel(
@@ -4089,8 +3859,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20Punho.gif',
   ),
 
   ExerciseModel(
@@ -4124,8 +3892,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20quadril%2090-90.gif',
   ),
 
   ExerciseModel(
@@ -4159,8 +3925,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20Quadr%C3%ADceps%20ajoelhado.gif',
   ),
 
   ExerciseModel(
@@ -4194,8 +3958,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20Quadr%C3%ADceps%20em%20Quatro%20Apoios.gif',
   ),
 
   ExerciseModel(
@@ -4229,8 +3991,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20rota%C3%A7%C3%A3o%20da%20coluna%20em%20p%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -4265,8 +4025,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20de%20tr%C3%ADceps%20em%20p%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -4300,8 +4058,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20Din%C3%A2mico%20do%20Peitoral.gif',
   ),
 
   ExerciseModel(
@@ -4335,8 +4091,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20desviador%20ulnar%20e%20extensor%20do%20punho.gif',
   ),
 
   ExerciseModel(
@@ -4371,8 +4125,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20Gastrocn%C3%AAmio%20com%20Joelho%20Flexionado.gif',
   ),
 
   ExerciseModel(
@@ -4406,8 +4158,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20manguito%20rotador.gif',
   ),
 
   ExerciseModel(
@@ -4441,8 +4191,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20ombro%20com%20toalha.gif',
   ),
 
   ExerciseModel(
@@ -4476,8 +4224,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20Peito%20Acima%20da%20Cabe%C3%A7a.gif',
   ),
 
   ExerciseModel(
@@ -4511,8 +4257,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20peito%20com%20rolo%20de%20espuma.gif',
   ),
 
   ExerciseModel(
@@ -4546,8 +4290,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20Peito%20e%20Parte%20Frontal%20dos%20Ombros.gif',
   ),
 
   ExerciseModel(
@@ -4581,8 +4323,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20Peitoral%20at%C3%A9%20as%20Costas.gif',
   ),
 
   ExerciseModel(
@@ -4616,8 +4356,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20Peitoral%20com%20um%20Bra%C3%A7o%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -4651,8 +4389,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20peitoral%20e%20do%20ombro%20na%20porta.gif',
   ),
 
   ExerciseModel(
@@ -4686,8 +4422,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20peitoral%20reverso.gif',
   ),
 
   ExerciseModel(
@@ -4721,8 +4455,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20Piriforme%20Sentado.gif',
   ),
 
   ExerciseModel(
@@ -4756,8 +4488,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20tend%C3%A3o%20de%20Aquiles%20em%20p%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -4792,8 +4522,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20tibial%20posterior.gif',
   ),
 
   ExerciseModel(
@@ -4828,8 +4556,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20do%20trato%20iliotibial%20com%20rolo%20de%20espuma.gif',
   ),
 
   ExerciseModel(
@@ -4863,8 +4589,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20Adutores%20com%20a%20Perna%20Estendida%20ajoelhado.gif',
   ),
 
   ExerciseModel(
@@ -4898,8 +4622,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20Adutores%20com%20Pernas%20Abertas%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -4933,8 +4655,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20adutores%20da%20coxa%20com%20rolo%20de%20espuma.gif',
   ),
 
   ExerciseModel(
@@ -4968,8 +4688,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20Adutores%20em%20Posi%C3%A7%C3%A3o%20Sentada%20com%20Pernas%20Abertas.gif',
   ),
 
   ExerciseModel(
@@ -5003,8 +4721,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20adutores%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -5038,8 +4754,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20Extensores%20dos%20Dedos%20dos%20P%C3%A9s.gif',
   ),
 
   ExerciseModel(
@@ -5073,8 +4787,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20flexores%20de%20quadril%20ajoelhado.gif',
   ),
 
   ExerciseModel(
@@ -5108,8 +4820,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20flexores%20do%20quadril%20em%20posi%C3%A7%C3%A3o%20de%20joelho.gif',
   ),
 
   ExerciseModel(
@@ -5143,8 +4853,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20flexores%20dos%20dedos%20dos%20p%C3%A9s%20em%20p%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -5178,8 +4886,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20isquiotibiais%20em%20p%C3%A9%20com%20a%20perna%20cruzada.gif',
   ),
 
   ExerciseModel(
@@ -5213,8 +4919,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20isquiotibiais%20em%20p%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -5248,8 +4952,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20Isquiotibiais%20Sentado.gif',
   ),
 
   ExerciseModel(
@@ -5283,8 +4985,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20lat%C3%ADssimos%20dorsais%20com%20rolo%20de%20espuma.gif',
   ),
 
   ExerciseModel(
@@ -5318,8 +5018,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20dos%20ombros%20por%20tr%C3%A1s%20das%20costas.gif',
   ),
 
   ExerciseModel(
@@ -5353,8 +5051,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20em%20C%C3%ADrculos%20nos%20Punhos.gif',
   ),
 
   ExerciseModel(
@@ -5388,8 +5084,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20em%20P%C3%A9%20dos%20Quadr%C3%ADceps.gif',
   ),
 
   ExerciseModel(
@@ -5423,8 +5117,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20Inclinado%20Lateral%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -5458,8 +5150,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20Lateral%20da%20Parte%20Interna%20da%20Coxa.gif',
   ),
 
   ExerciseModel(
@@ -5493,8 +5183,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20na%20parede%20do%20canto.gif',
   ),
 
   ExerciseModel(
@@ -5528,8 +5216,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20Piriforme.gif',
   ),
 
   ExerciseModel(
@@ -5563,8 +5249,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20reverso%20assistido%20(peito%20e%20ombro).gif',
   ),
 
   ExerciseModel(
@@ -5598,8 +5282,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20Reverso%20de%20Pulso.gif',
   ),
 
   ExerciseModel(
@@ -5634,8 +5316,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'lengthened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamento%20Sentado%20para%20a%20Panturrilha%20com%20Perna%20Esticada.gif',
   ),
 
   ExerciseModel(
@@ -5669,8 +5349,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Alongamentos%20de%20p%C3%A9s%20e%20tornozelos.gif',
   ),
 
   ExerciseModel(
@@ -5706,8 +5384,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Andar%20de%20Bicicleta%20ao%20Ar%20Livre.gif',
   ),
 
   ExerciseModel(
@@ -5743,8 +5419,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Andar%20de%20Pato.gif',
   ),
 
   ExerciseModel(
@@ -5780,8 +5454,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Anilha%20Press.gif',
   ),
 
   ExerciseModel(
@@ -5813,8 +5485,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Arranco%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -5846,8 +5516,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Arranco%20com%20kettlebell%20de%20um%20bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -5878,8 +5546,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Arranco%20com%20kettlebell%20em%20afundo.gif',
   ),
 
   ExerciseModel(
@@ -5917,8 +5583,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Arranco%20de%20Pot%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -5950,8 +5614,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Arranco%20e%20Levantamento%20com%20Kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -5983,8 +5645,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Arranque%20e%20Arremesso%20com%20Kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -6016,8 +5676,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Arremesso%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -6049,8 +5707,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Arremesso%20com%20haltere%20de%20um%20bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -6088,8 +5744,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Arremesso%20de%20Bola%20de%20Rea%C3%A7%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -6127,8 +5781,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Arremesso%20de%20Medicina%20Bola%20com%20Levantamento%20de%20Tronco.gif',
   ),
 
   ExerciseModel(
@@ -6160,8 +5812,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Arremesso%20e%20Press%C3%A3o%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -6192,8 +5842,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.8,
     kneeStress: 0.5,
     cnsLoad: 0.8,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Avan%C3%A7o%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -6224,8 +5872,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Avan%C3%A7o%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -6256,8 +5902,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Avan%C3%A7o%20com%20Halteres%20para%20Tr%C3%A1s.gif',
   ),
 
   ExerciseModel(
@@ -6288,8 +5932,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Avan%C3%A7o%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -6327,8 +5969,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Avan%C3%A7o%20com%20Joelho%20Alto%20em%20Cima%20da%20Bola%20Bosu.gif',
   ),
 
   ExerciseModel(
@@ -6366,8 +6006,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Avan%C3%A7o%20com%20Joelho%20Elevado%20em%20Caminhada.gif',
   ),
 
   ExerciseModel(
@@ -6398,8 +6036,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Avan%C3%A7o%20com%20Puxador%20de%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -6430,8 +6066,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Avan%C3%A7o%20Invertido%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -6469,8 +6103,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Avan%C3%A7o%20Invertido.gif',
   ),
 
   ExerciseModel(
@@ -6508,8 +6140,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Avan%C3%A7o%20sem%20Peso%20Corporal.gif',
   ),
 
   ExerciseModel(
@@ -6546,8 +6176,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Back%20Lever.gif',
   ),
 
   ExerciseModel(
@@ -6580,8 +6208,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Balan%C3%A7o%20com%20gymstick.gif',
   ),
 
   ExerciseModel(
@@ -6611,8 +6237,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.5,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Balan%C3%A7os%20com%20Kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -6648,8 +6272,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Balloon%20Drill.gif',
   ),
 
   ExerciseModel(
@@ -6679,8 +6301,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     shoulderStress: 1.0,
     cnsLoad: 0.9,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Bandeira%20Humana.gif',
   ),
 
   ExerciseModel(
@@ -6718,8 +6338,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barbell%20Hang%20Clean.gif',
   ),
 
   ExerciseModel(
@@ -6757,8 +6375,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20fixa%20Assistida%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -6789,8 +6405,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20Fixa%20Assistida.gif',
   ),
 
   ExerciseModel(
@@ -6821,8 +6435,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20fixa%20com%20Arco.gif',
   ),
 
   ExerciseModel(
@@ -6853,8 +6465,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20fixa%20com%20bra%C3%A7os%20alternados.gif',
   ),
 
   ExerciseModel(
@@ -6885,8 +6495,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20Fixa%20com%20Giro.gif',
   ),
 
   ExerciseModel(
@@ -6917,8 +6525,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20fixa%20com%20L-sit.gif',
   ),
 
   ExerciseModel(
@@ -6949,8 +6555,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20Fixa%20com%20Pegada%20Fechada.gif',
   ),
 
   ExerciseModel(
@@ -6981,8 +6585,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20fixa%20com%20pegada%20invertida%20assistido.gif',
   ),
 
   ExerciseModel(
@@ -7013,8 +6615,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20fixa%20com%20pegada%20neutra.gif',
   ),
 
   ExerciseModel(
@@ -7045,8 +6645,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20Fixa%20com%20Pegada%20por%20Tr%C3%A1s%20do%20Pesco%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -7077,8 +6675,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20Fixa%20com%20Pegada%20Supinada.gif',
   ),
 
   ExerciseModel(
@@ -7109,8 +6705,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20fixa%20com%20peso.gif',
   ),
 
   ExerciseModel(
@@ -7141,8 +6735,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20fixa%20com%20Salto.gif',
   ),
 
   ExerciseModel(
@@ -7173,8 +6765,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20Fixa%20de%20Cabe%C3%A7a%20para%20Baixo.gif',
   ),
 
   ExerciseModel(
@@ -7205,8 +6795,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20Fixa%20para%20o%20Braquial.gif',
   ),
 
   ExerciseModel(
@@ -7237,8 +6825,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20fixa%20pegada%20invertida.gif',
   ),
 
   ExerciseModel(
@@ -7269,8 +6855,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Barra%20fixa.gif',
   ),
 
   ExerciseModel(
@@ -7306,8 +6890,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Bicicleta%20Ergom%C3%A9trica%20Reclinada.gif',
   ),
 
   ExerciseModel(
@@ -7343,8 +6925,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Bike.gif',
   ),
 
   ExerciseModel(
@@ -7379,8 +6959,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Bola%20medicinal%20lan%C3%A7ada%20para%20cima%20e%20para%20baixo.gif',
   ),
 
   ExerciseModel(
@@ -7415,8 +6993,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Bola%20na%20parede.gif',
   ),
 
   ExerciseModel(
@@ -7452,8 +7028,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.7,
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Bom%20dia%20(1).gif',
   ),
 
   ExerciseModel(
@@ -7483,8 +7057,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.7,
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Bom%20Dia%20com%20Faixa%20El%C3%A1stica%20de%20Resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -7514,8 +7086,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.7,
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Bom%20Dia%20na%20M%C3%A1quina%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -7551,8 +7121,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.7,
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Bom%20dia.gif',
   ),
 
   ExerciseModel(
@@ -7588,8 +7156,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Boxe%20jab.gif',
   ),
 
   ExerciseModel(
@@ -7625,8 +7191,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Boxe%20Sombra.gif',
   ),
 
   ExerciseModel(
@@ -7663,8 +7227,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.7,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Burpee%20Jack.gif',
   ),
 
   ExerciseModel(
@@ -7701,8 +7263,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.7,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Burpees.gif',
   ),
 
   ExerciseModel(
@@ -7731,8 +7291,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "quads", "bodyweight", "home_friendly", "no_equipment"],
     lengthBias: 'shortened',
     kneeStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Cadeira%20extensora.gif',
   ),
 
   ExerciseModel(
@@ -7767,8 +7325,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Cadeira%20flexora.gif',
   ),
 
   ExerciseModel(
@@ -7798,8 +7354,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Caminhada%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -7829,8 +7383,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Caminhada%20Lateral%20com%20Faixa%20de%20Resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -7866,8 +7418,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Caminhada%20na%20Parada%20de%20M%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -7903,8 +7453,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Caminhada%20na%20Parede.gif',
   ),
 
   ExerciseModel(
@@ -7940,8 +7488,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Caminhada%20R%C3%A1pida.gif',
   ),
 
   ExerciseModel(
@@ -7977,8 +7523,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Caminhar.gif',
   ),
 
   ExerciseModel(
@@ -8016,8 +7560,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Carregamento%20Zercher.gif',
   ),
 
   ExerciseModel(
@@ -8051,8 +7593,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Catavento%20corporal.gif',
   ),
 
   ExerciseModel(
@@ -8087,8 +7627,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Chutes%20Alternados%20de%20Gl%C3%BAteos%20no%20Banco.gif',
   ),
 
   ExerciseModel(
@@ -8123,8 +7661,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Chutes%20at%C3%A9%20o%20Gl%C3%BAteo.gif',
   ),
 
   ExerciseModel(
@@ -8159,8 +7695,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Coice%20com%20Perna%20Flexionada.gif',
   ),
 
   ExerciseModel(
@@ -8195,8 +7729,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Coice%20de%20Burro.gif',
   ),
 
   ExerciseModel(
@@ -8224,8 +7756,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "core", "bodyweight", "home_friendly", "no_equipment"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Contra%C3%A7%C3%A3o%20abdominal.gif',
   ),
 
   ExerciseModel(
@@ -8261,8 +7791,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Corda%20de%20batalha.gif',
   ),
 
   ExerciseModel(
@@ -8298,8 +7826,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Corrida%20com%20Eleva%C3%A7%C3%A3o%20dos%20Joelhos.gif',
   ),
 
   ExerciseModel(
@@ -8333,8 +7859,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Corrida%20com%20Joelhos%20Altos.gif',
   ),
 
   ExerciseModel(
@@ -8370,8 +7894,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Corrida%20com%20Passos%20R%C3%A1pidos.gif',
   ),
 
   ExerciseModel(
@@ -8408,8 +7930,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Corrida%20com%20Salto.gif',
   ),
 
   ExerciseModel(
@@ -8445,8 +7965,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Corrida%20de%20Passos%20Curtos.gif',
   ),
 
   ExerciseModel(
@@ -8476,8 +7994,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Corrida%20de%20Sprint%20com%20Assist%C3%AAncia%20de%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -8513,8 +8029,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Corrida%20Estacion%C3%A1ria.gif',
   ),
 
   ExerciseModel(
@@ -8550,8 +8064,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Corrida%20Latera.gif',
   ),
 
   ExerciseModel(
@@ -8587,8 +8099,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Corrida.gif',
   ),
 
   ExerciseModel(
@@ -8618,8 +8128,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Cross%20over%20polia%20Alta.gif',
   ),
 
   ExerciseModel(
@@ -8649,8 +8157,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Cross%20over%20polia%20baixa.gif',
   ),
 
   ExerciseModel(
@@ -8680,8 +8186,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Cross%20over%20polia%20media.gif',
   ),
 
   ExerciseModel(
@@ -8711,8 +8215,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Crossover%20de%20peitoral%20superior%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -8742,8 +8244,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Crossover%20na%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -8773,8 +8273,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Crossover%20Unilateral%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -8804,8 +8302,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'shortened',
     spinalLoad: 0.2,
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Crucifixo%20com%20Cabo%20Declinado.gif',
   ),
 
   ExerciseModel(
@@ -8841,8 +8337,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'shortened',
     spinalLoad: 0.2,
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Crucifixo%20com%20Halteres%20Declinado.gif',
   ),
 
   ExerciseModel(
@@ -8878,8 +8372,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Crucifixo%20com%20Halteres%20Inclinado.gif',
   ),
 
   ExerciseModel(
@@ -8915,8 +8407,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Crucifixo%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -8953,8 +8443,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Crucifixo%20com%20TRX.gif',
   ),
 
   ExerciseModel(
@@ -8984,8 +8472,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Crucifixo%20Deitado%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -9022,8 +8508,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Crucifixo%20Inclinado%20Cross.gif',
   ),
 
   ExerciseModel(
@@ -9053,8 +8537,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Crucifixo%20inverso%20unilateral%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -9091,8 +8573,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Crucifixo%20invertido%20com%20gymstick%20para%20deltoides%20posterior.gif',
   ),
 
   ExerciseModel(
@@ -9122,8 +8602,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'shortened',
     spinalLoad: 0.2,
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Crucifixo%20Unilateral%20em%20Declinado%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -9150,8 +8628,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "full_body", "dumbbell", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Cruz%20de%20ferro%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -9186,8 +8662,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/C%C3%ADrculos%20com%20os%20bra%C3%A7os.gif',
   ),
 
   ExerciseModel(
@@ -9222,8 +8696,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/C%C3%ADrculos%20com%20um%20bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -9258,8 +8730,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/C%C3%ADrculos%20de%20Bra%C3%A7o%20com%20Pesos.gif',
   ),
 
   ExerciseModel(
@@ -9287,8 +8757,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "core", "bodyweight", "home_friendly", "no_equipment"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/C%C3%B3pia%20de%20Abdominal%20de%20R%C3%A3%20com%20Bola%20de%20Exerc%C3%ADcios.gif',
   ),
 
   ExerciseModel(
@@ -9321,8 +8789,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Descida%20de%20um%20P%C3%A9%20S%C3%B3.gif',
   ),
 
   ExerciseModel(
@@ -9360,8 +8826,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20Arnold%20(metade).gif',
   ),
 
   ExerciseModel(
@@ -9398,8 +8862,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20Arnold%20com%20kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -9437,8 +8899,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20arnold%20com%20um%20bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -9476,8 +8936,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20Arnold.gif',
   ),
 
   ExerciseModel(
@@ -9514,8 +8972,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20Cubano%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -9552,8 +9008,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20cubano%20sentado%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -9590,8 +9044,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20Ombro%20Alternada%20em%20P%C3%A9%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -9628,8 +9080,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombro%20com%20barra%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -9660,8 +9110,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombro%20com%20cabo%20ajoelhado.gif',
   ),
 
   ExerciseModel(
@@ -9692,8 +9140,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombro%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -9730,8 +9176,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombro%20com%20halteres%20em%20forma%20de%20W.gif',
   ),
 
   ExerciseModel(
@@ -9768,8 +9212,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombro%20com%20halteres%20em%20Z.gif',
   ),
 
   ExerciseModel(
@@ -9806,8 +9248,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombro%20com%20kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -9845,8 +9285,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombro%20deitado.gif',
   ),
 
   ExerciseModel(
@@ -9877,8 +9315,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombro%20na%20m%C3%A1quina%20(pegada%20martelo).gif',
   ),
 
   ExerciseModel(
@@ -9909,8 +9345,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombro%20na%20m%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -9947,8 +9381,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20Ombro%20no%20Banco%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -9979,8 +9411,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombro%20reversa%20na%20m%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -10011,8 +9441,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombro%20sentado%20com%20faixa%20de%20resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -10043,8 +9471,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombro%20unilateral%20com%20banda.gif',
   ),
 
   ExerciseModel(
@@ -10082,8 +9508,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombro%20unilateral%20com%20halter.gif',
   ),
 
   ExerciseModel(
@@ -10114,8 +9538,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombros%20atr%C3%A1s%20da%20cabe%C3%A7a%20na%20m%C3%A1quina%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -10153,8 +9575,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombros%20atr%C3%A1s%20do%20pesco%C3%A7o%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -10191,8 +9611,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombros%20com%20barra%20W%20com%20pegada%20invertida.gif',
   ),
 
   ExerciseModel(
@@ -10229,8 +9647,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombros%20com%20halteres%20em%20p%C3%A9%20com%20pegada%20neutra.gif',
   ),
 
   ExerciseModel(
@@ -10267,8 +9683,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20Ombros%20com%20Rota%C3%A7%C3%A3o%20Alternada%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -10299,8 +9713,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombros%20na%20m%C3%A1quina%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -10331,8 +9743,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20de%20ombros%20na%20m%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -10370,8 +9780,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20lateral%20com%20gymstick.gif',
   ),
 
   ExerciseModel(
@@ -10409,8 +9817,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20militar%20atr%C3%A1s%20da%20cabe%C3%A7a%20com%20gymstick.gif',
   ),
 
   ExerciseModel(
@@ -10447,8 +9853,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20militar%20com%20barra%20no%20ch%C3%A3o%20ajoelhado.gif',
   ),
 
   ExerciseModel(
@@ -10485,8 +9889,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20militar%20com%20barra.gif',
   ),
 
   ExerciseModel(
@@ -10524,8 +9926,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20militar%20com%20pegada%20fechada.gif',
   ),
 
   ExerciseModel(
@@ -10563,8 +9963,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20militar%20com%20peso%20do%20corpo.gif',
   ),
 
   ExerciseModel(
@@ -10595,8 +9993,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20militar%20em%20p%C3%A9%20na%20m%C3%A1quina%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -10633,8 +10029,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimento%20militar%20inclinado%20com%20barra%20presa%20no%20ch%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -10671,8 +10065,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     shoulderStress: 0.8,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Desenvolvimentos%20com%20kettlebell%20unilateral%20de%20joelhos.gif',
   ),
 
   ExerciseModel(
@@ -10707,8 +10099,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Deslize%20de%20parede%20do%20serr%C3%A1til%20com%20rolo%20de%20espuma.gif',
   ),
 
   ExerciseModel(
@@ -10743,8 +10133,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Dips%20de%20esc%C3%A1pula%20(1).gif',
   ),
 
   ExerciseModel(
@@ -10779,8 +10167,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Dips%20de%20esc%C3%A1pula.gif',
   ),
 
   ExerciseModel(
@@ -10816,8 +10202,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.7,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Dips%20na%20cadeira.gif',
   ),
 
   ExerciseModel(
@@ -10853,8 +10237,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Dorsiflex%C3%A3o%20plantar.gif',
   ),
 
   ExerciseModel(
@@ -10892,8 +10274,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Dumbbell%20Devil%20Press.gif',
   ),
 
   ExerciseModel(
@@ -10931,8 +10311,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Dumbbell%20Power%20Clean.gif',
   ),
 
   ExerciseModel(
@@ -10967,8 +10345,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Dumbbell-Raise.gif',
   ),
 
   ExerciseModel(
@@ -10995,8 +10371,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "full_body", "barbell", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20com%20Barra%20em%20Degrau.gif',
   ),
 
   ExerciseModel(
@@ -11029,8 +10403,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20com%20Giro%20do%20Cotovelo%20Oposto%20para%20o%20Joelho.gif',
   ),
 
   ExerciseModel(
@@ -11058,8 +10430,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "full_body", "band", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20da%20Perna%20em%20P%C3%A9%20com%20Faixa%20El%C3%A1stica%20de%20Resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -11087,8 +10457,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "full_body", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Deltoide%20em%20Y%20com%20Halteres%20Inclinado.gif',
   ),
 
   ExerciseModel(
@@ -11117,8 +10485,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "full_body", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Deltoide%20Posterior%20com%20Halteres%20Inclinado.gif',
   ),
 
   ExerciseModel(
@@ -11145,8 +10511,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "full_body", "dumbbell", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Joelho%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -11175,8 +10539,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilha%20com%20Barra%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -11205,8 +10567,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "band", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilha%20com%20Faixa%20El%C3%A1stica%20de%20Resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -11236,8 +10596,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilha%20com%20Uma%20Perna%20na%20M%C3%A1quina%20Hack.gif',
   ),
 
   ExerciseModel(
@@ -11266,8 +10624,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilha%20em%20M%C3%A1quina%20em%20p%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -11302,8 +10658,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20panturrilha%20em%20p%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -11338,8 +10692,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilha%20em%20Uma%20Perna.gif',
   ),
 
   ExerciseModel(
@@ -11368,8 +10720,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilha%20na%20M%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -11405,8 +10755,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilha%20no%20Leg%20Press%20horizontal.gif',
   ),
 
   ExerciseModel(
@@ -11442,8 +10790,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilha%20no%20Leg%20Press.gif',
   ),
 
   ExerciseModel(
@@ -11472,8 +10818,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilha%20no%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -11502,8 +10846,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'lengthened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilha%20Sentado%20com%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -11532,8 +10874,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "barbell", "home_friendly"],
     lengthBias: 'lengthened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilha%20Sentado%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -11568,8 +10908,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'lengthened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilha%20Sentado%20com%20Peso.gif',
   ),
 
   ExerciseModel(
@@ -11598,8 +10936,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilhas%20no%20Hack.gif',
   ),
 
   ExerciseModel(
@@ -11634,8 +10970,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Panturrilhas.gif',
   ),
 
   ExerciseModel(
@@ -11663,8 +10997,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Perna%20em%20P%C3%A9%20com%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -11693,8 +11025,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "full_body", "band", "home_friendly"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Perna%20Reta%20em%20P%C3%A9%20com%20Faixa%20de%20Resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -11728,8 +11058,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Perna%20%C3%9Anica%20com%20Equil%C3%ADbrio%20e%20Rosca%20de%20B%C3%ADceps.gif',
   ),
 
   ExerciseModel(
@@ -11763,8 +11091,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Pernas%20deitado%20de%20Lado.gif',
   ),
 
   ExerciseModel(
@@ -11798,8 +11124,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Pernas%20estilo%20Sapo.gif',
   ),
 
   ExerciseModel(
@@ -11828,8 +11152,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "band", "home_friendly"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Quadril%20com%20Banda%20de%20Resist%C3%AAncia%20de%20Joelhos.gif',
   ),
 
   ExerciseModel(
@@ -11864,8 +11186,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20Quadril%20com%20Peso%20Corporal.gif',
   ),
 
   ExerciseModel(
@@ -11893,8 +11213,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "full_body", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20de%20T%20com%20Halteres%20Inclinada.gif',
   ),
 
   ExerciseModel(
@@ -11923,8 +11241,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "front_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20Frontal%20Alternada%20Com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -11953,8 +11269,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "front_delt", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20frontal%20com%20barra%20girando.gif',
   ),
 
   ExerciseModel(
@@ -11983,8 +11297,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "front_delt", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20frontal%20com%20barra%20w%20inclinada.gif',
   ),
 
   ExerciseModel(
@@ -12013,8 +11325,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "front_delt", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/eleva%C3%A7%C3%A3o%20frontal%20com%20cabo%20duplo%20no%20cross.gif',
   ),
 
   ExerciseModel(
@@ -12043,8 +11353,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "front_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20frontal%20com%20dois%20bra%C3%A7os%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -12073,8 +11381,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "front_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20frontal%20com%20halteres%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -12103,8 +11409,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "front_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20frontal%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -12139,8 +11443,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20frontal%20lateral%20com%20el%C3%A1stico.gif',
   ),
 
   ExerciseModel(
@@ -12169,8 +11471,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20alternada%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -12199,8 +11499,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20com%20barra%20no%20ch%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -12235,8 +11533,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20com%20bra%C3%A7o%20flexionado.gif',
   ),
 
   ExerciseModel(
@@ -12265,8 +11561,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20com%20halteres%20com%20apoio%20no%20peito.gif',
   ),
 
   ExerciseModel(
@@ -12295,8 +11589,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20com%20halteres%20para%20deltoides%20posteriores%20deitado.gif',
   ),
 
   ExerciseModel(
@@ -12325,8 +11617,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20com%20halteres%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -12361,8 +11651,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20com%20toalha%20na%20parede.gif',
   ),
 
   ExerciseModel(
@@ -12397,8 +11685,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20com%20tronco%20inclinado.gif',
   ),
 
   ExerciseModel(
@@ -12434,8 +11720,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20cruzada%20no%20crossover.gif',
   ),
 
   ExerciseModel(
@@ -12464,8 +11748,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20de%20bra%C3%A7os%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -12494,8 +11776,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20de%20bra%C3%A7os%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -12530,8 +11810,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20de%20bra%C3%A7os.gif',
   ),
 
   ExerciseModel(
@@ -12560,8 +11838,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20de%20delt%C3%B3ide%20posterior%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -12590,8 +11866,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20de%20halteres%20inclinada.gif',
   ),
 
   ExerciseModel(
@@ -12619,8 +11893,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "side_delt", "band", "home_friendly"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20Lateral%20de%20Perna%20com%20Faixa%20El%C3%A1stica%20Deitado%20de%20Lado.gif',
   ),
 
   ExerciseModel(
@@ -12648,8 +11920,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "side_delt", "band", "home_friendly"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20Lateral%20de%20Perna%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -12684,8 +11954,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20deitado.gif',
   ),
 
   ExerciseModel(
@@ -12714,8 +11982,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20e%20frontal%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -12744,8 +12010,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "machine"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20na%20m%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -12780,8 +12044,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20tronco%20inclinado.gif',
   ),
 
   ExerciseModel(
@@ -12810,8 +12072,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20unilateral%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -12840,8 +12100,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20unilateral%20com%20haltere%20inclinado.gif',
   ),
 
   ExerciseModel(
@@ -12870,8 +12128,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20lateral%20unilateral%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -12899,8 +12155,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "full_body", "dumbbell", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20Posterior%20unilateral%20com%20halteres%20em%20Dec%C3%BAbito%20Prono.gif',
   ),
 
   ExerciseModel(
@@ -12929,8 +12183,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "band", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20P%C3%A9lvica%20com%20Banda%20de%20Resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -12959,8 +12211,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20P%C3%A9lvica%20Com%20Barra%20Declinado.gif',
   ),
 
   ExerciseModel(
@@ -12989,8 +12239,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20P%C3%A9lvica%20Com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -13025,8 +12273,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20P%C3%A9lvica%20Declinado.gif',
   ),
 
   ExerciseModel(
@@ -13055,8 +12301,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'shortened',
     kneeStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20P%C3%A9lvica%20na%20M%C3%A1quina%20de%20Extens%C3%A3o%20de%20Pernas.gif',
   ),
 
   ExerciseModel(
@@ -13085,8 +12329,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20P%C3%A9lvica%20na%20M%C3%A1quina%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -13115,8 +12357,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20P%C3%A9lvica%20Na%20M%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -13145,8 +12385,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20P%C3%A9lvica%20Unilateral%20Com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -13182,8 +12420,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%A3o%20Unilateral%20de%20Panturrilha%20no%20Leg%20Press.gif',
   ),
 
   ExerciseModel(
@@ -13218,8 +12454,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%B5es%20de%20ombros%20na%20paralela.gif',
   ),
 
   ExerciseModel(
@@ -13246,8 +12480,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "full_body", "dumbbell", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Eleva%C3%A7%C3%B5es%20frontais%20com%20halteres%20apoiadas%20no%20peito.gif',
   ),
 
   ExerciseModel(
@@ -13276,8 +12508,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "traps", "bodyweight", "home_friendly", "no_equipment"],
     lengthBias: 'shortened',
     spinalLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Encolhimento%20Acima%20da%20Cabe%C3%A7a.gif',
   ),
 
   ExerciseModel(
@@ -13306,8 +12536,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "traps", "machine"],
     lengthBias: 'shortened',
     spinalLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Encolhimento%20com%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -13336,8 +12564,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "traps", "cable"],
     lengthBias: 'shortened',
     spinalLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Encolhimento%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -13366,8 +12592,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "traps", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     spinalLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Encolhimento%20com%20Halteres%20em%20Declive.gif',
   ),
 
   ExerciseModel(
@@ -13396,8 +12620,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "traps", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     spinalLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Encolhimento%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -13426,8 +12648,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "traps", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     spinalLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Encolhimento%20de%20Barra%20Atr%C3%A1s%20das%20Costas.gif',
   ),
 
   ExerciseModel(
@@ -13456,8 +12676,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "traps", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     spinalLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Encolhimento%20de%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -13486,8 +12704,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "traps", "machine"],
     lengthBias: 'shortened',
     spinalLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Encolhimento%20de%20Ombros%20na%20M%C3%A1quina%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -13516,8 +12732,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "traps", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     spinalLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Encolhimento%20de%20ombros%20por%20tr%C3%A1s%20com%20barra.gif',
   ),
 
   ExerciseModel(
@@ -13546,8 +12760,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "traps", "bodyweight", "home_friendly", "no_equipment"],
     lengthBias: 'shortened',
     spinalLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Encolhimento%20Inclinado%20Pronado.gif',
   ),
 
   ExerciseModel(
@@ -13576,8 +12788,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "traps", "machine"],
     lengthBias: 'shortened',
     spinalLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Encolhimento%20na%20m%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -13606,8 +12816,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "traps", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     spinalLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Encolhimento%20Sentado%20de%20Gittleson%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -13641,8 +12849,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Escalador%20de%20Montanha.gif',
   ),
 
   ExerciseModel(
@@ -13678,8 +12884,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Esquiador%20com%20gymstick.gif',
   ),
 
   ExerciseModel(
@@ -13715,8 +12919,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Esteira%20com%20Inclina%C3%A7%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -13752,8 +12954,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Esteira%20Ergom%C3%A9trica.gif',
   ),
 
   ExerciseModel(
@@ -13786,8 +12986,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Exerc%C3%ADcio%20de%20bailarina%20sentada.gif',
   ),
 
   ExerciseModel(
@@ -13822,8 +13020,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Exerc%C3%ADcio%20de%20retra%C3%A7%C3%A3o%20escapular%20sentada.gif',
   ),
 
   ExerciseModel(
@@ -13859,8 +13055,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Exerc%C3%ADcio%20Pliom%C3%A9trico%20X.gif',
   ),
 
   ExerciseModel(
@@ -13893,8 +13087,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Exerc%C3%ADcios%20das%205%20Marcas.gif',
   ),
 
   ExerciseModel(
@@ -13921,8 +13113,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "full_body", "cable"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20Concentrada%20com%20Cabo%20no%20Joelho.gif',
   ),
 
   ExerciseModel(
@@ -13957,8 +13147,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20De%20Gl%C3%BAteo%20Em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -13985,8 +13173,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "full_body", "band", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20ombro%20com%20faixa.gif',
   ),
 
   ExerciseModel(
@@ -14015,8 +13201,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "band", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Perna%20em%20P%C3%A9%20com%20Faixa%20de%20Resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -14045,8 +13229,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'shortened',
     kneeStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Perna%20na%20M%C3%A1quina%20Smith%20Reversa.gif',
   ),
 
   ExerciseModel(
@@ -14081,8 +13263,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20De%20Perna%20Reta.gif',
   ),
 
   ExerciseModel(
@@ -14117,8 +13297,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Perna%20Unilateral.gif',
   ),
 
   ExerciseModel(
@@ -14147,8 +13325,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "band", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Pernas%20com%20Faixa%20El%C3%A1stica%20Sentado.gif',
   ),
 
   ExerciseModel(
@@ -14177,8 +13353,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "band", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Pernas%20Sentado%20com%20Faixa%20de%20Resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -14207,8 +13381,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "cable"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Quadril%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -14237,8 +13409,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Quadril%20em%20P%C3%A9%20com%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -14273,8 +13443,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Quadril%20no%20Banco.gif',
   ),
 
   ExerciseModel(
@@ -14309,8 +13477,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'lengthened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Tr%C3%ADceps%20Acima%20da%20Cabe%C3%A7a%20com%20Gymstick.gif',
   ),
 
   ExerciseModel(
@@ -14339,8 +13505,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "barbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20com%20barra%20atr%C3%A1s%20da%20cabe%C3%A7a.gif',
   ),
 
   ExerciseModel(
@@ -14369,8 +13533,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20com%20barra%20em%20p%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -14399,8 +13561,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20com%20barra%20W%20inclinada.gif',
   ),
 
   ExerciseModel(
@@ -14429,8 +13589,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20com%20cabo%20ajoelhado.gif',
   ),
 
   ExerciseModel(
@@ -14459,8 +13617,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Tr%C3%ADceps%20com%20Cabo%20em%20Posi%C3%A7%C3%A3o%20Ajoelhada.gif',
   ),
 
   ExerciseModel(
@@ -14489,8 +13645,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20com%20cabo%20inclinado.gif',
   ),
 
   ExerciseModel(
@@ -14519,8 +13673,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20com%20cabo%20na%20posi%C3%A7%C3%A3o%20horizontal.gif',
   ),
 
   ExerciseModel(
@@ -14549,8 +13701,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Tr%C3%ADceps%20com%20Cabos%20Cruzados.gif',
   ),
 
   ExerciseModel(
@@ -14579,8 +13729,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Tr%C3%ADceps%20com%20deitado%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -14615,8 +13763,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20com%20el%C3%A1stico%20na%20posi%C3%A7%C3%A3o%20horizontal.gif',
   ),
 
   ExerciseModel(
@@ -14645,8 +13791,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "band", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Tr%C3%ADceps%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -14675,8 +13819,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "band", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Tr%C3%ADceps%20com%20Faixas%20El%C3%A1sticas.gif',
   ),
 
   ExerciseModel(
@@ -14705,8 +13847,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20com%20haltere%20em%20prona%C3%A7%C3%A3o%20com%20um%20bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -14735,8 +13875,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20com%20haltere%20unilateral%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -14771,8 +13909,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20com%20pegada%20invertida.gif',
   ),
 
   ExerciseModel(
@@ -14807,8 +13943,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20com%20um%20bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -14837,8 +13971,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'lengthened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Tr%C3%ADceps%20com%20Uma%20M%C3%A3o%20no%20Pulley%20Alto%20Sobre%20a%20Cabe%C3%A7a.gif',
   ),
 
   ExerciseModel(
@@ -14866,8 +13998,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "triceps", "barbell", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Tr%C3%ADceps%20deitado%20com%20Barra%20W%20Pegada%20Fechada%20atr%C3%A1s%20da%20Cabe%C3%A7a.gif',
   ),
 
   ExerciseModel(
@@ -14902,8 +14032,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Tr%C3%ADceps%20deitado%20com%20Corda.gif',
   ),
 
   ExerciseModel(
@@ -14938,8 +14066,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Tr%C3%ADceps%20Invertida%20com%20unilateral.gif',
   ),
 
   ExerciseModel(
@@ -14968,8 +14094,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20lateral%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -14998,8 +14122,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "machine"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20na%20m%C3%A1quina%20pegada%20neutra.gif',
   ),
 
   ExerciseModel(
@@ -15028,8 +14150,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "machine"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20na%20m%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -15058,8 +14178,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20no%20cabo%20alto.gif',
   ),
 
   ExerciseModel(
@@ -15088,8 +14206,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps%20no%20cabo%20deitado.gif',
   ),
 
   ExerciseModel(
@@ -15124,8 +14240,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20Tr%C3%ADceps%20Testa%20Declinado%20Fechado.gif',
   ),
 
   ExerciseModel(
@@ -15160,8 +14274,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20de%20tr%C3%ADceps.gif',
   ),
 
   ExerciseModel(
@@ -15196,8 +14308,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     spinalLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20Lombar%20com%20Peso.gif',
   ),
 
   ExerciseModel(
@@ -15232,8 +14342,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     spinalLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Extens%C3%A3o%20lombar%20sentada.gif',
   ),
 
   ExerciseModel(
@@ -15269,8 +14377,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Face%20Pull.gif',
   ),
 
   ExerciseModel(
@@ -15304,8 +14410,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20alternada%20de%20ombro.gif',
   ),
 
   ExerciseModel(
@@ -15342,8 +14446,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20cobra.gif',
   ),
 
   ExerciseModel(
@@ -15373,8 +14475,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.4,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20com%20barras%20de%20apoio.gif',
   ),
 
   ExerciseModel(
@@ -15411,8 +14511,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20com%20Cruzamento%20dos%20Bra%C3%A7os.gif',
   ),
 
   ExerciseModel(
@@ -15448,8 +14546,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20com%20kettlebell%20profunda.gif',
   ),
 
   ExerciseModel(
@@ -15486,8 +14582,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20com%20parada%20de%20m%C3%A3os.gif',
   ),
 
   ExerciseModel(
@@ -15524,8 +14618,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20com%20peso.gif',
   ),
 
   ExerciseModel(
@@ -15562,8 +14654,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20com%20Rota%C3%A7%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -15600,8 +14690,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20com%20Toque%20no%20Peito.gif',
   ),
 
   ExerciseModel(
@@ -15636,8 +14724,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20com%20Toque%20nos%20Dedos%20dos%20P%C3%A9s.gif',
   ),
 
   ExerciseModel(
@@ -15674,8 +14760,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20com%20um%20bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -15712,8 +14796,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20apoio%20com%20eleva%C3%A7%C3%A3o%20de%20bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -15749,8 +14831,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20bra%C3%A7o%20com%20adu%C3%A7%C3%A3o%20da%20escapula.gif',
   ),
 
   ExerciseModel(
@@ -15787,8 +14867,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Bra%C3%A7o%20com%20Arqueamento.gif',
   ),
 
   ExerciseModel(
@@ -15825,8 +14903,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20bra%C3%A7o%20com%20as%20m%C3%A3os%20entre%20bancos.gif',
   ),
 
   ExerciseModel(
@@ -15863,8 +14939,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Bra%C3%A7o%20com%20Bola%20de%20Estabilidade.gif',
   ),
 
   ExerciseModel(
@@ -15901,8 +14975,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Bra%C3%A7o%20com%20Bola%20Medicinal%20com%20Apoio%20em%20Um%20Bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -15939,8 +15011,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Bra%C3%A7o%20com%20Bola%20Medicinal%20em%20Um%20Bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -15977,8 +15047,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20bra%C3%A7o%20com%20palmas.gif',
   ),
 
   ExerciseModel(
@@ -16012,8 +15080,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Bra%C3%A7o%20com%20Uma%20Perna.gif',
   ),
 
   ExerciseModel(
@@ -16050,8 +15116,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'shortened',
     spinalLoad: 0.2,
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Bra%C3%A7o%20Declinada%20com%20Bola%20de%20Estabilidade.gif',
   ),
 
   ExerciseModel(
@@ -16088,8 +15152,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20bra%C3%A7o%20em%20posi%C3%A7%C3%A3o%20de%20parada%20de%20m%C3%A3o%20com%20balan%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -16126,8 +15188,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Bra%C3%A7o%20na%20Parede%20com%20Pegada%20Fechada.gif',
   ),
 
   ExerciseModel(
@@ -16164,8 +15224,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Bra%C3%A7o%20no%20Bosu.gif',
   ),
 
   ExerciseModel(
@@ -16202,8 +15260,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Bra%C3%A7os%20com%20Apoio%20dos%20Joelhos%20Fechada.gif',
   ),
 
   ExerciseModel(
@@ -16237,8 +15293,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Bra%C3%A7os%20com%20Toque%20no%20Ombro.gif',
   ),
 
   ExerciseModel(
@@ -16265,8 +15319,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["compound", "chest", "barbell", "push_horizontal", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Cotovelos%20na%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -16301,8 +15353,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Dedos.gif',
   ),
 
   ExerciseModel(
@@ -16339,8 +15389,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20diamante%20de%20joelhos.gif',
   ),
 
   ExerciseModel(
@@ -16377,8 +15425,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20joelhos.gif',
   ),
 
   ExerciseModel(
@@ -16405,8 +15451,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["compound", "chest", "band", "push_horizontal", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20ombro%20com%20faixa.gif',
   ),
 
   ExerciseModel(
@@ -16443,8 +15487,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Parede.gif',
   ),
 
   ExerciseModel(
@@ -16481,8 +15523,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Peito%20com%20TRX.gif',
   ),
 
   ExerciseModel(
@@ -16511,8 +15551,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["compound", "chest", "dumbbell", "push_horizontal", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Perna%20com%20Halteres%20em%20Dec%C3%BAbito%20Dorsal.gif',
   ),
 
   ExerciseModel(
@@ -16541,8 +15579,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["compound", "chest", "machine", "push_horizontal"],
     lengthBias: 'shortened',
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Pernas%20com%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -16571,8 +15607,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["compound", "chest", "band", "push_horizontal", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Pernas%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -16601,8 +15635,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["compound", "chest", "dumbbell", "push_horizontal", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Pernas%20com%20Halteres%20Declinado.gif',
   ),
 
   ExerciseModel(
@@ -16638,8 +15670,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20pernas%20com%20toalha.gif',
   ),
 
   ExerciseModel(
@@ -16668,8 +15698,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["compound", "chest", "band", "push_horizontal", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Pernas%20deitado%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -16705,8 +15733,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Pernas%20na%20Bola%20de%20Estabilidade.gif',
   ),
 
   ExerciseModel(
@@ -16743,8 +15769,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20piv%C3%B4%20com%20banco.gif',
   ),
 
   ExerciseModel(
@@ -16781,8 +15805,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20piv%C3%B4%20entre%20cadeiras.gif',
   ),
 
   ExerciseModel(
@@ -16810,8 +15832,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["compound", "chest", "dumbbell", "push_horizontal", "home_friendly"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Pulso%20Neutra%20Sentado%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -16839,8 +15859,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["compound", "chest", "cable", "push_horizontal"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Punho%20com%20Cabo%20em%20um%20Bra%C3%A7o%20no%20Ch%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -16868,8 +15886,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["compound", "chest", "dumbbell", "push_horizontal", "home_friendly"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Punho%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -16904,8 +15920,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Punho%20Fechado.gif',
   ),
 
   ExerciseModel(
@@ -16940,8 +15954,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Punho%20Reversa%20com%20Anilha.gif',
   ),
 
   ExerciseModel(
@@ -16969,8 +15981,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["compound", "chest", "barbell", "push_horizontal", "home_friendly"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Punho%20Reversa%20com%20Barra%20Sobre%20um%20Banco.gif',
   ),
 
   ExerciseModel(
@@ -17007,8 +16017,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20Queda.gif',
   ),
 
   ExerciseModel(
@@ -17045,8 +16053,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20um%20bra%C3%A7o%20com%20apoio.gif',
   ),
 
   ExerciseModel(
@@ -17083,8 +16089,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20de%20um%20bra%C3%A7o%20com%20bola%20medicinal.gif',
   ),
 
   ExerciseModel(
@@ -17121,8 +16125,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'shortened',
     spinalLoad: 0.2,
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20Declinada.gif',
   ),
 
   ExerciseModel(
@@ -17159,8 +16161,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20diamante.gif',
   ),
 
   ExerciseModel(
@@ -17197,8 +16197,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20em%20piv%C3%B4.gif',
   ),
 
   ExerciseModel(
@@ -17235,8 +16233,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20Fechada%20com%20bola%20medicinal.gif',
   ),
 
   ExerciseModel(
@@ -17273,8 +16269,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20hindu%20modificada.gif',
   ),
 
   ExerciseModel(
@@ -17311,8 +16305,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20inclinada.gif',
   ),
 
   ExerciseModel(
@@ -17349,8 +16341,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20Invertida.gif',
   ),
 
   ExerciseModel(
@@ -17387,8 +16377,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20na%20parede.gif',
   ),
 
   ExerciseModel(
@@ -17425,8 +16413,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.7,
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20N%C3%B3rdica%20(2).gif',
   ),
 
   ExerciseModel(
@@ -17463,8 +16449,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.7,
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20N%C3%B3rdica.gif',
   ),
 
   ExerciseModel(
@@ -17501,8 +16485,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20plus.gif',
   ),
 
   ExerciseModel(
@@ -17536,8 +16518,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o%20reversa%20com%20cotovelos.gif',
   ),
 
   ExerciseModel(
@@ -17574,8 +16554,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -17608,8 +16586,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%B5es%20de%20apoio%20de%20m%C3%A3o%20na%20parede.gif',
   ),
 
   ExerciseModel(
@@ -17642,8 +16618,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Flex%C3%B5es%20hindu.gif',
   ),
 
   ExerciseModel(
@@ -17672,8 +16646,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Gluteos%20Coice%20nilateral%20Polia%20Baixa.gif',
   ),
 
   ExerciseModel(
@@ -17708,8 +16680,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Gl%C3%BAteo%20Coice%20com%20Gymstick.gif',
   ),
 
   ExerciseModel(
@@ -17738,8 +16708,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "band", "home_friendly"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Gl%C3%BAteo%20Coice%20com%20Pernas%20Flexionada%20com%20Faixa.gif',
   ),
 
   ExerciseModel(
@@ -17768,8 +16736,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "band", "home_friendly"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Gl%C3%BAteo%20Coice%20em%20P%C3%A9%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -17798,8 +16764,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "machine"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Gl%C3%BAteo%20Coice%20Na%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -17828,8 +16792,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "machine"],
     lengthBias: 'shortened',
     kneeStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Gl%C3%BAteo%20Coice%20Na%20M%C3%A1quina%20De%20Extens%C3%A3o%20De%20Pernas.gif',
   ),
 
   ExerciseModel(
@@ -17858,8 +16820,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "machine"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Gl%C3%BAteo%20Coice%20Na%20M%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -17888,8 +16848,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "machine"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Gl%C3%BAteo%20Coice%20No%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -17918,8 +16876,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "band", "home_friendly"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Gl%C3%BAteos%20Coice%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -17948,8 +16904,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "cable"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Gl%C3%BAteos%20na%20Polia%20Baixa.gif',
   ),
 
   ExerciseModel(
@@ -17983,8 +16937,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Hand%20Grip.gif',
   ),
 
   ExerciseModel(
@@ -18020,8 +16972,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Hands%20Bike.gif',
   ),
 
   ExerciseModel(
@@ -18059,8 +17009,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Heaving%20Snatch%20Balance.gif',
   ),
 
   ExerciseModel(
@@ -18096,8 +17044,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     spinalLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Hiperextens%C3%A3o%20com%20Tor%C3%A7%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -18132,8 +17078,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     spinalLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Hiperextens%C3%A3o%20de%20Lombar%20no%20Banco%20Plano.gif',
   ),
 
   ExerciseModel(
@@ -18168,8 +17112,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     spinalLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Hiperextens%C3%A3o%20Invertida%20de%20Sapo.gif',
   ),
 
   ExerciseModel(
@@ -18204,8 +17146,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     spinalLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Hiperextens%C3%A3o%20no%20Ch%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -18234,8 +17174,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "band", "home_friendly"],
     lengthBias: 'shortened',
     spinalLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Hiperextens%C3%A3o%20Reversa%20com%20Faixa%20de%20Resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -18270,8 +17208,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     spinalLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Hiperextens%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -18307,8 +17243,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.7,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Impossible%20Dips.gif',
   ),
 
   ExerciseModel(
@@ -18336,8 +17270,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "full_body", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Impulso%20com%20barra.gif',
   ),
 
   ExerciseModel(
@@ -18371,8 +17303,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Inclina%C3%A7%C3%A3o%20Lateral%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -18406,8 +17336,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Inclina%C3%A7%C3%A3o%20Lateral.gif',
   ),
 
   ExerciseModel(
@@ -18441,8 +17369,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Inclina%C3%A7%C3%A3o%20P%C3%A9lvica.gif',
   ),
 
   ExerciseModel(
@@ -18476,8 +17402,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Joelho%20Alternado%20no%20Peito.gif',
   ),
 
   ExerciseModel(
@@ -18511,8 +17435,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Joelhos%20altos%20contra%20a%20parede.gif',
   ),
 
   ExerciseModel(
@@ -18542,8 +17464,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.5,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Kettlebell%20em%20Forma%20de%20Oito.gif',
   ),
 
   ExerciseModel(
@@ -18575,8 +17495,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Kettlebell%20Hang%20Clean.gif',
   ),
 
   ExerciseModel(
@@ -18611,8 +17529,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Lan%C3%A7amento%20de%20Bola%20Medicinal%20deitado.gif',
   ),
 
   ExerciseModel(
@@ -18647,8 +17563,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Lan%C3%A7amento%20de%20bola%20medicinal.gif',
   ),
 
   ExerciseModel(
@@ -18679,8 +17593,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.2,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Leg%20press%2090%20no%20smith.gif',
   ),
 
   ExerciseModel(
@@ -18718,8 +17630,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.2,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Leg%20Press%20Alternado%20Deitado%20com%20Gymstick.gif',
   ),
 
   ExerciseModel(
@@ -18757,8 +17667,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.2,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Leg%20Press%20Horizontal.gif',
   ),
 
   ExerciseModel(
@@ -18796,8 +17704,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.2,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Leg%20Press%20unilateral.gif',
   ),
 
   ExerciseModel(
@@ -18835,8 +17741,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.2,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Leg%20Press.gif',
   ),
 
   ExerciseModel(
@@ -18869,8 +17773,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20com%20Suporte.gif',
   ),
 
   ExerciseModel(
@@ -18903,8 +17805,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20de%20bra%C3%A7o%20apoiado%20na%20parede.gif',
   ),
 
   ExerciseModel(
@@ -18931,8 +17831,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "full_body", "dumbbell", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20de%20halteres%20de%203%20maneiras.gif',
   ),
 
   ExerciseModel(
@@ -18959,8 +17857,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "full_body", "dumbbell", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20de%20halteres%20de%204%20maneiras%20(2).gif',
   ),
 
   ExerciseModel(
@@ -18989,8 +17885,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20de%20panturrilha%20com%20alavanca.gif',
   ),
 
   ExerciseModel(
@@ -19025,8 +17919,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20de%20panturrilha%20com%20apoio%20de%20banco.gif',
   ),
 
   ExerciseModel(
@@ -19061,8 +17953,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20de%20panturrilha%20com%20apoio%20de%20uma%20perna.gif',
   ),
 
   ExerciseModel(
@@ -19097,8 +17987,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20de%20panturrilha%20com%20apoio%20e%20sobrecarga.gif',
   ),
 
   ExerciseModel(
@@ -19128,8 +18016,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20frontal%20alternado%20com%20haltere%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -19164,8 +18050,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20frontal%20com%20anilha.gif',
   ),
 
   ExerciseModel(
@@ -19194,8 +18078,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "barbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20frontal%20com%20barra.gif',
   ),
 
   ExerciseModel(
@@ -19224,8 +18106,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20frontal%20de%20cabo%20com%20dois%20bra%C3%A7os.gif',
   ),
 
   ExerciseModel(
@@ -19254,8 +18134,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20frontal%20unilateral%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -19284,8 +18162,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "kettlebell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20lateral%20com%20kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -19319,8 +18195,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20Lateral%20de%20Perna%20em%20Quatro%20Apoios.gif',
   ),
 
   ExerciseModel(
@@ -19351,8 +18225,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 1.0,
     kneeStress: 0.3,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20Terra%20com%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -19391,8 +18263,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 1.0,
     kneeStress: 0.3,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20Terra%20com%20Barra%20Hexagonal.gif',
   ),
 
   ExerciseModel(
@@ -19431,8 +18301,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 1.0,
     kneeStress: 0.3,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20Terra%20com%20Barra%20no%20Landmine.gif',
   ),
 
   ExerciseModel(
@@ -19471,8 +18339,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 1.0,
     kneeStress: 0.3,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20Terra%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -19511,8 +18377,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 1.0,
     kneeStress: 0.3,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20Terra%20com%20Kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -19551,8 +18415,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 1.0,
     kneeStress: 0.3,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20terra%20romeno%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -19592,8 +18454,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 1.0,
     kneeStress: 0.3,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20Terra%20Romeno.gif',
   ),
 
   ExerciseModel(
@@ -19632,8 +18492,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 1.0,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20Terra%20Sum%C3%B4%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -19673,8 +18531,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 1.0,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20Terra%20Sum%C3%B4.gif',
   ),
 
   ExerciseModel(
@@ -19714,8 +18570,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 1.0,
     kneeStress: 0.3,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20Terra%20Unilateral.gif',
   ),
 
   ExerciseModel(
@@ -19755,8 +18609,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 1.0,
     kneeStress: 0.3,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20Terra%20Zercher.gif',
   ),
 
   ExerciseModel(
@@ -19796,8 +18648,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 1.0,
     kneeStress: 0.3,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20Terra.gif',
   ),
 
   ExerciseModel(
@@ -19835,8 +18685,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Levantamento%20Turco.gif',
   ),
 
   ExerciseModel(
@@ -19871,8 +18719,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Medicine%20Ball%20Rotational%20Throw.gif',
   ),
 
   ExerciseModel(
@@ -19903,8 +18749,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Meio%20Agachado%20com%20Puxada%20para%20o%20Rosto%20no%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -19941,8 +18785,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.7,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Mergulho%20Coreano.gif',
   ),
 
   ExerciseModel(
@@ -19979,8 +18821,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.7,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Mergulho%20de%20peito%20assistido.gif',
   ),
 
   ExerciseModel(
@@ -20009,8 +18849,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["compound", "triceps", "machine", "push_vertical"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Mergulho%20de%20tr%C3%ADceps%20com%20alavanca.gif',
   ),
 
   ExerciseModel(
@@ -20046,8 +18884,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Mergulho%20de%20tr%C3%ADceps.gif',
   ),
 
   ExerciseModel(
@@ -20084,8 +18920,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.7,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Mergulho%20reverso.gif',
   ),
 
   ExerciseModel(
@@ -20121,8 +18955,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Mergulhos%20Assistidos%20para%20Tr%C3%ADceps.gif',
   ),
 
   ExerciseModel(
@@ -20158,8 +18990,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Mergulhos%20para%20tr%C3%ADceps%20no%20ch%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -20194,8 +19024,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Mesa%20Flexora%20Unilateral.gif',
   ),
 
   ExerciseModel(
@@ -20230,8 +19058,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Mesa%20flexora.gif',
   ),
 
   ExerciseModel(
@@ -20265,8 +19091,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Minhoca.gif',
   ),
 
   ExerciseModel(
@@ -20296,8 +19120,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.5,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Moinho%20com%20Kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -20324,8 +19146,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "full_body", "dumbbell", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Moinho%20de%20vento%20com%20haltere.gif',
   ),
 
   ExerciseModel(
@@ -20363,8 +19183,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Muscle%20Snatch.gif',
   ),
 
   ExerciseModel(
@@ -20401,8 +19219,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.8,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Muscle%20up.gif',
   ),
 
   ExerciseModel(
@@ -20431,8 +19247,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "glutes", "machine"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/M%C3%A1quina%20de%20Abdu%C3%A7%C3%A3o%20de%20Quadril.gif',
   ),
 
   ExerciseModel(
@@ -20461,8 +19275,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "inner_thigh", "machine"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/M%C3%A1quina%20de%20Adu%C3%A7%C3%A3o%20de%20Quadril.gif',
   ),
 
   ExerciseModel(
@@ -20492,8 +19304,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/M%C3%A1quina%20de%20Caminhada%20Ondulat%C3%B3rio.gif',
   ),
 
   ExerciseModel(
@@ -20522,8 +19332,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "side_delt", "machine"],
     lengthBias: 'shortened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/M%C3%A1quina%20de%20eleva%C3%A7%C3%A3o%20lateral.gif',
   ),
 
   ExerciseModel(
@@ -20552,8 +19360,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["compound", "chest", "machine", "push_horizontal"],
     lengthBias: 'shortened',
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/M%C3%A1quina%20de%20Flex%C3%A3o%20de%20Perna%20Unilateral.gif',
   ),
 
   ExerciseModel(
@@ -20583,8 +19389,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/M%C3%A1quina%20de%20flex%C3%A3o%20de%20tr%C3%ADceps.gif',
   ),
 
   ExerciseModel(
@@ -20611,8 +19415,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "full_body", "machine"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/M%C3%A1quina%20de%20remo.gif',
   ),
 
   ExerciseModel(
@@ -20641,8 +19443,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "machine"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/M%C3%A1quina%20de%20rosca%20direta.gif',
   ),
 
   ExerciseModel(
@@ -20672,8 +19472,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/M%C3%A1quina%20de%20voador%20de%20peito%20inclinado.gif',
   ),
 
   ExerciseModel(
@@ -20703,8 +19501,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/M%C3%A1quina%20El%C3%ADptica.gif',
   ),
 
   ExerciseModel(
@@ -20734,8 +19530,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/M%C3%A1quina%20Simulador%20Escada.gif',
   ),
 
   ExerciseModel(
@@ -20772,8 +19566,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.7,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Nave%20Seal%20Burpee.gif',
   ),
 
   ExerciseModel(
@@ -20802,8 +19594,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "machine"],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Panturrilha%20em%20P%C3%A9%20no%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -20838,8 +19628,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Panturrilhas%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -20875,8 +19663,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.7,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Paralela.gif',
   ),
 
   ExerciseModel(
@@ -20912,8 +19698,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.7,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Paralelas%20entre%20Cadeiras.gif',
   ),
 
   ExerciseModel(
@@ -20949,8 +19733,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.7,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Paralelas%20na%20Argola.gif',
   ),
 
   ExerciseModel(
@@ -20980,8 +19762,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.7,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Paralelas%20na%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -21017,8 +19797,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.7,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Paralelas.gif',
   ),
 
   ExerciseModel(
@@ -21053,8 +19831,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Passagem%20de%20Bola%20Medicinal%20de%20Peito%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -21087,8 +19863,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Passo%20de%20Esqui.gif',
   ),
 
   ExerciseModel(
@@ -21125,8 +19899,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Passo%20Invertido%20com%20Eleva%C3%A7%C3%A3o%20do%20Joelho.gif',
   ),
 
   ExerciseModel(
@@ -21163,8 +19935,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Passo%20Lateral%20em%20Alta%20Velocidade.gif',
   ),
 
   ExerciseModel(
@@ -21195,8 +19965,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 1.0,
     kneeStress: 0.3,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Peso%20muerto%20piernas%20r%C3%ADgidas%20con%20barra.gif',
   ),
 
   ExerciseModel(
@@ -21233,8 +20001,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Planche%20com%20Flex%C3%A3o%20de%20Bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -21270,8 +20036,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     shoulderStress: 1.0,
     cnsLoad: 0.9,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Planche.gif',
   ),
 
   ExerciseModel(
@@ -21307,8 +20071,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Polichinelo%20Frontal.gif',
   ),
 
   ExerciseModel(
@@ -21344,8 +20106,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Polichinelos.gif',
   ),
 
   ExerciseModel(
@@ -21374,8 +20134,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "glutes", "band", "hinge", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Ponte%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -21404,8 +20162,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "glutes", "dumbbell", "hinge", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Ponte%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -21434,8 +20190,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "glutes", "barbell", "hinge", "home_friendly"],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Ponte%20de%20Gl%C3%BAteos%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -21471,8 +20225,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Ponte%20de%20Gl%C3%BAteos.gif',
   ),
 
   ExerciseModel(
@@ -21508,8 +20260,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Ponte%20em%20Unilateral.gif',
   ),
 
   ExerciseModel(
@@ -21545,8 +20295,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Ponte%20Unilateral%20Com%20Uma%20Perna%20Levantada.gif',
   ),
 
   ExerciseModel(
@@ -21582,8 +20330,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Ponte%20Unilateral%20no%20Banco.gif',
   ),
 
   ExerciseModel(
@@ -21617,8 +20363,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Postura%20da%20Cobra%20-%20Alongamento%20Abdominal.gif',
   ),
 
   ExerciseModel(
@@ -21652,8 +20396,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Postura%20da%20Virilha%20Sentada.gif',
   ),
 
   ExerciseModel(
@@ -21687,8 +20429,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Postura%20de%20meio%20sapo.gif',
   ),
 
   ExerciseModel(
@@ -21722,8 +20462,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Postura%20de%20peixe.gif',
   ),
 
   ExerciseModel(
@@ -21758,8 +20496,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     spinalLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Postura%20do%20Arco%20Oscilante.gif',
   ),
 
   ExerciseModel(
@@ -21794,8 +20530,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     spinalLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Postura%20do%20Arco.gif',
   ),
 
   ExerciseModel(
@@ -21829,8 +20563,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Postura%20do%20Beb%C3%AA%20Feliz.gif',
   ),
 
   ExerciseModel(
@@ -21864,8 +20596,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Postura%20do%20sapo.gif',
   ),
 
   ExerciseModel(
@@ -21903,8 +20633,6 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.6,
     kneeStress: 0.4,
     cnsLoad: 1.0,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Power%20Clean.gif',
   ),
 
   ExerciseModel(
@@ -21931,8 +20659,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["isolation", "full_body", "machine"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Press%C3%A3o%20Unilateral%20Assistida%20por%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -21967,8 +20693,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Protra%C3%A7%C3%A3o%20e%20retra%C3%A7%C3%A3o%20da%20esc%C3%A1pula.gif',
   ),
 
   ExerciseModel(
@@ -22004,8 +20728,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.3,
     cnsLoad: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pular%20Corda.gif',
   ),
 
   ExerciseModel(
@@ -22042,8 +20764,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pull%20Up.gif',
   ),
 
   ExerciseModel(
@@ -22080,8 +20800,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pulldown%20com%20corda.gif',
   ),
 
   ExerciseModel(
@@ -22118,8 +20836,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pulldown%20inclinado%20com%20corda.gif',
   ),
 
   ExerciseModel(
@@ -22150,8 +20866,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pulldown%20Unilateral%20no%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -22182,8 +20896,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pullover%20com%20barra%20no%20banco%20declinado.gif',
   ),
 
   ExerciseModel(
@@ -22214,8 +20926,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pullover%20com%20Barra%20W%20Pegada%20invertida.gif',
   ),
 
   ExerciseModel(
@@ -22246,8 +20956,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pullover%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -22278,8 +20986,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pullover%20com%20cabo%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -22310,8 +21016,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pullover%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -22342,8 +21046,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pullover%20com%20haltere.gif',
   ),
 
   ExerciseModel(
@@ -22381,8 +21083,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pullover%20com%20Halteres%20na%20Bola%20de%20Estabilidade.gif',
   ),
 
   ExerciseModel(
@@ -22413,8 +21113,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pullover%20de%20bra%C3%A7o%20reto%20com%20halteres%20(joelhos%20a%2090%20graus).gif',
   ),
 
   ExerciseModel(
@@ -22445,8 +21143,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pullover%20na%20M%C3%A1quina%20de%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -22481,8 +21177,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pulo%20de%20impulso%20de%20quadril%20de%20uma%20perna.gif',
   ),
 
   ExerciseModel(
@@ -22518,8 +21212,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pulos%20com%20Abertura%20de%20Pernas.gif',
   ),
 
   ExerciseModel(
@@ -22555,8 +21247,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Pulos%20de%20Joelho%20Elevado.gif',
   ),
 
   ExerciseModel(
@@ -22587,8 +21277,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20ajoelhada%20com%20banda%20de%20resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -22619,8 +21307,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20Alta%20com%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -22658,8 +21344,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20Alta%20com%20Tri%C3%A2ngulo.gif',
   ),
 
   ExerciseModel(
@@ -22697,8 +21381,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20Alta%20com%20Um%20Joelho%20Apoiado.gif',
   ),
 
   ExerciseModel(
@@ -22736,8 +21418,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20Alta%20Invertida.gif',
   ),
 
   ExerciseModel(
@@ -22768,8 +21448,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20alta%20na%20M%C3%A1quina%20Nuca.gif',
   ),
 
   ExerciseModel(
@@ -22800,8 +21478,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20alta%20na%20polia%20nuca.gif',
   ),
 
   ExerciseModel(
@@ -22832,8 +21508,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20Alta%20Neutra%20com%20Cabos%20Duplos%20no%20Ch%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -22871,8 +21545,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20alta%20unilateral%20alta%20ajoelhada.gif',
   ),
 
   ExerciseModel(
@@ -22910,8 +21582,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20Alta.gif',
   ),
 
   ExerciseModel(
@@ -22942,8 +21612,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -22974,8 +21642,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20com%20Halteres%20entre%20as%20Pernas.gif',
   ),
 
   ExerciseModel(
@@ -23006,8 +21672,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20com%20Um%20Bra%C3%A7o%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -23045,8 +21709,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20com%20Um%20Bra%C3%A7o%20com%20Peso%20Adicional.gif',
   ),
 
   ExerciseModel(
@@ -23077,8 +21739,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20De%20Cabo%20Ajoelhada.gif',
   ),
 
   ExerciseModel(
@@ -23109,8 +21769,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20de%20face%20com%20cabo%20cruzado.gif',
   ),
 
   ExerciseModel(
@@ -23141,8 +21799,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20em%20P%C3%A9%20com%20Tor%C3%A7%C3%A3o%20no%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -23173,8 +21829,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20escapular%20na%20barra%20fixa.gif',
   ),
 
   ExerciseModel(
@@ -23212,8 +21866,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20Front%20Lever.gif',
   ),
 
   ExerciseModel(
@@ -23251,8 +21903,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20isom%C3%A9trica.gif',
   ),
 
   ExerciseModel(
@@ -23283,8 +21933,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20na%20Polia%20Alta%20com%20Pegada%20Fechada.gif',
   ),
 
   ExerciseModel(
@@ -23322,8 +21970,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxada%20para%20o%20Rosto%20de%20Joelhos.gif',
   ),
 
   ExerciseModel(
@@ -23354,8 +22000,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Puxar%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -23390,8 +22034,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/P%C3%AAndulo%20de%20ombro.gif',
   ),
 
   ExerciseModel(
@@ -23425,8 +22067,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Quadr%C3%BApede%20com%20eleva%C3%A7%C3%A3o%20de%20bra%C3%A7o%20e%20perna%20contralateral.gif',
   ),
 
   ExerciseModel(
@@ -23460,8 +22100,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Quatro%20Apoios.gif',
   ),
 
   ExerciseModel(
@@ -23495,8 +22133,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rastejo%20de%20Urso.gif',
   ),
 
   ExerciseModel(
@@ -23527,8 +22163,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20afastada%20com%20banda%20de%20resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -23566,8 +22200,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Alta%20(1).gif',
   ),
 
   ExerciseModel(
@@ -23598,8 +22230,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Alta%20Com%20Barra%20W.gif',
   ),
 
   ExerciseModel(
@@ -23630,8 +22260,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Alta%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -23669,8 +22297,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Alta%20com%20Halter.gif',
   ),
 
   ExerciseModel(
@@ -23701,8 +22327,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20alta%20com%20halteres%20unilateral.gif',
   ),
 
   ExerciseModel(
@@ -23733,8 +22357,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20com%20banda%20de%20resist%C3%AAncia%20curvada%20para%20deltoides%20posterior.gif',
   ),
 
   ExerciseModel(
@@ -23765,8 +22387,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20com%20barra%20curvada%20para%20tr%C3%A1s.gif',
   ),
 
   ExerciseModel(
@@ -23797,8 +22417,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20com%20barra.gif',
   ),
 
   ExerciseModel(
@@ -23829,8 +22447,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20com%20Cabo%20Sentada%20Unilateral%20com%20Tor%C3%A7%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -23858,8 +22474,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "core", "dumbbell", "isometric", "home_friendly"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20com%20Halteres%20em%20Posi%C3%A7%C3%A3o%20Prancha.gif',
   ),
 
   ExerciseModel(
@@ -23890,8 +22504,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20com%20halteres%20para%20a%20posterior%20de%20ombros.gif',
   ),
 
   ExerciseModel(
@@ -23929,8 +22541,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20com%20o%20Peso%20do%20Corpo%20na%20Porta.gif',
   ),
 
   ExerciseModel(
@@ -23968,8 +22578,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20cruzada%20no%20cross.gif',
   ),
 
   ExerciseModel(
@@ -23997,8 +22605,6 @@ final List<ExerciseModel> exerciseLibrary = [
     progressionIds: [],
     regressionIds: [],
     tags: ["compound", "back", "barbell", "pull_horizontal", "home_friendly"],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20curvada%20com%20barra%20de%20pegada%20alternada%20ampla%20com%20adu%C3%A7%C3%A3o%20de%20escapula.gif',
   ),
 
   ExerciseModel(
@@ -24029,8 +22635,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Curvada%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -24061,8 +22665,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20curvada%20com%20halteres%20com%20pegada%20invertida.gif',
   ),
 
   ExerciseModel(
@@ -24093,8 +22695,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20curvada%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -24131,8 +22731,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20curvada%20com%20kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -24163,8 +22761,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Curvada%20com%20Pegada%20Invertida%20na%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -24202,8 +22798,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Curvada%20em%20T.gif',
   ),
 
   ExerciseModel(
@@ -24234,8 +22828,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Curvada%20Inclinada%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -24266,8 +22858,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Curvada%20no%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -24298,8 +22888,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20de%20deltoide%20posterior%20sentado%20com%20haltere.gif',
   ),
 
   ExerciseModel(
@@ -24337,8 +22925,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20de%20espingarda.gif',
   ),
 
   ExerciseModel(
@@ -24369,8 +22955,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20em%20Y%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -24401,8 +22985,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20frontal%20com%20alavanca.gif',
   ),
 
   ExerciseModel(
@@ -24440,8 +23022,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20inclinada%20a%2045%20graus%20(1).gif',
   ),
 
   ExerciseModel(
@@ -24479,8 +23059,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Inclinada%20a%2045%20Graus.gif',
   ),
 
   ExerciseModel(
@@ -24511,8 +23089,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Inclinada%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -24543,8 +23119,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Inclinada%20com%20Pegada%20Neutra%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -24575,8 +23149,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Inclinada%20com%20Pegada%20Reversa%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -24607,8 +23179,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Inclinada%20no%20banco%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -24639,8 +23209,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20inversa%20com%20cabos%20deitado.gif',
   ),
 
   ExerciseModel(
@@ -24678,8 +23246,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Invertida%20Com%20Argolas.gif',
   ),
 
   ExerciseModel(
@@ -24717,8 +23283,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20invertida%20com%20cable%20inclinado.gif',
   ),
 
   ExerciseModel(
@@ -24749,8 +23313,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/remada%20invertida%20com%20halteres%20inclinado.gif',
   ),
 
   ExerciseModel(
@@ -24788,8 +23350,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Invertida%20na%20Mesa.gif',
   ),
 
   ExerciseModel(
@@ -24827,8 +23387,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Invertida.gif',
   ),
 
   ExerciseModel(
@@ -24859,8 +23417,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20lateral%20com%20halteres%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -24891,8 +23447,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Renegada%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -24930,8 +23484,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Sentada%20com%20Anilhas.gif',
   ),
 
   ExerciseModel(
@@ -24962,8 +23514,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Sentada%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -24994,8 +23544,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Sentada%20com%20Corda%20na%20Polia.gif',
   ),
 
   ExerciseModel(
@@ -25026,8 +23574,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20sentada%20com%20faixa.gif',
   ),
 
   ExerciseModel(
@@ -25058,8 +23604,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Sentada%20na%20M%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -25090,8 +23634,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20sentado%20com%20cabo%20pegada%20fechada.gif',
   ),
 
   ExerciseModel(
@@ -25122,8 +23664,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20T%20com%20alavanca.gif',
   ),
 
   ExerciseModel(
@@ -25161,8 +23701,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20T%20com%20Landmine.gif',
   ),
 
   ExerciseModel(
@@ -25193,8 +23731,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20T%20invertida%20com%20alavanca.gif',
   ),
 
   ExerciseModel(
@@ -25225,8 +23761,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20unilateral%20com%20barra%20landmine.gif',
   ),
 
   ExerciseModel(
@@ -25257,8 +23791,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.7,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Unilateral%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -25289,8 +23821,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20Unilateral%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -25328,8 +23858,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.3,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Remada%20unilateral%20com%20gymstick.gif',
   ),
 
   ExerciseModel(
@@ -25363,8 +23891,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rolagem%20de%20espuma%20para%20isquiotibiais.gif',
   ),
 
   ExerciseModel(
@@ -25398,8 +23924,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rolamento%20de%20espuma%20nas%20costas.gif',
   ),
 
   ExerciseModel(
@@ -25433,8 +23957,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rolamento%20de%20espuma%20nos%20quadr%C3%ADceps.gif',
   ),
 
   ExerciseModel(
@@ -25468,8 +23990,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rolamento%20de%20espuma%20nos%20romboides.gif',
   ),
 
   ExerciseModel(
@@ -25504,8 +24024,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     kneeStress: 0.2,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rolamento%20de%20Espuma%20para%20Panturrilhas.gif',
   ),
 
   ExerciseModel(
@@ -25539,8 +24057,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rolando%20como%20uma%20Bola.gif',
   ),
 
   ExerciseModel(
@@ -25574,8 +24090,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rolo%20de%20espuma%20ombro%20posterior.gif',
   ),
 
   ExerciseModel(
@@ -25609,8 +24123,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'lengthened',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rolo%20de%20espuma%20para%20fascite%20plantar.gif',
   ),
 
   ExerciseModel(
@@ -25645,8 +24157,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rolo%20de%20Espuma%20para%20os%20Gl%C3%BAteos.gif',
   ),
 
   ExerciseModel(
@@ -25675,8 +24185,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20alternada%20com%20barra.gif',
   ),
 
   ExerciseModel(
@@ -25705,8 +24213,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20alternada%20com%20halteres%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -25741,8 +24247,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Banco%20Inclinado.gif',
   ),
 
   ExerciseModel(
@@ -25771,8 +24275,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "cable"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Bilateral%20com%20Cabo%20em%20Banco%20Inclinado.gif',
   ),
 
   ExerciseModel(
@@ -25801,8 +24303,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20b%C3%ADceps%20alta%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -25831,8 +24331,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20b%C3%ADceps%20com%20cabo%20ajoelhado.gif',
   ),
 
   ExerciseModel(
@@ -25861,8 +24359,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "band", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20b%C3%ADceps%20com%20faixa%20el%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -25891,8 +24387,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20b%C3%ADceps%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -25921,8 +24415,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20b%C3%ADceps%20com%20pegada%20fechada%20na%20barra%20W.gif',
   ),
 
   ExerciseModel(
@@ -25951,8 +24443,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "cable"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20b%C3%ADceps%20inclinada%20com%20cabos.gif',
   ),
 
   ExerciseModel(
@@ -25981,8 +24471,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20b%C3%ADceps%20inclinada%20com%20halteres%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -26017,8 +24505,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20b%C3%ADceps%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -26047,8 +24533,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20b%C3%ADceps%20unilateral%20com%20pegada%20invertida%20em%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -26077,8 +24561,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20b%C3%ADceps%20unilateral%20no%20cabo%20alto.gif',
   ),
 
   ExerciseModel(
@@ -26113,8 +24595,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20b%C3%ADceps%20unilateral.gif',
   ),
 
   ExerciseModel(
@@ -26143,8 +24623,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20com%20barra.gif',
   ),
 
   ExerciseModel(
@@ -26173,8 +24651,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20com%20cabo%20de%20um%20bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -26203,8 +24679,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20com%20halteres%20no%20colete%20scott.gif',
   ),
 
   ExerciseModel(
@@ -26233,8 +24707,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -26263,8 +24735,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20com%20Polia%20Alta.gif',
   ),
 
   ExerciseModel(
@@ -26293,8 +24763,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20concentrada%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -26329,8 +24797,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Concentrada%20com%20Pegada%20Fechada%20Sentado.gif',
   ),
 
   ExerciseModel(
@@ -26365,8 +24831,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20concentrada%20com%20perna.gif',
   ),
 
   ExerciseModel(
@@ -26395,8 +24859,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20concentrada%20unilateral%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -26431,8 +24893,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20concentrada.gif',
   ),
 
   ExerciseModel(
@@ -26461,8 +24921,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "machine"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20de%20b%C3%ADceps%20com%20alavanca.gif',
   ),
 
   ExerciseModel(
@@ -26491,8 +24949,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20de%20B%C3%ADceps%20com%20Halteres%20no%20Banco%20Scott.gif',
   ),
 
   ExerciseModel(
@@ -26523,8 +24979,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.3,
     shoulderStress: 0.4,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20de%20B%C3%ADceps%20com%20Puxada%20de%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -26553,8 +25007,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "band", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20de%20b%C3%ADceps%20unilateral%20com%20faixa%20de%20resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -26582,8 +25034,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20de%20dedo%20com%20barra.gif',
   ),
 
   ExerciseModel(
@@ -26611,8 +25061,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20de%20Dedos%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -26640,8 +25088,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20de%20Punho%20com%20Barra%20Atr%C3%A1s%20das%20Costas.gif',
   ),
 
   ExerciseModel(
@@ -26669,8 +25115,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20de%20punho%20com%20barra.gif',
   ),
 
   ExerciseModel(
@@ -26704,8 +25148,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20de%20Punho%20Pegada%20Neutra%20com%20Anilhas.gif',
   ),
 
   ExerciseModel(
@@ -26733,8 +25175,6 @@ final List<ExerciseModel> exerciseLibrary = [
     regressionIds: [],
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20de%20Punho%20Reversa%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -26763,8 +25203,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Direta%20com%20Barra%20deitado%20em%20Banco%20Alto.gif',
   ),
 
   ExerciseModel(
@@ -26793,8 +25231,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Direta%20com%20Barra%20em%20Pegada%20Fechada.gif',
   ),
 
   ExerciseModel(
@@ -26823,8 +25259,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Direta%20com%20Barra%20no%20colete%20scott.gif',
   ),
 
   ExerciseModel(
@@ -26853,8 +25287,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20direta%20com%20barra%20w.gif',
   ),
 
   ExerciseModel(
@@ -26883,8 +25315,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Direta%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -26913,8 +25343,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Direta%20com%20Cabo%20deitado.gif',
   ),
 
   ExerciseModel(
@@ -26943,8 +25371,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20inversa%20com%20barra%20W.gif',
   ),
 
   ExerciseModel(
@@ -26973,8 +25399,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Inversa%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -27003,8 +25427,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Inversa%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -27039,8 +25461,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20martelo%20com%20corda.gif',
   ),
 
   ExerciseModel(
@@ -27069,8 +25489,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "band", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20martelo%20com%20faixa%20de%20resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -27105,8 +25523,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20martelo%20com%20garrafa%20de%20%C3%A1gua.gif',
   ),
 
   ExerciseModel(
@@ -27141,8 +25557,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20martelo%20com%20halter%20no%20colete%20scott.gif',
   ),
 
   ExerciseModel(
@@ -27171,8 +25585,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20martelo%20com%20halteres%20no%20banco%20scott.gif',
   ),
 
   ExerciseModel(
@@ -27207,8 +25619,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20martelo%20sentada.gif',
   ),
 
   ExerciseModel(
@@ -27243,8 +25653,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20martelo.gif',
   ),
 
   ExerciseModel(
@@ -27273,8 +25681,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20no%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -27309,8 +25715,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20pronada%20no%20banco%20inclinado.gif',
   ),
 
   ExerciseModel(
@@ -27339,8 +25743,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20scott%20alternados%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -27369,8 +25771,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "machine"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Scott%20com%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -27399,8 +25799,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "barbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Scott%20com%20Barra%20W.gif',
   ),
 
   ExerciseModel(
@@ -27429,8 +25827,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Scott%20com%20Halteres%20Martelo%20no%20Banco.gif',
   ),
 
   ExerciseModel(
@@ -27459,8 +25855,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20scott%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -27489,8 +25883,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20scott%20unilateral%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -27519,8 +25911,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "dumbbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20spider%20com%20%C3%BAnico%20haltere.gif',
   ),
 
   ExerciseModel(
@@ -27555,8 +25945,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20spider%20unilateral.gif',
   ),
 
   ExerciseModel(
@@ -27585,8 +25973,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "biceps", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Unilateral%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -27621,8 +26007,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rosca%20Zottman.gif',
   ),
 
   ExerciseModel(
@@ -27655,8 +26039,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20da%20coluna%20tor%C3%A1cica%20de%20joelhos.gif',
   ),
 
   ExerciseModel(
@@ -27689,8 +26071,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20de%20P%C3%A9%20e%20Tornozelo.gif',
   ),
 
   ExerciseModel(
@@ -27723,8 +26103,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20do%20corpo%20superior%20deitado.gif',
   ),
 
   ExerciseModel(
@@ -27757,8 +26135,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -27791,8 +26167,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20espinhal%20deitado.gif',
   ),
 
   ExerciseModel(
@@ -27821,8 +26195,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20externa%20com%20cabo%20a%2090%20graus.gif',
   ),
 
   ExerciseModel(
@@ -27851,8 +26223,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20externa%20com%20cabo%20em%20posi%C3%A7%C3%A3o%20de%20joelhos.gif',
   ),
 
   ExerciseModel(
@@ -27881,8 +26251,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "dumbbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20externa%20de%20halteres%20apoiada%20no%20banco.gif',
   ),
 
   ExerciseModel(
@@ -27911,8 +26279,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20Externa%20de%20Ombro%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -27941,8 +26307,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "band", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20externa%20de%20ombro%20com%20faixa%20el%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -27971,8 +26335,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "band", "home_friendly"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20Externa%20De%20Quadril%20Com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -28001,8 +26363,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "band", "home_friendly"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20Externa%20de%20Quadril%20Sentado%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -28031,8 +26391,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "dumbbell", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20externa%20do%20ombro%20deitado%20com%20haltere.gif',
   ),
 
   ExerciseModel(
@@ -28067,8 +26425,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20externa%20do%20ombro.gif',
   ),
 
   ExerciseModel(
@@ -28097,8 +26453,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "band", "home_friendly"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20Externa%20do%20P%C3%A9%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -28127,8 +26481,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20interna%20de%20cabo%20a%2090%20graus.gif',
   ),
 
   ExerciseModel(
@@ -28157,8 +26509,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20interna%20de%20ombro%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -28187,8 +26537,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "cable"],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20interna%20do%20ombro%20sentada%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -28223,8 +26571,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20interna%20do%20ombro.gif',
   ),
 
   ExerciseModel(
@@ -28253,8 +26599,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "full_body", "band", "home_friendly"],
     lengthBias: 'mid_range',
     kneeStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20Interna%20do%20Quadril%20Sentado%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -28287,8 +26631,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Rota%C3%A7%C3%A3o%20para%20tr%C3%A1s%20de%20joelhos.gif',
   ),
 
   ExerciseModel(
@@ -28318,8 +26660,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Salto%20com%20halteres%20dividido.gif',
   ),
 
   ExerciseModel(
@@ -28356,8 +26696,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Salto%20com%20Joelhos%20Flexionados.gif',
   ),
 
   ExerciseModel(
@@ -28395,8 +26733,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Salto%20em%20Agachamento%20com%20Joelhos%20Flexionados.gif',
   ),
 
   ExerciseModel(
@@ -28433,8 +26769,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Salto%20em%20Caixa%20com%20uma%20Perna.gif',
   ),
 
   ExerciseModel(
@@ -28471,8 +26805,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Salto%20em%20Dist%C3%A2ncia.gif',
   ),
 
   ExerciseModel(
@@ -28509,8 +26841,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Salto%20em%20Uma%20Perna%20para%20a%20Frente.gif',
   ),
 
   ExerciseModel(
@@ -28548,8 +26878,6 @@ final List<ExerciseModel> exerciseLibrary = [
     spinalLoad: 0.5,
     kneeStress: 0.5,
     cnsLoad: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Salto%20na%20Caixa%20para%20Agachamento%20Pistola.gif',
   ),
 
   ExerciseModel(
@@ -28586,8 +26914,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Salto%20na%20Caixa.gif',
   ),
 
   ExerciseModel(
@@ -28624,8 +26950,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Salto%20para%20Caixa%202%20para%201.gif',
   ),
 
   ExerciseModel(
@@ -28662,8 +26986,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Salto%20para%20Tr%C3%A1s.gif',
   ),
 
   ExerciseModel(
@@ -28698,8 +27020,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Saltos%20com%20Joelhos%20Altos.gif',
   ),
 
   ExerciseModel(
@@ -28736,8 +27056,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Saltos%20de%20afastamento.gif',
   ),
 
   ExerciseModel(
@@ -28774,8 +27092,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Saltos%20em%20tesoura.gif',
   ),
 
   ExerciseModel(
@@ -28812,8 +27128,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Saltos%20Pliom%C3%A9tricos%20em%20Zigue-Zague.gif',
   ),
 
   ExerciseModel(
@@ -28850,8 +27164,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     kneeStress: 0.6,
     cnsLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Saltos%20Potentes.gif',
   ),
 
   ExerciseModel(
@@ -28884,8 +27196,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Serrote.gif',
   ),
 
   ExerciseModel(
@@ -28918,8 +27228,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Snap%20Jumps.gif',
   ),
 
   ExerciseModel(
@@ -28953,8 +27261,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Step%20com%20el%C3%A1stico.gif',
   ),
 
   ExerciseModel(
@@ -28991,8 +27297,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.7,
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Stiff%20com%20barra.gif',
   ),
 
   ExerciseModel(
@@ -29030,8 +27334,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.7,
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Stiff%20com%20El%C3%A1stico%20de%20Resist%C3%AAncia.gif',
   ),
 
   ExerciseModel(
@@ -29069,8 +27371,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.7,
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Stiff%20com%20Halter.gif',
   ),
 
   ExerciseModel(
@@ -29107,8 +27407,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.7,
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Stiff%20Unilateral%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -29145,8 +27443,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.7,
     kneeStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Stiff%20Unilateral%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -29179,8 +27475,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Subida%20na%20Corda%20sem%20Pernas.gif',
   ),
 
   ExerciseModel(
@@ -29214,8 +27508,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Subida%20no%20Step%20com%20Eleva%C3%A7%C3%A3o%20de%20Joelhos.gif',
   ),
 
   ExerciseModel(
@@ -29250,8 +27542,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     spinalLoad: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Superman.gif',
   ),
 
   ExerciseModel(
@@ -29281,8 +27571,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Alternado%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -29312,8 +27600,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -29343,8 +27629,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20banco%20inclinado%20no%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -29374,8 +27658,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'shortened',
     spinalLoad: 0.4,
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20barra%20declinado.gif',
   ),
 
   ExerciseModel(
@@ -29405,8 +27687,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.4,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20barra%20no%20ch%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -29436,8 +27716,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20cabo%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -29467,8 +27745,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20haltere%20pegada%20fechada.gif',
   ),
 
   ExerciseModel(
@@ -29498,8 +27774,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20halteres%20com%20pegada%20fechada.gif',
   ),
 
   ExerciseModel(
@@ -29529,8 +27803,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20Halteres%20Pegada%20Invertida.gif',
   ),
 
   ExerciseModel(
@@ -29560,8 +27832,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -29597,8 +27867,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20kettlebell%20de%20um%20bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -29634,8 +27902,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20kettlebell%20no%20ch%C3%A3o.gif',
   ),
 
   ExerciseModel(
@@ -29672,8 +27938,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20pegada%20aberta.gif',
   ),
 
   ExerciseModel(
@@ -29703,8 +27967,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20Pegada%20Fechada%20Sentado%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -29741,8 +28003,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20com%20pegada%20fechada.gif',
   ),
 
   ExerciseModel(
@@ -29772,8 +28032,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'shortened',
     spinalLoad: 0.2,
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20declinada%20com%20alavanca.gif',
   ),
 
   ExerciseModel(
@@ -29803,8 +28061,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'shortened',
     spinalLoad: 0.2,
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20declinada%20na%20m%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -29834,8 +28090,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'shortened',
     spinalLoad: 0.2,
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Declinado%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -29865,8 +28119,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'shortened',
     spinalLoad: 0.2,
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20declinado%20na%20m%C3%A1quina%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -29903,8 +28155,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'shortened',
     spinalLoad: 0.2,
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20declinado%20pegada%20martelo.gif',
   ),
 
   ExerciseModel(
@@ -29934,8 +28184,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'shortened',
     spinalLoad: 0.2,
     shoulderStress: 0.3,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Declinado%20Unilateral%20Pegada%20Martelo%20com%20Haltere.gif',
   ),
 
   ExerciseModel(
@@ -29965,8 +28213,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20em%20P%C3%A9%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -30003,8 +28249,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Fechado.gif',
   ),
 
   ExerciseModel(
@@ -30034,8 +28278,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.4,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20inclinado%20com%20barra.gif',
   ),
 
   ExerciseModel(
@@ -30065,8 +28307,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20inclinado%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -30096,8 +28336,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20inclinado%20com%20halteres%20e%20pegada%20fechada.gif',
   ),
 
   ExerciseModel(
@@ -30127,8 +28365,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Inclinado%20com%20Halteres%20e%20Pegada%20Invertida.gif',
   ),
 
   ExerciseModel(
@@ -30158,8 +28394,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Inclinado%20com%20Halteres%20em%20Martelo.gif',
   ),
 
   ExerciseModel(
@@ -30189,8 +28423,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Inclinado%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -30227,8 +28459,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20inclinado%20com%20pegada%20fechada.gif',
   ),
 
   ExerciseModel(
@@ -30258,8 +28488,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Inclinado%20na%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -30289,8 +28517,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Inclinado%20na%20M%C3%A1quina%20com%20Pegada%20Martelo.gif',
   ),
 
   ExerciseModel(
@@ -30320,8 +28546,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20inclinado%20na%20m%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -30358,8 +28582,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20invertido%20com%20pegada%20aberta.gif',
   ),
 
   ExerciseModel(
@@ -30396,8 +28618,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Invertido%20com%20Pegada%20Fechada.gif',
   ),
 
   ExerciseModel(
@@ -30427,8 +28647,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20na%20M%C3%A1quina%20para%20Miolo%20do%20Peitoral.gif',
   ),
 
   ExerciseModel(
@@ -30458,8 +28676,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20na%20m%C3%A1quina%20Smith.gif',
   ),
 
   ExerciseModel(
@@ -30489,8 +28705,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20na%20m%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -30527,8 +28741,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20no%20banco%20inclinado%2030%20graus%20com%20pegada%20invertida.gif',
   ),
 
   ExerciseModel(
@@ -30558,8 +28770,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20no%20smith%20com%20o%20tri%C3%A2ngulo.gif',
   ),
 
   ExerciseModel(
@@ -30596,8 +28806,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20pegada%20martelo.gif',
   ),
 
   ExerciseModel(
@@ -30634,8 +28842,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20reto%20em%20p%C3%A9%20no%20cross%20over.gif',
   ),
 
   ExerciseModel(
@@ -30665,8 +28871,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Reto%20na%20M%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -30703,8 +28907,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Reto.gif',
   ),
 
   ExerciseModel(
@@ -30734,8 +28936,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20unilateral%20com%20Alavanca.gif',
   ),
 
   ExerciseModel(
@@ -30765,8 +28965,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Unilateral%20com%20Halteres%20com%20Pegada%20Reversa.gif',
   ),
 
   ExerciseModel(
@@ -30796,8 +28994,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Supino%20Unilateral%20no%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -30830,8 +29026,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Suspens%C3%A3o%20Passiva.gif',
   ),
 
   ExerciseModel(
@@ -30864,8 +29058,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Swimming.gif',
   ),
 
   ExerciseModel(
@@ -30898,8 +29090,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Swing%20360.gif',
   ),
 
   ExerciseModel(
@@ -30929,8 +29119,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.5,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Swing%20de%20kettlebell%20de%20um%20bra%C3%A7o.gif',
   ),
 
   ExerciseModel(
@@ -30960,8 +29148,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     spinalLoad: 0.5,
     cnsLoad: 0.5,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Swing%20de%20kettlebell.gif',
   ),
 
   ExerciseModel(
@@ -30994,8 +29180,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tesoura%20de%20Bra%C3%A7os.gif',
   ),
 
   ExerciseModel(
@@ -31029,8 +29213,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Toque%20Lateral%20dos%20Dedos%20dos%20P%C3%A9s%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -31064,8 +29246,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Toque%20nos%20Dedos%20dos%20P%C3%A9s%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -31099,8 +29279,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Toque%20nos%20Dedos%20dos%20P%C3%A9s%20Sentado.gif',
   ),
 
   ExerciseModel(
@@ -31134,8 +29312,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "no_equipment",
     ],
     lengthBias: 'mid_range',
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Toques%20de%20Dedos%20em%20P%C3%A9.gif',
   ),
 
   ExerciseModel(
@@ -31169,8 +29345,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tor%C3%A7%C3%A3o%20Obl%C3%ADqua%20Sentada.gif',
   ),
 
   ExerciseModel(
@@ -31203,8 +29377,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tor%C3%A7%C3%B5es%20do%20Cotovelo%20para%20o%20Joelho.gif',
   ),
 
   ExerciseModel(
@@ -31237,8 +29409,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tra%C3%A7%C3%A3o%20lateral%20com%20el%C3%A1stico.gif',
   ),
 
   ExerciseModel(
@@ -31267,8 +29437,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20Coice%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -31297,8 +29465,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "dumbbell", "home_friendly"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20Coice%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -31327,8 +29493,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20Franc%C3%AAs%20Alternada%20com%20Halteres%20no%20Banco%20Inclinado.gif',
   ),
 
   ExerciseModel(
@@ -31357,8 +29521,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "barbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20franc%C3%AAs%20com%20barra%20W%20acima%20da%20cabe%C3%A7a%20sentado.gif',
   ),
 
   ExerciseModel(
@@ -31387,8 +29549,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "band", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.4,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20Franc%C3%AAs%20com%20Faixa%20El%C3%A1stica%20Acima%20da%20Cabe%C3%A7a.gif',
   ),
 
   ExerciseModel(
@@ -31423,8 +29583,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20Franc%C3%AAs%20com%20Halter%20Bilateral.gif',
   ),
 
   ExerciseModel(
@@ -31453,8 +29611,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20Franc%C3%AAs%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -31489,8 +29645,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20Franc%C3%AAs%20em%20P%C3%A9%20com%20Gymstick.gif',
   ),
 
   ExerciseModel(
@@ -31519,8 +29673,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20franc%C3%AAs%20na%20polia%20com%20corda.gif',
   ),
 
   ExerciseModel(
@@ -31555,8 +29707,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20franc%C3%AAs%20no%20banco%20inclinado%20com%20halter.gif',
   ),
 
   ExerciseModel(
@@ -31585,8 +29735,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20franc%C3%AAs%20unilateral%20no%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -31621,8 +29769,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20no%20Banco(1).gif',
   ),
 
   ExerciseModel(
@@ -31657,8 +29803,6 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20no%20Banco.gif',
   ),
 
   ExerciseModel(
@@ -31687,8 +29831,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "barbell", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20Pulley%20barra%20V.gif',
   ),
 
   ExerciseModel(
@@ -31717,8 +29859,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "barbell", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20pulley%20barra.gif',
   ),
 
   ExerciseModel(
@@ -31747,8 +29887,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20pulley%20corda.gif',
   ),
 
   ExerciseModel(
@@ -31777,8 +29915,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "cable"],
     lengthBias: 'shortened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20pulley%20pegada%20invertida.gif',
   ),
 
   ExerciseModel(
@@ -31807,8 +29943,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20Testa%20com%20Banco%20Declinado%20com%20Halteres.gif',
   ),
 
   ExerciseModel(
@@ -31837,8 +29971,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "barbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20Testa%20com%20Barra%20Pegada%20Invertida.gif',
   ),
 
   ExerciseModel(
@@ -31867,8 +29999,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "barbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20testa%20com%20barra.gif',
   ),
 
   ExerciseModel(
@@ -31897,8 +30027,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "band", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20Testa%20com%20Faixa%20El%C3%A1stica.gif',
   ),
 
   ExerciseModel(
@@ -31927,8 +30055,6 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: ["isolation", "triceps", "dumbbell", "home_friendly"],
     lengthBias: 'lengthened',
     shoulderStress: 0.1,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Tr%C3%ADceps%20testa%20pegada%20neutra%20com%20halteres.gif',
   ),
 
   ExerciseModel(
@@ -31961,8 +30087,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/V-Up%20com%20Bola%20de%20Estabilidade.gif',
   ),
 
   ExerciseModel(
@@ -31995,8 +30119,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Virar%20Pneu.gif',
   ),
 
   ExerciseModel(
@@ -32032,8 +30154,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Voador%20com%20Halteres%20para%20Cima.gif',
   ),
 
   ExerciseModel(
@@ -32063,8 +30183,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Voador%20de%20Deltoides%20Posterior%20com%20Cabo.gif',
   ),
 
   ExerciseModel(
@@ -32101,8 +30219,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Voador%20invertido.gif',
   ),
 
   ExerciseModel(
@@ -32132,8 +30248,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Voador%20na%20M%C3%A1quina%20para%20Deltoides%20Posteriores.gif',
   ),
 
   ExerciseModel(
@@ -32163,8 +30277,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Voador%20na%20M%C3%A1quina.gif',
   ),
 
   ExerciseModel(
@@ -32201,8 +30313,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Voador%20no%20pec%20deck.gif',
   ),
 
   ExerciseModel(
@@ -32232,8 +30342,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Voador%20para%20deltoides%20posterior%20com%20cabo.gif',
   ),
 
   ExerciseModel(
@@ -32263,8 +30371,6 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'lengthened',
     spinalLoad: 0.4,
     shoulderStress: 0.6,
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Voador%20unilateral%20no%20Solo%20com%20Barra.gif',
   ),
 
   ExerciseModel(
@@ -32297,8 +30403,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Wall%20Sit%20com%20Inclina%C3%A7%C3%A3o%20de%20Tronco.gif',
   ),
 
   ExerciseModel(
@@ -32331,8 +30435,6 @@ final List<ExerciseModel> exerciseLibrary = [
       "home_friendly",
       "no_equipment",
     ],
-    gifUrl:
-        'https://raw.githubusercontent.com/felipelifa/App-de-calculo-de-carga/main/biblioteca%20de%20gif/Wall%20Sit.gif',
   ),
 ];
 
