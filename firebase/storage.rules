@@ -5,12 +5,6 @@ service firebase.storage {
     // APK downloads — public read, admin write only
     match /apk/{allPaths=**} {
       allow read: if true;
-      allow write: if false; // Admin SDK only
-    }
-
-    // GIFs na raiz do bucket — public read
-    match /{file=*.gif} {
-      allow read: if true;
       allow write: if false;
     }
 
@@ -26,12 +20,13 @@ service firebase.storage {
     // Exercise GIFs em pasta — public read
     match /exercises_gifs/{allPaths=**} {
       allow read: if true;
-      allow write: if false; // Admin SDK only
+      allow write: if false;
     }
 
-    // Block everything else
+    // Catch-all: public read for remaining resources
     match /{allPaths=**} {
-      allow read, write: if false;
+      allow read: if true;
+      allow write: if false;
     }
   }
 }
