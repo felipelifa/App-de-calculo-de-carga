@@ -22,8 +22,9 @@ class ExerciseProvider extends ChangeNotifier {
   String? _error;
   StreamSubscription<QuerySnapshot>? _sub;
   
-  // 🔗 LINK DO SEU STORAGE NO FIREBASE (Proxy via Vercel API para evitar CORS)
-  static const String baseGifUrl = 'https://app-calculo-carga.vercel.app/api/gif';
+  // 🔗 PROXY DE GIFs VIA NEXT.JS API ROUTE (sem CORS issues)
+  // Incrementar este timestamp força rebuild no Vercel
+  static const String baseGifUrl = 'https://app-calculo-carga.vercel.app/api/gif?ts=2';
   
   bool get isLoading => _isLoading;
   String? get error => _error;
@@ -147,7 +148,7 @@ class ExerciseProvider extends ChangeNotifier {
     
     // Fallback: constrói a URL via proxy Vercel (sem CORS issues)
     final filename = Uri.encodeComponent(ex.name);
-    return '$baseGifUrl?name=$filename';
+    return '$baseGifUrl&name=$filename';
   }
 
   Future<List<VolumeHistoryEntry>> getExerciseHistory(String exerciseId) async {

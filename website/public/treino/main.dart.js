@@ -59238,7 +59238,7 @@ return s}catch(r){try{s=B.b.rp($.Vu(),new A.aoV(a))
 return s}catch(r){return null}}},
 N2(a){var s=a.ax
 if(s!=null&&s.length!==0)return s
-return"https://app-calculo-carga.vercel.app/api/gif?name="+A.uz(2,a.b,B.aw,!1)},
+return"https://app-calculo-carga.vercel.app/api/gif?ts=2&name="+A.uz(2,a.b,B.aw,!1)},
 EU(a){return this.ak_(a)},
 ak_(a){var s=0,r=A.A(t.Wv),q,p=2,o=[],n=this,m,l,k,j,i,h,g
 var $async$EU=A.u(function(b,c){if(b===1){o.push(c)
