@@ -56,7 +56,8 @@
       "Bash(find app/ -name *.dart -exec grep -l exercises_gifs {})",
       "Bash(grep -r exercises_gifs app/lib --include=*.dart)",
       "Bash(grep -r gifUrl app/lib --include=*.dart)",
-      "Bash(grep -r getEffectiveGifUrl app/lib --include=*.dart)"
+      "Bash(grep -r getEffectiveGifUrl app/lib --include=*.dart)",
+      "Bash(grep -r firebasestorage app/lib --include=*.dart)"
     ]
   }
 }

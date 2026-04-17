@@ -192,7 +192,10 @@ class WorkoutProfileProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final engine = WorkoutPrescriptionEngine(_profile!);
+      final engine = WorkoutPrescriptionEngine(
+        _profile!,
+        library: _exerciseProvider?.allExercises,
+      );
       final workoutRaw = engine.generate(_profile!);
       
       final id = _db.collection('users').doc(uid).collection('generated_workouts').doc().id;

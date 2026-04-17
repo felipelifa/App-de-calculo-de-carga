@@ -31,6 +31,7 @@ class ExerciseProvider extends ChangeNotifier {
   String? get error => _error;
   String? get selectedMuscle => _selectedMuscle;
   String get searchQuery => _searchQuery;
+  List<ExerciseModel> get allExercises => _allExercises;
 
   List<ExerciseModel> get filteredExercises {
     var list = _allExercises;
@@ -171,7 +172,7 @@ class ExerciseProvider extends ChangeNotifier {
     final nameParam = Uri.encodeComponent(resolvedName);
     final idParam = Uri.encodeComponent(ex.id);
     final nameEnParam = ex.nameEn != null ? '&nameEn=${Uri.encodeComponent(ex.nameEn!)}' : '';
-    return '$origin/api/gif?ts=8&name=$nameParam&id=$idParam$nameEnParam';
+    return '$origin/api/gif?ts=9&name=$nameParam&id=$idParam$nameEnParam';
   }
 
   String? _extractNameFromGifUrl(String? gifUrl) {
