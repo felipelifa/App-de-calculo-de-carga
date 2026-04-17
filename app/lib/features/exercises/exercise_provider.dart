@@ -146,9 +146,18 @@ class ExerciseProvider extends ChangeNotifier {
       return ex.gifUrl;
     }
     
-    // Fallback: constrói a URL via proxy Vercel (sem CORS issues)
-    final filename = Uri.encodeComponent(ex.name);
-    return '$baseGifUrl&name=$filename';
+    final filename = Uri.encodeComponent('${ex.name}.gif');
+    
+    if (kIsWeb) {
+      // Na web, usamos path relativo para o Next.js agir como proxy e evitar CORS.
+      // Desta forma, escapamos de hardcodar variáveis de ambiente ou domínios da Vercel.
+      final fileNameParams = Uri.encodeComponent(ex.name);
+      return '/api/gif?ts=3&name=$fileNameParams';
+    } else {
+      // No Mobile (Android/iOS) não há o bloqueio de CORS do navegador,
+      // então podemos consumir diretamente o Firebase CDN, poupando a Vercel.
+      return 'https://firebasestorage.googleapis.com/v0/b/appcalculotreino-51f23.firebasestorage.app/o/$filename?alt=media';
+    }
   }
 
   Future<List<VolumeHistoryEntry>> getExerciseHistory(String exerciseId) async {
