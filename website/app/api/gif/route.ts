@@ -78,25 +78,23 @@ const fetchStorageNames = async () => {
   }
 
   const names: string[] = [];
-  const maxAttempts = 3;
-  let attempt = 0;
+  let pageToken: string | undefined = undefined;
 
-  while (attempt < maxAttempts) {
-    attempt++;
-    const listUrl = `${STORAGE_BASE_URL}?maxResults=1000`;
-    
+  do {
+    const listUrl = `${STORAGE_BASE_URL}?maxResults=1000${pageToken ? `&pageToken=${pageToken}` : ''}`;
+
     try {
-      const response = await fetch(listUrl, { 
+      const response = await fetch(listUrl, {
         next: { revalidate: 3600 },
-        signal: AbortSignal.timeout(8000)
+        signal: AbortSignal.timeout(15000) // timeout maior
       });
 
       if (!response.ok) {
-        if (attempt >= maxAttempts) {
+        // Se falhar, retorna o que temos até agora
+        if (names.length === 0) {
           throw new Error(`Storage list failed with status ${response.status}`);
         }
-        await new Promise(r => setTimeout(r, 500));
-        continue;
+        break;
       }
 
       const payload = (await response.json()) as {
@@ -110,14 +108,12 @@ const fetchStorageNames = async () => {
         }
       }
 
+      pageToken = payload.nextPageToken;
+    } catch {
+      // Se der erro, retorna o que temos até agora
       break;
-    } catch (err) {
-      if (attempt >= maxAttempts) {
-        throw err;
-      }
-      await new Promise(r => setTimeout(r, 500));
     }
-  }
+  } while (pageToken && names.length < 2000); // limite razoável
 
   storageNamesCache = {
     value: names,
@@ -182,6 +178,7 @@ export async function GET(request: NextRequest) {
   const fileCandidates = getStorageFileCandidates(lookupNames);
 
   try {
+    // Tentar todos os candidatos primeiro (mais rápido)
     for (const fileName of fileCandidates) {
       const result = await fetchGifFromStorage(fileName);
       if (result) {
@@ -189,14 +186,20 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const bestMatch = await findBestStorageMatch(lookupNames);
-    if (bestMatch) {
-      const result = await fetchGifFromStorage(bestMatch);
-      if (result) {
-        return result;
+    // Se não encontrou, tenta correspondência inteligente (mais lento)
+    try {
+      const bestMatch = await findBestStorageMatch(lookupNames);
+      if (bestMatch) {
+        const result = await fetchGifFromStorage(bestMatch);
+        if (result) {
+          return result;
+        }
       }
+    } catch {
+      // Se falhar a correspondência, retorna placeholder
     }
 
+    // Retorna placeholder SVG
     const placeholderSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
       <rect fill="#2a2a2a" width="300" height="200"/>
       <text fill="#666" font-family="Arial" font-size="14" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle">Imagem não disponível</text>
@@ -209,6 +212,17 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch {
-    return NextResponse.json({ error: 'Erro ao buscar GIF' }, { status: 500 });
+    // Erro geral - retorna placeholder em vez de 500
+    const placeholderSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+      <rect fill="#2a2a2a" width="300" height="200"/>
+      <text fill="#666" font-family="Arial" font-size="14" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle">Imagem não disponível</text>
+    </svg>`;
+
+    return new NextResponse(placeholderSvg, {
+      headers: {
+        'Content-Type': 'image/svg+xml',
+        'Cache-Control': 'no-store',
+      },
+    });
   }
 }
