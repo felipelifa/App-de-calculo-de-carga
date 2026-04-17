@@ -59238,7 +59238,7 @@ return s}catch(r){try{s=B.b.rp($.Vu(),new A.aoV(a))
 return s}catch(r){return null}}},
 N2(a){var s=a.ax
 if(s!=null&&s.length!==0)return s
-return"https://firebasestorage.googleapis.com/v0/b/appcalculotreino-51f23.firebasestorage.app/o/exercises_gifs%2F"+A.uz(2,a.b+".gif",B.aw,!1)+"?alt=media"},
+return"https://firebasestorage.googleapis.com/v0/b/appcalculotreino-51f23.firebasestorage.app/o/"+A.uz(2,a.b+".gif",B.aw,!1)+"?alt=media"},
 EU(a){return this.ak_(a)},
 ak_(a){var s=0,r=A.A(t.Wv),q,p=2,o=[],n=this,m,l,k,j,i,h,g
 var $async$EU=A.u(function(b,c){if(b===1){o.push(c)

@@ -145,13 +145,10 @@ class ExerciseProvider extends ChangeNotifier {
       return ex.gifUrl;
     }
     
-    // Fallback: constrói a URL do Firebase Storage caso não tenha gifUrl
-    // 🔗 Caminho da pasta no Firebase Storage
-    const String folder = 'exercises_gifs';
-    
-    // O Firebase Storage exige o nome codificado (o '/' vira '%2F') e o parâmetro ?alt=media
+    // Fallback: constrói a URL do Firebase Storage
+    // Os GIFs estão na raiz do bucket: gs://bucket/NomeDoExercício.gif
     final filename = Uri.encodeComponent('${ex.name}.gif');
-    return '$baseGifUrl/$folder%2F$filename?alt=media';
+    return '$baseGifUrl/$filename?alt=media';
   }
 
   Future<List<VolumeHistoryEntry>> getExerciseHistory(String exerciseId) async {
