@@ -22,8 +22,8 @@ class ExerciseProvider extends ChangeNotifier {
   String? _error;
   StreamSubscription<QuerySnapshot>? _sub;
   
-  // 🔗 LINK DO SEU STORAGE NO FIREBASE (URL do Google Cloud Storage com CORS habilitado)
-  static const String baseGifUrl = 'https://storage.googleapis.com/appcalculotreino-51f23.firebasestorage.app';
+  // 🔗 LINK DO SEU STORAGE NO FIREBASE (Firebase Storage REST API - CORS nativo)
+  static const String baseGifUrl = 'https://firebasestorage.googleapis.com/v0/b/appcalculotreino-51f23.appspot.com/o';
   
   bool get isLoading => _isLoading;
   String? get error => _error;
@@ -145,10 +145,10 @@ class ExerciseProvider extends ChangeNotifier {
       return ex.gifUrl;
     }
     
-    // Fallback: constrói a URL do Google Cloud Storage (com CORS habilitado por padrão)
+    // Fallback: constrói a URL do Firebase Storage REST API (com CORS nativo)
     // Os GIFs estão na raiz do bucket: gs://bucket/NomeDoExercício.gif
     final filename = Uri.encodeComponent('${ex.name}.gif');
-    return '$baseGifUrl/$filename';
+    return '$baseGifUrl/$filename?alt=media';
   }
 
   Future<List<VolumeHistoryEntry>> getExerciseHistory(String exerciseId) async {
