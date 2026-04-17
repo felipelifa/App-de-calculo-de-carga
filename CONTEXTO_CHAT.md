@@ -820,3 +820,85 @@ O sistema trata a nutrição como um ecossistema semanal, não como fatias diár
 - **Aderência:** Média ponderada dos desvios absolutos. $Score < 0.7$ sugere que a estratégia atual está muito rígida.
 - **Fadiga Nutricional:** Contador que sobe se o usuário permanece em déficit agressivo por > 6 semanas. Gatilha sugestão de "Refeed" ou manutenção.
 - **Disponibilidade Energética:** Sincronização em tempo real com o volume de treino do `WorkoutProvider`.
+
+---
+
+## 🔧 Sessão em Progresso: Problema de Carregamento de GIFs (2026-04-16)
+
+### Objetivo
+Fazer os GIFs dos exercícios aparecerem corretamente na aba "Treino" (Tutorial) do aplicativo Flutter web hospedado em Vercel.
+
+### Raiz do Problema
+- GIFs armazenados no **Firebase Storage** (`gs://appcalculotreino-51f23.firebasestorage.app`)
+- Navegador bloqueia requisições diretas para `firebasestorage.googleapis.com` por **CORS** (Cross-Origin Resource Sharing)
+- Firebase Storage não envia headers `Access-Control-Allow-Origin` para requisições cross-origin
+- App tenta carregar via URL direta → 403 Forbidden ou bloqueio CORS do navegador
+
+### Solução Implementada: Proxy GIF via API Next.js
+
+#### 1. **API Route Dinâmica** (`website/app/api/gif/route.ts`)
+```typescript
+export const dynamic = 'force-dynamic';
+
+export async function GET(request: NextRequest) {
+  const filename = request.nextUrl.searchParams.get('name');
+  // Busca GIF no Firebase Storage interno
+  // Retorna com headers CORS: Access-Control-Allow-Origin: *
+}
+```
+
+#### 2. **Cliente Flutter** (`app/lib/features/exercises/exercise_provider.dart`)
+```dart
+static const String baseGifUrl = 'https://app-calculo-carga.vercel.app/api/gif?ts=2';
+
+String? getEffectiveGifUrl(ExerciseModel ex) {
+  if (ex.gifUrl != null && ex.gifUrl!.isNotEmpty) {
+    return ex.gifUrl;
+  }
+  final filename = Uri.encodeComponent(ex.name);
+  return '$baseGifUrl&name=$filename';
+}
+```
+
+#### 3. **Configuração Next.js** (`website/next.config.ts`)
+- Removido `output: 'export'` para permitir API routes dinâmicas
+- Vercel executa serverless functions nativamente
+
+### Fluxo de Requisição
+1. Flutter app solicita: `https://app-calculo-carga.vercel.app/api/gif?ts=2&name=Exercicio`
+2. Vercel executa função serverless (`/api/gif/route.ts`)
+3. API busca internamente no Firebase: `https://firebasestorage.googleapis.com/v0/b/.../o/{nome}.gif?alt=media`
+4. API retorna com `Access-Control-Allow-Origin: *` (mesmo domínio: vercel.app)
+5. Navegador aceita requisição (sem CORS)
+
+### Status Atual (⏳ Aguardando Propagação)
+- ✅ Código da API implementado e testado
+- ✅ Dart code atualizado com URL proxy
+- ✅ Commits feitos com cache bust (`ts=2`)
+- ⏳ Vercel ainda servindo cache antigo do navegador
+- ❌ GIFs ainda tentando carregar do Firebase direto (em vez do proxy)
+
+### Commits Realizados
+- `cd51c360` - Adicionado cache bust timestamp (`ts=2`) + nova sincronização web
+- `8a86e78a` - Removido restricão `output: 'export'` para permitir APIs dinâmicas
+- `fb6e2a24` - Sincronização de build web sem código
+- `582ca02d` - Revertido para bucket correto (`.firebasestorage.app`)
+
+### Hipóteses para a Persistência do Erro
+1. **Cache do Navegador:** Mesmo com Ctrl+R, navegador serve versão antiga de `main.dart.js`
+2. **Cache da Vercel:** CDN pode estar servendo JavaScript compilado antigo
+3. **Build não regenerado:** Timestamp pode não ser suficiente para forçar rebuild
+4. **Service Worker:** Possível interferência do service worker em cache
+
+### Próximos Passos Necessários
+1. **Opção 1 - Esperar Propagação:** Aguardar 5-10 minutos para Vercel propagar mudanças
+2. **Opção 2 - Limpeza Hard Cache:** `Ctrl+Shift+Delete` para limpar cache completo do navegador
+3. **Opção 3 - Incrementar Timestamp:** Aumentar `ts=3` ou `ts=10` em `exercise_provider.dart` e fazer rebuild
+4. **Opção 4 - Testar API Diretamente:** Testar se `https://app-calculo-carga.vercel.app/api/gif?name=Test` está respondendo
+5. **Opção 5 - Debug Console:** Inspecionar Network tab para verificar qual URL está sendo solicitada
+
+### Informações Técnicas Importantes
+- **Bucket Firebase:** `gs://appcalculotreino-51f23.firebasestorage.app` (raiz, não subfolder)
+- **GIFs Locais:** Nomes compatíveis com `ExerciseModel.name`
+- **Storage Rules:** Já atualizado para permitir leitura pública (`allow read: if true`)
+- **URL Final Esperada:** `https://app-calculo-carga.vercel.app/api/gif?ts=2&name=Crucifixo%20inverso%20unilateral%20com%20cabo`
