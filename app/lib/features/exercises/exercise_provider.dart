@@ -10,8 +10,8 @@ class ExerciseProvider extends ChangeNotifier {
   final FirebaseAuth _auth;
 
   ExerciseProvider({FirebaseFirestore? db, FirebaseAuth? auth})
-      : _db = db ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance {
+    : _db = db ?? FirebaseFirestore.instance,
+      _auth = auth ?? FirebaseAuth.instance {
     _init();
   }
 
@@ -21,11 +21,12 @@ class ExerciseProvider extends ChangeNotifier {
   bool _isLoading = true;
   String? _error;
   StreamSubscription<QuerySnapshot>? _sub;
-  
+
   // 🔗 PROXY DE GIFs VIA NEXT.JS API ROUTE (sem CORS issues)
   // Incrementar este timestamp força rebuild no Vercel
-  static const String baseGifUrl = 'https://app-calculo-carga.vercel.app/api/gif?ts=2';
-  
+  static const String baseGifUrl =
+      'https://app-calculo-carga.vercel.app/api/gif?ts=2';
+
   bool get isLoading => _isLoading;
   String? get error => _error;
   String? get selectedMuscle => _selectedMuscle;
@@ -35,8 +36,11 @@ class ExerciseProvider extends ChangeNotifier {
     var list = _allExercises;
     if (_selectedMuscle != null && _selectedMuscle!.isNotEmpty) {
       list = list
-          .where((e) => e.primaryMuscles.any(
-              (m) => m.toLowerCase() == _selectedMuscle!.toLowerCase()))
+          .where(
+            (e) => e.primaryMuscles.any(
+              (m) => m.toLowerCase() == _selectedMuscle!.toLowerCase(),
+            ),
+          )
           .toList();
     }
     if (_searchQuery.isNotEmpty) {
@@ -59,29 +63,31 @@ class ExerciseProvider extends ChangeNotifier {
         .orderBy('name')
         .snapshots()
         .listen(
-      (snap) {
-        if (snap.docs.isNotEmpty) {
-          // Merge: combina os do Firestore com os da biblioteca local
-          // IDs do Firestore têm prioridade (podem ter gifUrl atualizado)
-          final fromFirestore = snap.docs.map(ExerciseModel.fromDoc).toList();
-          final firestoreIds = fromFirestore.map((e) => e.id).toSet();
-          final localOnly = exerciseLibrary
-              .where((e) => !firestoreIds.contains(e.id))
-              .toList();
-          _allExercises = [...fromFirestore, ...localOnly];
-        }
-        // Se vazio, mantém a biblioteca local já carregada
-        _isLoading = false;
-        _error = null;
-        notifyListeners();
-      },
-      onError: (e) {
-        // Em caso de erro no Firestore, mantém a biblioteca local
-        _error = null; // não mostra erro — biblioteca local é suficiente
-        _isLoading = false;
-        notifyListeners();
-      },
-    );
+          (snap) {
+            if (snap.docs.isNotEmpty) {
+              // Merge: combina os do Firestore com os da biblioteca local
+              // IDs do Firestore têm prioridade (podem ter gifUrl atualizado)
+              final fromFirestore = snap.docs
+                  .map(ExerciseModel.fromDoc)
+                  .toList();
+              final firestoreIds = fromFirestore.map((e) => e.id).toSet();
+              final localOnly = exerciseLibrary
+                  .where((e) => !firestoreIds.contains(e.id))
+                  .toList();
+              _allExercises = [...fromFirestore, ...localOnly];
+            }
+            // Se vazio, mantém a biblioteca local já carregada
+            _isLoading = false;
+            _error = null;
+            notifyListeners();
+          },
+          onError: (e) {
+            // Em caso de erro no Firestore, mantém a biblioteca local
+            _error = null; // não mostra erro — biblioteca local é suficiente
+            _isLoading = false;
+            notifyListeners();
+          },
+        );
   }
 
   Future<void> addExercise({
@@ -106,9 +112,10 @@ class ExerciseProvider extends ChangeNotifier {
       gifUrl: gifUrl,
     );
 
-    await _db.collection('users/$uid/exercises').doc(exercise.id).set(
-          exercise.toMap(),
-        );
+    await _db
+        .collection('users/$uid/exercises')
+        .doc(exercise.id)
+        .set(exercise.toMap());
 
     _allExercises = [...exerciseLibrary, exercise];
     notifyListeners();
@@ -141,29 +148,42 @@ class ExerciseProvider extends ChangeNotifier {
 
   /// Resolve a URL do GIF com base no modelo ou no nome do exercício
   String? getEffectiveGifUrl(ExerciseModel ex) {
-    if (kIsWeb) {
-      // Na web, SEMPRE usamos o proxy do Next.js para evitar CORS.
-      // Usamos Uri.base.origin para construir uma URL absoluta dinamicamente
-      // (não hardcoda o domínio da Vercel, então funciona em qualquer ambiente).
-      // CachedNetworkImage requer uma URL absoluta — "/api/gif" relativo não funciona!
-      final origin = Uri.base.origin; // ex: "https://buildfit.vercel.app"
-      final nameParam = Uri.encodeComponent(ex.name);
-      return '$origin/api/gif?ts=5&name=$nameParam';
+    final rawGifUrl = ex.gifUrl?.trim();
+
+    if (rawGifUrl != null && rawGifUrl.isNotEmpty) {
+      final parsed = Uri.tryParse(rawGifUrl);
+      final isAbsoluteHttp =
+          parsed != null &&
+          (parsed.scheme == 'http' || parsed.scheme == 'https') &&
+          parsed.host.isNotEmpty;
+
+      if (isAbsoluteHttp &&
+          !rawGifUrl.contains('firebasestorage') &&
+          !rawGifUrl.contains('exercises_gifs')) {
+        return rawGifUrl;
+      }
     }
 
-    // Mobile: o firebasestorage não tem CORS no nativo, então vai direto.
-    // Se o gifUrl salvo no Firestore tem exercises_gifs/ (caminho antigo) ou 
-    // qualquer URL do firebasestorage, ignoramos e construímos a URL correta.
-    if (ex.gifUrl != null && 
-        ex.gifUrl!.isNotEmpty && 
-        !ex.gifUrl!.contains('firebasestorage') &&
-        !ex.gifUrl!.contains('exercises_gifs')) {
-      return ex.gifUrl;
-    }
-    
-    // Fallback: constrói a URL da raiz do bucket com o nome do exercício
-    final filename = Uri.encodeComponent('${ex.name}.gif');
-    return 'https://firebasestorage.googleapis.com/v0/b/appcalculotreino-51f23.firebasestorage.app/o/$filename?alt=media';
+    // Sempre usa o proxy do Next.js para evitar CORS no navegador
+    // Usa Uri.base.origin para funcionar em qualquer domínio (Vercel, localhost, etc)
+    final origin = Uri.base.origin;
+    final resolvedName = _extractNameFromGifUrl(rawGifUrl) ?? ex.name;
+    final nameParam = Uri.encodeComponent(resolvedName);
+    final idParam = Uri.encodeComponent(ex.id);
+    return '$origin/api/gif?ts=7&name=$nameParam&id=$idParam';
+  }
+
+  String? _extractNameFromGifUrl(String? gifUrl) {
+    if (gifUrl == null || gifUrl.isEmpty) return null;
+
+    final withoutQuery = gifUrl.split('?').first;
+    final rawSegment = withoutQuery.split('/').last;
+    if (rawSegment.isEmpty) return null;
+
+    final decoded = Uri.decodeComponent(rawSegment).trim();
+    if (decoded.isEmpty) return null;
+
+    return decoded.replaceAll(RegExp(r'\.gif$', caseSensitive: false), '');
   }
 
   Future<List<VolumeHistoryEntry>> getExerciseHistory(String exerciseId) async {
