@@ -83,7 +83,18 @@ class _NutritionScreenState extends State<NutritionScreen> {
                       context.go('/anamnese');
                     }
                   },
-                  child: Text(error != null ? 'TENTAR NOVAMENTE' : 'CONFIGURAR BIO-DIETA'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFCCFF00),
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    elevation: 10,
+                    shadowColor: const Color(0xFFCCFF00).withValues(alpha: 0.3),
+                  ),
+                  child: Text(
+                    error != null ? 'TENTAR NOVAMENTE' : 'CONFIGURAR BIO-DIETA',
+                    style: GoogleFonts.outfit(fontWeight: FontWeight.w900, letterSpacing: 1),
+                  ),
                 ),
               ],
             ),
