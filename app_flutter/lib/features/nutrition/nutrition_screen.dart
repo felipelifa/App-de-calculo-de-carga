@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
@@ -64,7 +64,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
                 const SizedBox(height: 24),
                 Text(
-                  error ?? 'Configure seu perfil nutricional para começar a Bio-Gestão baseada em ciência.',
+                  error ?? 'Configure seu perfil nutricional para comeÃ§ar a Bio-GestÃ£o baseada em ciÃªncia.',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.outfit(
                     color: AppTheme.textSecondary,
@@ -108,30 +108,22 @@ class _NutritionScreenState extends State<NutritionScreen> {
         slivers: [
           SliverAppBar(
             backgroundColor: AppTheme.background,
-            expandedHeight: 120,
+            expandedHeight: 80,
             floating: true,
             pinned: true,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppTheme.textPrimary, size: 20),
               onPressed: () => context.pop(),
             ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.insights_rounded, color: Color(0xFFCCFF00)),
-                onPressed: () => context.push('/nutrition/dashboard'),
-              ),
-              const SizedBox(width: 8),
-            ],
             flexibleSpace: FlexibleSpaceBar(
-              centerTitle: false,
-              titlePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              centerTitle: true,
               title: Text(
-                'Nutrição',
+                'NUTRIÃ‡ÃƒO',
                 style: GoogleFonts.outfit(
                   color: AppTheme.textPrimary,
-                  fontSize: 26,
+                  fontSize: 16,
                   fontWeight: FontWeight.w900,
-                  letterSpacing: -0.5,
+                  letterSpacing: 2,
                 ),
               ),
             ),
@@ -146,48 +138,74 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   children: [
-                    // Calendário Action Strip (Navegação de Dias)
+                    // CalendÃ¡rio Action Strip (Compacto)
                     _buildCalendarStrip(context, provider).animate().fadeIn(duration: 400.ms),
 
-                    const SizedBox(height: 24),
-
-                    // Insight do Gêmeo Digital (Destaque Neon)
-                    _buildInsightPanel(provider).animate().scale(delay: 200.ms, curve: Curves.easeOutBack),
-
                     const SizedBox(height: 32),
 
-                    // Header - Gráfico de Calorias
+                    // Foco PrimÃ¡rio: Calorias
                     GestureDetector(
                       onTap: () => _showManualOverrideDialog(context, provider),
-                      child: _buildCalorieDonut(chartData, target, consumed.toInt(), remaining.toInt(), provider)
+                      child: _buildCalorieDonut(chartData, target.toInt(), consumed.toInt(), remaining.toInt())
                           .animate()
-                          .fadeIn(delay: 400.ms),
+                          .fadeIn()
+                          .scale(begin: const Offset(0.95, 0.95)),
                     ),
-
-                    const SizedBox(height: 48),
-
-                    // Macros Row (Estilo Challenger)
-                    _buildMacrosRow(provider).animate().slideY(begin: 0.2, delay: 600.ms),
 
                     const SizedBox(height: 32),
 
-                    // Bento Grid para Hidratação e Bio-Gestão
-                    _buildHydrationCard(provider),
-                    const SizedBox(height: 16),
-                    _buildBioManagementStats(provider),
+                    // AÃ§Ã£o PrimÃ¡ria: Registrar RefeiÃ§Ã£o
+                    SizedBox(
+                      width: double.infinity,
+                      height: 60,
+                      child: ElevatedButton.icon(
+                        onPressed: () => context.push('/nutrition/search?type=breakfast'),
+                        icon: const Icon(Icons.add_rounded, color: Colors.black, size: 28),
+                        label: Text(
+                          'REGISTRAR ALIMENTAÃ‡ÃƒO',
+                          style: GoogleFonts.outfit(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
+                            color: Colors.black,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFCCFF00),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          elevation: 8,
+                          shadowColor: const Color(0xFFCCFF00).withValues(alpha: 0.3),
+                        ),
+                      ),
+                    ).animate().slideY(begin: 0.2, delay: 200.ms).fadeIn(),
 
-                    const SizedBox(height: 48),
+                    const SizedBox(height: 40),
+
+                    // Insight sutil
+                    _buildInsightPanel(provider).animate().fadeIn(delay: 400.ms),
+
+                    const SizedBox(height: 40),
+
+                    // Macros (Compact cards)
+                    _buildMacrosGrid(provider).animate().slideY(begin: 0.1, delay: 600.ms).fadeIn(),
+
+                    const SizedBox(height: 16),
+
+                    // HidrataÃ§Ã£o (Mesmo estilo dos macros)
+                    _buildHydrationCompact(provider).animate().slideY(begin: 0.1, delay: 700.ms).fadeIn(),
+
+                    const SizedBox(height: 40),
                     
-                    // Seções de Refeições
+                    // SeÃ§Ãµes de RefeiÃ§Ãµes
                     Row(
                       children: [
-                        const Icon(Icons.restaurant_menu_rounded, color: Color(0xFFCCFF00), size: 20),
+                        const Icon(Icons.restaurant_menu_rounded, color: Color(0xFFCCFF00), size: 18),
                         const SizedBox(width: 12),
                         Text(
-                          'PROTOCOLO DIÁRIO',
+                          'REGISTROS DO DIA',
                           style: GoogleFonts.outfit(
                             color: AppTheme.textSecondary,
-                            fontSize: 12,
+                            fontSize: 11,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 2,
                           ),
@@ -195,8 +213,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    _buildMealSection(context, provider, 'Café da manhã', 'breakfast', meals),
-                    _buildMealSection(context, provider, 'Almoço', 'lunch', meals),
+                    _buildMealSection(context, provider, 'CafÃ© da manhÃ£', 'breakfast', meals),
+                    _buildMealSection(context, provider, 'AlmoÃ§o', 'lunch', meals),
                     _buildMealSection(context, provider, 'Jantar', 'dinner', meals),
                     _buildMealSection(context, provider, 'Lanches', 'snack', meals),
                     
@@ -211,76 +229,44 @@ class _NutritionScreenState extends State<NutritionScreen> {
     );
   }
 
-  Widget _buildBioManagementStats(NutritionProvider provider) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildMonitoringIcon(Icons.verified_user_rounded, 'Aderência', '${(provider.adherenceScore * 100).toInt()}%', const Color(0xFFCCFF00)),
-          _buildMonitoringIcon(Icons.battery_alert_rounded, 'Fadiga', provider.fatigueLevel > 7 ? 'ALTA' : 'NORMAL', provider.fatigueLevel > 7 ? Colors.redAccent : Colors.white),
-          _buildMonitoringIcon(Icons.auto_awesome_rounded, 'Status', 'Bio-Ativo', const Color(0xFF00E5FF)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMonitoringIcon(IconData icon, String label, String value, Color color) {
-    return Column(
-      children: [
-        Icon(icon, color: color, size: 22),
-        const SizedBox(height: 8),
-        Text(label, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w600)),
-        Text(value, style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14)),
-      ],
-    );
-  }
-
-  Widget _buildMacrosRow(NutritionProvider provider) {
+  Widget _buildMacrosGrid(NutritionProvider provider) {
     return Row(
       children: [
-        _buildMacroCard('Proteína', provider.consumedProtein, provider.targetProtein, const Color(0xFFCCFF00)),
-        const SizedBox(width: 12),
-        _buildMacroCard('Carbo', provider.consumedCarb, provider.targetCarb, const Color(0xFF00E5FF)),
-        const SizedBox(width: 12),
-        _buildMacroCard('Gordura', provider.consumedFat, provider.targetFat, const Color(0xFFFF4081)),
+        _buildCompactMacroCard('PROTEÃNA', '${provider.consumedProtein.round()}g / ${provider.targetProtein.round()}g', 
+          provider.consumedProtein / (provider.targetProtein > 0 ? provider.targetProtein : 1), const Color(0xFFCCFF00)),
+        const SizedBox(width: 8),
+        _buildCompactMacroCard('CARBO', '${provider.consumedCarb.round()}g / ${provider.targetCarb.round()}g', 
+          provider.consumedCarb / (provider.targetCarb > 0 ? provider.targetCarb : 1), const Color(0xFF00E5FF)),
+        const SizedBox(width: 8),
+        _buildCompactMacroCard('GORDURA', '${provider.consumedFat.round()}g / ${provider.targetFat.round()}g', 
+          provider.consumedFat / (provider.targetFat > 0 ? provider.targetFat : 1), const Color(0xFFFF4081)),
       ],
     );
   }
 
-  Widget _buildMacroCard(String label, double consumed, double target, Color color) {
-    final pct = target > 0 ? (consumed / target).clamp(0.0, 1.0) : 0.0;
-    
+  Widget _buildCompactMacroCard(String label, String value, double pct, Color color) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: const Color(0xFF1A1A1A),
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.white.withOpacity(0.03)),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+            Text(label, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
+            const SizedBox(height: 4),
+            Text(value, style: GoogleFonts.outfit(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
-            Text(
-              '${consumed.round()}g',
-              style: GoogleFonts.outfit(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900),
-            ),
-            const SizedBox(height: 12),
             ClipRRect(
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(2),
               child: LinearProgressIndicator(
-                value: pct,
-                backgroundColor: color.withOpacity(0.1),
+                value: pct.clamp(0.0, 1.0),
+                backgroundColor: Colors.white.withValues(alpha: 0.05),
                 color: color,
-                minHeight: 4,
+                minHeight: 3,
               ),
             ),
           ],
@@ -289,11 +275,74 @@ class _NutritionScreenState extends State<NutritionScreen> {
     );
   }
 
-  Widget _buildCalorieDonut(List<_ChartData> chartData, int target, int consumed, int remaining, NutritionProvider provider) {
+  Widget _buildHydrationCompact(NutritionProvider provider) {
+    final pct = (provider.waterConsumed / (provider.waterTarget > 0 ? provider.waterTarget : 1)).clamp(0.0, 1.0);
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1A1A),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.opacity_rounded, color: Color(0xFF00E5FF), size: 16),
+                  const SizedBox(width: 8),
+                  Text('HIDRATAÃ‡ÃƒO', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                ],
+              ),
+              Text('${provider.waterConsumed} / ${provider.waterTarget} ml', 
+                style: GoogleFonts.outfit(color: const Color(0xFF00E5FF), fontSize: 12, fontWeight: FontWeight.bold)),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: pct,
+              minHeight: 6,
+              backgroundColor: Colors.white.withValues(alpha: 0.05),
+              color: const Color(0xFF00E5FF),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildCompactWaterBtn(provider, 200, '200ml'),
+              _buildCompactWaterBtn(provider, 350, '350ml'),
+              _buildCompactWaterBtn(provider, 500, '500ml'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCompactWaterBtn(NutritionProvider provider, int ml, String label) {
+    return InkWell(
+      onTap: () => provider.addWater(ml),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.03),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(label, style: GoogleFonts.outfit(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.w600)),
+      ),
+    );
+  }
+
+  Widget _buildCalorieDonut(List<_ChartData> chartData, int target, int consumed, int remaining) {
     return Column(
       children: [
         SizedBox(
-          height: 220,
+          height: 240,
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -306,8 +355,9 @@ class _NutritionScreenState extends State<NutritionScreen> {
                     yValueMapper: (_ChartData data, _) => data.y,
                     pointColorMapper: (_ChartData data, _) => data.color,
                     cornerStyle: CornerStyle.bothCurve,
-                    innerRadius: '85%',
+                    innerRadius: '88%',
                     radius: '100%',
+                    animationDuration: 1500,
                   )
                 ],
               ),
@@ -315,42 +365,32 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'CALORIAS RESTANTES',
-                    style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2),
+                    'HOJE',
+                    style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 3),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
                   Text(
                     remaining.abs().toString(),
-                    style: GoogleFonts.outfit(fontSize: 54, fontWeight: FontWeight.w900, color: Colors.white, height: 1),
+                    style: GoogleFonts.outfit(fontSize: 64, fontWeight: FontWeight.w900, color: Colors.white, height: 1),
                   ),
                   Text(
-                    remaining < 0 ? 'excedido' : 'disponível',
-                    style: GoogleFonts.outfit(color: remaining < 0 ? Colors.redAccent : const Color(0xFFCCFF00), fontSize: 12, fontWeight: FontWeight.bold),
+                    'kcal ${remaining < 0 ? 'excedidas' : 'disponÃ­veis'}',
+                    style: GoogleFonts.outfit(
+                      color: remaining < 0 ? Colors.redAccent : const Color(0xFFCCFF00), 
+                      fontSize: 14, 
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Meta: $target â€¢ Consumido: $consumed',
+                    style: GoogleFonts.outfit(color: AppTheme.textSecondary.withValues(alpha: 0.7), fontSize: 11, fontWeight: FontWeight.w600),
                   ),
                 ],
               )
             ],
           ),
         ),
-        const SizedBox(height: 32),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildMiniStat('CONSUMIDO', '$consumed', Colors.white),
-            const SizedBox(width: 48),
-            _buildMiniStat('META', '$target', const Color(0xFFCCFF00)),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMiniStat(String label, String value, Color color) {
-    return Column(
-      children: [
-        Text(label, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
-        const SizedBox(height: 6),
-        Text(value, style: GoogleFonts.outfit(color: color, fontWeight: FontWeight.w900, fontSize: 20)),
       ],
     );
   }
@@ -360,56 +400,43 @@ class _NutritionScreenState extends State<NutritionScreen> {
     final totalKcal = meals.fold(0, (sum, m) => sum + m.calories.round());
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        color: const Color(0xFF161616),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.02)),
       ),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: GoogleFonts.outfit(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900)),
-                  Text('$totalKcal kcal totais', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12)),
-                ],
-              ),
-              IconButton(
-                icon: const Icon(Icons.add_circle_rounded, color: Color(0xFFCCFF00), size: 32),
-                onPressed: () => context.push('/nutrition/search?type=$type'),
-              ),
+              Text(title.toUpperCase(), style: GoogleFonts.outfit(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 0.5)),
+              Text('$totalKcal kcal', style: GoogleFonts.outfit(color: const Color(0xFFCCFF00), fontSize: 12, fontWeight: FontWeight.bold)),
             ],
           ),
-          const SizedBox(height: 20),
-          if (meals.isEmpty)
-            Text('Toque no + para adicionar', style: GoogleFonts.outfit(color: Colors.white10, fontSize: 14))
-          else
+          if (meals.isNotEmpty) ...[
+            const SizedBox(height: 12),
             ...meals.map((m) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.only(top: 8),
               child: Row(
                 children: [
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(m.foodName, style: GoogleFonts.outfit(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600)),
-                        Text('${m.portionG}g • ${m.calories.round()} kcal', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12)),
-                      ],
-                    ),
+                    child: Text(m.foodName, style: GoogleFonts.outfit(color: Colors.white70, fontSize: 13)),
                   ),
+                  Text('${m.calories.round()} kcal', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12)),
                   IconButton(
-                    icon: const Icon(Icons.remove_circle_outline_rounded, color: Colors.white24, size: 20),
+                    icon: const Icon(Icons.close_rounded, color: Colors.white12, size: 16),
                     onPressed: () => provider.removeMeal(m.id),
+                    padding: EdgeInsets.zero,
+                    visualDensity: VisualDensity.compact,
                   ),
                 ],
               ),
             )),
+          ],
         ],
       ),
     );
@@ -420,7 +447,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
     final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
 
     return SizedBox(
-      height: 95,
+      height: 60,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 7,
@@ -432,30 +459,30 @@ class _NutritionScreenState extends State<NutritionScreen> {
           return GestureDetector(
             onTap: () => provider.selectWeekday(weekdayNum),
             child: Container(
-              width: 60,
-              margin: const EdgeInsets.only(right: 12),
+              width: 45,
+              margin: const EdgeInsets.only(right: 8),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFFCCFF00) : const Color(0xFF1A1A1A),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: isSelected ? const Color(0xFFCCFF00) : Colors.white.withOpacity(0.05)),
+                color: isSelected ? const Color(0xFFCCFF00) : Colors.white.withValues(alpha: 0.02),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: isSelected ? const Color(0xFFCCFF00) : Colors.white.withValues(alpha: 0.03)),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    ['SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB', 'DOM'][index],
+                    ['S', 'T', 'Q', 'Q', 'S', 'S', 'D'][index],
                     style: GoogleFonts.outfit(
                       color: isSelected ? Colors.black : AppTheme.textSecondary,
                       fontSize: 10,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 4),
                   Text(
                     '${targetDate.day}',
                     style: GoogleFonts.outfit(
-                      color: isSelected ? Colors.black : Colors.white,
-                      fontSize: 20,
+                      color: isSelected ? Colors.black : Colors.white60,
+                      fontSize: 14,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
@@ -468,6 +495,35 @@ class _NutritionScreenState extends State<NutritionScreen> {
     );
   }
 
+  Widget _buildInsightPanel(NutritionProvider provider) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1A1A),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFCCFF00).withValues(alpha: 0.1)),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.lightbulb_outline_rounded, color: Color(0xFFCCFF00), size: 18),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('ðŸ’¡ INSIGHT DO DIA', style: GoogleFonts.outfit(color: const Color(0xFFCCFF00), fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)),
+                const SizedBox(height: 4),
+                Text(
+                  provider.smartInsight,
+                  style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 11, height: 1.3),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Future<void> _showManualOverrideDialog(BuildContext context, NutritionProvider provider) async {
     final goal = provider.profile?.weeklyGoals[provider.selectedWeekday];
@@ -484,7 +540,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Defina um valor calórico fixo apenas para este dia. O Gêmeo Digital ajustará o restante da semana automaticamente.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+            const Text('Defina um valor calÃ³rico fixo apenas para este dia.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
             const SizedBox(height: 16),
             TextField(
               controller: controller,
@@ -505,21 +561,16 @@ class _NutritionScreenState extends State<NutritionScreen> {
             onPressed: () {
               final newCals = int.tryParse(controller.text);
               if (newCals != null && newCals > 0) {
-                // Manter macros relativos à nova caloria
                 final ratio = newCals / (goal.calories == 0 ? 1 : goal.calories);
                 final newGoal = goal.copyWith(
                   calories: newCals,
                   protein: goal.protein * ratio,
                   carb: goal.carb * ratio,
                   fat: goal.fat * ratio,
-                  isManual: true, // Aciona a Lógica de Override!
-                  label: 'Usuário (Fixa)',
+                  isManual: true,
+                  label: 'UsuÃ¡rio (Fixa)',
                 );
                 provider.updateDailyManualGoal(provider.selectedWeekday, newGoal);
-                
-                // Recalibrar a semana forçando compensação global se esse dia impactou 
-                // A Lógica no Bio Gestão é avisada via o reload!
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Meta do dia reajustada. Compensação semanal ativada.')));
                 Navigator.pop(context);
               }
             }, 
@@ -531,162 +582,9 @@ class _NutritionScreenState extends State<NutritionScreen> {
   }
 }
 
-  Widget _buildHydrationCard(NutritionProvider provider) {
-    final consumed = provider.waterConsumed;
-    final target = provider.waterTarget;
-    final pct = (consumed / target).clamp(0.0, 1.0);
-
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.blue.shade900.withValues(alpha: 0.8), Colors.blue.shade700.withValues(alpha: 0.5)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.blueAccent.withValues(alpha: 0.2)),
-        boxShadow: [
-          BoxShadow(color: Colors.blue.withValues(alpha: 0.2), blurRadius: 15, offset: const Offset(0, 8)),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Row(
-                children: [
-                  Icon(Icons.waves_rounded, color: Colors.cyanAccent, size: 22),
-                  SizedBox(width: 10),
-                  Text('HIDRATAÇÃO', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.1)),
-                ],
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text('$consumed / $target ml', style: const TextStyle(color: Colors.cyanAccent, fontWeight: FontWeight.bold, fontSize: 12)),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: LinearProgressIndicator(
-                  value: pct,
-                  minHeight: 12,
-                  backgroundColor: Colors.white.withValues(alpha: 0.1),
-                  color: Colors.cyanAccent,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildWaterBtn(provider, 200, 'COPO'),
-              _buildWaterBtn(provider, 350, 'CANECA'),
-              _buildWaterBtn(provider, 500, 'GARRAFA'),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInsightPanel(NutritionProvider provider) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppTheme.accent.withValues(alpha: 0.2)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppTheme.accent.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.auto_awesome_rounded, color: AppTheme.accent, size: 24),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Insights do Gêmeo Digital', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.bold, fontSize: 13)),
-                const SizedBox(height: 4),
-                Text(
-                  provider.smartInsight,
-                  style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildWaterBtn(NutritionProvider provider, int ml, String label) {
-    return InkWell(
-      onTap: () => provider.addWater(ml),
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        width: 90,
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-        ),
-        child: Column(
-          children: [
-            Text('+$ml', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
-            Text(label, style: const TextStyle(color: Colors.white70, fontSize: 9, fontWeight: FontWeight.bold)),
-          ],
-        ),
-      ),
-    );
-  }
-
 class _ChartData {
   _ChartData(this.x, this.y, this.color);
   final String x;
   final double y;
   final Color color;
-}
-
-class _SectionHeader extends StatelessWidget {
-  final String title;
-  const _SectionHeader({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(width: 4, height: 20, decoration: BoxDecoration(color: AppTheme.accent, borderRadius: BorderRadius.circular(2))),
-        const SizedBox(width: 12),
-        Text(
-          title.toUpperCase(),
-          style: GoogleFonts.outfit(
-            color: AppTheme.textPrimary,
-            fontSize: 14,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1,
-          ),
-        ),
-      ],
-    );
-  }
 }
