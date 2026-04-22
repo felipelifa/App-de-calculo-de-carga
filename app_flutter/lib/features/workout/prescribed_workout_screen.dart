@@ -23,7 +23,6 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
   @override
   void initState() {
     super.initState();
-    // Garantir hidratação dos exercícios ao abrir a tela de treinos prescritos
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final wp = context.read<WorkoutProfileProvider>();
       final ep = context.read<ExerciseProvider>();
@@ -40,7 +39,7 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
     if (wpAuth.isLoading) {
       return const Scaffold(
         backgroundColor: AppTheme.background,
-        body: Center(child: CircularProgressIndicator(color: AppTheme.accent)),
+        body: Center(child: CircularProgressIndicator(color: Color(0xFFCCFF00))),
       );
     }
 
@@ -52,26 +51,26 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
             backgroundColor: AppTheme.background,
             floating: true,
             pinned: true,
-            expandedHeight: 120,
+            expandedHeight: 80,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppTheme.textPrimary, size: 20),
               onPressed: () => context.go('/dashboard'),
             ),
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              centerTitle: true,
               title: Text(
-                'Meus Treinos',
+                'MEUS TREINOS',
                 style: GoogleFonts.outfit(
                   color: AppTheme.textPrimary,
-                  fontSize: 24,
+                  fontSize: 16,
                   fontWeight: FontWeight.w900,
-                  letterSpacing: -0.5,
+                  letterSpacing: 2,
                 ),
               ),
             ),
             actions: [
               IconButton(
-                icon: const Icon(Icons.add_circle_outline_rounded, color: AppTheme.accent),
+                icon: const Icon(Icons.add_circle_outline_rounded, color: Color(0xFFCCFF00)),
                 onPressed: () => _generateNewWorkout(context),
               ),
               const SizedBox(width: 8),
@@ -84,7 +83,7 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
             )
           else
             SliverPadding(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
@@ -99,7 +98,7 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Plano "${workout.name}" ativado!'),
-                              backgroundColor: AppTheme.accent,
+                              backgroundColor: const Color(0xFFCCFF00),
                               behavior: SnackBarBehavior.floating,
                             ),
                           );
@@ -136,7 +135,8 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
           const SizedBox(height: 32),
           ElevatedButton(
             onPressed: () => context.go('/anamnese'),
-            child: const Text('GERAR MEU TREINO'),
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFCCFF00)),
+            child: const Text('GERAR MEU TREINO', style: TextStyle(color: Colors.black)),
           ),
         ],
       ),
@@ -170,8 +170,6 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
   }
 
   void _showWorkoutDetails(BuildContext context, GeneratedWorkout workout) {
-    // Aqui poderíamos abrir uma tela com as sessões deste treino específico
-    // Para simplificar, vamos definir como ativo e mostrar as sessões.
     context.read<WorkoutProfileProvider>().setActiveWorkout(workout.id);
     _showSessionsList(context, workout);
   }
@@ -204,123 +202,125 @@ class _WorkoutPlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const neon = Color(0xFFCCFF00);
+    
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(28),
+        color: const Color(0xFF161616),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: isActive ? AppTheme.accent.withOpacity(0.6) : Colors.white10,
-          width: isActive ? 2.5 : 1,
+          color: isActive ? neon.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.03),
+          width: isActive ? 2 : 1,
         ),
         boxShadow: isActive ? [
-          BoxShadow(color: AppTheme.accent.withOpacity(0.15), blurRadius: 30, offset: const Offset(0, 10))
+          BoxShadow(color: neon.withValues(alpha: 0.1), blurRadius: 40, offset: const Offset(0, 10))
         ] : [],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(28),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                   Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: (isActive ? AppTheme.accent : AppTheme.surfaceHighlight).withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Icon(
-                          isActive ? Icons.auto_awesome_rounded : Icons.fitness_center_rounded,
-                          color: isActive ? AppTheme.accent : AppTheme.textSecondary,
-                          size: 24,
-                        ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                 Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: (isActive ? neon : Colors.white).withValues(alpha: 0.05),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              workout.name,
-                              style: GoogleFonts.outfit(
-                                color: AppTheme.textPrimary,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                            if (isActive)
-                              Container(
-                                margin: const EdgeInsets.only(top: 4),
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.accent.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(6),
-                                  border: Border.all(color: AppTheme.accent.withOpacity(0.3))
-                                ),
-                                child: Text('PLANO ATIVO', style: GoogleFonts.outfit(fontSize: 9, fontWeight: FontWeight.w900, color: AppTheme.accent, letterSpacing: 1)),
-                              ),
-                          ],
-                        ),
+                      child: Icon(
+                        isActive ? Icons.auto_awesome_rounded : Icons.fitness_center_rounded,
+                        color: isActive ? neon : AppTheme.textSecondary,
+                        size: 20,
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.delete_outline_rounded, color: Colors.redAccent, size: 22),
-                        onPressed: onDelete,
-                        tooltip: 'Excluir Treino',
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _buildInfoField('Divisão', _formatSplit(workout.splitType), Icons.grid_view_rounded),
-                      _buildInfoField('Período', '${workout.mesocycleDurationWeeks} Semanas', Icons.calendar_month_rounded),
-                      _buildInfoField('Estilo', _formatStyle(workout.preferredStyle), Icons.psychology_rounded),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              color: Colors.white.withOpacity(0.03),
-              child: Row(
-                children: [
-                  if (!isActive)
+                    ),
+                    const SizedBox(width: 16),
                     Expanded(
-                      child: OutlinedButton(
-                        onPressed: onSelect,
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: AppTheme.accent),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        ),
-                        child: const Text('ATIVAR ESTE PLANO', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            workout.name,
+                            style: GoogleFonts.outfit(
+                              color: AppTheme.textPrimary,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          if (isActive)
+                            Container(
+                              margin: const EdgeInsets.only(top: 4),
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: neon.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(color: neon.withValues(alpha: 0.2))
+                              ),
+                              child: Text('PLANO ATIVO', style: GoogleFonts.outfit(fontSize: 8, fontWeight: FontWeight.w900, color: neon, letterSpacing: 1)),
+                            ),
+                        ],
                       ),
                     ),
-                  if (!isActive) const SizedBox(width: 12),
+                    IconButton(
+                      icon: const Icon(Icons.delete_outline_rounded, color: Colors.white12, size: 20),
+                      onPressed: onDelete,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildInfoField('Divisão', _formatSplit(workout.splitType), Icons.grid_view_rounded),
+                    _buildInfoField('Período', '${workout.mesocycleDurationWeeks} Semanas', Icons.calendar_month_rounded),
+                    _buildInfoField('Estilo', _formatStyle(workout.preferredStyle), Icons.psychology_rounded),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.01),
+              borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
+            ),
+            child: Row(
+              children: [
+                if (!isActive)
                   Expanded(
-                    child: ElevatedButton(
-                      onPressed: onView,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: isActive ? AppTheme.accent : AppTheme.surfaceHighlight,
-                        foregroundColor: isActive ? Colors.black : AppTheme.textPrimary,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    child: OutlinedButton(
+                      onPressed: onSelect,
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: neon.withValues(alpha: 0.3)),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                       ),
-                      child: Text(isActive ? 'VER SESSÕES DE HOJE' : 'DETALHES', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                      child: const Text('ATIVAR ESTE PLANO', style: TextStyle(color: neon, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1)),
                     ),
                   ),
-                ],
-              ),
+                if (!isActive) const SizedBox(width: 8),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: onView,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isActive ? neon : const Color(0xFF222222),
+                      foregroundColor: isActive ? Colors.black : Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      elevation: isActive ? 10 : 0,
+                      shadowColor: neon.withValues(alpha: 0.4),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    ),
+                    child: Text(isActive ? 'VER SESSÕES DE HOJE' : 'DETALHES', style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 0.5)),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -331,27 +331,17 @@ class _WorkoutPlanCard extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(icon, size: 12, color: AppTheme.textSecondary),
+            Icon(icon, size: 10, color: AppTheme.textSecondary.withValues(alpha: 0.5)),
             const SizedBox(width: 4),
-            Text(label.toUpperCase(), style: GoogleFonts.outfit(fontSize: 10, color: AppTheme.textSecondary, fontWeight: FontWeight.bold, letterSpacing: 0.5)),
+            Text(label.toUpperCase(), style: GoogleFonts.outfit(fontSize: 8, color: AppTheme.textSecondary.withValues(alpha: 0.6), fontWeight: FontWeight.w900, letterSpacing: 1)),
           ],
         ),
-        const SizedBox(height: 4),
-        Text(value, style: GoogleFonts.outfit(fontSize: 13, color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
+        const SizedBox(height: 6),
+        Text(value, style: GoogleFonts.outfit(fontSize: 12, color: AppTheme.textPrimary, fontWeight: FontWeight.w700)),
       ],
     );
   }
 }
-
-String _formatStyle(String? s) {
-  switch (s) {
-    case 'compound_focus': return 'Poliarticular';
-    case 'isolation_focus': return 'Isoladores';
-    case 'circuit': return 'Circuito';
-    default: return 'Equilibrado';
-  }
-}
-
 
 class _WorkoutSessionsSheet extends StatelessWidget {
   final GeneratedWorkout workout;
@@ -359,6 +349,8 @@ class _WorkoutSessionsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const neon = Color(0xFFCCFF00);
+
     return DraggableScrollableSheet(
       initialChildSize: 0.8,
       maxChildSize: 0.95,
@@ -369,25 +361,29 @@ class _WorkoutSessionsSheet extends StatelessWidget {
            Container(
              margin: const EdgeInsets.only(top: 12),
              width: 40, height: 4,
-             decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(2)),
+             decoration: BoxDecoration(color: Colors.white12, borderRadius: BorderRadius.circular(2)),
            ),
            Padding(
              padding: const EdgeInsets.all(24),
              child: Row(
                children: [
-                 Text(
-                   workout.name,
-                   style: GoogleFonts.outfit(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+                 Expanded(
+                   child: Text(
+                     workout.name,
+                     style: GoogleFonts.outfit(fontSize: 22, fontWeight: FontWeight.w900, color: AppTheme.textPrimary),
+                   ),
                  ),
-                 const Spacer(),
-                 IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close, color: AppTheme.textSecondary)),
+                 IconButton(
+                  onPressed: () => Navigator.pop(context), 
+                  icon: const Icon(Icons.close_rounded, color: AppTheme.textSecondary, size: 20)
+                ),
                ],
              ),
            ),
            Expanded(
              child: ListView.builder(
                controller: controller,
-               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+               padding: const EdgeInsets.symmetric(horizontal: 20),
                itemCount: workout.sessions.length,
                itemBuilder: (context, index) {
                  final session = workout.sessions[index];
@@ -395,9 +391,9 @@ class _WorkoutSessionsSheet extends StatelessWidget {
                    margin: const EdgeInsets.only(bottom: 16),
                    padding: const EdgeInsets.all(20),
                    decoration: BoxDecoration(
-                     color: AppTheme.surface,
-                     borderRadius: BorderRadius.circular(20),
-                     border: Border.all(color: Colors.white.withOpacity(0.05)),
+                     color: const Color(0xFF161616),
+                     borderRadius: BorderRadius.circular(24),
+                     border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
                    ),
                    child: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
@@ -405,43 +401,51 @@ class _WorkoutSessionsSheet extends StatelessWidget {
                        Row(
                          children: [
                            Expanded(
-                             child: Text(session.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AppTheme.textPrimary)),
+                             child: Text(session.name, style: GoogleFonts.outfit(fontWeight: FontWeight.w900, fontSize: 18, color: AppTheme.textPrimary)),
                            ),
-                           Text('${session.estimatedDurationMinutes} min', style: const TextStyle(color: AppTheme.accent, fontSize: 12, fontWeight: FontWeight.bold)),
+                           Text('${session.estimatedDurationMinutes} min', style: GoogleFonts.outfit(color: neon, fontSize: 11, fontWeight: FontWeight.w900)),
                          ],
                        ),
                        const SizedBox(height: 4),
-                       Text(session.objective, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
+                       Text(session.objective, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.w500)),
                        const Divider(height: 32, color: Colors.white10),
                        ...session.exercises.take(3).map((e) => Padding(
-                         padding: const EdgeInsets.only(bottom: 8),
+                         padding: const EdgeInsets.only(bottom: 10),
                          child: Row(
-                           children: [
-                             const Icon(Icons.check_circle_outline, size: 14, color: AppTheme.accent),
-                             const SizedBox(width: 8),
-                             Text(e.exercise.name, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+                           children : [
+                             const Icon(Icons.check_circle_rounded, size: 14, color: neon),
+                             const SizedBox(width: 12),
+                             Expanded(child: Text(e.exercise.name, style: GoogleFonts.outfit(color: Colors.white70, fontSize: 13))),
                            ],
                          ),
                        )),
                        if (session.exercises.length > 3)
-                         Text('+ ${session.exercises.length - 3} exercícios...', style: const TextStyle(color: Colors.white24, fontSize: 10)),
-                       const SizedBox(height: 20),
+                         Padding(
+                           padding: const EdgeInsets.only(left: 26, top: 4),
+                           child: Text('+ ${session.exercises.length - 3} exercícios...', style: GoogleFonts.outfit(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.w500)),
+                         ),
+                       const SizedBox(height: 24),
                        SizedBox(
                          width: double.infinity,
+                         height: 54,
                          child: ElevatedButton(
                            onPressed: () {
-                              // Carrega exercícios prescritos no WorkoutProvider
                               context.read<WorkoutProvider>().startSessionFromPrescribed(
                                 sessionId: session.id,
                                 sessionName: session.name,
                                 prescribedExercises: session.exercises.map((e) => e.toMap()).toList(),
                               );
-                              // Captura o router antes de fechar o bottom sheet
                               final router = GoRouter.of(context);
                               Navigator.of(context).pop();
                               router.go('/workout');
                             },
-                           child: const Text('COMEÇAR TREINO'),
+                           style: ElevatedButton.styleFrom(
+                             backgroundColor: neon,
+                             foregroundColor: Colors.black,
+                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                             elevation: 0,
+                           ),
+                           child: const Text('COMEÇAR TREINO', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
                          ),
                        ),
                      ],
@@ -456,12 +460,12 @@ class _WorkoutSessionsSheet extends StatelessWidget {
   }
 }
 
-String _formatPeriodization(String p) {
-  switch (p) {
-    case 'linear': return 'Linear';
-    case 'dup': return 'Ondulatória (DUP)';
-    case 'block': return 'Em Bloco';
-    default: return p.toUpperCase();
+String _formatStyle(String? s) {
+  switch (s) {
+    case 'compound_focus': return 'Poliarticular';
+    case 'isolation_focus': return 'Isoladores';
+    case 'circuit': return 'Circuito';
+    default: return 'Equilibrado';
   }
 }
 
@@ -470,15 +474,8 @@ String _formatSplit(String s) {
     case 'full_body': return 'Corpo Todo';
     case 'upper_lower': return 'Superior/Inferior';
     case 'ppl': return 'Empurrar/Puxar/Pernas';
-    default: return s;
-  }
-}
-
-String _periodizationExplainer(String p) {
-  switch (p) {
-    case 'linear': return 'Ideal para progressão de força constante.';
-    case 'dup': return 'Variação diária para evitar estagnação.';
-    case 'block': return 'Fases específicas de força e volume.';
-    default: return '';
+    case 'running_none': return 'Corrida - Geral';
+    case 'push_pull_legs': return 'Empurrar/Puxar/Pernas';
+    default: return s.split('_').map((str) => str[0].toUpperCase() + str.substring(1)).join(' ');
   }
 }
