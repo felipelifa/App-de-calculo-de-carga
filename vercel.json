@@ -5,6 +5,8 @@
   "rewrites": [
     { "source": "/download/apk", "destination": "/download/apk.apk" },
     { "source": "/treino", "destination": "/treino/index.html" },
+    { "source": "/treino/", "destination": "/treino/index.html" },
+    { "source": "/treino/:path((?!.*\\.).*)", "destination": "/treino/index.html" },
     { "source": "/treino/(.*)", "destination": "/treino/$1" },
     { "source": "/api/gif", "destination": "/api/gif.js" }
   ],
