@@ -2,65 +2,59 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { Dumbbell, ChevronRight } from 'lucide-react';
 
 export default function InitialPage() {
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
-      <main className="flex-1 flex flex-col items-center justify-center px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center max-w-lg"
-        >
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="w-20 h-20 bg-[#CCFF00] rounded-2xl flex items-center justify-center mx-auto mb-8 rotate-3"
-          >
-            <Dumbbell className="text-black w-10 h-10 -rotate-3" />
-          </motion.div>
+    <div style={{ minHeight: '100vh', backgroundColor: '#000', color: '#fff', display: 'flex', flexDirection: 'column' }}>
+      <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+        <div style={{ textAlign: 'center', maxWidth: '400px' }}>
+          <div style={{ 
+            width: '80px', 
+            height: '80px', 
+            backgroundColor: '#CCFF00', 
+            borderRadius: '16px', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            margin: '0 auto 32px',
+            transform: 'rotate(12deg)'
+          }}>
+            <Dumbbell style={{ width: '40px', height: '40px', color: '#000', transform: 'rotate(-12deg)' }} />
+          </div>
 
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-5xl font-black tracking-tighter mb-4"
-          >
+          <h1 style={{ fontSize: '48px', fontWeight: '900', letterSpacing: '-0.02em', marginBottom: '16px' }}>
             TITAN ENGINE
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="text-lg text-neutral-400 mb-12 leading-relaxed"
-          >
+          <p style={{ fontSize: '18px', color: '#a3a3a3', marginBottom: '48px', lineHeight: '1.6' }}>
             Sistema de treinamento bio-adaptativo com prescrição científica,
             periodização DUP e controle real de fadiga.
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.4 }}
+          <Link
+            href="/treino/index.html"
+            style={{ 
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              gap: '12px',
+              padding: '16px 32px',
+              backgroundColor: '#CCFF00',
+              color: '#000',
+              fontWeight: '900',
+              borderRadius: '16px',
+              fontSize: '18px',
+              textDecoration: 'none'
+            }}
           >
-            <Link
-              href="/treino/index.html"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-[#CCFF00] text-black font-black rounded-2xl text-lg transition-all hover:scale-105 active:scale-95"
-            >
-              ENTRAR
-              <ChevronRight className="w-5 h-5" />
-            </Link>
-          </motion.div>
-        </motion.div>
+            ENTRAR
+            <ChevronRight style={{ width: '20px', height: '20px' }} />
+          </Link>
+        </div>
       </main>
 
-      <footer className="py-8 text-center">
-        <p className="text-neutral-600 text-xs uppercase tracking-widest font-black">
+      <footer style={{ padding: '32px', textAlign: 'center' }}>
+        <p style={{ color: '#525252', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '900' }}>
           © 2026 Titan Engine
         </p>
       </footer>
