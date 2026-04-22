@@ -797,7 +797,22 @@ C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\C
 - **Status:** Sistema adaptativo agora resiliente a variações de consumo e 100% funcional na web.
 
 ### 📅 2026-04-22
-- **Foco:** Reestruturação de Deploy (Vercel) & Visualização de GIFs (Flutter).
+- **Foco:** Refatoração de Design (Neon Style), Estabilidade Web & UX Avançada.
+- **Feito:**
+  - **Design System Neon (BuildFit 7.0):** Transição visual completa para um estilo *Action-Driven* de alta performance. Uso massivo de Dark Mode, acentos em Verde Neon (`#CCFF00`), tipografia **Outfit** e micro-animações (flutter_animate).
+  - **Refatoração UI/UX:**
+    - **NutritionScreen:** Centralização no consumo calórico (Donut Chart) e CTA proeminente ("REGISTRAR ALIMENTAÇÃO").
+    - **PrescribedWorkoutScreen:** Nova hierarquia visual para planos de treino com feedback de "Plano Ativo" em glow neon.
+    - **NutritionAnamnese:** Modernização do formulário com Hero Banners e seleção estilo chips.
+  - **Funcionalidades de Bio-Gestão:**
+    - **Ajuste Manual de Macros:** Possibilidade de sobrescrever as metas de calorias e P/C/G de qualquer dia da semana de forma independente.
+    - **Gestão de Hidratação:** Controles precisos para adicionar e remover quantidades específicas de água (ml).
+  - **Correções Estruturais (Web & UX):**
+    - **Hit-Test Fix:** Resolvido o problema de desalinhamento de cliques no Flutter Web (pointer offset) reestruturando a barra semanal de `ListView` para um layout centralizado e opaco.
+    - **Persistência de Estado:** Implementado carregamento proativo no `NutritionProvider` para evitar que a tela resete para o estado "Vazio" durante recarregamentos de página.
+    - **Sincronização de Data:** Forçada a seleção automática do dia atual ao inicializar, garantindo que o usuário veja a dieta correta imediatamente.
+  - **Build & Deploy:** Scripts de build web configurados para `/treino/` com sincronização automática via `robocopy`.
+- **Status:** Interface 100% modernizada para o padrão Neon e estabilizada para uso em produção via Web.
 - **Feito:**
   - **Unificação para Raiz:** Migração de todo o projeto Next.js da subpasta `/website` para a raiz do repositório para resolver erros de detecção de framework e erros 404.
   - **Resolução de Loop de Redirecionamento:** Solucionado o erro `ERR_TOO_MANY_REDIRECTS` removendo redirecionamentos conflitantes e habilitando `trailingSlash: true` no `vercel.json`.
