@@ -1,23 +1,23 @@
 {
-  "buildCommand": "cd website && npm install && npm run build && cd .. && cp -r website/.next ./dist && cp -r website/public ./dist/public",
+  "buildCommand": "cd website && npm install && npm run build && cd .. && cp -r website/.next ./dist && cp -r website/public/* ./dist/",
   "outputDirectory": "dist",
   "framework": "nextjs",
   "rewrites": [
-    { "source": "/download/apk", "destination": "/website/public/download/apk.apk" },
-    { "source": "/treino", "destination": "/website/public/treino/index.html" },
-    { "source": "/treino/(.*)", "destination": "/website/public/treino/$1" },
+    { "source": "/download/apk", "destination": "/download/apk.apk" },
+    { "source": "/treino", "destination": "/treino/index.html" },
+    { "source": "/treino/(.*)", "destination": "/treino/$1" },
     { "source": "/api/gif", "destination": "/api/gif.js" }
   ],
   "headers": [
     {
-      "source": "/website/public/download/apk.apk",
+      "source": "/download/apk.apk",
       "headers": [
         { "key": "Content-Disposition", "value": "attachment; filename=buildfit.apk" },
         { "key": "Content-Type", "value": "application/vnd.android.package-archive" }
       ]
     },
     {
-      "source": "/website/public/treino/(.*)",
+      "source": "/treino/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
