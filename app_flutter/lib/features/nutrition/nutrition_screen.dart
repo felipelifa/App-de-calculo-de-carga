@@ -28,7 +28,11 @@ class _NutritionScreenState extends State<NutritionScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = context.read<NutritionProvider>();
       
-      // Tenta carregar dados existentes IMEDIATAMENTE
+      // Força a seleção do dia atual ao iniciar
+      final now = DateTime.now();
+      provider.selectWeekday(now.weekday);
+      
+      // Tenta carregar dados existentes
       provider.loadExistingProfile();
       
       if (provider.profile == null && !provider.isLoading) {
@@ -566,16 +570,19 @@ class _NutritionScreenState extends State<NutritionScreen> {
                     width: isSelected ? 2 : 1,
                   ),
                   boxShadow: isSelected ? [
-                    BoxShadow(color: const Color(0xFFCCFF00).withValues(alpha: 0.15), blurRadius: 20)
+                    BoxShadow(color: const Color(0xFFCCFF00).withValues(alpha: 0.2), blurRadius: 25)
                   ] : [],
                 ),
                 child: Stack(
                   children: [
-                    if (isSelected)
-                      const Positioned(
-                        top: 8, right: 8,
-                        child: Icon(Icons.edit_note_rounded, size: 14, color: Colors.black54),
+                    Positioned(
+                      top: 12, right: 12,
+                      child: Icon(
+                        Icons.edit_note_rounded, 
+                        size: 18, 
+                        color: isSelected ? Colors.black45 : Colors.white10
                       ),
+                    ),
                     Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -594,7 +601,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                             '${targetDate.day}',
                             style: GoogleFonts.outfit(
                               color: isSelected ? Colors.black : Colors.white,
-                              fontSize: 20,
+                              fontSize: 22,
                               fontWeight: FontWeight.w900,
                             ),
                           ),
@@ -603,7 +610,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
                                 color: isSelected ? Colors.black.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.2),
-                                borderRadius: BorderRadius.circular(8)
+                                borderRadius: BorderRadius.circular(10)
                             ),
                             child: Column(
                               children : [
