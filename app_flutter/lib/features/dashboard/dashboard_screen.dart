@@ -167,16 +167,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             leadingWidth: 0,
             leading: const SizedBox.shrink(),
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              title: Text(
-                'BuildFit',
-                style: GoogleFonts.outfit(
-                  color: AppTheme.textPrimary,
-                  fontSize: 28,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: -0.5,
-                ),
-              ).animate().fadeIn(duration: 600.ms),
               background: _buildHeaderTopBar(user, auth),
             ),
           ),
@@ -233,48 +223,51 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildHeaderTopBar(User? user, AuthService auth) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 60, 24, 0),
+      padding: const EdgeInsets.fromLTRB(24, 52, 24, 0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CircleAvatar(
-            radius: 20,
+            radius: 22,
             backgroundColor: AppTheme.surfaceHighlight,
             backgroundImage: user?.photoURL != null ? NetworkImage(user!.photoURL!) : null,
             child: user?.photoURL == null ? const Icon(Icons.person, color: AppTheme.textSecondary) : null,
           ),
           const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppTheme.accentOrange.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'BuildFit',
+                  style: GoogleFonts.outfit(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: -0.5,
+                  ),
                 ),
-                child: Row(
+                const SizedBox(height: 2),
+                Row(
                   children: [
-                    const Text('2', style: TextStyle(color: AppTheme.accentOrange, fontWeight: FontWeight.bold, fontSize: 10)),
+                    const Icon(Icons.local_fire_department_rounded, color: Color(0xFFCCFF00), size: 14),
                     const SizedBox(width: 4),
-                    Text('DESAFIANTE', style: GoogleFonts.outfit(color: AppTheme.textPrimary, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)),
+                    Text(
+                      '145 pts',
+                      style: GoogleFonts.outfit(
+                        color: AppTheme.textSecondary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 4),
-              Row(
-                children: [
-                  const Icon(Icons.local_fire_department_rounded, color: AppTheme.accent, size: 14),
-                  const SizedBox(width: 4),
-                  Text('145', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontWeight: FontWeight.bold, fontSize: 13)),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
-          const Spacer(),
           IconButton(
-            icon: const Icon(Icons.notifications_outlined, color: AppTheme.textPrimary),
+            icon: const Icon(Icons.notifications_outlined, color: AppTheme.textPrimary, size: 24),
             onPressed: () {},
           ),
         ],
