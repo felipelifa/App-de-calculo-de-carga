@@ -144,7 +144,7 @@ class NutritionProvider extends ChangeNotifier {
 
   // --- Actions ---
 
-  Future<void> initFromProfile(WorkoutProfile wp) async {
+  Future<void> loadExistingProfile() async {
     if (_isLoading) return;
     _isLoading = true;
     notifyListeners();
@@ -154,19 +154,43 @@ class NutritionProvider extends ChangeNotifier {
       final doc = await _db.doc('users/$uid/nutrition/settings').get();
       if (doc.exists) {
         _profile = NutritionProfile.fromMap(doc.data()!, doc.id);
-      } else {
-        _profile = NutritionEngine.generateInitialProfile(wp, id: uid);
-        await saveSettings();
+        await loadToday();
+        await loadFavorites();
+        await loadSelectedDay();
+        await _fetchWeeklyPlants();
       }
-      await loadToday();
-      await loadFavorites();
-      await loadSelectedDay();
-      await _fetchWeeklyPlants();
     } catch (e) {
       _lastError = e.toString();
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> initFromProfile(WorkoutProfile wp) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+    
+    // Tenta carregar existente primeiro
+    await loadExistingProfile();
+    
+    // Se após tentar carregar ainda for null, gera um novo
+    if (_profile == null) {
+      _isLoading = true;
+      notifyListeners();
+      try {
+        _profile = NutritionEngine.generateInitialProfile(wp, id: uid);
+        await saveSettings();
+        await loadToday();
+        await loadFavorites();
+        await loadSelectedDay();
+        await _fetchWeeklyPlants();
+      } catch (e) {
+        _lastError = e.toString();
+      } finally {
+        _isLoading = false;
+        notifyListeners();
+      }
     }
   }
 

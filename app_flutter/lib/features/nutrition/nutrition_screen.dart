@@ -27,6 +27,10 @@ class _NutritionScreenState extends State<NutritionScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = context.read<NutritionProvider>();
+      
+      // Tenta carregar dados existentes IMEDIATAMENTE
+      provider.loadExistingProfile();
+      
       if (provider.profile == null && !provider.isLoading) {
         final wp = context.read<WorkoutProfileProvider>().profile;
         if (wp != null) {
@@ -44,7 +48,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
     if (provider.isLoading) {
       return const Scaffold(
         backgroundColor: AppTheme.background,
-        body: Center(child: CircularProgressIndicator(color: AppTheme.accent)),
+        body: Center(child: CircularProgressIndicator(color: Color(0xFFCCFF00))),
       );
     }
 
@@ -58,10 +62,10 @@ class _NutritionScreenState extends State<NutritionScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  error != null ? Icons.error_outline : Icons.no_meals_outlined,
+                const Icon(
+                  Icons.no_meals_outlined,
                   size: 64,
-                  color: error != null ? AppTheme.accent : AppTheme.textSecondary,
+                  color: AppTheme.textSecondary,
                 ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
                 const SizedBox(height: 24),
                 Text(
@@ -92,7 +96,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                     shadowColor: const Color(0xFFCCFF00).withValues(alpha: 0.3),
                   ),
                   child: Text(
-                    error != null ? 'TENTAR NOVAMENTE' : 'CONFIGURAR BIO-DIETA',
+                    'CONFIGURAR BIO-DIETA',
                     style: GoogleFonts.outfit(fontWeight: FontWeight.w900, letterSpacing: 1),
                   ),
                 ),
@@ -108,10 +112,9 @@ class _NutritionScreenState extends State<NutritionScreen> {
     final remaining = provider.remainingCalories;
     final meals = provider.selectedDayMeals;
 
-    // Charts Data
     final List<_ChartData> chartData = [
-      _ChartData('Consumido', consumed.toDouble(), AppTheme.accent),
-      _ChartData('Restante', remaining > 0 ? remaining.toDouble() : 0, AppTheme.surfaceHighlight),
+      _ChartData('Consumido', consumed.toDouble(), const Color(0xFFCCFF00)),
+      _ChartData('Restante', remaining > 0 ? remaining.toDouble() : 0, Colors.white10),
     ];
 
     return Scaffold(
@@ -150,12 +153,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   children: [
-                    // Calendário Action Strip (Turbo)
                     _buildCalendarStrip(context, provider).animate().fadeIn(duration: 400.ms),
-
                     const SizedBox(height: 32),
-
-                    // Foco Primário: Calorias
                     GestureDetector(
                       onTap: () => _showManualOverrideDialog(context, provider),
                       child: _buildCalorieDonut(chartData, target.toInt(), consumed.toInt(), remaining.toInt())
@@ -163,10 +162,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                           .fadeIn()
                           .scale(begin: const Offset(0.95, 0.95)),
                     ),
-
                     const SizedBox(height: 32),
-
-                    // Ação Primária: Registrar Refeição
                     SizedBox(
                       width: double.infinity,
                       height: 60,
@@ -190,25 +186,13 @@ class _NutritionScreenState extends State<NutritionScreen> {
                         ),
                       ),
                     ).animate().slideY(begin: 0.2, delay: 200.ms).fadeIn(),
-
                     const SizedBox(height: 40),
-
-                    // Insight sutil
                     _buildInsightPanel(provider).animate().fadeIn(delay: 400.ms),
-
                     const SizedBox(height: 40),
-
-                    // Macros (Compact cards)
                     _buildMacrosGrid(provider).animate().slideY(begin: 0.1, delay: 600.ms).fadeIn(),
-
                     const SizedBox(height: 16),
-
-                    // Hidratação (Mesmo estilo dos macros)
                     _buildHydrationCompact(provider).animate().slideY(begin: 0.1, delay: 700.ms).fadeIn(),
-
                     const SizedBox(height: 40),
-                    
-                    // Seções de Refeições
                     Row(
                       children: [
                         const Icon(Icons.restaurant_menu_rounded, color: Color(0xFFCCFF00), size: 18),
@@ -229,7 +213,6 @@ class _NutritionScreenState extends State<NutritionScreen> {
                     _buildMealSection(context, provider, 'Almoço', 'lunch', meals),
                     _buildMealSection(context, provider, 'Jantar', 'dinner', meals),
                     _buildMealSection(context, provider, 'Lanches', 'snack', meals),
-                    
                     const SizedBox(height: 48),
                   ],
                 ),
@@ -261,7 +244,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: const Color(0xFF1A1A1A),
+          color: const Color(0xFF161616),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
         ),
@@ -276,7 +259,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
               borderRadius: BorderRadius.circular(2),
               child: LinearProgressIndicator(
                 value: pct.clamp(0.0, 1.0),
-                backgroundColor: Colors.white.withValues(alpha: 0.05),
+                backgroundColor: Colors.white10,
                 color: color,
                 minHeight: 3,
               ),
@@ -292,7 +275,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
+        color: const Color(0xFF161616),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
       ),
@@ -326,7 +309,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
             child: LinearProgressIndicator(
               value: pct,
               minHeight: 6,
-              backgroundColor: Colors.white.withValues(alpha: 0.05),
+              backgroundColor: Colors.white10,
               color: const Color(0xFF00E5FF),
             ),
           ),
@@ -542,14 +525,12 @@ class _NutritionScreenState extends State<NutritionScreen> {
     final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
 
     return Center(
-      child: SizedBox(
-        height: 125,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: 7,
-          itemBuilder: (context, index) {
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        clipBehavior: Clip.none,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(7, (index) {
             final targetDate = startOfWeek.add(Duration(days: index));
             final weekdayNum = index + 1;
             final isSelected = provider.selectedWeekday == weekdayNum;
@@ -561,6 +542,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
             final f = goal?.fat.round().toString() ?? '-';
 
             return GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onTap: () {
                 if (isSelected) {
                   _showManualOverrideDialog(context, provider);
@@ -574,10 +556,11 @@ class _NutritionScreenState extends State<NutritionScreen> {
               },
               child: Container(
                 width: 85,
+                height: 125,
                 margin: const EdgeInsets.only(right: 12),
                 decoration: BoxDecoration(
                   color: isSelected ? const Color(0xFFCCFF00) : const Color(0xFF161616),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(24),
                   border: Border.all(
                     color: isSelected ? const Color(0xFFCCFF00) : Colors.white.withValues(alpha: 0.05),
                     width: isSelected ? 2 : 1,
@@ -637,7 +620,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 ),
               ),
             );
-          },
+          }),
         ),
       ),
     );
@@ -647,7 +630,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
+        color: const Color(0xFF161616),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: const Color(0xFFCCFF00).withValues(alpha: 0.1)),
       ),
