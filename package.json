@@ -5,5 +5,10 @@
     "build": "cd website && npm install && npm run build",
     "dev": "cd website && npm run dev",
     "start": "cd website && npm run start"
+  },
+  "dependencies": {
+    "next": "^15.3",
+    "react": "^19.0",
+    "react-dom": "^19.0"
   }
 }
