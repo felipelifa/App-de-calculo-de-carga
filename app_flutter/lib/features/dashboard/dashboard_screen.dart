@@ -13,6 +13,7 @@ import '../workout/progression_provider.dart';
 import '../exercises/exercise_provider.dart';
 import '../nutrition/nutrition_provider.dart';
 import '../exercises/exercise_model.dart';
+import '../workout/workout_routine_model.dart'; // Adicionado para lógica de navegação se necessário
 
 class DashboardData {
   final double weekVolume;
@@ -162,20 +163,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
             backgroundColor: AppTheme.background,
             floating: true,
             pinned: true,
-            expandedHeight: 140,
+            expandedHeight: 120,
             leadingWidth: 0,
             leading: const SizedBox.shrink(),
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               title: Text(
-                'Evolução',
+                'BuildFit',
                 style: GoogleFonts.outfit(
                   color: AppTheme.textPrimary,
-                  fontSize: 32,
+                  fontSize: 28,
                   fontWeight: FontWeight.w900,
-                  letterSpacing: -1,
+                  letterSpacing: -0.5,
                 ),
-              ).animate().fadeIn(duration: 600.ms).slideX(begin: -0.2),
+              ).animate().fadeIn(duration: 600.ms),
               background: _buildHeaderTopBar(user, auth),
             ),
           ),
@@ -190,37 +191,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 1. Status do Dia
-                    _buildDailyStatus().animate().fadeIn(delay: 200.ms),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 8),
 
-                    // 2. Ação Principal (Treino)
-                    _buildTrainingHeroCard(context).animate().scale(delay: 300.ms, curve: Curves.elasticOut),
-                    const SizedBox(height: 24),
+                    // 1. PRIMARY ACTION (TOP PRIORITY)
+                    _buildTrainingHeroCard(context),
+                    
+                    const SizedBox(height: 32),
 
-                    // 3. Resumo da Semana
-                    Text('RESUMO DA SEMANA', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-                    const SizedBox(height: 12),
+                    // 2. WEEK SUMMARY (COMPACT)
+                    _buildStatsTitle('RESUMO DA SEMANA'),
+                    const SizedBox(height: 16),
                     FutureBuilder<DashboardData>(
                       future: _future,
                       builder: (context, snap) {
                         if (snap.connectionState == ConnectionState.waiting) {
-                          return const _StatsShimmer();
+                          return const SizedBox(height: 80, child: Center(child: CircularProgressIndicator(strokeWidth: 2)));
                         }
                         final data = snap.data;
-                        if (snap.hasError || data == null) {
-                          return const _ErrorCard();
-                        }
-                        return _buildWeeklySummary(data);
+                        if (snap.hasError || data == null) return const SizedBox.shrink();
+                        return _buildCompactWeeklyStats(data);
                       },
-                    ).animate().fadeIn(delay: 400.ms),
+                    ).animate().fadeIn(delay: 200.ms),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 32),
 
-                    // 4. Performance (Técnica / Tática / Bio)
-                    Text('PERFORMANCE', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-                    const SizedBox(height: 12),
-                    _buildPerformanceSection(context).animate().fadeIn(delay: 500.ms),
+                    // 3. FEATURE CARDS (NAVIGATION)
+                    _buildStatsTitle('FERRAMENTAS'),
+                    const SizedBox(height: 16),
+                    _buildFeatureNavList(context),
                     
                     const SizedBox(height: 48),
                   ],
@@ -336,123 +334,261 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildTrainingHeroCard(BuildContext context) {
     return Consumer<WorkoutProfileProvider>(
       builder: (context, wp, _) {
-        final activeWorkout = wp.activeWorkout;
-        final hasPro = activeWorkout != null;
+        final hasPro = wp.activeWorkout != null;
         
-        return InkWell(
-          onTap: () => context.push(hasPro ? '/prescribed' : '/anamnese'),
-          borderRadius: BorderRadius.circular(32),
-          child: Container(
-            height: 280,
-            decoration: BoxDecoration(
-              color: AppTheme.surface,
-              borderRadius: BorderRadius.circular(32),
-              image: const DecorationImage(
-                image: NetworkImage('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=2069&auto=format&fit=crop'),
-                fit: BoxFit.cover,
-                opacity: 0.4,
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(28),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1E1E1E),
+            borderRadius: BorderRadius.circular(32),
+            border: Border.all(color: Colors.white.withOpacity(0.05)),
+            boxShadow: [
+              BoxShadow(color: Colors.black.withOpacity(0.4), blurRadius: 20, offset: const Offset(0, 10)),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Seus treinos',
+                        style: GoogleFonts.outfit(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Escolha e inicie um treino',
+                        style: GoogleFonts.outfit(
+                          color: AppTheme.textSecondary,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFCCFF00).withOpacity(0.12),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.bolt_rounded, color: Color(0xFFCCFF00), size: 24),
+                  ),
+                ],
               ),
-              boxShadow: [
-                BoxShadow(color: AppTheme.accent.withOpacity(0.15), blurRadius: 40, offset: const Offset(0, 20)),
-              ],
-            ),
-            padding: const EdgeInsets.all(32),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                 Container(
-                   padding: const EdgeInsets.all(12),
-                   decoration: const BoxDecoration(color: AppTheme.accent, shape: BoxShape.circle),
-                   child: Icon(hasPro ? Icons.play_arrow_rounded : Icons.add, color: Colors.black, size: 28),
-                 ),
-                 const Spacer(),
-                 Text(
-                   hasPro ? activeWorkout.name : 'Vazio', 
-                   style: GoogleFonts.outfit(fontSize: 42, fontWeight: FontWeight.w900, color: Colors.white, height: 1.1)
-                 ),
-                 const SizedBox(height: 8),
-                 Text(
-                   hasPro ? 'MEU PLANO ATIVO' : 'COMECE AQUI', 
-                   style: GoogleFonts.outfit(fontSize: 14, fontWeight: FontWeight.bold, color: AppTheme.accent, letterSpacing: 2)
-                 ),
-              ],
-            ),
+              const SizedBox(height: 32),
+              SizedBox(
+                width: double.infinity,
+                height: 58,
+                child: ElevatedButton(
+                  onPressed: () => context.push(hasPro ? '/prescribed' : '/routines'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFCCFF00),
+                    foregroundColor: Colors.black,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.play_arrow_rounded, size: 28),
+                      const SizedBox(width: 8),
+                      Text(
+                        'VER TREINOS',
+                        style: GoogleFonts.outfit(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       }
     );
   }
 
-  Widget _buildWeeklySummary(DashboardData data) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildCompactStat(Icons.bolt_rounded, 'Volume', '${data.weekVolume.toStringAsFixed(0)} kg', AppTheme.accent),
-          _buildCompactStat(Icons.calendar_today_rounded, 'Sessões', '${data.weekSessions}', AppTheme.accentBlue),
-          _buildCompactStat(Icons.emoji_events_rounded, 'Recorde', '${data.totalSessions}', AppTheme.accentOrange),
-        ],
+  Widget _buildStatsTitle(String label) {
+    return Text(
+      label,
+      style: GoogleFonts.outfit(
+        color: AppTheme.textSecondary,
+        fontSize: 11,
+        fontWeight: FontWeight.w900,
+        letterSpacing: 2,
       ),
     );
   }
 
-  Widget _buildCompactStat(IconData icon, String label, String value, Color color) {
-    return Column(
+  Widget _buildCompactWeeklyStats(DashboardData data) {
+    return Row(
       children: [
-        Icon(icon, color: color, size: 24),
-        const SizedBox(height: 8),
-        Text(value, style: GoogleFonts.outfit(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.textPrimary)),
-        Text(label, style: const TextStyle(fontSize: 10, color: AppTheme.textSecondary, fontWeight: FontWeight.w600)),
+        _buildStatTile(
+          icon: Icons.bolt_rounded,
+          value: '${data.weekVolume.toStringAsFixed(0)}kg',
+          label: 'Volume',
+          color: const Color(0xFFCCFF00),
+        ),
+        const SizedBox(width: 12),
+        _buildStatTile(
+          icon: Icons.calendar_today_rounded,
+          value: '${data.weekSessions}',
+          label: 'Sessões',
+          color: Colors.white,
+        ),
+        const SizedBox(width: 12),
+        _buildStatTile(
+          icon: Icons.emoji_events_rounded,
+          value: '${data.totalSessions}',
+          label: 'Recordes',
+          color: const Color(0xFFFFA500),
+        ),
       ],
     );
   }
 
-  Widget _buildPerformanceSection(BuildContext context) {
-    return Row(
-       children: [
-         Expanded(
-           child: _BentoCard(
-             title: 'Técnica', 
-             value: '16', 
-             unit: 'MIN', 
-             color: AppTheme.accent, 
-             icon: Icons.directions_run,
-             onTap: () => context.push('/exercises'),
-             fullWidth: false,
-           ),
-         ),
-         const SizedBox(width: 16),
-         Expanded(
-           child: _BentoCard(
-             title: 'Tática', 
-             value: '10', 
-             unit: 'MIN', 
-             color: AppTheme.accentBlue, 
-             icon: Icons.psychology,
-             onTap: () => context.push('/progression'),
-             fullWidth: false,
-           ),
-         ),
-         const SizedBox(width: 16),
-         Expanded(
-           child: _BentoCard(
-             title: 'Nutrição', 
-             value: 'BIO', 
-             unit: '', 
-             color: AppTheme.accentLime, 
-             icon: Icons.restaurant_rounded, 
-             onTap: () => context.push('/nutrition'),
-             fullWidth: false,
-           ),
-         ),
-       ],
+  Widget _buildStatTile({
+    required IconData icon,
+    required String value,
+    required String label,
+    required Color color,
+  }) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 18),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1A1A1A),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: Colors.white.withOpacity(0.04)),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, color: color, size: 18),
+            const SizedBox(height: 10),
+            Text(
+              value,
+              style: GoogleFonts.outfit(
+                color: Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label.toUpperCase(),
+              style: GoogleFonts.outfit(
+                color: AppTheme.textSecondary,
+                fontSize: 9,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 1,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeatureNavList(BuildContext context) {
+    return Column(
+      children: [
+        _buildNavActionCard(
+          title: 'Exercícios',
+          subtitle: 'Veja seus exercícios e cargas',
+          icon: Icons.fitness_center_rounded,
+          color: const Color(0xFFCCFF00),
+          onTap: () => context.push('/exercises'),
+        ),
+        const SizedBox(height: 14),
+        _buildNavActionCard(
+          title: 'Evolução',
+          subtitle: 'Acompanhe seu progresso',
+          icon: Icons.trending_up_rounded,
+          color: const Color(0xFF00E5FF),
+          onTap: () => context.push('/progression'),
+        ),
+        const SizedBox(height: 14),
+        _buildNavActionCard(
+          title: 'Nutrição',
+          subtitle: 'Acompanhe sua alimentação',
+          icon: Icons.restaurant_rounded,
+          color: const Color(0xFFFF4081),
+          onTap: () => context.push('/nutrition'),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNavActionCard({
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(28),
+      child: Container(
+        padding: const EdgeInsets.all(22),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E1E1E),
+          borderRadius: BorderRadius.circular(28),
+          border: Border.all(color: Colors.white.withOpacity(0.05)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: Icon(icon, color: color, size: 24),
+            ),
+            const SizedBox(width: 18),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.outfit(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    subtitle,
+                    style: GoogleFonts.outfit(
+                      color: AppTheme.textSecondary,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right_rounded, color: Colors.white.withOpacity(0.2), size: 28),
+          ],
+        ),
+      ),
     );
   }
 }

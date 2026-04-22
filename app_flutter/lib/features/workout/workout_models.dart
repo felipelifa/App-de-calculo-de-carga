@@ -58,6 +58,19 @@ class WorkoutExerciseEntry {
         'volume': totalVolume,
         'injuryNote': injuryNote,
       };
+
+  factory WorkoutExerciseEntry.fromMap(Map<String, dynamic> m) {
+    final rawSets = (m['sets'] as List<dynamic>?) ?? [];
+    return WorkoutExerciseEntry(
+      exerciseId: m['exerciseId'] as String? ?? '',
+      exerciseName: m['exerciseName'] as String? ?? '',
+      muscleGroup: m['muscleGroup'] as String? ?? '',
+      injuryNote: m['injuryNote'] as String?,
+      sets: rawSets
+          .map((s) => WorkoutSet.fromMap(Map<String, dynamic>.from(s)))
+          .toList(),
+    );
+  }
 }
 
 class WorkoutSession {

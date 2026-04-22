@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'workout_models.dart';
 import 'pr_model.dart';
 import 'pr_service.dart';
@@ -20,7 +22,9 @@ class WorkoutProvider extends ChangeNotifier {
         _progressionEngine = ProgressionEngine(
           db: db ?? FirebaseFirestore.instance,
           auth: auth ?? FirebaseAuth.instance,
-        );
+        ) {
+    _loadSessionFromLocal();
+  }
 
   bool _isSessionActive = false;
   DateTime? _sessionStart;
@@ -95,6 +99,7 @@ class WorkoutProvider extends ChangeNotifier {
     _currentExercises.clear();
     _rirByExercise.clear();
     _exerciseMetadata.clear();
+    _saveSessionToLocal();
     notifyListeners();
   }
 
@@ -118,6 +123,7 @@ class WorkoutProvider extends ChangeNotifier {
       );
       _currentExercises.add(entry);
     }
+    _saveSessionToLocal();
     notifyListeners();
   }
 
@@ -167,6 +173,7 @@ class WorkoutProvider extends ChangeNotifier {
       final defaultRir = (pe['rir'] as int?) ?? 3;
       _rirByExercise[exId] = defaultRir;
     }
+    _saveSessionToLocal();
     notifyListeners();
   }
 
@@ -206,12 +213,14 @@ class WorkoutProvider extends ChangeNotifier {
       };
     }
 
+    _saveSessionToLocal();
     notifyListeners();
   }
 
   void removeExerciseFromSession(int index) {
     if (index >= 0 && index < _currentExercises.length) {
       _currentExercises.removeAt(index);
+      _saveSessionToLocal();
       notifyListeners();
     }
   }
@@ -246,6 +255,7 @@ class WorkoutProvider extends ChangeNotifier {
     
     // Remove RIR do anterior se necessário ou deixa como está (será sobreposto ao salvar)
     
+    _saveSessionToLocal();
     notifyListeners();
   }
 
@@ -265,6 +275,7 @@ class WorkoutProvider extends ChangeNotifier {
       volume: reps * weight,
       isWarmup: isWarmup ?? exercise.sets[setIndex].isWarmup,
     );
+    _saveSessionToLocal();
     notifyListeners();
   }
 
@@ -280,6 +291,7 @@ class WorkoutProvider extends ChangeNotifier {
       volume: reps * weight,
       isWarmup: false, // New sets default to normal sets
     ));
+    _saveSessionToLocal();
     notifyListeners();
   }
 
@@ -288,6 +300,7 @@ class WorkoutProvider extends ChangeNotifier {
     final exercise = _currentExercises[exerciseIndex];
     if (exercise.sets.length > 1 && setIndex < exercise.sets.length) {
       exercise.sets.removeAt(setIndex);
+      _saveSessionToLocal();
       notifyListeners();
     }
   }
@@ -308,6 +321,7 @@ class WorkoutProvider extends ChangeNotifier {
       volume: reps * weight,
       isWarmup: true,
     ));
+    _saveSessionToLocal();
     notifyListeners();
   }
 
@@ -366,6 +380,7 @@ class WorkoutProvider extends ChangeNotifier {
     _currentExercises.clear();
     _rirByExercise.clear();
     _exerciseMetadata.clear();
+    _saveSessionToLocal();
     notifyListeners();
   }
 
@@ -376,6 +391,7 @@ class WorkoutProvider extends ChangeNotifier {
     _currentExercises.clear();
     _rirByExercise.clear();
     _exerciseMetadata.clear();
+    _saveSessionToLocal();
     notifyListeners();
   }
 
@@ -414,6 +430,70 @@ class WorkoutProvider extends ChangeNotifier {
     } catch (e) {
       debugPrint('Erro ao excluir sessão: $e');
       rethrow;
+    }
+  }
+
+  // ── Persistência Local (F5 proof) ──────────────────────────
+
+  Future<void> _saveSessionToLocal() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (!_isSessionActive) {
+        await prefs.remove('active_workout_session');
+        return;
+      }
+
+      final data = {
+        'sessionStart': _sessionStart?.toIso8601String(),
+        'activeSessionName': _activeSessionName,
+        'currentExercises': _currentExercises.map((e) => e.toMap()).toList(),
+        'rirByExercise': _rirByExercise,
+        'exerciseMetadata': _exerciseMetadata,
+      };
+
+      await prefs.setString('active_workout_session', jsonEncode(data));
+    } catch (e) {
+      debugPrint('Erro ao salvar sessão localmente: $e');
+    }
+  }
+
+  Future<void> _loadSessionFromLocal() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final saved = prefs.getString('active_workout_session');
+      if (saved == null) return;
+
+      final data = jsonDecode(saved);
+      _isSessionActive = true;
+      _sessionStart = DateTime.tryParse(data['sessionStart'] ?? '');
+      _activeSessionName = data['activeSessionName'];
+      
+      _currentExercises.clear();
+      if (data['currentExercises'] != null) {
+        for (var exMap in data['currentExercises']) {
+          _currentExercises.add(WorkoutExerciseEntry.fromMap(Map<String, dynamic>.from(exMap)));
+        }
+      }
+
+      _rirByExercise.clear();
+      if (data['rirByExercise'] != null) {
+        final rirMap = Map<String, dynamic>.from(data['rirByExercise']);
+        rirMap.forEach((key, value) {
+          _rirByExercise[key] = value as int;
+        });
+      }
+
+      _exerciseMetadata.clear();
+      if (data['exerciseMetadata'] != null) {
+        final metaMap = Map<String, dynamic>.from(data['exerciseMetadata']);
+        metaMap.forEach((key, value) {
+          _exerciseMetadata[key] = Map<String, dynamic>.from(value);
+        });
+      }
+
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Erro ao carregar sessão local: $e');
     }
   }
 
