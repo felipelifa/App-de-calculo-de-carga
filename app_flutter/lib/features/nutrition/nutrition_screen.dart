@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
@@ -64,7 +64,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
                 const SizedBox(height: 24),
                 Text(
-                  error ?? 'Configure seu perfil nutricional para comeÃ§ar a Bio-GestÃ£o baseada em ciÃªncia.',
+                  error ?? 'Configure seu perfil nutricional para começar a Bio-Gestão baseada em ciência.',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.outfit(
                     color: AppTheme.textSecondary,
@@ -118,7 +118,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                'NUTRIÃ‡ÃƒO',
+                'NUTRIÇÃO',
                 style: GoogleFonts.outfit(
                   color: AppTheme.textPrimary,
                   fontSize: 16,
@@ -138,12 +138,12 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   children: [
-                    // CalendÃ¡rio Action Strip (Compacto)
+                    // Calendário Action Strip (Compacto)
                     _buildCalendarStrip(context, provider).animate().fadeIn(duration: 400.ms),
 
                     const SizedBox(height: 32),
 
-                    // Foco PrimÃ¡rio: Calorias
+                    // Foco Primário: Calorias
                     GestureDetector(
                       onTap: () => _showManualOverrideDialog(context, provider),
                       child: _buildCalorieDonut(chartData, target.toInt(), consumed.toInt(), remaining.toInt())
@@ -154,7 +154,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
 
                     const SizedBox(height: 32),
 
-                    // AÃ§Ã£o PrimÃ¡ria: Registrar RefeiÃ§Ã£o
+                    // Ação Primária: Registrar Refeição
                     SizedBox(
                       width: double.infinity,
                       height: 60,
@@ -162,7 +162,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                         onPressed: () => context.push('/nutrition/search?type=breakfast'),
                         icon: const Icon(Icons.add_rounded, color: Colors.black, size: 28),
                         label: Text(
-                          'REGISTRAR ALIMENTAÃ‡ÃƒO',
+                          'REGISTRAR ALIMENTAÇÃO',
                           style: GoogleFonts.outfit(
                             fontWeight: FontWeight.w900,
                             fontSize: 14,
@@ -191,12 +191,12 @@ class _NutritionScreenState extends State<NutritionScreen> {
 
                     const SizedBox(height: 16),
 
-                    // HidrataÃ§Ã£o (Mesmo estilo dos macros)
+                    // Hidratação (Mesmo estilo dos macros)
                     _buildHydrationCompact(provider).animate().slideY(begin: 0.1, delay: 700.ms).fadeIn(),
 
                     const SizedBox(height: 40),
                     
-                    // SeÃ§Ãµes de RefeiÃ§Ãµes
+                    // Seções de Refeições
                     Row(
                       children: [
                         const Icon(Icons.restaurant_menu_rounded, color: Color(0xFFCCFF00), size: 18),
@@ -213,8 +213,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    _buildMealSection(context, provider, 'CafÃ© da manhÃ£', 'breakfast', meals),
-                    _buildMealSection(context, provider, 'AlmoÃ§o', 'lunch', meals),
+                    _buildMealSection(context, provider, 'Café da manhã', 'breakfast', meals),
+                    _buildMealSection(context, provider, 'Almoço', 'lunch', meals),
                     _buildMealSection(context, provider, 'Jantar', 'dinner', meals),
                     _buildMealSection(context, provider, 'Lanches', 'snack', meals),
                     
@@ -232,7 +232,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
   Widget _buildMacrosGrid(NutritionProvider provider) {
     return Row(
       children: [
-        _buildCompactMacroCard('PROTEÃNA', '${provider.consumedProtein.round()}g / ${provider.targetProtein.round()}g', 
+        _buildCompactMacroCard('PROTEÍNA', '${provider.consumedProtein.round()}g / ${provider.targetProtein.round()}g', 
           provider.consumedProtein / (provider.targetProtein > 0 ? provider.targetProtein : 1), const Color(0xFFCCFF00)),
         const SizedBox(width: 8),
         _buildCompactMacroCard('CARBO', '${provider.consumedCarb.round()}g / ${provider.targetCarb.round()}g', 
@@ -293,7 +293,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 children: [
                   const Icon(Icons.opacity_rounded, color: Color(0xFF00E5FF), size: 16),
                   const SizedBox(width: 8),
-                  Text('HIDRATAÃ‡ÃƒO', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                  Text('HIDRATAÇÃO', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
                 ],
               ),
               Text('${provider.waterConsumed} / ${provider.waterTarget} ml', 
@@ -374,7 +374,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                     style: GoogleFonts.outfit(fontSize: 64, fontWeight: FontWeight.w900, color: Colors.white, height: 1),
                   ),
                   Text(
-                    'kcal ${remaining < 0 ? 'excedidas' : 'disponÃ­veis'}',
+                    'kcal ${remaining < 0 ? 'excedidas' : 'disponíveis'}',
                     style: GoogleFonts.outfit(
                       color: remaining < 0 ? Colors.redAccent : const Color(0xFFCCFF00), 
                       fontSize: 14, 
@@ -383,7 +383,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Meta: $target â€¢ Consumido: $consumed',
+                    'Meta: $target • Consumido: $consumed',
                     style: GoogleFonts.outfit(color: AppTheme.textSecondary.withValues(alpha: 0.7), fontSize: 11, fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -511,7 +511,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('ðŸ’¡ INSIGHT DO DIA', style: GoogleFonts.outfit(color: const Color(0xFFCCFF00), fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)),
+                Text('💡 INSIGHT DO DIA', style: GoogleFonts.outfit(color: const Color(0xFFCCFF00), fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)),
                 const SizedBox(height: 4),
                 Text(
                   provider.smartInsight,
@@ -540,7 +540,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Defina um valor calÃ³rico fixo apenas para este dia.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+            const Text('Defina um valor calórico fixo apenas para este dia.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
             const SizedBox(height: 16),
             TextField(
               controller: controller,
@@ -568,7 +568,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                   carb: goal.carb * ratio,
                   fat: goal.fat * ratio,
                   isManual: true,
-                  label: 'UsuÃ¡rio (Fixa)',
+                  label: 'Usuário (Fixa)',
                 );
                 provider.updateDailyManualGoal(provider.selectedWeekday, newGoal);
                 Navigator.pop(context);

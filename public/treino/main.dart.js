@@ -57239,7 +57239,7 @@ A.a7t.prototype={
 D(a){return B.Wz}}
 A.a5V.prototype={
 D(a){var s=null
-return A.db(new A.an(B.fP,A.av(A.a([B.a2c,B.aN,B.aKg,B.ah,A.fv(B.aK1,this.c,A.ik(s,s,B.t,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s))],t.p),B.p,B.k,B.ag),s),s,s)}}
+return A.db(new A.an(B.fP,A.av(A.a([B.a2c,B.aN,B.aKf,B.ah,A.fv(B.aK0,this.c,A.ik(s,s,B.t,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s))],t.p),B.p,B.k,B.ag),s),s,s)}}
 A.a5P.prototype={
 D(a){var s=null
 return A.db(new A.an(B.fP,A.av(A.a([A.dj(B.qQ,B.v.aw(0.3),s,56),B.ah,B.aKR,B.bm,B.aKm],t.p),B.p,B.k,B.ag),s),s,s)}}
@@ -57439,7 +57439,7 @@ l.push(A.aB(n,A.Q(p,n,n,n,n,B.on,B.al,n,n),B.o,n,n,new A.aM(s,n,q,r,n,n,B.y),n,n
 r=A.to(o.e,B.a3j,n,n,n,!0,n,!1,n,B.am,B.bP,n)
 q=o.f
 p=q?n:o.gaAn()
-l.push(A.aig(new A.an(B.bT,A.av(A.a([s,B.ah,r,B.b5,A.fv(q?B.RH:B.aK6,p,n)],m),B.el,B.k,B.m),n),n))
+l.push(A.aig(new A.an(B.bT,A.av(A.a([s,B.ah,r,B.b5,A.fv(q?B.RH:B.aK5,p,n)],m),B.el,B.k,B.m),n),n))
 l.push(B.a9)
 l.push(A.fV(B.aJB,new A.aRP(a),A.N0(n,n,n,n,n,n,n,n,n,B.v,n,n,n,n,n,n,n,n,n,n)))
 l.push(A.aFS(B.qV,B.Sq,new A.aRQ(),A.N0(n,n,n,n,n,n,n,n,n,B.v,n,n,n,n,n,n,n,n,n,n)))
@@ -57556,7 +57556,7 @@ A.cU(k).fv("/dashboard",null)}else{k.toString
 A.cU(k).fv("/login",null)}case 1:return A.B(q,r)}})
 return A.C($async$GB,r)},
 D(a){var s=null,r=6e5,q=5e5,p=A.eD(A.dF(A.db(A.aB(s,s,B.o,s,s,new A.aM(s,s,s,s,A.a([new A.c1(50,B.af,B.t.aw(0.15),B.l,100)],t.F),s,B.cY),s,200,s,s,s,s,200),s,s)),s,A.be(0,0,r,0,0,0)),o=A.ay(30),n=t.p
-return A.eQ(s,B.q,A.iy(B.c1,A.a([p,A.db(A.av(A.a([A.xi(A.dF(A.aB(s,B.a1O,B.o,s,s,new A.aM(B.U,s,A.bU(B.t.aw(0.3),1),o,s,s,B.y),s,s,s,B.bT,s,s,s)),s,B.fI,s,A.be(0,0,q,0,0,0),s).tu(new A.a19(s,s,s,s,s,s,s,A.be(0,0,r,0,0,0),A.be(0,0,9e5,0,0,0),s,0,1)),B.b5,A.mr(A.eD(A.dF(B.aK9),A.be(0,0,3e5,0,0,0),A.be(0,0,q,0,0,0)),0.2,s,0),B.bm,A.eD(A.dF(B.aJb),A.be(0,0,r,0,0,0),A.be(0,0,q,0,0,0))],n),B.p,B.bM,B.m),s,s),A.wO(50,A.av(A.a([A.eD(A.dF(B.aCv),A.be(0,0,8e5,0,0,0),s),B.cw,A.eD(A.dF(B.aJN),A.be(0,0,1e6,0,0,0),s)],n),B.p,B.k,B.m),s,s,0,0,s,s)],n),B.E,B.by,s),s,s)}}
+return A.eQ(s,B.q,A.iy(B.c1,A.a([p,A.db(A.av(A.a([A.xi(A.dF(A.aB(s,B.a1O,B.o,s,s,new A.aM(B.U,s,A.bU(B.t.aw(0.3),1),o,s,s,B.y),s,s,s,B.bT,s,s,s)),s,B.fI,s,A.be(0,0,q,0,0,0),s).tu(new A.a19(s,s,s,s,s,s,s,A.be(0,0,r,0,0,0),A.be(0,0,9e5,0,0,0),s,0,1)),B.b5,A.mr(A.eD(A.dF(B.aK8),A.be(0,0,3e5,0,0,0),A.be(0,0,q,0,0,0)),0.2,s,0),B.bm,A.eD(A.dF(B.aJb),A.be(0,0,r,0,0,0),A.be(0,0,q,0,0,0))],n),B.p,B.bM,B.m),s,s),A.wO(50,A.av(A.a([A.eD(A.dF(B.aCv),A.be(0,0,8e5,0,0,0),s),B.cw,A.eD(A.dF(B.aJM),A.be(0,0,1e6,0,0,0),s)],n),B.p,B.k,B.m),s,s,0,0,s,s)],n),B.E,B.by,s),s,s)}}
 A.zZ.prototype={}
 A.aN6.prototype={
 jT(){var s=0,r=A.D(t.tf),q,p=this,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4,a5,a6,a7,a8
@@ -57779,12 +57779,12 @@ p=t.fo
 o=p.i("a9.E")
 n=A.P(new A.U(B.CT,new A.aJ4(),p),o)
 m=t.N
-r.push(A.b9M(B.a3s,B.U,B.aKf,q,n,new A.aJ5(l),B.b0,new A.aJ6(),m))
+r.push(A.b9M(B.a3s,B.U,B.aKe,q,n,new A.aJ5(l),B.b0,new A.aJ6(),m))
 r.push(B.cw)
 r.push(new A.an(B.eX,A.Q("Equipamento *".toUpperCase(),k,k,k,k,B.kB,k,k,k),k))
 n=l.z
 q=A.P(new A.U(B.ac5,new A.aJ7(),p),o)
-r.push(A.b9M(B.a3q,B.U,B.aJM,n,q,new A.aJ8(l),B.b0,new A.aJ9(),m))
+r.push(A.b9M(B.a3q,B.U,B.aJL,n,q,new A.aJ8(l),B.b0,new A.aJ9(),m))
 r.push(B.a9)
 r.push(new A.an(B.eX,A.Q("Configura\xe7\xf5es de volume".toUpperCase(),k,k,k,k,B.kB,k,k,k),k))
 r.push(B.hn)
@@ -58122,7 +58122,7 @@ $2(a,b){var s,r,q,p,o,n=null
 if(b.a===B.eU)return B.pj
 s=b.b
 if(s==null){r=A.ay(12)
-return A.aB(n,B.aK_,B.o,n,n,new A.aM(B.bb,n,A.bU(B.i.aw(0.06),1),r,n,n,B.y),n,n,n,B.co,n,n,n)}r=A.a([B.aK.aw(0.1),B.U],t.t_)
+return A.aB(n,B.aJZ,B.o,n,n,new A.aM(B.bb,n,A.bU(B.i.aw(0.06),1),r,n,n,B.y),n,n,n,B.co,n,n,n)}r=A.a([B.aK.aw(0.1),B.U],t.t_)
 q=A.ay(16)
 p=A.bU(B.aK.aw(0.25),1)
 o=t.p
@@ -58411,7 +58411,7 @@ D(a){var s=null,r=A.ay(16),q=A.bU(B.i.aw(0.06),1),p=t.p
 return A.av(A.a([A.aB(s,A.av(A.a([A.dj(B.c5,B.v.aw(0.3),s,56),B.ah,B.aKv,B.bm,B.aJa],p),B.p,B.k,B.m),B.o,s,s,new A.aM(B.U,s,q,r,s,s,B.y),s,s,s,B.bT,s,s,s),B.cw,new A.aaA(s)],p),B.p,B.k,B.m)}}
 A.aaA.prototype={
 D(a){var s=null,r=B.t.aw(0.07),q=A.ay(12),p=A.bU(B.t.aw(0.2),1),o=t.p
-return A.aB(s,A.av(A.a([B.aAc,B.bm,B.aKh,B.hm,A.tA(A.a([new A.yF("RIR 0","Falha",B.b2,s),new A.yF("RIR 1-2","Ideal",B.bo,s),new A.yF("RIR 3-4","Moderado",B.t,s),new A.yF("RIR 5+","F\xe1cil",B.v,s)],o),B.aw,B.cV,0,6)],o),B.K,B.k,B.m),B.o,s,s,new A.aM(r,s,p,q,s,s,B.y),s,s,s,B.ly,s,s,s)}}
+return A.aB(s,A.av(A.a([B.aAc,B.bm,B.aKg,B.hm,A.tA(A.a([new A.yF("RIR 0","Falha",B.b2,s),new A.yF("RIR 1-2","Ideal",B.bo,s),new A.yF("RIR 3-4","Moderado",B.t,s),new A.yF("RIR 5+","F\xe1cil",B.v,s)],o),B.aw,B.cV,0,6)],o),B.K,B.k,B.m),B.o,s,s,new A.aM(r,s,p,q,s,s,B.y),s,s,s,B.ly,s,s,s)}}
 A.yF.prototype={
 D(a){var s=null,r=this.e,q=r.aw(0.12),p=A.ay(8),o=A.bU(r.aw(0.3),1)
 return A.aB(s,A.av(A.a([A.Q(this.c,s,s,s,s,A.dy(s,s,r,s,s,s,s,s,s,s,s,11,s,s,B.R,s,s,!0,s,s,s,s,s,s,s,s),s,s,s),A.Q(this.d,s,s,s,s,A.dy(s,s,r.aw(0.7),s,s,s,s,s,s,s,s,10,s,s,s,s,s,!0,s,s,s,s,s,s,s,s),s,s,s)],t.p),B.p,B.k,B.m),B.o,s,s,new A.aM(q,s,o,p,s,s,B.y),s,s,s,B.xB,s,s,s)}}
@@ -58446,7 +58446,7 @@ A.aQk.prototype={
 $2(a,b){var s,r,q,p,o,n,m=null
 if(b.a===B.eU)return B.pk
 s=b.c
-if(s!=null)return A.db(A.av(A.a([B.a1R,B.ah,A.Q(J.d1(s),m,m,m,m,A.aN().$1$color(B.v),m,m,m),A.fV(B.aJT,this.a.d,m)],t.p),B.p,B.k,B.ag),m,m)
+if(s!=null)return A.db(A.av(A.a([B.a1R,B.ah,A.Q(J.d1(s),m,m,m,m,A.aN().$1$color(B.v),m,m,m),A.fV(B.aJS,this.a.d,m)],t.p),B.p,B.k,B.ag),m,m)
 r=b.b
 if(r==null)r=A.a([],t.b8)
 if(J.fa(r))return A.db(new A.an(B.fP,A.av(A.a([A.dj(B.a18,B.cD,m,64),B.a9,A.Q("Sem dados suficientes",m,m,m,m,A.aN().$3$color$fontSize$fontWeight(B.i,20,B.I),m,m,m),B.aN,A.Q("Complete pelo menos 2 sess\xf5es para que possamos analisar sua evolu\xe7\xe3o.",m,m,m,m,A.aN().$2$color$fontSize(B.v,14),B.al,m,m)],t.p),B.p,B.k,B.ag),m),m,m)
@@ -58789,7 +58789,7 @@ s.C$=0
 this.aN()},
 D(a){var s=this,r=null,q=s.d/100,p=s.a.c,o=p.d*q,n=p.e*q,m=p.f*q,l=p.r*q
 p=t.p
-return new A.an(new A.ag(24,24,24,A.bQ(a,r,t.l).w.f.d),A.av(A.a([A.Q(s.a.c.b,r,r,r,r,B.iU,r,r,r),B.ah,A.b1(A.a([A.bJ(A.nR(r,B.c,!1,r,!0,B.E,r,A.qr(),s.f,r,r,r,r,r,2,B.a3o,B.X,!0,r,!0,r,!1,r,B.cg,r,r,r,r,B.iS,r,r,r,1,r,r,!1,"\u2022",r,new A.aU9(s),r,r,r,!1,r,r,!1,r,!0,r,B.ax,r,r,r,r,r,r,r,r,r,r,r,B.Si,!0,B.am,r,B.bP,r,r,r,r),1,r)],p),B.p,B.k,B.m,0,r),B.a9,A.b1(A.a([s.Fm("Calorias",""+B.e.ai(o)+" kcal",B.i),s.Fm("Prot",""+B.e.ai(n)+"g",B.t),s.Fm("Carb",""+B.e.ai(m)+"g",B.bo),s.Fm("Gord",""+B.e.ai(l)+"g",B.th)],p),B.p,B.n5,B.m,0,r),B.ah,new A.GL(s.e,new A.aUa(s),B.t,B.i,B.aK7,B.aJV,B.r0,B.ac,r),B.a9,A.co(A.fv(B.aJ1,new A.aUb(s,o,n,m,l,a),A.ik(r,r,B.t,r,r,r,r,r,r,r,r,r,B.jC,r,r,r,r,r,r,r)),r,1/0),B.a9],p),B.K,B.k,B.ag),r)},
+return new A.an(new A.ag(24,24,24,A.bQ(a,r,t.l).w.f.d),A.av(A.a([A.Q(s.a.c.b,r,r,r,r,B.iU,r,r,r),B.ah,A.b1(A.a([A.bJ(A.nR(r,B.c,!1,r,!0,B.E,r,A.qr(),s.f,r,r,r,r,r,2,B.a3o,B.X,!0,r,!0,r,!1,r,B.cg,r,r,r,r,B.iS,r,r,r,1,r,r,!1,"\u2022",r,new A.aU9(s),r,r,r,!1,r,r,!1,r,!0,r,B.ax,r,r,r,r,r,r,r,r,r,r,r,B.Si,!0,B.am,r,B.bP,r,r,r,r),1,r)],p),B.p,B.k,B.m,0,r),B.a9,A.b1(A.a([s.Fm("Calorias",""+B.e.ai(o)+" kcal",B.i),s.Fm("Prot",""+B.e.ai(n)+"g",B.t),s.Fm("Carb",""+B.e.ai(m)+"g",B.bo),s.Fm("Gord",""+B.e.ai(l)+"g",B.th)],p),B.p,B.n5,B.m,0,r),B.ah,new A.GL(s.e,new A.aUa(s),B.t,B.i,B.aK6,B.aJU,B.r0,B.ac,r),B.a9,A.co(A.fv(B.aJ1,new A.aUb(s,o,n,m,l,a),A.ik(r,r,B.t,r,r,r,r,r,r,r,r,r,B.jC,r,r,r,r,r,r,r)),r,1/0),B.a9],p),B.K,B.k,B.ag),r)},
 Fm(a,b,c){var s=null
 return A.av(A.a([A.Q(a,s,s,s,s,B.db,s,s,s),B.bZ,A.Q(b,s,s,s,s,A.dy(s,s,c,s,s,s,s,s,s,s,s,16,s,s,B.R,s,s,!0,s,s,s,s,s,s,s,s),s,s,s)],t.p),B.p,B.k,B.m)}}
 A.aU9.prototype={
@@ -58905,12 +58905,12 @@ o=i.O1(i.e,new A.aSN(i),o,r)
 n=A.Q("Motor de Compensa\xe7\xe3o",h,h,h,h,B.om,h,h,h)
 m=A.a4(["automatic","Redistribui\xe7\xe3o Suave (Flex\xedvel)","linear","Compensa\xe7\xe3o Direta (Focada)","none","Meta Fixa (Sem compensa\xe7\xe3o)"],r,r)
 r=i.O1(i.f,new A.aSO(i),m,r)
-m=A.b5e(B.t,h,new A.aSP(i),B.aKS,B.aKd,i.r)
-l=A.b5e(B.bo,h,new A.aSQ(i),B.aK5,B.aKU,i.w)
+m=A.b5e(B.t,h,new A.aSP(i),B.aKS,B.aKc,i.r)
+l=A.b5e(B.bo,h,new A.aSQ(i),B.aK4,B.aKU,i.w)
 k=i.x?h:i.gaIc()
 j=A.ay(16)
 j=A.ik(h,h,B.t,h,h,h,8,h,h,h,h,h,h,A.bm(102,B.t.R()>>>16&255,B.t.R()>>>8&255,B.t.R()&255),new A.cu(j,B.z),h,h,h,h,h)
-return A.eQ(g,B.q,A.mo(A.av(A.a([f,B.b5,new A.an(B.dn,s,h),q,B.a9,new A.an(B.dn,p,h),o,B.a9,new A.an(B.dn,n,h),B.aJt,B.aN,r,B.aN,m,l,B.od,A.co(A.fv(i.x?B.WP:B.aKc,k,j),56,1/0)],t.p),B.K,B.k,B.m),h,B.X,B.bT,h,B.a8),h,h)},
+return A.eQ(g,B.q,A.mo(A.av(A.a([f,B.b5,new A.an(B.dn,s,h),q,B.a9,new A.an(B.dn,p,h),o,B.a9,new A.an(B.dn,n,h),B.aJt,B.aN,r,B.aN,m,l,B.od,A.co(A.fv(i.x?B.WP:B.aKb,k,j),56,1/0)],t.p),B.K,B.k,B.m),h,B.X,B.bT,h,B.a8),h,h)},
 O1(a,b,c,d){var s=A.p(c).i("dk<1,2>")
 s=A.it(new A.dk(c,s),new A.aSE(a,b,d),s.i("K.E"),t.Vo)
 s=A.P(s,A.p(s).i("K.E"))
@@ -59458,7 +59458,7 @@ r=s==null
 q=!r
 p=q?B.a0y:B.a0Q
 p=A.xi(A.dF(A.dj(p,q?B.t:B.v,a1,64)),a1,B.vP,a1,A.be(0,0,6e5,0,0,0),a1)
-r=r?"Configure seu perfil nutricional para come\xc3\xa7ar a Bio-Gest\xc3\xa3o baseada em ci\xc3\xaancia.":s
+r=r?"Configure seu perfil nutricional para come\xe7ar a Bio-Gest\xe3o baseada em ci\xeancia.":s
 r=A.Q(r,a1,a1,a1,a1,A.aN().$3$color$fontSize$height(B.v,16,1.5),B.al,a1,a1)
 return A.eQ(a1,B.q,A.db(new A.an(B.fP,A.av(A.a([p,B.a9,r,B.b5,A.fv(A.Q(q?"TENTAR NOVAMENTE":"CONFIGURAR BIO-DIETA",a1,a1,a1,a1,a1,a1,a1,a1),new A.aT3(a3),a1)],t.p),B.p,B.k,B.ag),a1),a1,a1),a1,a1)}o=a2.gahl()
 n=a2.gTt()
@@ -59467,21 +59467,21 @@ l=a2.e
 r=m>0?m:0
 k=A.a([new A.kH("Consumido",n,B.t),new A.kH("Restante",r,B.bb)],t.p2)
 r=A.dT(a1,a1,a1,B.jL,a1,a1,new A.aT4(a3),a1,a1,a1,a1,a1)
-r=A.xz(a1,B.q,80,A.vq(a1,!0,A.Q("NUTRI\xc3\u2021\xc3\u0192O",a1,a1,a1,a1,A.aN().$4$color$fontSize$fontWeight$letterSpacing(B.i,16,B.I,2),a1,a1,a1),a1),!0,r,a1,!0)
+r=A.xz(a1,B.q,80,A.vq(a1,!0,A.Q("NUTRI\xc7\xc3O",a1,a1,a1,a1,A.aN().$4$color$fontSize$fontWeight$letterSpacing(B.i,16,B.I,2),a1,a1,a1),a1),!0,r,a1,!0)
 q=A.eD(A.dF(a0.asr(a3,a2)),a1,A.be(0,0,4e5,0,0,0))
 p=A.kf(a1,A.xi(A.eD(A.dF(a0.ass(k,B.h.aM(o),B.e.aM(n),B.e.aM(m))),a1,a1),B.ay9,a1,a1,a1,a1),B.X,!1,a1,a1,a1,a1,a1,a1,a1,a1,a1,a1,a1,a1,a1,a1,new A.aT5(a0,a3,a2),a1,a1,a1,a1,a1,a1)
-j=A.Q("REGISTRAR ALIMENTA\xc3\u2021\xc3\u0192O",a1,a1,a1,a1,A.aN().$4$color$fontSize$fontWeight$letterSpacing(B.q,14,B.I,1),a1,a1,a1)
+j=A.Q("REGISTRAR ALIMENTA\xc7\xc3O",a1,a1,a1,a1,A.aN().$4$color$fontSize$fontWeight$letterSpacing(B.q,14,B.I,1),a1,a1,a1)
 i=A.ay(20)
 i=A.eD(A.mr(A.dF(A.co(A.Af(B.a2t,j,new A.aT6(a3),A.ik(a1,a1,B.Q,a1,a1,a1,8,a1,a1,a1,a1,a1,a1,B.Q.aw(0.3),new A.cu(i,B.z),a1,a1,a1,a1,a1)),60,1/0)),0.2,A.be(0,0,2e5,0,0,0),a1),a1,a1)
 j=A.ay(16)
 h=A.bU(B.Q.aw(0.1),1)
 g=t.p
-j=A.eD(A.dF(A.aB(a1,A.b1(A.a([B.a2j,B.bH,A.bJ(A.av(A.a([A.Q("\xf0\u0178\u2019\xa1 INSIGHT DO DIA",a1,a1,a1,a1,A.aN().$4$color$fontSize$fontWeight$letterSpacing(B.Q,10,B.I,1),a1,a1,a1),B.bZ,A.Q(a2.gaks(),a1,a1,a1,a1,A.aN().$3$color$fontSize$height(B.v,11,1.3),a1,a1,a1)],g),B.K,B.k,B.m),1,a1)],g),B.p,B.k,B.m,0,a1),B.o,a1,a1,new A.aM(B.bb,a1,h,j,a1,a1,B.y),a1,a1,a1,B.a_w,a1,a1,a1)),A.be(0,0,4e5,0,0,0),a1)
+j=A.eD(A.dF(A.aB(a1,A.b1(A.a([B.a2j,B.bH,A.bJ(A.av(A.a([A.Q("\ud83d\udca1 INSIGHT DO DIA",a1,a1,a1,a1,A.aN().$4$color$fontSize$fontWeight$letterSpacing(B.Q,10,B.I,1),a1,a1,a1),B.bZ,A.Q(a2.gaks(),a1,a1,a1,a1,A.aN().$3$color$fontSize$height(B.v,11,1.3),a1,a1,a1)],g),B.K,B.k,B.m),1,a1)],g),B.p,B.k,B.m,0,a1),B.o,a1,a1,new A.aM(B.bb,a1,h,j,a1,a1,B.y),a1,a1,a1,B.a_w,a1,a1,a1)),A.be(0,0,4e5,0,0,0),a1)
 h=B.e.ai(a2.gabl())
 f=B.e.ai(a2.gyg())
 e=a2.gabl()
 d=a2.gyg()>0?a2.gyg():1
-d=a0.O2("PROTE\xc3\x8dNA",""+h+"g / "+f+"g",e/d,B.Q)
+d=a0.O2("PROTE\xcdNA",""+h+"g / "+f+"g",e/d,B.Q)
 e=B.e.ai(a2.gabj())
 f=B.e.ai(a2.gye())
 h=a2.gabj()
@@ -59496,13 +59496,13 @@ e=a2.gahZ()
 a=B.e.cG(e/2500,0,1)
 h=A.ay(16)
 f=A.bU(B.i.aw(0.03),1)
-return A.eQ(a1,B.q,A.v4(A.a([r,new A.nK(A.b4R(B.U,new A.an(B.fN,A.av(A.a([q,B.b5,p,B.b5,i,B.od,j,B.od,b,B.ah,A.eD(A.mr(A.dF(A.aB(a1,A.av(A.a([A.b1(A.a([A.b1(A.a([B.a2W,B.bd,A.Q("HIDRATA\xc3\u2021\xc3\u0192O",a1,a1,a1,a1,A.aN().$4$color$fontSize$fontWeight$letterSpacing(B.v,10,B.I,1),a1,a1,a1)],g),B.p,B.k,B.m,0,a1),A.Q(""+a2.gahZ()+" / 2500 ml",a1,a1,a1,a1,A.aN().$3$color$fontSize$fontWeight(B.eT,12,B.R),a1,a1,a1)],g),B.p,B.bE,B.m,0,a1),B.aN,A.oz(A.ay(4),A.YF(B.i.aw(0.05),a1,B.eT,6,a,a1),B.bR),B.ah,A.b1(A.a([a0.O3(a2,200,"200ml"),a0.O3(a2,350,"350ml"),a0.O3(a2,500,"500ml")],g),B.p,B.bE,B.m,0,a1)],g),B.p,B.k,B.m),B.o,a1,a1,new A.aM(B.bb,a1,f,h,a1,a1,B.y),a1,a1,a1,B.co,a1,a1,a1)),0.1,A.be(0,0,7e5,0,0,0),a1),a1,a1),B.od,A.b1(A.a([B.a2a,B.bH,A.Q("REGISTROS DO DIA",a1,a1,a1,a1,A.aN().$4$color$fontSize$fontWeight$letterSpacing(B.v,11,B.I,2),a1,a1,a1)],g),B.p,B.k,B.m,0,a1),B.cw,a0.Fo(a3,a2,"Caf\xc3\xa9 da manh\xc3\xa3","breakfast",l),a0.Fo(a3,a2,"Almo\xc3\xa7o","lunch",l),a0.Fo(a3,a2,"Jantar","dinner",l),a0.Fo(a3,a2,"Lanches","snack",l),B.iP],g),B.p,B.k,B.m),a1),B.Q,new A.aT7(a2)),a1)],g)),a1,a1)},
+return A.eQ(a1,B.q,A.v4(A.a([r,new A.nK(A.b4R(B.U,new A.an(B.fN,A.av(A.a([q,B.b5,p,B.b5,i,B.od,j,B.od,b,B.ah,A.eD(A.mr(A.dF(A.aB(a1,A.av(A.a([A.b1(A.a([A.b1(A.a([B.a2W,B.bd,A.Q("HIDRATA\xc7\xc3O",a1,a1,a1,a1,A.aN().$4$color$fontSize$fontWeight$letterSpacing(B.v,10,B.I,1),a1,a1,a1)],g),B.p,B.k,B.m,0,a1),A.Q(""+a2.gahZ()+" / 2500 ml",a1,a1,a1,a1,A.aN().$3$color$fontSize$fontWeight(B.eT,12,B.R),a1,a1,a1)],g),B.p,B.bE,B.m,0,a1),B.aN,A.oz(A.ay(4),A.YF(B.i.aw(0.05),a1,B.eT,6,a,a1),B.bR),B.ah,A.b1(A.a([a0.O3(a2,200,"200ml"),a0.O3(a2,350,"350ml"),a0.O3(a2,500,"500ml")],g),B.p,B.bE,B.m,0,a1)],g),B.p,B.k,B.m),B.o,a1,a1,new A.aM(B.bb,a1,f,h,a1,a1,B.y),a1,a1,a1,B.co,a1,a1,a1)),0.1,A.be(0,0,7e5,0,0,0),a1),a1,a1),B.od,A.b1(A.a([B.a2a,B.bH,A.Q("REGISTROS DO DIA",a1,a1,a1,a1,A.aN().$4$color$fontSize$fontWeight$letterSpacing(B.v,11,B.I,2),a1,a1,a1)],g),B.p,B.k,B.m,0,a1),B.cw,a0.Fo(a3,a2,"Caf\xe9 da manh\xe3","breakfast",l),a0.Fo(a3,a2,"Almo\xe7o","lunch",l),a0.Fo(a3,a2,"Jantar","dinner",l),a0.Fo(a3,a2,"Lanches","snack",l),B.iP],g),B.p,B.k,B.m),a1),B.Q,new A.aT7(a2)),a1)],g)),a1,a1)},
 O2(a,b,c,d){var s=null,r=A.ay(16),q=A.bU(B.i.aw(0.03),1),p=A.Q(a,s,s,s,s,A.aN().$4$color$fontSize$fontWeight$letterSpacing(B.v,8,B.I,1),s,s,s),o=A.Q(b,s,s,s,s,A.aN().$3$color$fontSize$fontWeight(B.i,11,B.R),s,s,s),n=A.ay(2),m=B.e.cG(c,0,1)
 return A.bJ(A.aB(s,A.av(A.a([p,B.bZ,o,B.bm,A.oz(n,A.YF(B.i.aw(0.05),s,d,3,m,s),B.bR)],t.p),B.K,B.k,B.m),B.o,s,s,new A.aM(B.bb,s,q,r,s,s,B.y),s,s,s,B.eY,s,s,s),1,s)},
 O3(a,b,c){var s=null,r=B.i.aw(0.03),q=A.ay(10)
 return A.jz(!1,s,!0,A.aB(s,A.Q(c,s,s,s,s,A.aN().$3$color$fontSize$fontWeight(B.ar,11,B.b3),s,s,s),B.o,s,s,new A.aM(r,s,s,q,s,s,B.y),s,s,s,B.lA,s,s,s),s,!0,s,s,s,s,s,s,s,s,s,new A.aSW(a,b),s,s,s,s,s,s,s)},
-ass(a,b,c,d){var s=null,r=A.a([new A.A8(new A.aST(),s,s,0,360,"100%","88%",s,s,s,B.jv,B.n,s,s,a,new A.aSU(),new A.aSV(),s,B.eO,B.eM,B.hb,s,!0,!0,1500,s,2,s,!0,B.f_,s,s,1,s,B.d8,!0,0,s,s,s,s,t.XD)],t.M4),q=A.Q("HOJE",s,s,s,s,A.aN().$4$color$fontSize$fontWeight$letterSpacing(B.v,12,B.I,3),s,s,s),p=A.Q(B.h.k(Math.abs(d)),s,s,s,s,A.aN().$4$color$fontSize$fontWeight$height(B.i,64,B.I,1),s,s,s),o=d<0,n=o?"excedidas":"dispon\xc3\xadveis",m=t.p
-return A.av(A.a([A.co(A.iy(B.W,A.a([new A.Mb(r,B.ac,s),A.av(A.a([q,B.bm,p,A.Q("kcal "+n,s,s,s,s,A.aN().$3$color$fontSize$fontWeight(o?B.dy:B.Q,14,B.R),s,s,s),B.aN,A.Q("Meta: "+b+" \xe2\u20ac\xa2 Consumido: "+c,s,s,s,s,A.aN().$3$color$fontSize$fontWeight(B.v.aw(0.7),11,B.b3),s,s,s)],m),B.p,B.k,B.ag)],m),B.E,B.by,s),240,s)],m),B.p,B.k,B.m)},
+ass(a,b,c,d){var s=null,r=A.a([new A.A8(new A.aST(),s,s,0,360,"100%","88%",s,s,s,B.jv,B.n,s,s,a,new A.aSU(),new A.aSV(),s,B.eO,B.eM,B.hb,s,!0,!0,1500,s,2,s,!0,B.f_,s,s,1,s,B.d8,!0,0,s,s,s,s,t.XD)],t.M4),q=A.Q("HOJE",s,s,s,s,A.aN().$4$color$fontSize$fontWeight$letterSpacing(B.v,12,B.I,3),s,s,s),p=A.Q(B.h.k(Math.abs(d)),s,s,s,s,A.aN().$4$color$fontSize$fontWeight$height(B.i,64,B.I,1),s,s,s),o=d<0,n=o?"excedidas":"dispon\xedveis",m=t.p
+return A.av(A.a([A.co(A.iy(B.W,A.a([new A.Mb(r,B.ac,s),A.av(A.a([q,B.bm,p,A.Q("kcal "+n,s,s,s,s,A.aN().$3$color$fontSize$fontWeight(o?B.dy:B.Q,14,B.R),s,s,s),B.aN,A.Q("Meta: "+b+" \u2022 Consumido: "+c,s,s,s,s,A.aN().$3$color$fontSize$fontWeight(B.v.aw(0.7),11,B.b3),s,s,s)],m),B.p,B.k,B.ag)],m),B.E,B.by,s),240,s)],m),B.p,B.k,B.m)},
 Fo(a,b,c,d,e){var s,r,q,p=null,o=A.V(e).i("aJ<1>"),n=A.P(new A.aJ(e,new A.aSY(d),o),o.i("K.E")),m=B.b.ib(n,0,new A.aSZ())
 o=A.ay(20)
 s=A.bU(B.i.aw(0.02),1)
@@ -59590,7 +59590,7 @@ A.aSR.prototype={
 $0(){return this.a.Eu(this.b)},
 $S:0}
 A.aT2.prototype={
-$1(a){var s=null,r=this.a,q=t.p,p=A.av(A.a([B.aJK,B.ah,A.nR(s,B.c,!1,s,!0,B.E,s,A.qr(),r,s,s,s,s,s,2,B.a3n,B.X,!0,s,!0,s,!1,s,B.cg,s,s,s,s,B.iS,s,s,s,1,s,s,!1,"\u2022",s,s,s,s,s,!1,s,s,!1,s,!0,s,B.ax,s,s,s,s,s,s,s,s,s,s,s,B.b0,!0,B.am,s,B.bP,s,s,s,s)],q),B.K,B.k,B.ag)
+$1(a){var s=null,r=this.a,q=t.p,p=A.av(A.a([B.aKl,B.ah,A.nR(s,B.c,!1,s,!0,B.E,s,A.qr(),r,s,s,s,s,s,2,B.a3n,B.X,!0,s,!0,s,!1,s,B.cg,s,s,s,s,B.iS,s,s,s,1,s,s,!1,"\u2022",s,s,s,s,s,!1,s,s,!1,s,!0,s,B.ax,s,s,s,s,s,s,s,s,s,s,s,B.b0,!0,B.am,s,B.bP,s,s,s,s)],q),B.K,B.k,B.ag)
 return A.op(A.a([A.fV(B.uE,new A.aT0(a),s),A.fv(B.aKq,new A.aT1(r,this.b,this.c,a),s)],q),B.U,p,B.aKx)},
 $S:39}
 A.aT0.prototype={
@@ -59602,7 +59602,7 @@ $0(){var s,r,q,p,o=this,n=A.iY(o.a.a.a,null)
 if(n!=null&&n>0){s=o.b
 r=s.a
 q=n/(r===0?1:r)
-p=s.Bv(n,s.c*q,s.d*q,!0,"Usu\xc3\xa1rio (Fixa)",s.b*q)
+p=s.Bv(n,s.c*q,s.d*q,!0,"Usu\xe1rio (Fixa)",s.b*q)
 s=o.c
 s.ahM(s.f,p)
 A.cV(o.d,!1).d2(null)}},
@@ -60451,7 +60451,7 @@ art(){var s=null,r=t.p,q=A.b1(A.a([A.Q("Passo "+(this.e+1)+" de 5",s,s,s,s,B.ok,
 return new A.an(B.bT,A.av(A.a([q,B.bm,A.YF(B.bb.aw(0.1),A.ay(10),B.t,s,(p+1)/5,s)],r),B.K,B.k,B.m),s)},
 grK(){return this.w}}
 A.aJi.prototype={
-$1(a){return A.op(null,B.U,A.av(A.a([B.wa,B.cw,B.aKP,B.bm,B.aJP],t.p),B.p,B.k,B.ag),null)},
+$1(a){return A.op(null,B.U,A.av(A.a([B.wa,B.cw,B.aKP,B.bm,B.aJO],t.p),B.p,B.k,B.ag),null)},
 $S:39}
 A.aJy.prototype={
 $1(a){var s=this.a
@@ -60842,7 +60842,7 @@ h=A.mr(A.eD(A.dF(B.aKr),A.be(0,0,o,0,0,0),A.be(0,0,n,0,0,0)),0.3,p,0)
 s=this.c
 r=s.length
 q=t.p
-return A.eD(A.xi(A.dF(A.aB(p,A.av(A.a([A.aB(p,A.av(A.a([i,B.hm,h,B.bZ,A.eD(A.dF(A.Q(r===1?"1 exerc\xedcio com novo PR":""+r+" exerc\xedcios com novo PR",p,p,p,p,B.cN,p,p,p)),A.be(0,0,n,0,0,0),A.be(0,0,o,0,0,0))],q),B.p,B.k,B.m),B.o,p,p,new A.aM(p,p,p,B.vt,p,new A.jB(B.dG,B.kN,B.cU,j,p,p),B.y),p,p,p,B.a_i,p,p,1/0),new A.eB(B.Uj,A.mo(A.av(new A.m1(s,A.V(s).i("m1<1>")).ghs().fb(0,new A.aUd(),t.sS).eY(0),B.p,B.k,B.m),p,B.X,B.a_G,p,B.a8),p),new A.an(B.a_F,A.mr(A.eD(A.dF(A.co(A.fv(B.aJW,this.d,A.ik(p,p,B.aK,p,p,p,p,p,p,B.q,p,p,B.jC,p,new A.cu(A.ay(16),B.z),p,p,p,p,p)),p,1/0)),A.be(0,0,7e5,0,0,0),A.be(0,0,o,0,0,0)),0.5,p,0),p)],q),B.p,B.k,B.ag),B.o,p,p,new A.aM(B.U,p,l,m,k,p,B.y),p,p,p,p,p,p,p)),B.ay_,B.fI,p,A.be(0,0,n,0,0,0),B.nz),p,A.be(0,0,o,0,0,0))}}
+return A.eD(A.xi(A.dF(A.aB(p,A.av(A.a([A.aB(p,A.av(A.a([i,B.hm,h,B.bZ,A.eD(A.dF(A.Q(r===1?"1 exerc\xedcio com novo PR":""+r+" exerc\xedcios com novo PR",p,p,p,p,B.cN,p,p,p)),A.be(0,0,n,0,0,0),A.be(0,0,o,0,0,0))],q),B.p,B.k,B.m),B.o,p,p,new A.aM(p,p,p,B.vt,p,new A.jB(B.dG,B.kN,B.cU,j,p,p),B.y),p,p,p,B.a_i,p,p,1/0),new A.eB(B.Uj,A.mo(A.av(new A.m1(s,A.V(s).i("m1<1>")).ghs().fb(0,new A.aUd(),t.sS).eY(0),B.p,B.k,B.m),p,B.X,B.a_G,p,B.a8),p),new A.an(B.a_F,A.mr(A.eD(A.dF(A.co(A.fv(B.aJV,this.d,A.ik(p,p,B.aK,p,p,p,p,p,p,B.q,p,p,B.jC,p,new A.cu(A.ay(16),B.z),p,p,p,p,p)),p,1/0)),A.be(0,0,7e5,0,0,0),A.be(0,0,o,0,0,0)),0.5,p,0),p)],q),B.p,B.k,B.ag),B.o,p,p,new A.aM(B.U,p,l,m,k,p,B.y),p,p,p,p,p,p,p)),B.ay_,B.fI,p,A.be(0,0,n,0,0,0),B.nz),p,A.be(0,0,o,0,0,0))}}
 A.aUd.prototype={
 $1(a){return new A.yA(a.b,A.be(0,0,0,500+a.a*100,0,0),null)},
 $S:648}
@@ -61106,7 +61106,7 @@ $0(){return A.cU(this.a).fv("/anamnese",null)},
 $S:0}
 A.aUm.prototype={
 $1(a){var s=null
-return A.op(A.a([A.fV(B.uE,new A.aUk(a),s),A.fv(B.aJI,new A.aUl(this.a,this.b,a),A.ik(s,s,B.dy,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s))],t.p),B.U,B.aK0,B.aJL)},
+return A.op(A.a([A.fV(B.uE,new A.aUk(a),s),A.fv(B.aJI,new A.aUl(this.a,this.b,a),A.ik(s,s,B.dy,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s))],t.p),B.U,B.aK_,B.aJK)},
 $S:39}
 A.aUk.prototype={
 $0(){A.cV(this.a,!1).d2(null)
@@ -61168,7 +61168,7 @@ B.b.T(m,new A.U(r,new A.b_W(),r.$ti.i("U<a9.E,e>")))
 s=s.length
 if(s>3)m.push(A.Q("+ "+(s-3)+" exerc\xedcios...",q,q,q,q,B.aGi,q,q,q))
 m.push(B.cw)
-m.push(A.co(A.fv(B.aK2,new A.b_X(a,p),q),q,1/0))
+m.push(A.co(A.fv(B.aK1,new A.b_X(a,p),q),q,1/0))
 return A.aB(q,A.av(m,B.K,B.k,B.m),B.o,q,q,new A.aM(B.U,q,n,o,q,q,B.y),q,q,B.lw,B.ax,q,q,q)},
 $S:687}
 A.b_W.prototype={
@@ -62174,7 +62174,7 @@ A.aWQ.prototype={
 $2(a,b){var s,r=null,q=this.a,p=q.d
 p===$&&A.b()
 p=p.d
-if(b===p.length)return A.av(A.a([B.cw,A.Af(B.a2C,B.aK4,new A.aWN(q,a),A.ik(r,r,B.t,r,r,r,r,r,r,r,r,r,B.fO,r,r,r,r,r,r,r)),B.RI],t.p),B.p,B.k,B.m)
+if(b===p.length)return A.av(A.a([B.cw,A.Af(B.a2C,B.aK3,new A.aWN(q,a),A.ik(r,r,B.t,r,r,r,r,r,r,r,r,r,B.fO,r,r,r,r,r,r,r)),B.RI],t.p),B.p,B.k,B.m)
 s=p[b]
 return new A.a6_(s,new A.aWO(q,b),new A.aWP(q,b,s),r)},
 $S:720}
@@ -62346,7 +62346,7 @@ A.bY(s,!1,t.hr).akD(this.a.c)
 A.cU(s).fv("/workout",null)},
 $S:0}
 A.aWB.prototype={
-$1(a){return A.op(A.a([A.fV(B.aKK,new A.aWz(a),null),A.fV(B.aKp,new A.aWA(this.a,this.b,a),null)],t.p),B.U,B.aJv,B.aKa)},
+$1(a){return A.op(A.a([A.fV(B.aKK,new A.aWz(a),null),A.fV(B.aKp,new A.aWA(this.a,this.b,a),null)],t.p),B.U,B.aJv,B.aK9)},
 $S:39}
 A.aWz.prototype={
 $0(){A.cV(this.a,!1).d2(null)
@@ -62381,7 +62381,7 @@ s=p.aw(0.1)
 r=A.ay(8)
 return A.aB(q,A.b1(A.a([A.dj(this.d,p,q,12),B.RE,A.Q(this.c,q,q,q,q,A.dy(q,q,p,q,q,q,q,q,q,q,q,11,q,q,B.b3,q,q,!0,q,q,q,q,q,q,q,q),q,q,q)],t.p),B.p,B.k,B.ag,0,q),B.o,q,q,new A.aM(s,q,q,r,q,q,B.y),q,q,q,B.a_p,q,q,q)}}
 A.a5N.prototype={
-D(a){return A.db(A.av(A.a([B.a2S,B.ah,B.aJX,B.bm,A.fV(B.aJS,this.c,null)],t.p),B.p,B.bM,B.m),null,null)}}
+D(a){return A.db(A.av(A.a([B.a2S,B.ah,B.aJW,B.bm,A.fV(B.aJR,this.c,null)],t.p),B.p,B.bM,B.m),null,null)}}
 A.Cm.prototype={
 Ks(){var s=0,r=A.D(t.Co),q,p=this,o,n
 var $async$Ks=A.z(function(a,b){if(a===1)return A.A(b,r)
@@ -62766,7 +62766,7 @@ af(){return new A.adS()}}
 A.adS.prototype={
 aB(){this.aO()
 $.aa.k4$.push(new A.b_s(this))},
-D(a){var s,r=null,q=A.bY(a,!0,t.hr),p=A.kP(r,r,r,!0,!0,B.U,new A.C_(A.aB(r,r,B.o,B.i.aw(0.06),r,r,r,1,r,r,r,r,r),B.RB,r),1,r,r,0,!1,r,!1,r,r,r,r,!0,r,r,r,r,r,B.aKj,r,r,r,1,r,!0)
+D(a){var s,r=null,q=A.bY(a,!0,t.hr),p=A.kP(r,r,r,!0,!0,B.U,new A.C_(A.aB(r,r,B.o,B.i.aw(0.06),r,r,r,1,r,r,r,r,r),B.RB,r),1,r,r,0,!1,r,!1,r,r,r,r,!0,r,r,r,r,r,B.aKi,r,r,r,1,r,!0)
 if(q.as)s=B.jg
 else{s=t.vP
 s=A.jC(q.Q,s).length===0?B.Wy:A.ns(r,new A.b_r(q),A.jC(q.Q,s).length,B.co,B.a8,!1)}return A.eQ(p,B.q,s,r,r)}}
@@ -62795,7 +62795,7 @@ $1(a){return new A.yg(a,null)},
 $S:749}
 A.aXq.prototype={
 $1(a){var s=null
-return A.op(A.a([A.fV(B.aKw,new A.aXo(a),s),A.fv(B.aJg,new A.aXp(a,this.a,this.b),A.ik(s,s,B.b2,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s))],t.p),B.U,B.aJR,B.aJx)},
+return A.op(A.a([A.fV(B.aKw,new A.aXo(a),s),A.fv(B.aJg,new A.aXp(a,this.a,this.b),A.ik(s,s,B.b2,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s))],t.p),B.U,B.aJQ,B.aJx)},
 $S:39}
 A.aXo.prototype={
 $0(){A.cV(this.a,!1).d2(null)
@@ -63687,7 +63687,7 @@ A.b_y.prototype={
 $1(a){var s,r=null,q=this.a
 q=A.Q("Volume total: "+B.e.an(q.gIC(),0)+" kg\nExerc\xedcios: "+A.jC(q.r,t.Kw).length,r,r,r,r,B.be,r,r,r)
 s=this.b
-return A.op(A.a([A.fV(B.aJy,new A.b_w(s),r),A.fv(B.aJk,new A.b_x(s),r)],t.p),B.U,q,B.aJU)},
+return A.op(A.a([A.fV(B.aJy,new A.b_w(s),r),A.fv(B.aJk,new A.b_x(s),r)],t.p),B.U,q,B.aJT)},
 $S:39}
 A.b_w.prototype={
 $0(){A.cV(this.a,!1).d2(!1)
@@ -63699,7 +63699,7 @@ return null},
 $S:0}
 A.b_v.prototype={
 $1(a){var s=this.a
-return A.op(A.a([A.fV(B.aKt,new A.b_t(s),null),A.fV(B.aKb,new A.b_u(s),null)],t.p),B.U,B.aJd,B.aJm)},
+return A.op(A.a([A.fV(B.aKt,new A.b_t(s),null),A.fV(B.aKa,new A.b_u(s),null)],t.p),B.U,B.aJd,B.aJm)},
 $S:39}
 A.b_t.prototype={
 $0(){A.cV(this.a,!1).d2(!1)
@@ -63732,7 +63732,7 @@ else B.b.T(r,new A.m1(q,A.V(q).i("m1<1>")).ghs().fb(0,new A.b_G(),t.l7))
 r=A.l7(r,n,n,!1)
 q=A.a([],s)
 p=l.ch
-if(p.length===0)q.push(B.aJZ)
+if(p.length===0)q.push(B.aJY)
 else B.b.T(q,new A.U(p,new A.b_H(),A.V(p).i("U<1,e>")))
 q=A.l7(q,n,n,!1)
 p=B.t.aw(0.05)
@@ -63930,7 +63930,7 @@ A.aO2.prototype={
 $1(a){return a.a===this.a.a},
 $S:22}
 A.aO5.prototype={
-$1(a){var s=this,r=null,q=A.a([B.aKk,B.bm,A.Q("Sugest\xf5es para substituir "+s.a.b+":",r,r,r,r,B.be,r,r,r),B.cw],t.p),p=s.b,o=p.length
+$1(a){var s=this,r=null,q=A.a([B.aKj,B.bm,A.Q("Sugest\xf5es para substituir "+s.a.b+":",r,r,r,r,B.be,r,r,r),B.cw],t.p),p=s.b,o=p.length
 if(o===0)q.push(B.Ww)
 else q.push(new A.hP(1,B.fT,A.ns(r,new A.aO1(p,s.c,s.d),o,r,B.a8,!0),r))
 return A.aB(r,A.av(q,B.K,B.k,B.ag),B.o,r,r,r,r,r,r,B.bT,r,r,r)},
@@ -63978,7 +63978,7 @@ s.a3()
 return null},
 $S:0}
 A.aW5.prototype={
-$1(a){return A.op(A.a([A.fV(B.aK8,new A.aW4(a),null)],t.p),B.U,B.aCb,B.aAd)},
+$1(a){return A.op(A.a([A.fV(B.aK7,new A.aW4(a),null)],t.p),B.U,B.aCb,B.aAd)},
 $S:39}
 A.aW4.prototype={
 $0(){A.cV(this.a,!1).d2(null)
@@ -120675,7 +120675,7 @@ return A.bs(s,s,s,this.$ti.i("iN<1>").a(this.c).x,!1,s,s,!1,s,!0,s,s,s,s,s,s,s,s
 tD(a,b,c,d){return this.$ti.i("iN<1>").a(this.c).CW.$4(a,b,c,d)}}
 A.wn.prototype={}
 A.Bn.prototype={
-D(a){var s=null,r=A.kP(s,s,s,!0,!0,s,s,1,s,s,s,!1,s,!1,s,s,s,s,!0,s,s,s,s,s,B.aK3,s,s,s,1,s,!0),q=this.c
+D(a){var s=null,r=A.kP(s,s,s,!0,!0,s,s,1,s,s,s,!1,s,!1,s,s,s,s,!0,s,s,s,s,s,B.aK2,s,s,s,1,s,!0),q=this.c
 q=q==null?s:"GoException: "+q.a
 if(q==null)q="page not found"
 return A.eQ(r,s,A.db(A.av(A.a([new A.LR(q,s),A.fV(B.aIW,new A.aug(a),s)],t.p),B.p,B.bM,B.m),s,s),s,s)}}
@@ -136957,8 +136957,8 @@ B.xH=new A.vk(!1,!1,!1,!1)
 B.xI=new A.vk(!1,!1,!1,!0)
 B.jI=new A.Xk(0,"tight")
 B.aGC=new A.u(!0,B.aK,null,null,null,null,14,B.R,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aKl=new A.ak("Melhores marcas",null,B.aGC,null,null,null,null,null,null,null,null)
-B.a02=new A.ka(1,B.jI,B.aKl,null)
+B.aKk=new A.ak("Melhores marcas",null,B.aGC,null,null,null,null,null,null,null,null)
+B.a02=new A.ka(1,B.jI,B.aKk,null)
 B.a03=new A.An(null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.lD=new A.oL(!1,!1,!1,!1)
 B.lE=new A.oL(!1,!1,!1,!0)
@@ -141026,8 +141026,8 @@ B.ayo=new A.ZA(1,"end")
 B.Mu=new A.ZB(0,"nearestOverlay")
 B.ayq=new A.ZB(1,"rootOverlay")
 B.aGU=new A.u(!0,B.v,null,null,null,null,12,B.R,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aKe=new A.ak("FAVORITOS",null,B.aGU,null,null,null,null,null,null,null,null)
-B.ayr=new A.an(B.lA,B.aKe,null)
+B.aKd=new A.ak("FAVORITOS",null,B.aGU,null,null,null,null,null,null,null,null)
+B.ayr=new A.an(B.lA,B.aKd,null)
 B.iU=new A.u(!0,B.i,null,null,null,null,18,B.R,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.aJf=new A.ak("Escolha um exerc\xedcio",null,B.iU,null,null,null,null,null,null,null,null)
 B.ays=new A.an(B.ax,B.aJf,null)
@@ -141176,8 +141176,8 @@ B.a19=new A.aS(63509,"MaterialIcons",null,!1)
 B.a2r=new A.b8(B.a19,16,null,B.t,null,null)
 B.bd=new A.cG(8,null,null,null)
 B.aEs=new A.u(!0,B.t,null,null,null,null,13,B.R,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aJO=new A.ak("O que \xe9 RIR?",null,B.aEs,null,null,null,null,null,null,null,null)
-B.aaI=s([B.a2r,B.bd,B.aJO],t.p)
+B.aJN=new A.ak("O que \xe9 RIR?",null,B.aEs,null,null,null,null,null,null,null,null)
+B.aaI=s([B.a2r,B.bd,B.aJN],t.p)
 B.aAc=new A.xg(B.aw,B.k,B.m,B.p,null,B.ch,null,0,B.aaI,null)
 B.a2o=new A.b8(B.ye,null,null,B.t,null,null)
 B.bH=new A.cG(12,null,null,null)
@@ -141188,10 +141188,10 @@ B.aAd=new A.xg(B.aw,B.k,B.m,B.p,null,B.ch,null,0,B.ads,null)
 B.a0s=new A.aS(57527,"MaterialIcons",null,!1)
 B.a2i=new A.b8(B.a0s,32,null,B.i,null,null)
 B.ob=new A.cG(16,null,null,null)
-B.aKi=new A.ak("Nutri\xe7\xe3o Adaptativa 7.0",null,B.iU,null,null,null,null,null,null,null,null)
+B.aKh=new A.ak("Nutri\xe7\xe3o Adaptativa 7.0",null,B.iU,null,null,null,null,null,null,null,null)
 B.aHj=new A.u(!0,B.ar,null,null,null,null,12,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.aJn=new A.ak("Sua dieta agora se ajusta aos seus treinos e falhas automaticamente.",null,B.aHj,null,null,null,null,null,null,null,null)
-B.a7b=s([B.aKi,B.aJn],t.p)
+B.a7b=s([B.aKh,B.aJn],t.p)
 B.YI=new A.n5(B.a8,B.k,B.m,B.K,null,B.ch,null,0,B.a7b,null)
 B.a01=new A.ka(1,B.jI,B.YI,null)
 B.adO=s([B.a2i,B.ob,B.a01],t.p)
@@ -141438,7 +141438,7 @@ B.aC8=new A.aO(B.h8,!0,!0,!1,!1,B.cI)
 B.aC9=new A.aO(B.jV,!1,!1,!1,!0,B.D)
 B.aCa=new A.aO(B.h4,!0,!1,!1,!1,B.cJ)
 B.oo=new A.u(!0,B.i,null,null,null,null,14,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aJY=new A.ak("RIR (Repeti\xe7\xf5es em Reserva) \xe9 quantas repeti\xe7\xf5es voc\xea sente que conseguiria fazer al\xe9m das que j\xe1 fez.",null,B.oo,null,null,null,null,null,null,null,null)
+B.aJX=new A.ak("RIR (Repeti\xe7\xf5es em Reserva) \xe9 quantas repeti\xe7\xf5es voc\xea sente que conseguiria fazer al\xe9m das que j\xe1 fez.",null,B.oo,null,null,null,null,null,null,null,null)
 B.aO2=new A.u2("0","Falha Total","N\xe3o conseguiria fazer mais NENHUMA.",null)
 B.aO3=new A.u2("1","Muito dif\xedcil","Talvez sa\xedsse mais uma com esfor\xe7o m\xe1ximo.",null)
 B.aO5=new A.u2("2","Zona Ideal","Conseguiria fazer mais 2 com boa t\xe9cnica.",null)
@@ -141446,7 +141446,7 @@ B.aO4=new A.u2("3","Moderado","Daria para fazer mais 3 repeti\xe7\xf5es.",null)
 B.aO6=new A.u2("4-5","Leve","Carga de aquecimento ou muito f\xe1cil.",null)
 B.uy=new A.u(!0,B.t,null,null,null,null,12,B.R,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.aKT=new A.ak("DICA: Tente manter a maioria dos seus exerc\xedcios no RIR 2 para o melhor equil\xedbrio entre ganho e recupera\xe7\xe3o.",null,B.uy,null,null,null,null,null,null,null,null)
-B.a6W=s([B.aJY,B.ah,B.aO2,B.aO3,B.aO5,B.aO4,B.aO6,B.ah,B.aKT],t.p)
+B.a6W=s([B.aJX,B.ah,B.aO2,B.aO3,B.aO5,B.aO4,B.aO6,B.ah,B.aKT],t.p)
 B.YK=new A.n5(B.a8,B.k,B.ag,B.K,null,B.ch,null,0,B.a6W,null)
 B.aCb=new A.xy(B.a8,null,null,null,B.YK,B.X,null)
 B.aCc=new A.y(1e5,1e5)
@@ -141530,9 +141530,9 @@ B.aKW=new A.ak("S\xe9rie de aquecimento adicionada!",null,null,null,null,null,nu
 B.aCJ=new A.j3(B.aKW,null,null,null,null,null,null,null,null,null,null,null,null,B.dS,!1,null,null,null,B.E,null)
 B.aJ2=new A.ak("Apenas leitura: Biblioteca Cient\xedfica Protegida",null,null,null,null,null,null,null,null,null,null)
 B.aCK=new A.j3(B.aJ2,B.bo,null,null,null,null,null,null,B.iQ,null,null,null,null,B.cE,!1,null,null,null,B.E,null)
-B.aJQ=new A.ak("Treino salvo! Progress\xe3o calculada. \ud83d\ude80",null,null,null,null,null,null,null,null,null,null)
+B.aJP=new A.ak("Treino salvo! Progress\xe3o calculada. \ud83d\ude80",null,null,null,null,null,null,null,null,null,null)
 B.ZV=new A.bg(3e6)
-B.aCL=new A.j3(B.aJQ,B.bo,null,null,null,null,null,null,null,null,null,null,null,B.ZV,!1,null,null,null,B.E,null)
+B.aCL=new A.j3(B.aJP,B.bo,null,null,null,null,null,null,null,null,null,null,null,B.ZV,!1,null,null,null,B.E,null)
 B.aJj=new A.ak("Treino salvo com sucesso!",null,null,null,null,null,null,null,null,null,null)
 B.aCM=new A.j3(B.aJj,null,null,null,null,null,null,null,null,null,null,null,null,B.cE,!1,null,null,null,B.E,null)
 B.aJG=new A.ak("Produto n\xe3o encontrado na base global.",null,null,null,null,null,null,null,null,null,null)
@@ -142024,46 +142024,46 @@ B.aJF=new A.ak("Cancelar",null,null,null,null,null,null,null,null,null,null)
 B.aJH=new A.ak("Adicionar Alimento",null,null,null,null,null,null,null,null,null,null)
 B.aJI=new A.ak("EXCLUIR",null,null,null,null,null,null,null,null,null,null)
 B.aJJ=new A.ak("Erro ao carregar anima\xe7\xe3o",null,B.cN,B.al,null,null,null,null,null,null,null)
-B.aJK=new A.ak("Defina um valor cal\xc3\xb3rico fixo apenas para este dia.",null,B.db,null,null,null,null,null,null,null,null)
-B.aJL=new A.ak("Excluir Plano?",null,B.b0,null,null,null,null,null,null,null,null)
-B.aJM=new A.ak("Selecionar equipamento",null,B.be,null,null,null,null,null,null,null,null)
+B.aJK=new A.ak("Excluir Plano?",null,B.b0,null,null,null,null,null,null,null,null)
+B.aJL=new A.ak("Selecionar equipamento",null,B.be,null,null,null,null,null,null,null,null)
 B.aEx=new A.u(!0,B.v,null,null,null,null,10,B.b3,null,2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aJN=new A.ak("POWERED BY ANTIGRAVITY AI",null,B.aEx,null,null,null,null,null,null,null,null)
-B.aJP=new A.ak("Aguarde enquanto calculamos volumes e intensidades ideais.",null,B.cN,B.al,null,null,null,null,null,null,null)
-B.aJR=new A.ak("Esta a\xe7\xe3o n\xe3o pode ser desfeita e remover\xe1 este registro do seu hist\xf3rico.",null,B.be,null,null,null,null,null,null,null,null)
-B.aJS=new A.ak("Monte seu primeiro treino agora \ud83c\udfcb\ufe0f",null,null,null,null,null,null,null,null,null,null)
-B.aJT=new A.ak("TENTAR NOVAMENTE",null,null,null,null,null,null,null,null,null,null)
-B.aJU=new A.ak("Finalizar treino?",null,B.b0,null,null,null,null,null,null,null,null)
-B.aJV=new A.ak("O app ir\xe1 diluir os macros excedentes nos pr\xf3ximos dias.",null,B.dB,null,null,null,null,null,null,null,null)
+B.aJM=new A.ak("POWERED BY ANTIGRAVITY AI",null,B.aEx,null,null,null,null,null,null,null,null)
+B.aJO=new A.ak("Aguarde enquanto calculamos volumes e intensidades ideais.",null,B.cN,B.al,null,null,null,null,null,null,null)
+B.aJQ=new A.ak("Esta a\xe7\xe3o n\xe3o pode ser desfeita e remover\xe1 este registro do seu hist\xf3rico.",null,B.be,null,null,null,null,null,null,null,null)
+B.aJR=new A.ak("Monte seu primeiro treino agora \ud83c\udfcb\ufe0f",null,null,null,null,null,null,null,null,null,null)
+B.aJS=new A.ak("TENTAR NOVAMENTE",null,null,null,null,null,null,null,null,null,null)
+B.aJT=new A.ak("Finalizar treino?",null,B.b0,null,null,null,null,null,null,null,null)
+B.aJU=new A.ak("O app ir\xe1 diluir os macros excedentes nos pr\xf3ximos dias.",null,B.dB,null,null,null,null,null,null,null,null)
 B.aH4=new A.u(!0,null,null,null,null,null,15,B.R,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aJW=new A.ak("Incr\xedvel! \ud83d\udcaa",null,B.aH4,null,null,null,null,null,null,null,null)
-B.aJX=new A.ak("Voc\xea ainda n\xe3o montou seus treinos.",null,B.be,null,null,null,null,null,null,null,null)
-B.aJZ=new A.ak("Nenhuma dica extra dispon\xedvel.",null,B.be,null,null,null,null,null,null,null,null)
-B.aK_=new A.ak("Nenhum PR ainda. Complete um treino com este exerc\xedcio!",null,B.cN,B.al,null,null,null,null,null,null,null)
-B.aK0=new A.ak("Esta a\xe7\xe3o n\xe3o pode ser desfeita.",null,B.be,null,null,null,null,null,null,null,null)
-B.aK1=new A.ak("Tentar novamente",null,null,null,null,null,null,null,null,null,null)
-B.aK2=new A.ak("COME\xc7AR TREINO",null,null,null,null,null,null,null,null,null,null)
-B.aK3=new A.ak("Page Not Found",null,null,null,null,null,null,null,null,null,null)
-B.aK4=new A.ak("ADICIONAR EXERC\xcdCIO",null,null,null,null,null,null,null,null,null,null)
+B.aJV=new A.ak("Incr\xedvel! \ud83d\udcaa",null,B.aH4,null,null,null,null,null,null,null,null)
+B.aJW=new A.ak("Voc\xea ainda n\xe3o montou seus treinos.",null,B.be,null,null,null,null,null,null,null,null)
+B.aJY=new A.ak("Nenhuma dica extra dispon\xedvel.",null,B.be,null,null,null,null,null,null,null,null)
+B.aJZ=new A.ak("Nenhum PR ainda. Complete um treino com este exerc\xedcio!",null,B.cN,B.al,null,null,null,null,null,null,null)
+B.aK_=new A.ak("Esta a\xe7\xe3o n\xe3o pode ser desfeita.",null,B.be,null,null,null,null,null,null,null,null)
+B.aK0=new A.ak("Tentar novamente",null,null,null,null,null,null,null,null,null,null)
+B.aK1=new A.ak("COME\xc7AR TREINO",null,null,null,null,null,null,null,null,null,null)
+B.aK2=new A.ak("Page Not Found",null,null,null,null,null,null,null,null,null,null)
+B.aK3=new A.ak("ADICIONAR EXERC\xcdCIO",null,null,null,null,null,null,null,null,null,null)
 B.So=new A.u(!0,null,null,null,null,null,12,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aK5=new A.ak("Distribui mais carboidratos nos seus dias de treino.",null,B.So,null,null,null,null,null,null,null,null)
-B.aK6=new A.ak("Entrar",null,null,null,null,null,null,null,null,null,null)
-B.aK7=new A.ak("Marcar como Besteira (Furo na dieta)",null,B.uC,null,null,null,null,null,null,null,null)
-B.aK8=new A.ak("ENTENDI",null,null,null,null,null,null,null,null,null,null)
+B.aK4=new A.ak("Distribui mais carboidratos nos seus dias de treino.",null,B.So,null,null,null,null,null,null,null,null)
+B.aK5=new A.ak("Entrar",null,null,null,null,null,null,null,null,null,null)
+B.aK6=new A.ak("Marcar como Besteira (Furo na dieta)",null,B.uC,null,null,null,null,null,null,null,null)
+B.aK7=new A.ak("ENTENDI",null,null,null,null,null,null,null,null,null,null)
 B.aEh=new A.u(!0,B.i,null,null,null,null,24,B.I,null,4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aK9=new A.ak("CONTROLE DE CARGA",null,B.aEh,null,null,null,null,null,null,null,null)
-B.aKa=new A.ak("Excluir?",null,B.b0,null,null,null,null,null,null,null,null)
-B.aKb=new A.ak("Cancelar treino",null,B.on,null,null,null,null,null,null,null,null)
+B.aK8=new A.ak("CONTROLE DE CARGA",null,B.aEh,null,null,null,null,null,null,null,null)
+B.aK9=new A.ak("Excluir?",null,B.b0,null,null,null,null,null,null,null,null)
+B.aKa=new A.ak("Cancelar treino",null,B.on,null,null,null,null,null,null,null,null)
 B.uz=new A.u(!0,B.i,null,null,null,null,16,B.R,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aKc=new A.ak("ATUALIZAR MEU PLANO",null,B.uz,null,null,null,null,null,null,null,null)
+B.aKb=new A.ak("ATUALIZAR MEU PLANO",null,B.uz,null,null,null,null,null,null,null,null)
 B.Sp=new A.u(!0,null,null,null,null,null,14,B.R,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aKd=new A.ak("Compensa\xe7\xe3o Inteligente",null,B.Sp,null,null,null,null,null,null,null,null)
-B.aKf=new A.ak("Selecionar grupo",null,B.be,null,null,null,null,null,null,null,null)
-B.aKg=new A.ak("N\xe3o foi poss\xedvel carregar as estat\xedsticas.",null,B.be,B.al,null,null,null,null,null,null,null)
+B.aKc=new A.ak("Compensa\xe7\xe3o Inteligente",null,B.Sp,null,null,null,null,null,null,null,null)
+B.aKe=new A.ak("Selecionar grupo",null,B.be,null,null,null,null,null,null,null,null)
+B.aKf=new A.ak("N\xe3o foi poss\xedvel carregar as estat\xedsticas.",null,B.be,B.al,null,null,null,null,null,null,null)
 B.aHL=new A.u(!0,B.v,null,null,null,null,12,null,null,null,null,null,1.5,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aKh=new A.ak("RIR = Reps in Reserve. \xc9 o n\xfamero de repeti\xe7\xf5es que voc\xea ainda conseguiria fazer antes da falha. RIR 0 = falha. RIR 1-2 = zona ideal de hipertrofia. RIR 3+ = muito f\xe1cil.",null,B.aHL,null,null,null,null,null,null,null,null)
-B.aKj=new A.ak("Hist\xf3rico",null,B.ea,null,null,null,null,null,null,null,null)
-B.aKk=new A.ak("Trocar exerc\xedcio",null,B.iU,null,null,null,null,null,null,null,null)
+B.aKg=new A.ak("RIR = Reps in Reserve. \xc9 o n\xfamero de repeti\xe7\xf5es que voc\xea ainda conseguiria fazer antes da falha. RIR 0 = falha. RIR 1-2 = zona ideal de hipertrofia. RIR 3+ = muito f\xe1cil.",null,B.aHL,null,null,null,null,null,null,null,null)
+B.aKi=new A.ak("Hist\xf3rico",null,B.ea,null,null,null,null,null,null,null,null)
+B.aKj=new A.ak("Trocar exerc\xedcio",null,B.iU,null,null,null,null,null,null,null,null)
+B.aKl=new A.ak("Defina um valor cal\xf3rico fixo apenas para este dia.",null,B.db,null,null,null,null,null,null,null,null)
 B.aKm=new A.ak("Registre alguns treinos para\nver seus gr\xe1ficos de evolu\xe7\xe3o.",null,B.ol,B.al,null,null,null,null,null,null,null)
 B.aKn=new A.ak("Go to home page",null,B.b0,null,null,null,null,null,null,null,null)
 B.aKp=new A.ak("Excluir",null,B.on,null,null,null,null,null,null,null,null)
