@@ -3,8 +3,8 @@
   "outputDirectory": "website/.next",
   "rewrites": [
     { "source": "/download/apk", "destination": "/public/download/apk.apk" },
-    { "source": "/treino", "destination": "/public/treino/index.html" },
-    { "source": "/treino/(.*)", "destination": "/public/treino/$1" }
+    { "source": "/treino", "destination": "/public/public/treino/index.html" },
+    { "source": "/treino/(.*)", "destination": "/public/public/treino/$1" }
   ],
   "headers": [
     {
@@ -15,7 +15,7 @@
       ]
     },
     {
-      "source": "/public/treino/(.*)",
+      "source": "/public/public/treino/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
