@@ -541,76 +541,104 @@ class _NutritionScreenState extends State<NutritionScreen> {
     final now = DateTime.now();
     final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
 
-    return SizedBox(
-      height: 90,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 7,
-        itemBuilder: (context, index) {
-          final targetDate = startOfWeek.add(Duration(days: index));
-          final weekdayNum = index + 1;
-          final isSelected = provider.selectedWeekday == weekdayNum;
-          
-          final goal = provider.profile?.weeklyGoals[weekdayNum];
-          final kcal = goal?.calories.toString() ?? '-';
-          final p = goal?.protein.round().toString() ?? '-';
-          final c = goal?.carb.round().toString() ?? '-';
-          final f = goal?.fat.round().toString() ?? '-';
+    return Center(
+      child: SizedBox(
+        height: 125,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 7,
+          itemBuilder: (context, index) {
+            final targetDate = startOfWeek.add(Duration(days: index));
+            final weekdayNum = index + 1;
+            final isSelected = provider.selectedWeekday == weekdayNum;
+            
+            final goal = provider.profile?.weeklyGoals[weekdayNum];
+            final kcal = goal?.calories.toString() ?? '-';
+            final p = goal?.protein.round().toString() ?? '-';
+            final c = goal?.carb.round().toString() ?? '-';
+            final f = goal?.fat.round().toString() ?? '-';
 
-          return GestureDetector(
-            onTap: () => provider.selectWeekday(weekdayNum),
-            onLongPress: () {
-                provider.selectWeekday(weekdayNum);
-                _showManualOverrideDialog(context, provider);
-            },
-            child: Container(
-              width: 70,
-              margin: const EdgeInsets.only(right: 12),
-              decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFFCCFF00) : Colors.white.withValues(alpha: 0.02),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: isSelected ? const Color(0xFFCCFF00) : Colors.white.withValues(alpha: 0.03)),
+            return GestureDetector(
+              onTap: () {
+                if (isSelected) {
+                  _showManualOverrideDialog(context, provider);
+                } else {
+                  provider.selectWeekday(weekdayNum);
+                }
+              },
+              onLongPress: () {
+                  provider.selectWeekday(weekdayNum);
+                  _showManualOverrideDialog(context, provider);
+              },
+              child: Container(
+                width: 85,
+                margin: const EdgeInsets.only(right: 12),
+                decoration: BoxDecoration(
+                  color: isSelected ? const Color(0xFFCCFF00) : const Color(0xFF161616),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isSelected ? const Color(0xFFCCFF00) : Colors.white.withValues(alpha: 0.05),
+                    width: isSelected ? 2 : 1,
+                  ),
+                  boxShadow: isSelected ? [
+                    BoxShadow(color: const Color(0xFFCCFF00).withValues(alpha: 0.15), blurRadius: 20)
+                  ] : [],
+                ),
+                child: Stack(
+                  children: [
+                    if (isSelected)
+                      const Positioned(
+                        top: 8, right: 8,
+                        child: Icon(Icons.edit_note_rounded, size: 14, color: Colors.black54),
+                      ),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            ['SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB', 'DOM'][index],
+                            style: GoogleFonts.outfit(
+                              color: isSelected ? Colors.black : AppTheme.textSecondary,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            '${targetDate.day}',
+                            style: GoogleFonts.outfit(
+                              color: isSelected ? Colors.black : Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                                color: isSelected ? Colors.black.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.2),
+                                borderRadius: BorderRadius.circular(8)
+                            ),
+                            child: Column(
+                              children : [
+                                Text('$kcal kcal', style: GoogleFonts.outfit(color: isSelected ? Colors.black : const Color(0xFFCCFF00), fontSize: 10, fontWeight: FontWeight.w900)),
+                                const SizedBox(height: 2),
+                                Text('P:$p C:$c G:$f', style: GoogleFonts.outfit(color: isSelected ? Colors.black54 : AppTheme.textSecondary, fontSize: 8, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    ['SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB', 'DOM'][index],
-                    style: GoogleFonts.outfit(
-                      color: isSelected ? Colors.black : AppTheme.textSecondary,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    '${targetDate.day}',
-                    style: GoogleFonts.outfit(
-                      color: isSelected ? Colors.black : Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(
-                        color: isSelected ? Colors.black.withValues(alpha: 0.05) : Colors.white.withValues(alpha: 0.03),
-                        borderRadius: BorderRadius.circular(4)
-                    ),
-                    child: Column(
-                      children : [
-                        Text('$kcal kcal', style: GoogleFonts.outfit(color: isSelected ? Colors.black87 : AppTheme.accent, fontSize: 8, fontWeight: FontWeight.w900)),
-                        const SizedBox(height: 1),
-                        Text('P:$p C:$c G:$f', style: GoogleFonts.outfit(color: isSelected ? Colors.black54 : AppTheme.textSecondary, fontSize: 7, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
