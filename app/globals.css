@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+  --color-surface: #111111;
+  --color-surface-muted: #161616;
+  
+  --color-neon: #CCFF00;
+  --color-tiktok: #FE2D55;
+  --color-tactical: #3B82FF;
+  --color-training: #FF8A00;
+  
+  --font-outfit: "Outfit", sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: black;
+    color: white;
+    -webkit-font-smoothing: antialiased;
+    font-family: var(--font-outfit);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #CCFF00;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.neon-glow {
+  box-shadow: 0 0 20px rgba(204, 255, 0, 0.2);
+}
+
+.tiktok-glow {
+  box-shadow: 0 0 20px rgba(254, 45, 85, 0.2);
+}
