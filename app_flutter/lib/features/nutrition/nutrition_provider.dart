@@ -369,6 +369,16 @@ class NutritionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> removeWater(int ml) async {
+    if (_profile == null) return;
+    final currentWater = Map<int, int>.from(_profile!.dailyWater);
+    final newVal = (currentWater[_selectedWeekday] ?? 0) - ml;
+    currentWater[_selectedWeekday] = newVal < 0 ? 0 : newVal;
+    _profile = _profile!.copyWith(dailyWater: currentWater);
+    await saveSettings();
+    notifyListeners();
+  }
+
   Future<void> loadSelectedDay() async {
     final uid = _auth.currentUser?.uid;
     if (uid == null) return;

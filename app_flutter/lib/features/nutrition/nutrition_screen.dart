@@ -12,6 +12,7 @@ import 'widgets/nutrition_timeline_widget.dart';
 import 'meal_model.dart';
 import '../workout/workout_profile_provider.dart';
 import 'bio_intelligence.dart';
+import 'nutrition_profile_model.dart';
 
 class NutritionScreen extends StatefulWidget {
   const NutritionScreen({super.key});
@@ -138,7 +139,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   children: [
-                    // Calendário Action Strip (Compacto)
+                    // Calendário Action Strip (Turbo)
                     _buildCalendarStrip(context, provider).animate().fadeIn(duration: 400.ms),
 
                     const SizedBox(height: 32),
@@ -296,11 +297,19 @@ class _NutritionScreenState extends State<NutritionScreen> {
                   Text('HIDRATAÇÃO', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
                 ],
               ),
-              Text('${provider.waterConsumed} / ${provider.waterTarget} ml', 
-                style: GoogleFonts.outfit(color: const Color(0xFF00E5FF), fontSize: 12, fontWeight: FontWeight.bold)),
+              Row(
+                children: [
+                  Text('${provider.waterConsumed} / ${provider.waterTarget} ml', 
+                    style: GoogleFonts.outfit(color: const Color(0xFF00E5FF), fontSize: 12, fontWeight: FontWeight.bold)),
+                  const SizedBox(width: 12),
+                  _buildIconAction(Icons.remove_circle_outline_rounded, () => _showWaterRemovalDialog(context, provider), color: Colors.white24),
+                  const SizedBox(width: 8),
+                  _buildIconAction(Icons.add_circle_outline_rounded, () => _showCustomWaterDialog(context, provider), color: const Color(0xFF00E5FF)),
+                ],
+              ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           ClipRRect(
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
@@ -310,7 +319,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
               color: const Color(0xFF00E5FF),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -324,14 +333,89 @@ class _NutritionScreenState extends State<NutritionScreen> {
     );
   }
 
+  Widget _buildIconAction(IconData icon, VoidCallback onTap, {Color? color}) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Icon(icon, size: 18, color: color ?? Colors.white70),
+      ),
+    );
+  }
+
+  Future<void> _showCustomWaterDialog(BuildContext context, NutritionProvider provider) async {
+    final ctrl = TextEditingController();
+    await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.surface,
+        title: Text('Quanto você bebeu?', style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold)),
+        content: TextField(
+          controller: ctrl,
+          autofocus: true,
+          keyboardType: TextInputType.number,
+          style: const TextStyle(color: Colors.white),
+          decoration: const InputDecoration(hintText: 'Quantidade em ml (ex: 750)', hintStyle: TextStyle(color: Colors.white24)),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('CANCELAR')),
+          ElevatedButton(
+            onPressed: () {
+              final val = int.tryParse(ctrl.text);
+              if (val != null && val > 0) {
+                provider.addWater(val);
+                Navigator.pop(ctx);
+              }
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00E5FF)),
+            child: const Text('ADICIONAR', style: TextStyle(color: Colors.black)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showWaterRemovalDialog(BuildContext context, NutritionProvider provider) async {
+    final ctrl = TextEditingController();
+    await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.surface,
+        title: Text('Remover água?', style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold)),
+        content: TextField(
+          controller: ctrl,
+          autofocus: true,
+          keyboardType: TextInputType.number,
+          style: const TextStyle(color: Colors.white),
+          decoration: const InputDecoration(hintText: 'Quantidade para tirar (ml)', hintStyle: TextStyle(color: Colors.white24)),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('CANCELAR')),
+          ElevatedButton(
+            onPressed: () {
+              final val = int.tryParse(ctrl.text);
+              if (val != null && val > 0) {
+                provider.removeWater(val);
+                Navigator.pop(ctx);
+              }
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+            child: const Text('REMOVER'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildCompactWaterBtn(NutritionProvider provider, int ml, String label) {
     return InkWell(
       onTap: () => provider.addWater(ml),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: Colors.white.withValues(alpha: 0.03),
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Text(label, style: GoogleFonts.outfit(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.w600)),
       ),
@@ -447,7 +531,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
     final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
 
     return SizedBox(
-      height: 60,
+      height: 90,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 7,
@@ -456,34 +540,59 @@ class _NutritionScreenState extends State<NutritionScreen> {
           final weekdayNum = index + 1;
           final isSelected = provider.selectedWeekday == weekdayNum;
           
+          final goal = provider.profile?.weeklyGoals[weekdayNum];
+          final kcal = goal?.calories.toString() ?? '-';
+          final p = goal?.protein.round().toString() ?? '-';
+          final c = goal?.carb.round().toString() ?? '-';
+          final f = goal?.fat.round().toString() ?? '-';
+
           return GestureDetector(
             onTap: () => provider.selectWeekday(weekdayNum),
+            onLongPress: () {
+                provider.selectWeekday(weekdayNum);
+                _showManualOverrideDialog(context, provider);
+            },
             child: Container(
-              width: 45,
-              margin: const EdgeInsets.only(right: 8),
+              width: 70,
+              margin: const EdgeInsets.only(right: 12),
               decoration: BoxDecoration(
                 color: isSelected ? const Color(0xFFCCFF00) : Colors.white.withValues(alpha: 0.02),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: isSelected ? const Color(0xFFCCFF00) : Colors.white.withValues(alpha: 0.03)),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    ['S', 'T', 'Q', 'Q', 'S', 'S', 'D'][index],
+                    ['SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB', 'DOM'][index],
                     style: GoogleFonts.outfit(
                       color: isSelected ? Colors.black : AppTheme.textSecondary,
                       fontSize: 10,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   Text(
                     '${targetDate.day}',
                     style: GoogleFonts.outfit(
-                      color: isSelected ? Colors.black : Colors.white60,
-                      fontSize: 14,
+                      color: isSelected ? Colors.black : Colors.white,
+                      fontSize: 16,
                       fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                        color: isSelected ? Colors.black.withValues(alpha: 0.05) : Colors.white.withValues(alpha: 0.03),
+                        borderRadius: BorderRadius.circular(4)
+                    ),
+                    child: Column(
+                      children : [
+                        Text('$kcal kcal', style: GoogleFonts.outfit(color: isSelected ? Colors.black87 : AppTheme.accent, fontSize: 8, fontWeight: FontWeight.w900)),
+                        const SizedBox(height: 1),
+                        Text('P:$p C:$c G:$f', style: GoogleFonts.outfit(color: isSelected ? Colors.black54 : AppTheme.textSecondary, fontSize: 7, fontWeight: FontWeight.bold)),
+                      ],
                     ),
                   ),
                 ],
@@ -529,54 +638,78 @@ class _NutritionScreenState extends State<NutritionScreen> {
     final goal = provider.profile?.weeklyGoals[provider.selectedWeekday];
     if (goal == null) return;
 
-    final controller = TextEditingController(text: goal.calories.toString());
+    final kcalCtrl = TextEditingController(text: goal.calories.toString());
+    final proteinCtrl = TextEditingController(text: goal.protein.round().toString());
+    final carbCtrl = TextEditingController(text: goal.carb.round().toString());
+    final fatCtrl = TextEditingController(text: goal.fat.round().toString());
 
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.surface,
-        title: const Text('Meta Manual', style: TextStyle(color: AppTheme.textPrimary)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Defina um valor calórico fixo apenas para este dia.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
-            const SizedBox(height: 16),
-            TextField(
-              controller: controller,
-              keyboardType: TextInputType.number,
-              style: const TextStyle(color: AppTheme.textPrimary),
-              decoration: const InputDecoration(
-                labelText: 'Calorias Fixas (kcal)',
-                labelStyle: TextStyle(color: AppTheme.accent),
-                filled: true,
-                fillColor: AppTheme.background,
-              ),
-            ),
-          ],
+        backgroundColor: const Color(0xFF161616),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: Text('Ajuste de Meta', style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w900)),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Defina metas específicas para sua Bio-Gestão hoje.', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12)),
+              const SizedBox(height: 24),
+              _buildModernInput(kcalCtrl, 'Calorias (kcal)', const Color(0xFFCCFF00)),
+              const SizedBox(height: 16),
+              _buildModernInput(proteinCtrl, 'Proteína (g)', const Color(0xFFCCFF00)),
+              const SizedBox(height: 16),
+              _buildModernInput(carbCtrl, 'Carboidrato (g)', const Color(0xFF00E5FF)),
+              const SizedBox(height: 16),
+              _buildModernInput(fatCtrl, 'Gordura (g)', const Color(0xFFFF4081)),
+            ],
+          ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('CANCELAR')),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text('CANCELAR', style: GoogleFonts.outfit(color: AppTheme.textSecondary))),
           ElevatedButton(
             onPressed: () {
-              final newCals = int.tryParse(controller.text);
-              if (newCals != null && newCals > 0) {
-                final ratio = newCals / (goal.calories == 0 ? 1 : goal.calories);
-                final newGoal = goal.copyWith(
-                  calories: newCals,
-                  protein: goal.protein * ratio,
-                  carb: goal.carb * ratio,
-                  fat: goal.fat * ratio,
-                  isManual: true,
-                  label: 'Usuário (Fixa)',
-                );
-                provider.updateDailyManualGoal(provider.selectedWeekday, newGoal);
-                Navigator.pop(context);
-              }
+              final kc = int.tryParse(kcalCtrl.text) ?? goal.calories;
+              final p = double.tryParse(proteinCtrl.text) ?? goal.protein;
+              final c = double.tryParse(carbCtrl.text) ?? goal.carb;
+              final f = double.tryParse(fatCtrl.text) ?? goal.fat;
+
+              final newGoal = goal.copyWith(
+                calories: kc,
+                protein: p,
+                carb: c,
+                fat: f,
+                isManual: true,
+                label: 'Personalizada',
+              );
+              provider.updateDailyManualGoal(provider.selectedWeekday, newGoal);
+              Navigator.pop(context);
             }, 
-            child: const Text('SALVAR')
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFCCFF00),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+            child: const Text('SALVAR', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildModernInput(TextEditingController ctrl, String label, Color accent) {
+    return TextField(
+      controller: ctrl,
+      keyboardType: TextInputType.number,
+      style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: GoogleFonts.outfit(color: accent, fontSize: 12, fontWeight: FontWeight.w900),
+        filled: true,
+        fillColor: Colors.white.withValues(alpha: 0.03),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white10)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: accent)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
     );
   }
