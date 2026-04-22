@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd website && npm install && npm run build && cd .. && cp -r website/.next ./dist && cp -r website/public/* ./dist/",
+  "buildCommand": "cd website && npm install && npm run build && cd .. && mkdir -p dist && cp -r website/.next/. ./dist/ && cp -r website/public/. ./dist/ && cp -r api/. ./dist/api/",
   "outputDirectory": "dist",
   "framework": "nextjs",
   "rewrites": [
