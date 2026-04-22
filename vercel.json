@@ -2,9 +2,11 @@
   "buildCommand": "cd website && npm install && npm run build && cd .. && mkdir -p dist && cp -r website/.next/. ./dist/ && cp -r website/public/. ./dist/ && cp -r api/. ./dist/api/",
   "outputDirectory": "dist",
   "framework": "nextjs",
+  "redirects": [
+    { "source": "/treino", "destination": "/treino/", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/download/apk", "destination": "/download/apk.apk" },
-    { "source": "/treino", "destination": "/treino/index.html" },
     { "source": "/treino/", "destination": "/treino/index.html" },
     { "source": "/treino/:path((?!.*\\.).*)", "destination": "/treino/index.html" },
     { "source": "/treino/(.*)", "destination": "/treino/$1" },

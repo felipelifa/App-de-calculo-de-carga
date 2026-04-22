@@ -41,7 +41,7 @@ export default function InitialPage() {
           Sistema de treinamento bio-adaptativo com prescrição científica, periodização DUP e controle real de fadiga.
         </p>
 
-        <a href="/treino" style={{
+        <a href="/treino/" style={{
           display: 'inline-flex',
           alignItems: 'center',
           gap: '12px',
