@@ -46,16 +46,18 @@ App de calculo de carga/
 │       ├── types.ts
 │       └── seed_exercises.ts      ← script para popular Firestore global
 │
-├── website/                        ← Landing Page Next.js (Vercel)
-│   ├── app/
-│   │   ├── layout.tsx
-│   │   ├── page.tsx                ← hero, features, ciência, download
-│   │   └── globals.css
-│   ├── public/download/apk.apk     ← APK para download direto
-│   ├── next.config.ts
-│   └── package.json
+├── app/                            ← Landing Page Next.js (Vercel)
+│   ├── layout.tsx
+│   ├── page.tsx                    ← hero, features, ciência, landing visual
+│   └── globals.css
+├── public/                         ← Arquivos estáticos (Download APK e Treino)
+│   ├── download/apk.apk
+│   └── treino/                     ← Build compilado do Flutter Web
+├── next.config.ts
+├── vercel.json
+├── package.json
 │
-└── app/lib/
+└── app_flutter/lib/                ← Código Fonte Mobile/Web (Flutter)
     ├── main.dart                  ← registra providers + FCM setup (bypass em web)
     ├── firebase_options.dart
     ├── core/
@@ -692,13 +694,14 @@ flutter run -d <device_id>
 
 ## Deploy Vercel
 
-**Projeto:** https://vercel.com → buildfit-nine
-**URL:** https://buildfit-nine.vercel.app/
+**Projeto:** https://vercel.com → apptreino (ou buildfit)
+**URL:** https://apptreino-cyan.vercel.app/
 
-**Configurações necessárias no dashboard Vercel:**
-- Build Command: `cd website && npm install && npm run build`
-- Output Directory: `website/.next/standalone`
-- Root Directory: vazio (projeto no root, vercel.json cuida do resto)
+**Configuração (Raiz):**
+- Vercel detecta Next.js automaticamente na raiz.
+- O build do Flutter deve ser colocado em `public/treino/`.
+- A Landing Page redireciona para `/treino/`.
+- `vercel.json` gerencia as rotas.
 
 **Após push para GitHub**, a Vercel detecta mudanças e rebuildar automaticamente.
 
