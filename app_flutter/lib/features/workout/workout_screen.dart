@@ -312,7 +312,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                     borderRadius: BorderRadius.circular(15),
                     child: Container(
                       width: double.infinity,
-                      height: 250,
+                      height: 320,
                       color: AppTheme.background,
                       child: url == null || url.isEmpty
                           ? _buildNoGifPlaceholder()
@@ -719,7 +719,7 @@ class _AnimatedGifWidgetState extends State<_AnimatedGifWidget> {
         // Image.network suporta GIF animado nativamente no Flutter
         Image.network(
           widget.url,
-          fit: BoxFit.cover,
+          fit: BoxFit.contain,
           width: double.infinity,
           height: double.infinity,
           // gaplessPlayback mantém o último frame enquanto carrega novo GIF

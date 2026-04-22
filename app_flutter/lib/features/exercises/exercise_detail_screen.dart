@@ -153,7 +153,7 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
         slivers: [
           // ── SliverAppBar with GIF ─────────────
           SliverAppBar(
-            expandedHeight: 240,
+            expandedHeight: 320,
             pinned: true,
             backgroundColor: AppTheme.surface,
             leading: IconButton(
@@ -201,7 +201,7 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
     }
     return Image.network(
       url,
-      fit: BoxFit.cover,
+      fit: BoxFit.contain,
       width: double.infinity,
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) return child;

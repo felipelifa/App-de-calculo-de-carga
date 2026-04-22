@@ -793,11 +793,16 @@ C:\Users\Felipe\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\C
   - **Interface de Timeline:** Widget interativo no topo da tela de nutrição para visualização clara do planejamento semanal.
 - **Status:** Sistema adaptativo agora resiliente a variações de consumo e 100% funcional na web.
 
----
-
-## Módulos e Lógica Interna
-
-### 1. Bio-Gestão 7.0 (Gestão Energética Adaptativa)
+### 📅 2026-04-22
+- **Foco:** Reestruturação de Deploy (Vercel) & Visualização de GIFs (Flutter).
+- **Feito:**
+  - **Unificação para Raiz:** Migração de todo o projeto Next.js da subpasta `/website` para a raiz do repositório para resolver erros de detecção de framework e erros 404.
+  - **Resolução de Loop de Redirecionamento:** Solucionado o erro `ERR_TOO_MANY_REDIRECTS` removendo redirecionamentos conflitantes e habilitando `trailingSlash: true` no `vercel.json`.
+  - **Ajuste de Visualização de GIFs:** GIFs quadrados (1080x1080) agora são exibidos inteiramente sem cortes:
+    - Alterado `BoxFit.cover` para `BoxFit.contain` em todas as telas de exercícios.
+    - Aumento da altura dos containers de visualização (para 320px no tutorial e 200px nos cards).
+  - **Deploy Contínuo:** Configurado roteamento para que a Landing Page redirecione corretamente para o aplicativo Flutter em `/treino/`.
+- **Status:** Landing Page online e App de Treino totalmente funcional e integrado via Vercel. 🚀
 O sistema trata a nutrição como um ecossistema semanal, não como fatias diárias isoladas.
 
 #### Algoritmo de Orçamento:

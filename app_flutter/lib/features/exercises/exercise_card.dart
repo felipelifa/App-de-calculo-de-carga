@@ -49,7 +49,7 @@ class _MuscleGroupPlaceholder extends StatelessWidget {
     final color = muscleColor(muscleGroup);
     return Container(
       width: double.infinity,
-      height: 140,
+      height: 200,
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.12),
       ),
@@ -149,13 +149,13 @@ class ExerciseCard extends StatelessWidget {
     // URL present — use Image.network to support GIF animation natively
     return Image.network(
       url,
-      height: 140,
+      height: 200,
       width: double.infinity,
-      fit: BoxFit.cover,
+      fit: BoxFit.contain,
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) return child;
         return SizedBox(
-          height: 140,
+          height: 200,
           child: Center(
             child: CircularProgressIndicator(
               color: AppTheme.accent,
