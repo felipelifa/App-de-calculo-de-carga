@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../shared/theme/app_theme.dart';
 import '../../core/services/auth_service.dart';
 import '../workout/workout_profile_model.dart';
@@ -158,7 +159,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const Icon(Icons.shield_check_rounded, color: Color(0xFFCCFF00), size: 20),
+                const Icon(Icons.verified_rounded, color: Color(0xFFCCFF00), size: 20),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(

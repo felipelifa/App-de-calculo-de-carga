@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../shared/theme/app_theme.dart';
 import '../exercises/exercise_provider.dart';
 import '../workout/progression_service.dart';
@@ -410,7 +413,7 @@ class _RirDecisionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isPositive = decision.type == ProgressionDecisionType.increaseLoad || decision.type == ProgressionDecisionType.increaseReps;
+    final isPositive = decision.type == ProgressionDecisionType.increaseLoad;
     final color = isPositive ? const Color(0xFFCCFF00) : (decision.type == ProgressionDecisionType.deload ? Colors.redAccent : const Color(0xFF00E5FF));
 
     return Container(

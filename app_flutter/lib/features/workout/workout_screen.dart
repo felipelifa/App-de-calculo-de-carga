@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../shared/theme/app_theme.dart';
 import '../exercises/exercise_provider.dart';
 import '../exercises/exercise_model.dart';
@@ -568,6 +570,10 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<WorkoutProvider>();
+
     return Scaffold(
       backgroundColor: AppTheme.background,
       appBar: AppBar(
@@ -1022,7 +1028,7 @@ class _ExerciseCard extends StatelessWidget {
             ),
           ),
 
-          const Divider(height: 1, color: Colors.white05),
+          const Divider(height: 1, color: Colors.white10),
 
           // Tabela de Séries
           Padding(
@@ -1107,7 +1113,6 @@ class _ExerciseCard extends StatelessWidget {
     );
     return expanded ? Expanded(child: text) : SizedBox(width: width, child: text);
   }
-}
 
   void _showSwapDialog(BuildContext context, int index, dynamic entry, ExerciseModel? oldEx) {
     if (oldEx == null) return;
@@ -1527,60 +1532,23 @@ class _SetRowState extends State<_SetRow> {
 
   @override
   Widget build(BuildContext context) {
-    final color = widget.isWarmup
-        ? AppTheme.textSecondary.withValues(alpha: 0.5)
-        : AppTheme.textPrimary;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () => _notify(isWarmup: !widget.isWarmup),
-            child: SizedBox(
-              width: 32,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Text(
-                    '${widget.setNumber}',
-                    style: TextStyle(
-                      color: widget.isWarmup
-                          ? AppTheme.accent.withValues(alpha: 0.6)
-                          : AppTheme.textSecondary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  if (widget.isWarmup)
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Icon(
-                        Icons.wb_sunny_outlined,
-                        size: 10,
-                        color: AppTheme.accent,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-  @override
-  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
           // Número da série
-          SizedBox(
-            width: 40,
-            child: Text(
-              '${widget.setNumber}',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.outfit(
-                color: widget.isWarmup ? const Color(0xFFCCFF00).withOpacity(0.5) : Colors.white24,
-                fontWeight: FontWeight.w900,
-                fontSize: 14,
+          GestureDetector(
+            onTap: () => _notify(isWarmup: !widget.isWarmup),
+            child: SizedBox(
+              width: 40,
+              child: Text(
+                '${widget.setNumber}',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.outfit(
+                  color: widget.isWarmup ? const Color(0xFFCCFF00) : Colors.white24,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 14,
+                ),
               ),
             ),
           ),
