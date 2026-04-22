@@ -50,35 +50,68 @@ class _ProgressionScreenState extends State<ProgressionScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.background,
-      appBar: AppBar(
-        backgroundColor: AppTheme.surface,
-        elevation: 0,
-        title: const Text('Progressão',
-            style: TextStyle(
-                color: AppTheme.textPrimary, fontWeight: FontWeight.bold)),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh_rounded,
-                color: AppTheme.textSecondary),
-            onPressed: _loadHistoric,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: AppTheme.background,
+            expandedHeight: 120,
+            floating: true,
+            pinned: true,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppTheme.textPrimary, size: 20),
+              onPressed: () => context.pop(),
+            ),
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: false,
+              titlePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              title: Text(
+                'Evolução',
+                style: GoogleFonts.outfit(
+                  color: AppTheme.textPrimary,
+                  fontSize: 26,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -0.5,
+                ),
+              ),
+            ),
           ),
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: AppTheme.accent,
-          unselectedLabelColor: AppTheme.textSecondary,
-          indicatorColor: AppTheme.accent,
-          tabs: const [
-            Tab(text: 'Após o Treino'),
-            Tab(text: 'Histórico'),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _RirDecisionsTab(),
-          _HistoricTab(future: _historicFuture, onRefresh: _loadHistoric),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E1E1E),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: TabBar(
+                  controller: _tabController,
+                  labelColor: Colors.black,
+                  unselectedLabelColor: Colors.white54,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  padding: const EdgeInsets.all(6),
+                  indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: const Color(0xFFCCFF00),
+                  ),
+                  labelStyle: GoogleFonts.outfit(fontWeight: FontWeight.w900, fontSize: 13),
+                  unselectedLabelStyle: GoogleFonts.outfit(fontWeight: FontWeight.w600, fontSize: 13),
+                  tabs: const [
+                    Tab(text: 'DECISÕES RIR'),
+                    Tab(text: 'HISTÓRICO'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          SliverFillRemaining(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _RirDecisionsTab(),
+                _HistoricTab(future: _historicFuture, onRefresh: _loadHistoric),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -93,124 +126,95 @@ class _RirDecisionsTab extends StatelessWidget {
     final provider = context.watch<ProgressionProvider>();
 
     if (provider.isLoading) {
-      return const Center(
-          child: CircularProgressIndicator(color: AppTheme.accent));
+      return const Center(child: CircularProgressIndicator(color: Color(0xFFCCFF00)));
     }
 
     final decisions = provider.lastDecisions;
     final state = provider.state;
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+      padding: const EdgeInsets.fromLTRB(16, 24, 16, 100),
       children: [
         if (state != null) ...[
-          _CycleBanner(state: state),
-          const SizedBox(height: 16),
+          _CycleBanner(state: state).animate().fadeIn().slideX(begin: 0.1),
+          const SizedBox(height: 24),
         ],
-        if (decisions.any((d) => d.type == ProgressionDecisionType.deload))
-          _DeloadBanner(
-            decision: decisions.firstWhere(
-                (d) => d.type == ProgressionDecisionType.deload),
-          )
-        else if (decisions.isEmpty)
-          _EmptyRirState()
-        else ...[
-          _RirInfoBanner(),
-          const SizedBox(height: 16),
-          ...decisions
-              .where((d) => d.type != ProgressionDecisionType.deload)
-              .map((d) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _RirDecisionCard(decision: d),
-                  )),
-        ],
+        _SectionHeader(title: 'SUGESTÕES DE CARGA'),
+        const SizedBox(height: 16),
+        if (decisions.isEmpty)
+          _EmptyRirState().animate().fadeIn()
+        else
+          ...decisions.map((d) => Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: _RirDecisionCard(decision: d),
+          ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1)),
       ],
     );
   }
+}
+
+class _SectionHeader extends StatelessWidget {
+  final String title;
+  const _SectionHeader({required this.title});
+  @override
+  Widget build(BuildContext context) => Row(
+    children: [
+      Container(width: 4, height: 16, decoration: BoxDecoration(color: const Color(0xFFCCFF00), borderRadius: BorderRadius.circular(2))),
+      const SizedBox(width: 12),
+      Text(title, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+    ],
+  );
 }
 
 class _CycleBanner extends StatelessWidget {
   final ProgressionState state;
   const _CycleBanner({required this.state});
 
-  Color get _color {
-    switch (state.currentPhase) {
-      case 'accumulation': return AppTheme.accent;
-      case 'intensification': return const Color(0xFFF59E0B);
-      case 'peak': return AppTheme.success;
-      case 'deload': return AppTheme.danger;
-      default: return AppTheme.accent;
-    }
-  }
-
-  String get _phaseLabel {
-    switch (state.currentPhase) {
-      case 'accumulation': return 'Acumulação';
-      case 'intensification': return 'Intensificação';
-      case 'peak': return 'Pico';
-      case 'deload': return 'Deload';
-      default: return state.currentPhase;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final c = _color;
+    final color = state.isDeloadWeek ? Colors.redAccent : const Color(0xFFCCFF00);
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: c.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: c.withValues(alpha: 0.25)),
+        color: const Color(0xFF1E1E1E),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: color.withOpacity(0.2)),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-                color: c.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(10)),
-            child: Icon(Icons.loop_rounded, color: c, size: 18),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('CICLO ATUAL', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                  Text('Semana ${state.currentWeek}', style: GoogleFonts.outfit(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900)),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+                child: Text(
+                  state.currentPhase.toUpperCase(),
+                  style: GoogleFonts.outfit(color: color, fontWeight: FontWeight.w900, fontSize: 12),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text('Semana ${state.currentWeek}  •  Fase: $_phaseLabel',
-                        style: TextStyle(
-                            color: c,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13)),
-                    if (state.isDeloadWeek) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 2),
-                        decoration: BoxDecoration(
-                            color: AppTheme.danger.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(6)),
-                        child: const Text('DELOAD',
-                            style: TextStyle(
-                                color: AppTheme.danger,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold)),
-                      ),
-                    ],
-                  ],
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  state.weeksUntilDeload <= 0
-                      ? 'Deload programado para esta semana'
-                      : '${state.weeksUntilDeload} semana(s) até o próximo deload',
-                  style: const TextStyle(
-                      color: AppTheme.textSecondary, fontSize: 12),
-                ),
-              ],
-            ),
+          const SizedBox(height: 24),
+          LinearProgressIndicator(
+            value: (state.currentWeek / 4).clamp(0.0, 1.0),
+            backgroundColor: Colors.white10,
+            color: color,
+            minHeight: 8,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            state.isDeloadWeek ? 'Semana de recuperação ativa' : 'Foco em progressão constante de carga',
+            style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12),
           ),
         ],
       ),
@@ -404,98 +408,54 @@ class _RirDecisionCard extends StatelessWidget {
   final ProgressionDecision decision;
   const _RirDecisionCard({required this.decision});
 
-  Color get _color {
-    switch (decision.type) {
-      case ProgressionDecisionType.increaseLoad: return AppTheme.success;
-      case ProgressionDecisionType.consolidate: return AppTheme.accent;
-      case ProgressionDecisionType.decreaseLoad: return const Color(0xFFF59E0B);
-      case ProgressionDecisionType.substituteExercise: return const Color(0xFF8B5CF6);
-      case ProgressionDecisionType.advanceBodyweight: return AppTheme.success;
-      case ProgressionDecisionType.continueBodyweight: return AppTheme.accent;
-      case ProgressionDecisionType.deload: return AppTheme.danger;
-    }
-  }
-
-  IconData get _icon {
-    switch (decision.type) {
-      case ProgressionDecisionType.increaseLoad: return Icons.trending_up_rounded;
-      case ProgressionDecisionType.consolidate: return Icons.check_circle_outline_rounded;
-      case ProgressionDecisionType.decreaseLoad: return Icons.trending_down_rounded;
-      case ProgressionDecisionType.substituteExercise: return Icons.swap_horiz_rounded;
-      case ProgressionDecisionType.advanceBodyweight: return Icons.upgrade_rounded;
-      case ProgressionDecisionType.continueBodyweight: return Icons.pending_rounded;
-      case ProgressionDecisionType.deload: return Icons.refresh_rounded;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final c = _color;
+    final isPositive = decision.type == ProgressionDecisionType.increaseLoad || decision.type == ProgressionDecisionType.increaseReps;
+    final color = isPositive ? const Color(0xFFCCFF00) : (decision.type == ProgressionDecisionType.deload ? Colors.redAccent : const Color(0xFF00E5FF));
+
     return Container(
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: c.withValues(alpha: 0.2)),
+        color: const Color(0xFF1E1E1E),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: c.withValues(alpha: 0.06),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(7),
-                  decoration: BoxDecoration(
-                      color: c.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(9)),
-                  child: Icon(_icon, color: c, size: 16),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
+                child: Icon(Icons.bolt_rounded, color: color, size: 18),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  decision.title,
+                  style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16),
                 ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(decision.title,
-                      style: TextStyle(
-                          color: c,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14)),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(decision.reason,
-                    style: const TextStyle(
-                        color: AppTheme.textSecondary,
-                        fontSize: 13,
-                        height: 1.4)),
-                if (decision.suggestedWeightKg != null) ...[
-                  const SizedBox(height: 12),
-                  _WeightRow(value: decision.suggestedWeightKg!, color: c),
+          const SizedBox(height: 16),
+          Text(decision.reason, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 13, height: 1.4)),
+          if (decision.suggestedWeightKg != null) ...[
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(16)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('CARGA SUGERIDA:', style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 11, fontWeight: FontWeight.w900)),
+                  const SizedBox(width: 12),
+                  Text('${decision.suggestedWeightKg} kg', style: GoogleFonts.outfit(color: color, fontSize: 20, fontWeight: FontWeight.w900)),
                 ],
-                if (decision.suggestedSubstituteId != null) ...[
-                  const SizedBox(height: 10),
-                  _InfoRow(
-                      icon: Icons.swap_horiz_rounded,
-                      text: 'Substituir por: ${decision.suggestedSubstituteId}',
-                      color: c),
-                ],
-                if (decision.suggestedProgressionId != null) ...[
-                  const SizedBox(height: 10),
-                  _InfoRow(
-                      icon: Icons.upgrade_rounded,
-                      text: 'Avançar para: ${decision.suggestedProgressionId}',
-                      color: c),
-                ],
-              ],
+              ),
             ),
-          ),
+          ],
         ],
       ),
     );
@@ -562,97 +522,86 @@ class _HistoricTab extends StatelessWidget {
       future: future,
       builder: (context, snap) {
         if (snap.connectionState == ConnectionState.waiting) {
-          return const Center(
-              child: CircularProgressIndicator(color: AppTheme.accent));
+          return const Center(child: CircularProgressIndicator(color: Color(0xFFCCFF00)));
         }
-        if (snap.hasError) {
-          return Center(
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-              const Icon(Icons.error_outline, color: AppTheme.danger, size: 48),
-              const SizedBox(height: 16),
-              Text('Erro: ${snap.error}',
-                  style: const TextStyle(color: AppTheme.textSecondary)),
-              const SizedBox(height: 16),
-              TextButton(
-                  onPressed: onRefresh,
-                  child: const Text('Tentar novamente')),
-            ]),
-          );
-        }
+        if (snap.hasError) return _buildErrorState(snap.error.toString());
+        
         final suggestions = snap.data ?? [];
-        if (suggestions.isEmpty) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(32),
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                Icon(Icons.insights_rounded,
-                    size: 72,
-                    color: AppTheme.textSecondary.withValues(alpha: 0.3)),
-                const SizedBox(height: 24),
-                const Text('Sem dados suficientes',
-                    style: TextStyle(
-                        color: AppTheme.textPrimary,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600)),
-                const SizedBox(height: 10),
-                const Text(
-                  'Complete pelo menos 2 treinos com o mesmo exercício.',
-                  style: TextStyle(color: AppTheme.textSecondary, fontSize: 14),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 24),
-                OutlinedButton.icon(
-                  onPressed: onRefresh,
-                  icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('Verificar novamente'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppTheme.accent,
-                    side: const BorderSide(color: AppTheme.accent),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 14),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14)),
-                  ),
-                ),
-              ]),
-            ),
-          );
-        }
+        if (suggestions.isEmpty) return _buildEmptyState(context);
+
         return RefreshIndicator(
-          color: AppTheme.accent,
-          backgroundColor: AppTheme.surface,
+          color: const Color(0xFFCCFF00),
+          backgroundColor: const Color(0xFF1E1E1E),
           onRefresh: () async => onRefresh(),
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 100),
             children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppTheme.accent.withValues(alpha: 0.07),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                      color: AppTheme.accent.withValues(alpha: 0.2)),
-                ),
-                child: const Row(children: [
-                  Icon(Icons.history_rounded, color: AppTheme.accent, size: 16),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      'Análise baseada no histórico de cargas e repetições registradas.',
-                      style: TextStyle(
-                          color: AppTheme.textSecondary,
-                          fontSize: 12,
-                          height: 1.4),
-                    ),
-                  ),
-                ]),
-              ),
-              const SizedBox(height: 16),
+              _buildHistoricHeader(),
+              const SizedBox(height: 24),
               ..._buildGroups(suggestions),
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget _buildHistoricHeader() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xFFCCFF00).withOpacity(0.05),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: const Color(0xFFCCFF00).withOpacity(0.1)),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.insights_rounded, color: Color(0xFFCCFF00), size: 24),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              'Análise baseada no seu histórico real de performance nas últimas semanas.',
+              style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 13, height: 1.4),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorState(String error) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.error_outline_rounded, color: Colors.redAccent, size: 48),
+          const SizedBox(height: 16),
+          Text(error, style: GoogleFonts.outfit(color: AppTheme.textSecondary)),
+          TextButton(onPressed: onRefresh, child: const Text('TENTAR NOVAMENTE')),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.history_rounded, size: 64, color: Colors.white10),
+            const SizedBox(height: 24),
+            Text('Sem dados suficientes', style: GoogleFonts.outfit(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900)),
+            const SizedBox(height: 12),
+            Text(
+              'Complete pelo menos 2 sessões para que possamos analisar sua evolução.',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 14),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -721,110 +670,43 @@ class SuggestionCard extends StatelessWidget {
   final ProgressionSuggestion suggestion;
   const SuggestionCard({super.key, required this.suggestion});
 
-  Color get _color {
-    switch (suggestion.type) {
-      case ProgressionType.increaseWeight: return AppTheme.success;
-      case ProgressionType.increaseReps: return AppTheme.accent;
-      case ProgressionType.deloadWeek: return AppTheme.danger;
-      case ProgressionType.maintain: return const Color(0xFF8B5CF6);
-      case ProgressionType.decreaseWeight: return const Color(0xFFF59E0B);
-    }
-  }
-
-  IconData get _icon {
-    switch (suggestion.type) {
-      case ProgressionType.increaseWeight: return Icons.trending_up_rounded;
-      case ProgressionType.increaseReps: return Icons.repeat_rounded;
-      case ProgressionType.deloadWeek: return Icons.refresh_rounded;
-      case ProgressionType.maintain: return Icons.check_circle_outline_rounded;
-      case ProgressionType.decreaseWeight: return Icons.trending_down_rounded;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final ex = suggestion.exercise;
-    final c = _color;
-    final pm = ex.primaryMuscles.isNotEmpty ? ex.primaryMuscles.first : 'Geral';
-    final mc = muscleColor(pm);
+    final color = suggestion.type == ProgressionType.increaseWeight ? const Color(0xFFCCFF00) : const Color(0xFF00E5FF);
 
     return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: c.withValues(alpha: 0.2)),
+        color: const Color(0xFF1E1E1E),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-            decoration: BoxDecoration(
-              color: c.withValues(alpha: 0.06),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: c.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Icon(_icon, color: c, size: 18),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(suggestion.title, style: GoogleFonts.outfit(color: color, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
+                    const SizedBox(height: 4),
+                    Text(ex.name.toUpperCase(), style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16)),
+                  ],
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(suggestion.title,
-                          style: TextStyle(
-                              color: c,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14)),
-                      const SizedBox(height: 2),
-                      Text(ex.name,
-                          style: const TextStyle(
-                              color: AppTheme.textPrimary,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13)),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: mc.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: mc.withValues(alpha: 0.3)),
-                  ),
-                  child: Text(pm,
-                      style: TextStyle(
-                          color: mc,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600)),
-                ),
-              ],
-            ),
+              ),
+              Icon(Icons.trending_up_rounded, color: color, size: 24),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(suggestion.reason,
-                    style: const TextStyle(
-                        color: AppTheme.textSecondary,
-                        fontSize: 13,
-                        height: 1.4)),
-                if (suggestion.suggestedWeight != null ||
-                    suggestion.suggestedReps != null) ...[
-                  const SizedBox(height: 14),
-                  _ProgressionArrow(s: suggestion, color: c),
-                ],
-              ],
-            ),
-          ),
+          const SizedBox(height: 16),
+          Text(suggestion.reason, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 13, height: 1.4)),
+          if (suggestion.suggestedWeight != null || suggestion.suggestedReps != null) ...[
+            const SizedBox(height: 20),
+            _ProgressionArrow(s: suggestion, color: color),
+          ],
         ],
       ),
     );
@@ -839,72 +721,37 @@ class _ProgressionArrow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final showW = s.currentWeight != null && s.suggestedWeight != null;
-    final showR = s.currentReps != null && s.suggestedReps != null;
-
     return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-          color: AppTheme.surfaceHighlight,
-          borderRadius: BorderRadius.circular(12)),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(16)),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Column(children: [
-            const Text('ATUAL',
-                style: TextStyle(
-                    color: AppTheme.textSecondary,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1)),
-            const SizedBox(height: 4),
-            if (showW)
-              Text('${s.currentWeight!.toStringAsFixed(1)} kg',
-                  style: const TextStyle(
-                      color: AppTheme.textPrimary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18)),
-            if (showR && !showW)
-              Text('${s.currentReps} reps',
-                  style: const TextStyle(
-                      color: AppTheme.textPrimary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18)),
-            if (showW && showR)
-              Text('${s.currentReps} reps',
-                  style: const TextStyle(
-                      color: AppTheme.textSecondary, fontSize: 12)),
-          ]),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Icon(Icons.arrow_forward_rounded, color: color, size: 24),
-          ),
-          Column(children: [
-            Text('SUGERIDO',
-                style: TextStyle(
-                    color: color,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1)),
-            const SizedBox(height: 4),
-            if (showW)
-              Text('${s.suggestedWeight!.toStringAsFixed(1)} kg',
-                  style: TextStyle(
-                      color: color,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18)),
-            if (showR && !showW)
-              Text('${s.suggestedReps} reps',
-                  style: TextStyle(
-                      color: color,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18)),
-            if (showW && showR)
-              Text('${s.suggestedReps} reps',
-                  style: TextStyle(
-                      color: color.withValues(alpha: 0.7), fontSize: 12)),
-          ]),
+          _buildVal('ATUAL', '${showW ? s.currentWeight!.toStringAsFixed(1) : s.currentReps}', showW ? 'kg' : 'reps', Colors.white54),
+          Icon(Icons.east_rounded, color: color.withOpacity(0.5), size: 20),
+          _buildVal('SUGERIDO', '${showW ? s.suggestedWeight!.toStringAsFixed(1) : s.suggestedReps}', showW ? 'kg' : 'reps', color),
         ],
       ),
+    );
+  }
+
+  Widget _buildVal(String label, String val, String unit, Color c) {
+    return Column(
+      children: [
+        Text(label, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+        const SizedBox(height: 4),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(val, style: GoogleFonts.outfit(color: c, fontSize: 22, fontWeight: FontWeight.w900)),
+            const SizedBox(width: 4),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Text(unit, style: GoogleFonts.outfit(color: c.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.w600)),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

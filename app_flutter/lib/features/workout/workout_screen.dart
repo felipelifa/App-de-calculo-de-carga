@@ -568,64 +568,59 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final provider = context.watch<WorkoutProvider>();
-
     return Scaffold(
       backgroundColor: AppTheme.background,
       appBar: AppBar(
-        backgroundColor: AppTheme.surface,
+        backgroundColor: AppTheme.background,
         elevation: 0,
-        title: const Text(
+        centerTitle: false,
+        title: Text(
           'Sessão Ativa',
-          style: TextStyle(
-            color: AppTheme.textPrimary,
-            fontWeight: FontWeight.bold,
+          style: GoogleFonts.outfit(
+            color: Colors.white,
+            fontWeight: FontWeight.w900,
+            fontSize: 24,
           ),
         ),
         actions: [
           if (provider.isSessionActive) ...[
             TextButton(
               onPressed: () => _confirmCancel(context),
-              child: const Text(
-                'Cancelar',
-                style: TextStyle(color: AppTheme.danger),
+              child: Text(
+                'CANCELAR',
+                style: GoogleFonts.outfit(color: Colors.redAccent, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1),
               ),
             ),
-            TextButton(
-              onPressed: () => _confirmFinish(context),
-              child: const Text(
-                'Finalizar',
-                style: TextStyle(
-                  color: AppTheme.accent,
-                  fontWeight: FontWeight.w600,
+            const SizedBox(width: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: ElevatedButton(
+                onPressed: () => _confirmFinish(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFCCFF00),
+                  foregroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                child: Text(
+                  'FINALIZAR',
+                  style: GoogleFonts.outfit(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1),
                 ),
               ),
             ),
           ],
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(
-            height: 1,
-            color: Colors.white.withValues(alpha: 0.06),
-          ),
-        ),
       ),
       floatingActionButton: provider.isSessionActive
           ? FloatingActionButton.extended(
               onPressed: () => _showAddExerciseDialog(context),
-              backgroundColor: AppTheme.accent,
-              icon: const Icon(Icons.add, color: Colors.white),
-              label: const Text(
-                'Exercício',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
+              backgroundColor: const Color(0xFFCCFF00),
+              icon: const Icon(Icons.add_rounded, color: Colors.black),
+              label: Text(
+                'EXERCÍCIO',
+                style: GoogleFonts.outfit(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1),
               ),
-            )
+            ).animate().scale(delay: 400.ms, curve: Curves.easeOutBack)
           : null,
       body: provider.isSessionActive
           ? _ActiveSession(
@@ -865,71 +860,84 @@ class _ActiveSession extends StatelessWidget {
 
     return Column(
       children: [
-        // Timer + volume
+        // ── Timer & Meta Bar ──────────────────
         Container(
-          color: AppTheme.surface,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1E1E1E),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.05)),
+          ),
           child: Row(
             children: [
-              const Icon(
-                Icons.timer_outlined,
-                color: AppTheme.accent,
-                size: 18,
-              ),
-              const SizedBox(width: 8),
+              const Icon(Icons.timer_outlined, color: Color(0xFFCCFF00), size: 18),
+              const SizedBox(width: 10),
               StreamBuilder<int>(
                 stream: timerStream,
                 builder: (_, __) => Text(
                   formatDuration(provider.sessionStart!),
-                  style: const TextStyle(
-                    color: AppTheme.accent,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
+                  style: GoogleFonts.outfit(
+                    color: const Color(0xFFCCFF00),
+                    fontWeight: FontWeight.w900,
+                    fontSize: 20,
+                    letterSpacing: 1,
                   ),
                 ),
               ),
               const Spacer(),
-              Text(
-                'Vol: ${provider.currentTotalVolume.toStringAsFixed(0)} kg',
-                style: const TextStyle(
-                  color: AppTheme.textSecondary,
-                  fontSize: 13,
-                ),
-              ),
+              _buildSimpleStat('Volume', '${provider.currentTotalVolume.toInt()} kg'),
             ],
           ),
         ),
+
         // Exercícios
         Expanded(
           child: exercises.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        'Nenhum exercício adicionado',
-                        style: TextStyle(color: AppTheme.textSecondary),
-                      ),
-                      const SizedBox(height: 16),
-                      TextButton.icon(
-                        onPressed: onAddExercise,
-                        icon: const Icon(Icons.add),
-                        label: const Text('Adicionar exercício'),
-                      ),
-                    ],
-                  ),
-                )
+              ? _buildEmptyExercises()
               : ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 100),
+                  padding: const EdgeInsets.only(bottom: 120, left: 16, right: 16),
                   itemCount: exercises.length,
                   itemBuilder: (_, i) => _ExerciseCard(
                     exerciseIndex: i,
                     entry: exercises[i],
                     onShowTutorial: onShowTutorial,
-                  ),
+                  ).animate().fadeIn(delay: (i * 100).ms).slideY(begin: 0.1),
                 ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSimpleStat(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(label, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+        Text(value, style: GoogleFonts.outfit(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900)),
+      ],
+    );
+  }
+
+  Widget _buildEmptyExercises() {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.fitness_center_rounded, color: Colors.white10, size: 64),
+          const SizedBox(height: 16),
+          Text(
+            'Nenhum exercício ainda',
+            style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 16),
+          ),
+          const SizedBox(height: 24),
+          TextButton.icon(
+            onPressed: onAddExercise,
+            icon: const Icon(Icons.add_rounded, color: Color(0xFFCCFF00)),
+            label: Text('ADICIONAR', style: GoogleFonts.outfit(color: const Color(0xFFCCFF00), fontWeight: FontWeight.w900, letterSpacing: 1)),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -950,226 +958,156 @@ class _ExerciseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.read<WorkoutProvider>();
-    final profileProvider = context.read<WorkoutProfileProvider>();
-    final restrictions = profileProvider.profile?.healthRestrictions ?? [];
+    final exerciseModel = context.read<ExerciseProvider>().getById(entry.exerciseId);
 
-    // Verifica se exercício tem restrição ativa
-    final exerciseModel = context.read<ExerciseProvider>().getById(
-      entry.exerciseId,
-    );
-    final hasInjuryConflict =
-        exerciseModel != null &&
-        exerciseModel.restrictions.any((r) => restrictions.contains(r));
-
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header do exercício
-            Row(
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E1E1E),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header do exercício
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 12, 12),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        entry.exerciseName,
-                        style: const TextStyle(
-                          color: AppTheme.textPrimary,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
+                        entry.exerciseName.toUpperCase(),
+                        style: GoogleFonts.outfit(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                          letterSpacing: 0.5,
                         ),
                       ),
                       Text(
                         entry.muscleGroup,
-                        style: const TextStyle(
+                        style: GoogleFonts.outfit(
                           color: AppTheme.textSecondary,
-                          fontSize: 12,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
                         ),
                       ),
                     ],
                   ),
                 ),
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      if (exerciseModel != null) {
-                        onShowTutorial(context, exerciseModel);
-                      }
-                    },
-                    borderRadius: BorderRadius.circular(8),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.play_circle_fill_rounded,
-                            color: AppTheme.accent,
-                            size: 22,
-                          ),
-                          const SizedBox(width: 6),
-                          const Text(
-                            'Tutorial do exercício',
-                            style: TextStyle(
-                              color: AppTheme.accent,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
                 IconButton(
-                  icon: const Icon(
-                    Icons.swap_horiz_rounded,
-                    color: AppTheme.textSecondary,
-                    size: 20,
-                  ),
-                  tooltip: 'Trocar exercício',
-                  onPressed: () => _showSwapDialog(context, exerciseIndex, entry, exerciseModel),
+                  icon: const Icon(Icons.play_circle_fill_rounded, color: Color(0xFFCCFF00), size: 28),
+                  onPressed: () {
+                    if (exerciseModel != null) onShowTutorial(context, exerciseModel);
+                  },
                 ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.delete_outline,
-                    color: AppTheme.danger,
-                    size: 20,
-                  ),
-                  onPressed: () =>
-                      provider.removeExerciseFromSession(exerciseIndex),
+                PopupMenuButton<String>(
+                  icon: const Icon(Icons.more_vert_rounded, color: Colors.white24),
+                  onSelected: (val) {
+                    if (val == 'swap') _showSwapDialog(context, exerciseIndex, entry, exerciseModel);
+                    if (val == 'delete') provider.removeExerciseFromSession(exerciseIndex);
+                  },
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(value: 'swap', child: Text('Trocar Exercício')),
+                    const PopupMenuItem(value: 'delete', child: Text('Remover', style: TextStyle(color: Colors.redAccent))),
+                  ],
                 ),
               ],
             ),
+          ),
 
-            // Badge de lesão — aparece quando exercício conflita com restrições
-            if (hasInjuryConflict) ...[
-              const SizedBox(height: 8),
-              _InjuryWarningBadge(
-                exerciseModel: exerciseModel!,
-                activeRestrictions: restrictions,
+          const Divider(height: 1, color: Colors.white05),
+
+          // Tabela de Séries
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                _buildTableHeader(),
+                const SizedBox(height: 12),
+                ...List.generate(entry.sets.length, (si) {
+                  final set = entry.sets[si];
+                  return _SetRow(
+                    setNumber: si + 1,
+                    reps: set.reps,
+                    weight: set.weight,
+                    volume: set.volume,
+                    isWarmup: set.isWarmup,
+                    onChanged: (reps, weight, isWarmup) => provider.updateSet(
+                      exerciseIndex: exerciseIndex,
+                      setIndex: si,
+                      reps: reps,
+                      weight: weight,
+                      isWarmup: isWarmup,
+                    ),
+                    onRemove: entry.sets.length > 1 ? () => provider.removeSet(exerciseIndex, si) : null,
+                  );
+                }),
+                const SizedBox(height: 16),
+                _RirSelector(exerciseId: entry.exerciseId, exerciseName: entry.exerciseName),
+              ],
+            ),
+          ),
+
+          // Footer - Adicionar Série
+          InkWell(
+            onTap: () => provider.addSet(exerciseIndex),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.02),
+                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
               ),
-            ],
-
-            const SizedBox(height: 12),
-
-            // Cabeçalho das colunas
-            Row(
-              children: [
-                SizedBox(
-                  width: 32,
-                  child: Text(
-                    'Sér.',
-                    style: TextStyle(
-                      color: AppTheme.textSecondary,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.add_rounded, color: Color(0xFFCCFF00), size: 18),
+                  const SizedBox(width: 8),
+                  Text(
+                    'ADICIONAR SÉRIE',
+                    style: GoogleFonts.outfit(
+                      color: const Color(0xFFCCFF00),
+                      fontWeight: FontWeight.w900,
                       fontSize: 11,
+                      letterSpacing: 1,
                     ),
                   ),
-                ),
-                SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    exerciseModel != null 
-                      ? 'Reps (${exerciseModel.repRangeMin}–${exerciseModel.repRangeMax})'
-                      : 'Reps',
-                    style: const TextStyle(
-                      color: AppTheme.textSecondary,
-                      fontSize: 11,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Carga (kg)',
-                    style: TextStyle(
-                      color: AppTheme.textSecondary,
-                      fontSize: 11,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Volume',
-                    style: TextStyle(
-                      color: AppTheme.textSecondary,
-                      fontSize: 11,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(width: 36),
-              ],
+                ],
+              ),
             ),
-
-            const SizedBox(height: 8),
-
-            ...List.generate(entry.sets.length, (si) {
-              final set = entry.sets[si];
-              return _SetRow(
-                setNumber: si + 1,
-                reps: set.reps,
-                weight: set.weight,
-                volume: set.volume,
-                isWarmup: set.isWarmup,
-                onChanged: (reps, weight, isWarmup) => provider.updateSet(
-                  exerciseIndex: exerciseIndex,
-                  setIndex: si,
-                  reps: reps,
-                  weight: weight,
-                  isWarmup: isWarmup,
-                ),
-                onRemove: entry.sets.length > 1
-                    ? () => provider.removeSet(exerciseIndex, si)
-                    : null,
-              );
-            }),
-
-            const SizedBox(height: 12),
-
-            // RIR selector + botões de ação
-            _RirSelector(
-              exerciseId: entry.exerciseId,
-              exerciseName: entry.exerciseName,
-            ),
-
-            const Divider(height: 20, color: Colors.white10),
-
-            Row(
-              children: [
-                Expanded(
-                  child: TextButton.icon(
-                    onPressed: () => provider.addSet(exerciseIndex),
-                    icon: const Icon(Icons.add, size: 16),
-                    label: const Text('Série'),
-                    style: TextButton.styleFrom(
-                      foregroundColor: AppTheme.accent,
-                      padding: EdgeInsets.zero,
-                    ),
-                  ),
-                ),
-                if (exerciseModel != null && exerciseModel.gifUrl == null)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Text(
-                      'Sem GIF',
-                      style: TextStyle(color: AppTheme.danger.withValues(alpha: 0.5), fontSize: 10),
-                    ),
-                  ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
+
+  Widget _buildTableHeader() {
+    return Row(
+      children: [
+        _headerCell('SÉRIE', width: 40),
+        _headerCell('REPS', expanded: true),
+        _headerCell('PESO (KG)', expanded: true),
+        _headerCell('CHECK', width: 40),
+      ],
+    );
+  }
+
+  Widget _headerCell(String label, {double? width, bool expanded = false}) {
+    final text = Text(
+      label,
+      style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
+      textAlign: TextAlign.center,
+    );
+    return expanded ? Expanded(child: text) : SizedBox(width: width, child: text);
+  }
+}
 
   void _showSwapDialog(BuildContext context, int index, dynamic entry, ExerciseModel? oldEx) {
     if (oldEx == null) return;
@@ -1627,73 +1565,80 @@ class _SetRowState extends State<_SetRow> {
               ),
             ),
           ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: TextField(
-              controller: _repsCtrl,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              textAlign: TextAlign.center,
-              style: TextStyle(color: color, fontSize: 14),
-              decoration: const InputDecoration(
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 8,
-                ),
-                isDense: true,
-              ),
-              onChanged: (_) => _notify(),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: TextField(
-              controller: _weightCtrl,
-              keyboardType: const TextInputType.numberWithOptions(
-                decimal: true,
-              ),
-              textAlign: TextAlign.center,
-              style: TextStyle(color: color, fontSize: 14),
-              decoration: const InputDecoration(
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 8,
-                ),
-                isDense: true,
-              ),
-              onChanged: (_) => _notify(),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          // Número da série
+          SizedBox(
+            width: 40,
             child: Text(
-              widget.volume.toStringAsFixed(0),
+              '${widget.setNumber}',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: widget.isWarmup
-                    ? AppTheme.success.withValues(alpha: 0.5)
-                    : AppTheme.success,
-                fontWeight: FontWeight.w600,
+              style: GoogleFonts.outfit(
+                color: widget.isWarmup ? const Color(0xFFCCFF00).withOpacity(0.5) : Colors.white24,
+                fontWeight: FontWeight.w900,
                 fontSize: 14,
               ),
             ),
           ),
+          
+          // Campo de Reps
+          Expanded(
+            child: _buildInputField(_repsCtrl, '0', isDigits: true),
+          ),
+          const SizedBox(width: 12),
+          
+          // Campo de Peso
+          Expanded(
+            child: _buildInputField(_weightCtrl, '0.0'),
+          ),
+          const SizedBox(width: 12),
+
+          // Botão de Check/Ação
           SizedBox(
-            width: 36,
-            child: widget.onRemove != null
-                ? IconButton(
-                    icon: const Icon(
-                      Icons.remove_circle_outline,
-                      size: 18,
-                      color: AppTheme.textSecondary,
-                    ),
-                    onPressed: widget.onRemove,
-                    padding: EdgeInsets.zero,
-                  )
-                : const SizedBox(),
+            width: 40,
+            child: IconButton(
+              icon: Icon(
+                widget.isWarmup ? Icons.bolt_rounded : Icons.check_circle_rounded,
+                color: widget.isWarmup ? const Color(0xFF00E5FF) : const Color(0xFFCCFF00),
+                size: 24,
+              ),
+              onPressed: () => _notify(isWarmup: !widget.isWarmup),
+              padding: EdgeInsets.zero,
+            ),
           ),
         ],
       ),
     );
   }
+
+  Widget _buildInputField(TextEditingController ctrl, String hint, {bool isDigits = false}) {
+    return Container(
+      height: 44,
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.03),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
+      ),
+      child: TextField(
+        controller: ctrl,
+        keyboardType: TextInputType.numberWithOptions(decimal: !isDigits),
+        inputFormatters: isDigits ? [FilteringTextInputFormatter.digitsOnly] : [],
+        textAlign: TextAlign.center,
+        style: GoogleFonts.outfit(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+        onChanged: (_) => _notify(),
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: const TextStyle(color: Colors.white10),
+          border: InputBorder.none,
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(vertical: 10),
+        ),
+      ),
+    );
+  }
 }
+

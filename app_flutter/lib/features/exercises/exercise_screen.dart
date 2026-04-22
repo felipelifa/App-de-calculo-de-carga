@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../shared/theme/app_theme.dart';
 import 'exercise_model.dart';
 import 'exercise_provider.dart';
@@ -41,204 +43,182 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     final exercises = provider.filteredExercises;
 
     return Scaffold(
-      // ── AppBar ──────────────────────────────
-      appBar: AppBar(
-        backgroundColor: AppTheme.surface,
-        elevation: 0,
-        title: const Text(
-          'Exercícios',
-          style: TextStyle(
-            color: AppTheme.textPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppTheme.textPrimary),
-          onPressed: () => context.go('/dashboard'),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(height: 1, color: Colors.white.withValues(alpha: 0.06)),
-        ),
-      ),
-
       backgroundColor: AppTheme.background,
-
-      // ── Body ────────────────────────────────
-      body: Column(
-        children: [
-          // Search field
-          _SearchBar(
-            controller: _searchCtrl,
-            onChanged: (v) => provider.setSearch(v),
+      body: CustomScrollView(
+        slivers: [
+          // ── App Header ──────────────────────────
+          SliverAppBar(
+            backgroundColor: AppTheme.background,
+            floating: true,
+            pinned: true,
+            expandedHeight: 120,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppTheme.textPrimary, size: 20),
+              onPressed: () => context.go('/dashboard'),
+            ),
+            flexibleSpace: FlexibleSpaceBar(
+              titlePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              title: Text(
+                'Exercícios',
+                style: GoogleFonts.outfit(
+                  color: AppTheme.textPrimary,
+                  fontSize: 26,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -0.5,
+                ),
+              ),
+            ),
           ),
 
-          // Muscle group filter chips
-          _MuscleFilterChips(
-            selected: provider.selectedMuscle,
-            onSelect: (m) => provider.setMuscleFilter(m),
+          // ── Search & Filter ─────────────────────
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                _buildModernSearchBar(provider),
+                const SizedBox(height: 16),
+                _buildModernFilterChips(provider),
+                const SizedBox(height: 24),
+              ],
+            ),
           ),
 
-          // Exercise list
-          Expanded(
-            child: _buildBody(provider, exercises),
+          // ── Exercise List ───────────────────────
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
+            sliver: _buildSliverBody(provider, exercises),
           ),
         ],
       ),
 
       // ── FAB ─────────────────────────────────
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push('/exercises/add'),
-        backgroundColor: AppTheme.accent,
-        elevation: 6,
-        child: const Icon(Icons.add, color: Colors.white),
+        backgroundColor: const Color(0xFFCCFF00),
+        icon: const Icon(Icons.add_rounded, color: Colors.black, weight: 800),
+        label: Text(
+          'NOVO',
+          style: GoogleFonts.outfit(
+            color: Colors.black,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1,
+          ),
+        ),
+      ).animate().scale(delay: 400.ms, curve: Curves.easeOutBack),
+    );
+  }
+
+  Widget _buildModernSearchBar(ExerciseProvider provider) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E1E1E),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white.withOpacity(0.05)),
+        ),
+        child: TextField(
+          controller: _searchCtrl,
+          onChanged: (v) => provider.setSearch(v),
+          style: GoogleFonts.outfit(color: Colors.white, fontSize: 16),
+          decoration: InputDecoration(
+            hintText: 'Buscar exercício...',
+            hintStyle: GoogleFonts.outfit(color: AppTheme.textSecondary.withOpacity(0.5), fontSize: 16),
+            prefixIcon: const Icon(Icons.search_rounded, color: Color(0xFFCCFF00), size: 22),
+            border: InputBorder.none,
+            contentPadding: const EdgeInsets.symmetric(vertical: 15),
+            suffixIcon: _searchCtrl.text.isNotEmpty
+                ? IconButton(
+                    icon: const Icon(Icons.close_rounded, color: Colors.white24, size: 20),
+                    onPressed: () {
+                      _searchCtrl.clear();
+                      provider.setSearch('');
+                    },
+                  )
+                : null,
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildBody(ExerciseProvider provider, List<ExerciseModel> exercises) {
-    if (provider.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(color: AppTheme.accent),
-      );
-    }
+  Widget _buildModernFilterChips(ExerciseProvider provider) {
+    return SizedBox(
+      height: 48,
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        scrollDirection: Axis.horizontal,
+        itemCount: _muscleGroups.length,
+        itemBuilder: (context, i) {
+          final group = _muscleGroups[i];
+          final isSelected = provider.selectedMuscle == group;
+          final color = isSelected ? const Color(0xFFCCFF00) : Colors.white24;
 
-    if (provider.error != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.wifi_off_rounded, color: AppTheme.danger, size: 48),
-            const SizedBox(height: 16),
-            Text(
-              provider.error!,
-              style: const TextStyle(color: AppTheme.textSecondary),
-              textAlign: TextAlign.center,
+          return Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: FilterChip(
+              label: Text(
+                group,
+                style: GoogleFonts.outfit(
+                  color: isSelected ? Colors.black : Colors.white70,
+                  fontSize: 13,
+                  fontWeight: isSelected ? FontWeight.w900 : FontWeight.w500,
+                ),
+              ),
+              selected: isSelected,
+              onSelected: (_) => provider.setMuscleFilter(group),
+              showCheckmark: false,
+              backgroundColor: const Color(0xFF1A1A1A),
+              selectedColor: const Color(0xFFCCFF00),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: BorderSide(color: color.withOpacity(0.1), width: 1),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             ),
-          ],
-        ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSliverBody(ExerciseProvider provider, List<ExerciseModel> exercises) {
+    if (provider.isLoading) {
+      return const SliverFillRemaining(
+        child: Center(child: CircularProgressIndicator(color: Color(0xFFCCFF00))),
       );
     }
 
     if (exercises.isEmpty) {
-      return Center(
+      return SliverFillRemaining(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.search_off_rounded,
-              color: AppTheme.textSecondary.withValues(alpha: 0.4),
-              size: 56,
-            ),
+            Icon(Icons.search_off_rounded, color: Colors.white10, size: 64),
             const SizedBox(height: 16),
             Text(
-              'Nenhum exercício encontrado.',
-              style: TextStyle(
-                color: AppTheme.textSecondary.withValues(alpha: 0.7),
-                fontSize: 15,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Toque em + para adicionar.',
-              style: TextStyle(
-                color: AppTheme.textSecondary.withValues(alpha: 0.4),
-                fontSize: 13,
-              ),
+              'Nenhum exercício encontrado',
+              style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 16),
             ),
           ],
         ),
       );
     }
 
-    return ListView.builder(
-      padding: const EdgeInsets.only(top: 8, bottom: 96),
-      itemCount: exercises.length,
-      itemBuilder: (context, i) {
-        final ex = exercises[i];
-        return ExerciseCard(
-          exercise: ex,
-          onTap: () => context.push('/exercises/${ex.id}'),
-        );
-      },
-    );
-  }
-}
-
-// ─────────────────────────────────────────────
-// Sub-widgets
-// ─────────────────────────────────────────────
-
-class _SearchBar extends StatelessWidget {
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
-
-  const _SearchBar({required this.controller, required this.onChanged});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: TextField(
-        controller: controller,
-        onChanged: onChanged,
-        style: const TextStyle(color: AppTheme.textPrimary),
-        decoration: InputDecoration(
-          hintText: 'Buscar exercício…',
-          prefixIcon: const Icon(Icons.search, color: AppTheme.textSecondary),
-          suffixIcon: controller.text.isNotEmpty
-              ? IconButton(
-                  icon: const Icon(Icons.clear, color: AppTheme.textSecondary),
-                  onPressed: () {
-                    controller.clear();
-                    onChanged('');
-                  },
-                )
-              : null,
-        ),
-      ),
-    );
-  }
-}
-
-class _MuscleFilterChips extends StatelessWidget {
-  final String? selected;
-  final ValueChanged<String> onSelect;
-
-  const _MuscleFilterChips({required this.selected, required this.onSelect});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 44,
-      child: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        scrollDirection: Axis.horizontal,
-        children: _muscleGroups.map((group) {
-          final isSelected = selected == group;
-          final color = muscleColor(group);
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, i) {
+          final ex = exercises[i];
           return Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: FilterChip(
-              label: Text(group),
-              selected: isSelected,
-              onSelected: (_) => onSelect(group),
-              backgroundColor: AppTheme.surfaceHighlight,
-              selectedColor: color.withValues(alpha: 0.2),
-              checkmarkColor: color,
-              labelStyle: TextStyle(
-                color: isSelected ? color : AppTheme.textSecondary,
-                fontSize: 12,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-              ),
-              side: BorderSide(
-                color: isSelected ? color.withValues(alpha: 0.6) : Colors.white.withValues(alpha: 0.08),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+            padding: const EdgeInsets.only(bottom: 12),
+            child: ExerciseCard(
+              exercise: ex,
+              onTap: () => context.push('/exercises/${ex.id}'),
             ),
-          );
-        }).toList(),
+          ).animate().fadeIn(delay: (i * 50).ms).slideY(begin: 0.1);
+        },
+        childCount: exercises.length,
       ),
     );
   }
 }
+
