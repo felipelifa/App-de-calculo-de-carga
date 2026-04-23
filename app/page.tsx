@@ -38,7 +38,7 @@ export default function InitialPage() {
         </h1>
 
         <p style={{ fontSize: '18px', color: '#a3a3a3', marginBottom: '48px', lineHeight: '1.6', maxWidth: '400px', textAlign: 'center' }}>
-          Sistema de treinamento bio-adaptativo com prescrição científica, periodização DUP e controle real de fadiga.
+          Sistema de treinamento bio-adaptativo com prescrição inteligente, periodização DUP e controle real de carga.
         </p>
 
         <a href="/treino/" style={{
