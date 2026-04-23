@@ -34,7 +34,7 @@ export default function InitialPage() {
         </div>
 
         <h1 style={{ fontSize: '48px', fontWeight: '900', letterSpacing: '-0.02em', marginBottom: '16px' }}>
-          TITAN ENGINE
+          TITAN ENGINE v2
         </h1>
 
         <p style={{ fontSize: '18px', color: '#a3a3a3', marginBottom: '48px', lineHeight: '1.6', maxWidth: '400px', textAlign: 'center' }}>
