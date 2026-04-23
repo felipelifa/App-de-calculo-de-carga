@@ -897,32 +897,12 @@ String? getEffectiveGifUrl(ExerciseModel ex) {
 ### Status Atual (⏳ Aguardando Propagação)
 - ✅ Código da API implementado e testado
 - ✅ Dart code atualizado com URL proxy
-- ✅ Commits feitos com cache bust (`ts=2`)
-- ⏳ Vercel ainda servindo cache antigo do navegador
-- ❌ GIFs ainda tentando carregar do Firebase direto (em vez do proxy)
+### Atualizações - 23/04/2026
+- ✅ Corrigido 404 no Root: Removido conflito de `trailingSlash` entre `vercel.json` e `next.config.ts`.
+- ✅ Roteamento SPA: Restaurado rewrites para `/treino` no `vercel.json`.
+- ✅ Build Web Realizado: Flutter compilado com `--base-href /treino/` e movido para `public/treino`.
+- ✅ Forçado Rebuild Vercel: Pequena alteração de texto em `app/page.tsx` para garantir deploy limpo.
 
-### Commits Realizados
-- `cd51c360` - Adicionado cache bust timestamp (`ts=2`) + nova sincronização web
-- `8a86e78a` - Removido restricão `output: 'export'` para permitir APIs dinâmicas
-- `fb6e2a24` - Sincronização de build web sem código
-- `582ca02d` - Revertido para bucket correto (`.firebasestorage.app`)
-
-### Hipóteses para a Persistência do Erro
-1. **Cache do Navegador:** Mesmo com Ctrl+R, navegador serve versão antiga de `main.dart.js`
-2. **Cache da Vercel:** CDN pode estar servendo JavaScript compilado antigo
-3. **Build não regenerado:** Timestamp pode não ser suficiente para forçar rebuild
-4. **Service Worker:** Possível interferência do service worker em cache
-
-### Próximos Passos Necessários
-1. **Opção 1 - Esperar Propagação:** Aguardar 5-10 minutos para Vercel propagar mudanças
-2. **Opção 2 - Limpeza Hard Cache:** `Ctrl+Shift+Delete` para limpar cache completo do navegador
-3. **Opção 3 - Incrementar Timestamp:** Aumentar `ts=3` ou `ts=10` em `exercise_provider.dart` e fazer rebuild
-4. **Opção 4 - Testar API Diretamente:** Testar se `https://app-calculo-carga.vercel.app/api/gif?name=Test` está respondendo
-5. **Opção 5 - Debug Console:** Inspecionar Network tab para verificar qual URL está sendo solicitada
-
-### Informações Técnicas Importantes
-- **Bucket Firebase:** `gs://appcalculotreino-51f23.firebasestorage.app` (raiz, não subfolder)
-- **GIFs Locais:** Nomes compatíveis com `ExerciseModel.name`
-- **Storage Rules:** Já atualizado para permitir leitura pública (`allow read: if true`)
-- **URL Final Esperada:** `https://app-calculo-carga.vercel.app/api/gif?ts=2&name=Crucifixo%20inverso%20unilateral%20com%20cabo`
-/proi
+### Commits Sugeridos
+- "fix: vercel routing and root 404"
+- "chore: rebuild flutter web app to public/treino"
