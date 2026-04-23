@@ -898,11 +898,15 @@ String? getEffectiveGifUrl(ExerciseModel ex) {
 - ✅ Código da API implementado e testado
 - ✅ Dart code atualizado com URL proxy
 ### Atualizações - 23/04/2026
-- ✅ Corrigido 404 no Root: Removido conflito de `trailingSlash` entre `vercel.json` e `next.config.ts`.
+- ✅ Corrigido 404 no Root: Removido conflito de `trailingSlash` e adicionado `index.html` estático.
 - ✅ Roteamento SPA: Restaurado rewrites para `/treino` no `vercel.json`.
 - ✅ Build Web Realizado: Flutter compilado com `--base-href /treino/` e movido para `public/treino`.
-- ✅ Forçado Rebuild Vercel: Pequena alteração de texto em `app/page.tsx` para garantir deploy limpo.
+- ✅ Refatoração de UX (Nutrição): 
+    - Clique no card do calendário agora apenas seleciona o dia.
+    - Clique no ícone de lápis (canto superior direito) agora é o único gatilho para editar metas.
+    - Removido clique do círculo central de calorias.
+- ✅ Novo Build Gerado: Sincronizado com as mudanças de UX acima.
 
 ### Commits Sugeridos
-- "fix: vercel routing and root 404"
-- "chore: rebuild flutter web app to public/treino"
+- "fix: nutrition screen UX interactions"
+- "chore: rebuild flutter web with new calendar logic"

@@ -159,13 +159,10 @@ class _NutritionScreenState extends State<NutritionScreen> {
                   children: [
                     _buildCalendarStrip(context, provider).animate().fadeIn(duration: 400.ms),
                     const SizedBox(height: 32),
-                    GestureDetector(
-                      onTap: () => _showManualOverrideDialog(context, provider),
-                      child: _buildCalorieDonut(chartData, target.toInt(), consumed.toInt(), remaining.toInt())
-                          .animate()
-                          .fadeIn()
-                          .scale(begin: const Offset(0.95, 0.95)),
-                    ),
+                    _buildCalorieDonut(chartData, target.toInt(), consumed.toInt(), remaining.toInt())
+                        .animate()
+                        .fadeIn()
+                        .scale(begin: const Offset(0.95, 0.95)),
                     const SizedBox(height: 32),
                     SizedBox(
                       width: double.infinity,
@@ -552,13 +549,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 padding: const EdgeInsets.only(right: 12),
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    if (isSelected) {
-                      _showManualOverrideDialog(context, provider);
-                    } else {
-                      provider.selectWeekday(weekdayNum);
-                    }
-                  },
+                  onTap: () => provider.selectWeekday(weekdayNum),
                   child: Container(
                     width: 85,
                     height: 125,
@@ -577,10 +568,20 @@ class _NutritionScreenState extends State<NutritionScreen> {
                       children: [
                         Positioned(
                           top: 12, right: 12,
-                          child: Icon(
-                            Icons.edit_note_rounded, 
-                            size: 18, 
-                            color: isSelected ? Colors.black45 : Colors.white10
+                          child: GestureDetector(
+                            onTap: () {
+                              if (!isSelected) provider.selectWeekday(weekdayNum);
+                              _showManualOverrideDialog(context, provider);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              color: Colors.transparent,
+                              child: Icon(
+                                Icons.edit_note_rounded, 
+                                size: 20, 
+                                color: isSelected ? Colors.black87 : Colors.white24
+                              ),
+                            ),
                           ),
                         ),
                         Center(
