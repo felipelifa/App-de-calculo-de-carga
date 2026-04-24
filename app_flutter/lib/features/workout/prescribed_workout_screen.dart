@@ -430,15 +430,15 @@ class _WorkoutSessionsSheet extends StatelessWidget {
                          height: 54,
                          child: ElevatedButton(
                            onPressed: () {
-                              context.read<WorkoutProvider>().startSessionFromPrescribed(
-                                sessionId: session.id,
-                                sessionName: session.name,
-                                prescribedExercises: session.exercises.map((e) => e.toMap()).toList(),
-                              );
-                              final router = GoRouter.of(context);
-                              Navigator.of(context).pop();
-                              router.go('/workout');
-                            },
+                             // Passa pelo aquecimento antes de iniciar
+                             final router = GoRouter.of(context);
+                             Navigator.of(context).pop();
+                             router.go('/warmup', extra: {
+                               'sessionId': session.id,
+                               'sessionName': session.name,
+                               'prescribedExercises': session.exercises.map((e) => e.toMap()).toList(),
+                             });
+                           },
                            style: ElevatedButton.styleFrom(
                              backgroundColor: neon,
                              foregroundColor: Colors.black,

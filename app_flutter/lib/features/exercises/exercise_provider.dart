@@ -75,7 +75,13 @@ class ExerciseProvider extends ChangeNotifier {
               final localOnly = exerciseLibrary
                   .where((e) => !firestoreIds.contains(e.id))
                   .toList();
-              _allExercises = [...fromFirestore, ...localOnly];
+              
+              var merged = [...fromFirestore, ...localOnly];
+              
+              // Remove duplicados que terminam com '(1)', ex: "Abudção de quadril com faixa (1)"
+              merged = merged.where((e) => !e.name.trim().endsWith('(1)')).toList();
+              
+              _allExercises = merged;
             }
             // Se vazio, mantém a biblioteca local já carregada
             _isLoading = false;

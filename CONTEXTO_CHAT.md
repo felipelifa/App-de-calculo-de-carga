@@ -897,16 +897,33 @@ String? getEffectiveGifUrl(ExerciseModel ex) {
 ### Status Atual (⏳ Aguardando Propagação)
 - ✅ Código da API implementado e testado
 - ✅ Dart code atualizado com URL proxy
-### Atualizações - 23/04/2026
-- ✅ Corrigido 404 no Root: Removido conflito de `trailingSlash` e adicionado `index.html` estático.
-- ✅ Roteamento SPA: Restaurado rewrites para `/treino` no `vercel.json`.
-- ✅ Build Web Realizado: Flutter compilado com `--base-href /treino/` e movido para `public/treino`.
-- ✅ Refatoração de UX (Nutrição): 
-    - Clique no card do calendário agora apenas seleciona o dia.
-    - Clique no ícone de lápis (canto superior direito) agora é o único gatilho para editar metas.
-    - Removido clique do círculo central de calorias.
-- ✅ Novo Build Gerado: Sincronizado com as mudanças de UX acima.
+### Atualizações - Sprint 1 e 2 (Concluídas)
+- ✅ **Tela Perfil de Atleta:** Pós-anamnese com dados biométricos.
+- ✅ **Coach Explainer:** IA explicando cada decisão de prescrição.
+- ✅ **Deload Prescrito:** Lógica e tela de descanso do SNC.
+- ✅ **Calendário Visual:** Dashboard com visualização de dias da semana.
+- ✅ **Barras de Fadiga:** Monitor de stress em tempo real na tela de treino.
+- ✅ **Tela de Warm-up:** Cues e temporizador de aquecimento antes do treino.
+- ✅ **Timer Inteligente (DUP):** Cronômetro que infere Força (180s), Hipertrofia (90s) e Resistência (60s) baseado na série, e renderiza um _RestTimerBanner_ animado global na tela.
+- ✅ **Limpeza de Biblioteca:** O motor agora bloqueia e expurga silenciosamente duplicações de banco de dados (ex: exercícios com `(1)` no final do nome).
+- ✅ **Correção de Filtragem:** O `ExerciseRotationManager` agora respeita a restrição de "Equipment" e "Environment" do perfil do atleta ao buscar substitutos em casa (Schoenfeld).
 
-### Commits Sugeridos
-- "fix: nutrition screen UX interactions"
-- "chore: rebuild flutter web with new calendar logic"
+---
+
+## 🚀 Sprint 3 — Gamificação e Visibilidade (EM ANDAMENTO)
+
+| # | Item | Status |
+|---|------|--------|
+| 3.1 | Sistema de **Rank de Atleta** (Novato → Lenda) baseado em Volume/XP | ⏳ Pendente |
+| 3.2 | **DUP visível** ao usuário na PrescribedWorkoutScreen | ⏳ Pendente |
+| 5.2 | **Analytics** de volume acumulado por músculo melhorado | ⏳ Pendente |
+
+---
+
+## 📅 Sprint 4 — Expansão Técnica (PRÓXIMOS PASSOS)
+
+| # | Item | Status |
+|---|------|--------|
+| 3.3 | Técnicas avançadas (Drop Set, Rest-Pause, Cluster) | ⏳ Pendente |
+| 3.4 | Progressão bodyweight completa (cadeia Push/Pull/Squat) | ⏳ Pendente |
+| 5.3 | Tela de exercício com histórico de carga + badges | ⏳ Pendente |

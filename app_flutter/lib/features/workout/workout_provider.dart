@@ -28,6 +28,33 @@ class WorkoutProvider extends ChangeNotifier {
 
   bool _isSessionActive = false;
   DateTime? _sessionStart;
+
+  // ── Rest Timer State ──
+  int _activeRestSeconds = 0;
+  Timer? _restTimer;
+  int get activeRestSeconds => _activeRestSeconds;
+
+  void startRestTimer(int seconds) {
+    _restTimer?.cancel();
+    _activeRestSeconds = seconds;
+    notifyListeners();
+    _restTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_activeRestSeconds > 0) {
+        _activeRestSeconds--;
+        notifyListeners();
+      } else {
+        timer.cancel();
+        _activeRestSeconds = 0;
+        notifyListeners();
+      }
+    });
+  }
+
+  void stopRestTimer() {
+    _restTimer?.cancel();
+    _activeRestSeconds = 0;
+    notifyListeners();
+  }
   String? _activeSessionName;
   final List<WorkoutExerciseEntry> _currentExercises = [];
 
@@ -265,6 +292,7 @@ class WorkoutProvider extends ChangeNotifier {
     required int reps,
     required double weight,
     bool? isWarmup,
+    bool? isCompleted,
   }) {
     if (exerciseIndex >= _currentExercises.length) return;
     final exercise = _currentExercises[exerciseIndex];
@@ -274,6 +302,7 @@ class WorkoutProvider extends ChangeNotifier {
       weight: weight,
       volume: reps * weight,
       isWarmup: isWarmup ?? exercise.sets[setIndex].isWarmup,
+      isCompleted: isCompleted ?? exercise.sets[setIndex].isCompleted,
     );
     _saveSessionToLocal();
     notifyListeners();

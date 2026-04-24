@@ -897,6 +897,13 @@ class _ActiveSession extends StatelessWidget {
           ),
         ),
 
+        // ── Rest Timer Banner ─────────────────
+        if (provider.activeRestSeconds > 0)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: _RestTimerBanner(),
+          ),
+
         // ── Monitor de Fadiga ─────────────────
         if (exercises.isNotEmpty)
           Padding(
@@ -1304,12 +1311,14 @@ class _ExerciseCard extends StatelessWidget {
                     weight: set.weight,
                     volume: set.volume,
                     isWarmup: set.isWarmup,
-                    onChanged: (reps, weight, isWarmup) => provider.updateSet(
+                    isCompleted: set.isCompleted,
+                    onChanged: (reps, weight, isWarmup, isCompleted) => provider.updateSet(
                       exerciseIndex: exerciseIndex,
                       setIndex: si,
                       reps: reps,
                       weight: weight,
                       isWarmup: isWarmup,
+                      isCompleted: isCompleted,
                     ),
                     onRemove: entry.sets.length > 1 ? () => provider.removeSet(exerciseIndex, si) : null,
                   );
@@ -1748,7 +1757,8 @@ class _SetRow extends StatefulWidget {
   final double weight;
   final double volume;
   final bool isWarmup;
-  final void Function(int reps, double weight, bool isWarmup) onChanged;
+  final bool isCompleted;
+  final void Function(int reps, double weight, bool isWarmup, bool isCompleted) onChanged;
   final VoidCallback? onRemove;
 
   const _SetRow({
@@ -1757,6 +1767,7 @@ class _SetRow extends StatefulWidget {
     required this.weight,
     required this.volume,
     required this.isWarmup,
+    required this.isCompleted,
     required this.onChanged,
     this.onRemove,
   });
@@ -1783,10 +1794,22 @@ class _SetRowState extends State<_SetRow> {
     super.dispose();
   }
 
-  void _notify({bool? isWarmup}) {
+  void _notify({bool? isWarmup, bool? isCompleted}) {
     final reps = int.tryParse(_repsCtrl.text) ?? widget.reps;
     final weight = double.tryParse(_weightCtrl.text) ?? widget.weight;
-    widget.onChanged(reps, weight, isWarmup ?? widget.isWarmup);
+    widget.onChanged(reps, weight, isWarmup ?? widget.isWarmup, isCompleted ?? widget.isCompleted);
+  }
+
+  void _toggleComplete() {
+    final newStatus = !widget.isCompleted;
+    _notify(isCompleted: newStatus);
+    if (newStatus && !widget.isWarmup) {
+      final reps = int.tryParse(_repsCtrl.text) ?? widget.reps;
+      int rest = 60;
+      if (reps <= 6) rest = 180;
+      else if (reps <= 12) rest = 90;
+      context.read<WorkoutProvider>().startRestTimer(rest);
+    }
   }
 
   @override
@@ -1795,18 +1818,32 @@ class _SetRowState extends State<_SetRow> {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          // Número da série
+          // Número da série (toca para alternar Warmup)
           GestureDetector(
             onTap: () => _notify(isWarmup: !widget.isWarmup),
             child: SizedBox(
               width: 40,
-              child: Text(
-                '${widget.setNumber}',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.outfit(
-                  color: widget.isWarmup ? const Color(0xFFCCFF00) : Colors.white24,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 14,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                decoration: BoxDecoration(
+                  color: widget.isWarmup ? const Color(0xFF00E5FF).withOpacity(0.1) : Colors.transparent,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (widget.isWarmup) const Icon(Icons.bolt_rounded, color: Color(0xFF00E5FF), size: 14),
+                    Text(
+                      '${widget.setNumber}',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.outfit(
+                        color: widget.isWarmup ? const Color(0xFF00E5FF) : Colors.white24,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -1824,16 +1861,21 @@ class _SetRowState extends State<_SetRow> {
           ),
           const SizedBox(width: 12),
 
-          // Botão de Check/Ação
+          // Botão de Check
           SizedBox(
             width: 40,
             child: IconButton(
-              icon: Icon(
-                widget.isWarmup ? Icons.bolt_rounded : Icons.check_circle_rounded,
-                color: widget.isWarmup ? const Color(0xFF00E5FF) : const Color(0xFFCCFF00),
-                size: 24,
+              icon: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
+                child: Icon(
+                  widget.isCompleted ? Icons.check_circle_rounded : Icons.circle_outlined,
+                  key: ValueKey(widget.isCompleted),
+                  color: widget.isCompleted ? const Color(0xFFCCFF00) : Colors.white24,
+                  size: 26,
+                ),
               ),
-              onPressed: () => _notify(isWarmup: !widget.isWarmup),
+              onPressed: _toggleComplete,
               padding: EdgeInsets.zero,
             ),
           ),
@@ -1868,4 +1910,54 @@ class _SetRowState extends State<_SetRow> {
     );
   }
 }
+
+class _RestTimerBanner extends StatelessWidget {
+  const _RestTimerBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<WorkoutProvider>();
+    final seconds = provider.activeRestSeconds;
+    
+    final min = seconds ~/ 60;
+    final sec = seconds % 60;
+    final timeStr = '${min.toString().padLeft(2, '0')}:${sec.toString().padLeft(2, '0')}';
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF00E5FF).withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFF00E5FF).withOpacity(0.3), width: 1.5),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.timer_rounded, color: Color(0xFF00E5FF), size: 28),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Tempo de Descanso',
+                  style: GoogleFonts.outfit(color: const Color(0xFF00E5FF), fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 1),
+                ),
+                Text(
+                  timeStr,
+                  style: GoogleFonts.outfit(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w900),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: () => context.read<WorkoutProvider>().stopRestTimer(),
+            icon: const Icon(Icons.skip_next_rounded, color: Colors.white54, size: 28),
+            tooltip: 'Pular descanso',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 

@@ -81,6 +81,7 @@ class ExerciseRotationManager {
     List<String> favorites = const [],
     List<String> disliked = const [],
     int rotationSeed = 0,
+    bool Function(ExerciseModel)? filter,
   }) {
     // No trocar favoritos
     if (favorites.contains(originalId)) return originalId;
@@ -89,8 +90,15 @@ class ExerciseRotationManager {
     final pool = _substitutePools[originalId];
     if (pool == null || pool.isEmpty) return originalId;
 
-    // Filtrar disliked
-    final availablePool = pool.where((s) => !disliked.contains(s)).toList();
+    // Filtrar disliked e usar o filter opcional (para ambiente/equipamentos)
+    final availablePool = pool.where((s) {
+      if (disliked.contains(s)) return false;
+      if (filter != null) {
+        final ex = _library.firstWhere((e) => e.id == s, orElse: () => _library.first);
+        if (!filter(ex)) return false;
+      }
+      return true;
+    }).toList();
     if (availablePool.isEmpty) return originalId;
 
     // A cada 2 semanas, trocar exerccio

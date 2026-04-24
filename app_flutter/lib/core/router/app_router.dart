@@ -27,6 +27,7 @@ import '../../features/nutrition/nutrition_anamnese_screen.dart';
 import '../../features/nutrition/nutrition_dashboard_screen.dart';
 import '../../features/workout/athlete_profile_screen.dart';
 import '../../features/workout/deload_screen.dart';
+import '../../features/workout/warmup_screen.dart';
 
 class AppRouter {
   static GoRouter createRouter(AuthService authService) {
@@ -152,6 +153,19 @@ class AppRouter {
         GoRoute(
           path: '/deload',
           builder: (context, state) => const DeloadScreen(),
+        ),
+        GoRoute(
+          path: '/warmup',
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>? ?? {};
+            return WarmupScreen(
+              sessionId: extra['sessionId'] as String? ?? '',
+              sessionName: extra['sessionName'] as String? ?? 'Treino',
+              prescribedExercises: List<Map<String, dynamic>>.from(
+                extra['prescribedExercises'] as List? ?? [],
+              ),
+            );
+          },
         ),
         GoRoute(
           path: '/prescribed',

@@ -183,6 +183,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     const SizedBox(height: 8),
 
+                    // 0. CALENDÁRIO SEMANAL
+                    _WeeklyCalendarWidget().animate().fadeIn(duration: 500.ms),
+                    const SizedBox(height: 20),
+
                     // 1. PRIMARY ACTION (TOP PRIORITY)
                     _buildTrainingHeroCard(context),
                     
@@ -1418,6 +1422,223 @@ class _CycleStatusCard extends StatelessWidget {
           Icon(Icons.chevron_right_rounded,
               color: c.withValues(alpha: 0.5), size: 18),
         ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────
+// Calendário Semanal Visual
+// ─────────────────────────────────────────────
+
+class _WeeklyCalendarWidget extends StatelessWidget {
+  static const _dayLabels = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+
+  // Determina os dias de treino com base no perfil
+  List<bool> _trainingDays(int daysPerWeek) {
+    // Distribui os dias de treino de forma equilibrada na semana
+    switch (daysPerWeek) {
+      case 2: return [true,  false, true,  false, false, false, false];
+      case 3: return [true,  false, true,  false, true,  false, false];
+      case 4: return [true,  true,  false, true,  true,  false, false];
+      case 5: return [true,  true,  false, true,  true,  true,  false];
+      case 6: return [true,  true,  true,  false, true,  true,  true];
+      case 7: return [true,  true,  true,  true,  true,  true,  true];
+      default: return [true, false, true,  false, true,  false, false];
+    }
+  }
+
+  // Label resumido da sessão para cada dia de treino
+  List<String> _sessionLabels(String splitType, int daysPerWeek) {
+    switch (splitType.toLowerCase()) {
+      case 'ppl':
+      case 'push_pull_legs':
+        const cycle = ['PUSH', 'PULL', 'PERNAS', 'PUSH', 'PULL', 'PERNAS', ''];
+        return cycle;
+      case 'upper_lower':
+        return ['UPPER', 'LOWER', '', 'UPPER', 'LOWER', '', ''];
+      case 'full_body':
+        if (daysPerWeek == 3) return ['FULL A', '', 'FULL B', '', 'FULL C', '', ''];
+        return ['FULL A', '', 'FULL B', '', 'FULL C', '', ''];
+      default:
+        return ['TREINO A', 'TREINO B', '', 'TREINO C', 'TREINO D', '', ''];
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<WorkoutProfileProvider>(
+      builder: (context, wp, _) {
+        final profile = wp.profile;
+        final activeWorkout = wp.activeWorkout;
+        final daysPerWeek = profile?.availableDaysPerWeek ?? 3;
+        final splitType = activeWorkout?.splitType ?? 'full_body';
+
+        final trainingDays = _trainingDays(daysPerWeek);
+        final labels = _sessionLabels(splitType, daysPerWeek);
+
+        // Dia da semana atual (1=Seg, 7=Dom)
+        final todayWeekday = DateTime.now().weekday; // 1=Mon, 7=Sun
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ── Header ──
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'SEMANA ATUAL',
+                  style: GoogleFonts.outfit(
+                    color: AppTheme.textSecondary,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 2,
+                  ),
+                ),
+                if (wp.activeWorkout != null)
+                  GestureDetector(
+                    onTap: () => context.push('/deload'),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFF6B6B).withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: const Color(0xFFFF6B6B).withValues(alpha: 0.3)),
+                      ),
+                      child: Text(
+                        'DELOAD',
+                        style: GoogleFonts.outfit(
+                          color: const Color(0xFFFF6B6B),
+                          fontSize: 9,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // ── 7 blocos de dias ──
+            SizedBox(
+              height: 82,
+              child: Row(
+                children: List.generate(7, (i) {
+                  final isToday = (i + 1) == todayWeekday;
+                  final isTraining = trainingDays[i];
+                  final label = labels[i];
+
+                  return Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: i < 6 ? 6 : 0),
+                      child: _DayCard(
+                        dayLabel: _dayLabels[i],
+                        isToday: isToday,
+                        isTraining: isTraining,
+                        sessionLabel: label,
+                        onTap: isTraining
+                            ? () => context.push('/prescribed')
+                            : null,
+                      ).animate(delay: (i * 60).ms).fadeIn().scale(begin: const Offset(0.9, 0.9)),
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _DayCard extends StatelessWidget {
+  final String dayLabel;
+  final bool isToday;
+  final bool isTraining;
+  final String sessionLabel;
+  final VoidCallback? onTap;
+
+  const _DayCard({
+    required this.dayLabel,
+    required this.isToday,
+    required this.isTraining,
+    required this.sessionLabel,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    const neon = Color(0xFFCCFF00);
+    final borderColor = isToday
+        ? neon.withValues(alpha: 0.6)
+        : Colors.white.withValues(alpha: 0.04);
+    final bgColor = isToday
+        ? neon.withValues(alpha: 0.06)
+        : isTraining
+            ? const Color(0xFF1E1E1E)
+            : const Color(0xFF141414);
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: borderColor, width: isToday ? 1.5 : 1),
+          boxShadow: isToday
+              ? [BoxShadow(color: neon.withValues(alpha: 0.1), blurRadius: 12)]
+              : [],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Dia da semana
+            Text(
+              dayLabel,
+              style: GoogleFonts.outfit(
+                color: isToday ? neon : AppTheme.textSecondary,
+                fontSize: 9,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 0.5,
+              ),
+            ),
+            const SizedBox(height: 6),
+
+            // Ícone ou label
+            if (isTraining && sessionLabel.isNotEmpty)
+              Text(
+                sessionLabel,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.outfit(
+                  color: isToday ? neon : Colors.white.withValues(alpha: 0.7),
+                  fontSize: 7,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 0.3,
+                ),
+              )
+            else if (isTraining)
+              Icon(Icons.fitness_center_rounded,
+                  size: 14,
+                  color: isToday ? neon : Colors.white.withValues(alpha: 0.5))
+            else
+              Icon(Icons.hotel_rounded,
+                  size: 14,
+                  color: Colors.white.withValues(alpha: 0.15)),
+
+            // Ponto de hoje
+            if (isToday) ...[
+              const SizedBox(height: 4),
+              Container(
+                width: 4,
+                height: 4,
+                decoration: const BoxDecoration(color: neon, shape: BoxShape.circle),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

@@ -1169,13 +1169,36 @@ class WorkoutPrescriptionEngine {
     final rawSets = (weeklyVol / freqPerWeek).ceil();
     final baseSets = (rawSets * setsModifier).clamp(2, 5);
 
-    // Rotao semanal: troca exerccio similar se semana > 1
+    final isHome = profile.environment.contains('home') || profile.environment == 'outdoor';
+    
+    // Rotação semanal: troca exercício similar se semana > 1
     final rotatedId = _rotation.resolveExercise(
       ex.id,
       weekNumber: _weekNumber,
       favorites: profile.favoriteExercises,
       disliked: profile.dislikedExercises,
       rotationSeed: _seed,
+      filter: (candidate) {
+        // Usa as mesmas regras de filtro de ambiente/equipamento
+        if (!candidate.environment.contains(profile.environment)) {
+          if (isHome && !candidate.environment.contains('home')) return false;
+        }
+        if (isHome) {
+          if (profile.availableEquipment.isEmpty) {
+            if (!candidate.equipment.contains('bodyweight') && !candidate.tags.contains('no_equipment')) {
+              return false;
+            }
+          } else {
+            final hasMatchingEquip = candidate.equipment.any((eq) => 
+              profile.availableEquipment.contains(eq) || eq == 'bodyweight'
+            );
+            if (!hasMatchingEquip) return false;
+          }
+        }
+        if (candidate.restrictions.any((r) => profile.healthRestrictions.contains(r))) return false;
+        if (profile.experienceLevel == 'beginner' && candidate.difficulty == 'advanced') return false;
+        return true;
+      },
     );
     final finalEx = rotatedId != ex.id
         ? _library.firstWhere((e) => e.id == rotatedId, orElse: () => ex)

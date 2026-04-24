@@ -9,12 +9,14 @@ class WorkoutSet {
   final double weight;
   final double volume;
   final bool isWarmup;
+  final bool isCompleted;
 
   const WorkoutSet({
     required this.reps,
     required this.weight,
     required this.volume,
     this.isWarmup = false,
+    this.isCompleted = false,
   });
 
   Map<String, dynamic> toMap() => {
@@ -22,6 +24,7 @@ class WorkoutSet {
         'weight': weight,
         'volume': volume,
         'isWarmup': isWarmup,
+        'isCompleted': isCompleted,
       };
 
   factory WorkoutSet.fromMap(Map<String, dynamic> m) => WorkoutSet(
@@ -29,6 +32,7 @@ class WorkoutSet {
         weight: (m['weight'] as num?)?.toDouble() ?? 0,
         volume: (m['volume'] as num?)?.toDouble() ?? 0,
         isWarmup: (m['isWarmup'] as bool?) ?? false,
+        isCompleted: (m['isCompleted'] as bool?) ?? false,
       );
 }
 
