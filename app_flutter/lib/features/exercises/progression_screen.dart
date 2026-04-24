@@ -8,6 +8,7 @@ import '../exercises/exercise_provider.dart';
 import '../workout/progression_service.dart';
 import '../workout/progression_provider.dart';
 import '../workout/progression_engine.dart';
+import '../../core/services/coach_explainer_service.dart';
 
 // ═══════════════════════════════════════════════════════════════
 // ProgressionScreen v2
@@ -673,14 +674,38 @@ class SuggestionCard extends StatelessWidget {
   final ProgressionSuggestion suggestion;
   const SuggestionCard({super.key, required this.suggestion});
 
+  String _getExplanation() {
+    final coach = CoachExplainerService();
+    switch (suggestion.type) {
+      case ProgressionType.increaseWeight:
+        return coach.explainProgression(
+          reason: 'increase_load',
+          deltaKg: suggestion.suggestedWeight != null && suggestion.currentWeight != null
+              ? (suggestion.suggestedWeight! - suggestion.currentWeight!)
+              : 2.5,
+        );
+      case ProgressionType.decreaseWeight:
+        return coach.explainProgression(reason: 'decrease_load', consecutiveMisses: 2);
+      case ProgressionType.deloadWeek:
+        return coach.explainProgression(reason: 'deload', deloadWeeks: 6);
+      case ProgressionType.increaseReps:
+        return coach.explainProgression(reason: 'consolidate', rir: 2);
+      default:
+        return coach.explainProgression(reason: 'consolidate', rir: 2);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final ex = suggestion.exercise;
-    final color = suggestion.type == ProgressionType.increaseWeight ? const Color(0xFFCCFF00) : const Color(0xFF00E5FF);
+    final color = suggestion.type == ProgressionType.increaseWeight
+        ? const Color(0xFFCCFF00)
+        : suggestion.type == ProgressionType.deloadWeek
+            ? Colors.redAccent
+            : const Color(0xFF00E5FF);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: const Color(0xFF1E1E1E),
         borderRadius: BorderRadius.circular(24),
@@ -689,27 +714,75 @@ class SuggestionCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Text(suggestion.title, style: GoogleFonts.outfit(color: color, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
-                    const SizedBox(height: 4),
-                    Text(ex.name.toUpperCase(), style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16)),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(suggestion.title,
+                              style: GoogleFonts.outfit(
+                                  color: color,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 13,
+                                  letterSpacing: 1)),
+                          const SizedBox(height: 4),
+                          Text(ex.name.toUpperCase(),
+                              style: GoogleFonts.outfit(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 16)),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.trending_up_rounded, color: color, size: 24),
                   ],
                 ),
-              ),
-              Icon(Icons.trending_up_rounded, color: color, size: 24),
-            ],
+                const SizedBox(height: 16),
+                Text(suggestion.reason,
+                    style: GoogleFonts.outfit(
+                        color: AppTheme.textSecondary, fontSize: 13, height: 1.4)),
+                if (suggestion.suggestedWeight != null || suggestion.suggestedReps != null) ...[
+                  const SizedBox(height: 20),
+                  _ProgressionArrow(s: suggestion, color: color),
+                ],
+              ],
+            ),
           ),
-          const SizedBox(height: 16),
-          Text(suggestion.reason, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 13, height: 1.4)),
-          if (suggestion.suggestedWeight != null || suggestion.suggestedReps != null) ...[
-            const SizedBox(height: 20),
-            _ProgressionArrow(s: suggestion, color: color),
-          ],
+          // ── Coach Explainer ──
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+            child: Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: color.withOpacity(0.15)),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.psychology_rounded, color: color, size: 16),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      _getExplanation(),
+                      style: GoogleFonts.outfit(
+                        color: AppTheme.textSecondary,
+                        fontSize: 12,
+                        height: 1.5,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

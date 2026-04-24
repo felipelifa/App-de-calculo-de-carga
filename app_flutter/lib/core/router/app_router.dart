@@ -25,6 +25,8 @@ import '../../features/nutrition/nutrition_settings_screen.dart';
 import '../../features/profile/profile_screen.dart';
 import '../../features/nutrition/nutrition_anamnese_screen.dart';
 import '../../features/nutrition/nutrition_dashboard_screen.dart';
+import '../../features/workout/athlete_profile_screen.dart';
+import '../../features/workout/deload_screen.dart';
 
 class AppRouter {
   static GoRouter createRouter(AuthService authService) {
@@ -138,6 +140,18 @@ class AppRouter {
         GoRoute(
           path: '/anamnese',
           builder: (context, state) => const AnamneseScreen(),
+        ),
+        GoRoute(
+          path: '/athlete-profile',
+          builder: (context, state) {
+            final profile = state.extra as dynamic;
+            if (profile == null) return const AnamneseScreen();
+            return AthleteProfileScreen(profile: profile);
+          },
+        ),
+        GoRoute(
+          path: '/deload',
+          builder: (context, state) => const DeloadScreen(),
         ),
         GoRoute(
           path: '/prescribed',

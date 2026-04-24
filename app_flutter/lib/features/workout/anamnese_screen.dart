@@ -108,14 +108,14 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
       _showLoadingDialog(context);
 
       final profileProvider = context.read<WorkoutProfileProvider>();
-      final exerciseProvider = context.read<ExerciseProvider>();
 
       await profileProvider.saveProfile(profile);
       await profileProvider.generateAndSaveWorkout();
 
       if (mounted) {
         Navigator.pop(context);
-        context.go('/prescribed');
+        // Redireciona para a tela de Perfil de Atleta com diagnóstico visual
+        context.go('/athlete-profile', extra: profile);
       }
     } catch (e) {
       if (mounted) {

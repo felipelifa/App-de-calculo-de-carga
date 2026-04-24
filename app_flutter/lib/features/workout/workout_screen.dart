@@ -897,6 +897,13 @@ class _ActiveSession extends StatelessWidget {
           ),
         ),
 
+        // ── Monitor de Fadiga ─────────────────
+        if (exercises.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: _FatigueMonitorWidget(exercises: exercises),
+          ),
+
         // Exercícios
         Expanded(
           child: exercises.isEmpty
@@ -943,6 +950,258 @@ class _ActiveSession extends StatelessWidget {
             label: Text('ADICIONAR', style: GoogleFonts.outfit(color: const Color(0xFFCCFF00), fontWeight: FontWeight.w900, letterSpacing: 1)),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ── Monitor de Fadiga em Tempo Real ──────────
+
+class _FatigueMonitorWidget extends StatefulWidget {
+  final List<dynamic> exercises;
+  const _FatigueMonitorWidget({required this.exercises});
+
+  @override
+  State<_FatigueMonitorWidget> createState() => _FatigueMonitorWidgetState();
+}
+
+class _FatigueMonitorWidgetState extends State<_FatigueMonitorWidget> {
+  bool _expanded = false;
+
+  // Calcula fadiga a partir dos exercícios na sessão
+  // Usando os dados de spinalLoad, shoulderStress, kneeStress, cnsLoad do ExerciseModel
+  Map<String, double> _calcFatigue(BuildContext context) {
+    final ep = context.read<ExerciseProvider>();
+    double spinal = 0, shoulder = 0, knee = 0, cns = 0;
+
+    for (final entry in widget.exercises) {
+      final model = ep.getById(entry.exerciseId);
+      if (model == null) continue;
+      final sets = (entry.sets as List).length.toDouble();
+      // Acumula fadiga ponderada pelo número de séries
+      spinal += model.spinalLoad * sets * 0.2;
+      shoulder += model.shoulderStress * sets * 0.2;
+      knee += model.kneeStress * sets * 0.2;
+      cns += model.cnsLoad * sets * 0.2;
+    }
+
+    return {
+      'spinal': spinal.clamp(0.0, 1.0),
+      'shoulder': shoulder.clamp(0.0, 1.0),
+      'knee': knee.clamp(0.0, 1.0),
+      'cns': cns.clamp(0.0, 1.0),
+    };
+  }
+
+  Color _barColor(double value) {
+    if (value >= 1.0) return const Color(0xFFEF4444);
+    if (value >= 0.81) return const Color(0xFFF97316);
+    if (value >= 0.61) return const Color(0xFFEAB308);
+    return const Color(0xFF22C55E);
+  }
+
+  String _barStatus(double value) {
+    if (value >= 1.0) return '⚠ LIMITE';
+    if (value >= 0.81) return '⚠ Atenção';
+    if (value >= 0.61) return '⚡ Moderado';
+    return '✓ OK';
+  }
+
+  void _checkCritical(BuildContext context, Map<String, double> fatigue) {
+    final labels = {'spinal': 'LOMBAR', 'shoulder': 'OMBRO', 'knee': 'JOELHO', 'cns': 'SNC'};
+    for (final entry in fatigue.entries) {
+      if (entry.value >= 1.0) {
+        HapticFeedback.heavyImpact();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              backgroundColor: const Color(0xFF1E1E1E),
+              title: Row(
+                children: [
+                  const Icon(Icons.warning_rounded, color: Color(0xFFEF4444)),
+                  const SizedBox(width: 10),
+                  Text('Carga Máxima: ${labels[entry.key]}',
+                      style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16)),
+                ],
+              ),
+              content: Text(
+                'Carga máxima atingida para ${labels[entry.key]}.\n\nRecomendamos não adicionar mais exercícios que estressem esta articulação nesta sessão.',
+                style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 13, height: 1.5),
+              ),
+              actions: [
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFEF4444)),
+                  child: const Text('ENTENDIDO'),
+                ),
+              ],
+            ),
+          );
+        });
+        break; // Uma notificação por vez
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final fatigue = _calcFatigue(context);
+
+    // Check for critical values
+    _checkCritical(context, fatigue);
+
+    final maxVal = fatigue.values.fold(0.0, (a, b) => a > b ? a : b);
+    final headerColor = maxVal >= 1.0
+        ? const Color(0xFFEF4444)
+        : maxVal >= 0.81
+            ? const Color(0xFFF97316)
+            : maxVal >= 0.61
+                ? const Color(0xFFEAB308)
+                : const Color(0xFF22C55E);
+
+    return GestureDetector(
+      onTap: () => setState(() => _expanded = !_expanded),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: const Color(0xFF161616),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: headerColor.withValues(alpha: 0.25)),
+        ),
+        child: Column(
+          children: [
+            // ── Header (sempre visível) ──
+            Row(
+              children: [
+                Icon(Icons.monitor_heart_rounded, color: headerColor, size: 16),
+                const SizedBox(width: 10),
+                Text(
+                  'MONITOR DE FADIGA',
+                  style: GoogleFonts.outfit(
+                    color: headerColor,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 2,
+                  ),
+                ),
+                const Spacer(),
+                // Mini indicadores condensados
+                if (!_expanded) ...[
+                  _MiniBar(value: fatigue['spinal']!, color: _barColor(fatigue['spinal']!)),
+                  const SizedBox(width: 4),
+                  _MiniBar(value: fatigue['shoulder']!, color: _barColor(fatigue['shoulder']!)),
+                  const SizedBox(width: 4),
+                  _MiniBar(value: fatigue['knee']!, color: _barColor(fatigue['knee']!)),
+                  const SizedBox(width: 4),
+                  _MiniBar(value: fatigue['cns']!, color: _barColor(fatigue['cns']!)),
+                  const SizedBox(width: 8),
+                ],
+                Icon(
+                  _expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+                  color: AppTheme.textSecondary,
+                  size: 18,
+                ),
+              ],
+            ),
+            // ── Barras expandidas ──
+            if (_expanded) ...[
+              const SizedBox(height: 16),
+              _FatigueBar(label: 'LOMBAR', value: fatigue['spinal']!, color: _barColor(fatigue['spinal']!), status: _barStatus(fatigue['spinal']!)),
+              const SizedBox(height: 10),
+              _FatigueBar(label: 'OMBRO', value: fatigue['shoulder']!, color: _barColor(fatigue['shoulder']!), status: _barStatus(fatigue['shoulder']!)),
+              const SizedBox(height: 10),
+              _FatigueBar(label: 'JOELHO', value: fatigue['knee']!, color: _barColor(fatigue['knee']!), status: _barStatus(fatigue['knee']!)),
+              const SizedBox(height: 10),
+              _FatigueBar(label: 'SNC', value: fatigue['cns']!, color: _barColor(fatigue['cns']!), status: _barStatus(fatigue['cns']!)),
+              const SizedBox(height: 8),
+              Text(
+                'Toque para expandir/recolher. Baseado nos exercícios da sessão atual.',
+                style: GoogleFonts.outfit(color: AppTheme.textSecondary.withValues(alpha: 0.4), fontSize: 10),
+              ),
+            ],
+          ],
+        ),
+      ),
+    ).animate().fadeIn(duration: 400.ms);
+  }
+}
+
+class _FatigueBar extends StatelessWidget {
+  final String label;
+  final double value;
+  final Color color;
+  final String status;
+
+  const _FatigueBar({required this.label, required this.value, required this.color, required this.status});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            SizedBox(
+              width: 60,
+              child: Text(label, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+            ),
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0, end: value),
+                  duration: const Duration(milliseconds: 600),
+                  curve: Curves.easeOut,
+                  builder: (_, v, __) => LinearProgressIndicator(
+                    value: v,
+                    backgroundColor: Colors.white.withValues(alpha: 0.05),
+                    valueColor: AlwaysStoppedAnimation(color),
+                    minHeight: 7,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            SizedBox(
+              width: 70,
+              child: Text(
+                '${(value * 100).toInt()}%  $status',
+                style: GoogleFonts.outfit(color: color, fontSize: 10, fontWeight: FontWeight.w700),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _MiniBar extends StatelessWidget {
+  final double value;
+  final Color color;
+  const _MiniBar({required this.value, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 20,
+      height: 6,
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(3),
+      ),
+      child: FractionallySizedBox(
+        alignment: Alignment.centerLeft,
+        widthFactor: value,
+        child: Container(
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(3),
+          ),
+        ),
       ),
     );
   }
