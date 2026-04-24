@@ -76,7 +76,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen>
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverAppBar(
                 backgroundColor: AppTheme.background,
-                expandedHeight: 120,
+                expandedHeight: 140,
                 floating: true,
                 pinned: true,
                 elevation: 0,
@@ -86,6 +86,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen>
                 ),
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
+                  titlePadding: const EdgeInsets.only(bottom: 58),
                   title: Text(
                     'ESTATÍSTICAS',
                     style: GoogleFonts.outfit(
