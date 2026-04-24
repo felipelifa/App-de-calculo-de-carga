@@ -1315,13 +1315,33 @@ class WorkoutPrescriptionEngine {
       if (!forceIsolation && ex.movementPattern != pattern) return false;
       if (forceIsolation && ex.category != 'isolation') return false;
 
-      // Filtro ambiente
+      // Filtro ambiente e equipamentos (Dimenso 8: Home Fallback)
+      final isHome = profile.environment.contains('home') || profile.environment == 'outdoor';
+      final isFullGym = profile.environment == 'full_gym' || profile.environment == 'basic_gym';
+
+      // 1. Se o exercício não é compatível com o ambiente do usuário
       if (!ex.environment.contains(profile.environment)) {
-        if (profile.environment != 'full_gym' && !ex.environment.contains('home')) return false;
+        // Fallback: se estou em casa, o exercício DEVE ter tag 'home' ou ser compatível
+        if (isHome && !ex.environment.contains('home')) return false;
       }
 
-      // Filtro equipamentos disponíveis
-      if (profile.availableEquipment.isNotEmpty) {
+      // 2. Filtro rigoroso de equipamentos para ambiente doméstico
+      if (isHome) {
+        // Se não tem nenhum equipamento selecionado, só pode ser peso do corpo
+        if (profile.availableEquipment.isEmpty) {
+          if (!ex.equipment.contains('bodyweight') && !ex.tags.contains('no_equipment')) {
+            return false;
+          }
+        } else {
+          // Se tem equipamentos, o exercício deve usar um deles OU ser peso do corpo
+          final hasMatchingEquip = ex.equipment.any((eq) => 
+            profile.availableEquipment.contains(eq) || eq == 'bodyweight'
+          );
+          if (!hasMatchingEquip) return false;
+        }
+      } 
+      // Para academia, se o usuário especificou equipamentos (ex: academia básica), filtra
+      else if (isFullGym && profile.availableEquipment.isNotEmpty) {
         final hasMatchingEquip = ex.equipment.any((eq) => profile.availableEquipment.contains(eq));
         if (!hasMatchingEquip) return false;
       }
