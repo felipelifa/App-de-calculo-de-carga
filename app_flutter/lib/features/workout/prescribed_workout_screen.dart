@@ -387,6 +387,14 @@ class _WorkoutSessionsSheet extends StatelessWidget {
                itemCount: workout.sessions.length,
                itemBuilder: (context, index) {
                  final session = workout.sessions[index];
+                 
+                 final obj = session.objective.toLowerCase();
+                 String dupPhase = 'Equilíbrio ⚖️';
+                 Color dupColor = Colors.white70;
+                 if (obj.contains('força')) { dupPhase = 'Sessão de Força 💪'; dupColor = Colors.orangeAccent; }
+                 else if (obj.contains('hipertrofia')) { dupPhase = 'Sessão de Hipertrofia 🔥'; dupColor = const Color(0xFF00E5FF); }
+                 else if (obj.contains('resistência')) { dupPhase = 'Sessão de Resistência 🏃'; dupColor = const Color(0xFFCCFF00); }
+
                  return Container(
                    margin: const EdgeInsets.only(bottom: 16),
                    padding: const EdgeInsets.all(20),
@@ -399,14 +407,30 @@ class _WorkoutSessionsSheet extends StatelessWidget {
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
                        Row(
+                         crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
                            Expanded(
-                             child: Text(session.name, style: GoogleFonts.outfit(fontWeight: FontWeight.w900, fontSize: 18, color: AppTheme.textPrimary)),
+                             child: Column(
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               children: [
+                                 Text(session.name, style: GoogleFonts.outfit(fontWeight: FontWeight.w900, fontSize: 18, color: AppTheme.textPrimary)),
+                                 const SizedBox(height: 6),
+                                 Container(
+                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                   decoration: BoxDecoration(
+                                     color: dupColor.withOpacity(0.1),
+                                     borderRadius: BorderRadius.circular(6),
+                                     border: Border.all(color: dupColor.withOpacity(0.3)),
+                                   ),
+                                   child: Text(dupPhase, style: GoogleFonts.outfit(color: dupColor, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5)),
+                                 ),
+                               ],
+                             ),
                            ),
                            Text('${session.estimatedDurationMinutes} min', style: GoogleFonts.outfit(color: neon, fontSize: 11, fontWeight: FontWeight.w900)),
                          ],
                        ),
-                       const SizedBox(height: 4),
+                       const SizedBox(height: 12),
                        Text(session.objective, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.w500)),
                        const Divider(height: 32, color: Colors.white10),
                        ...session.exercises.take(3).map((e) => Padding(
