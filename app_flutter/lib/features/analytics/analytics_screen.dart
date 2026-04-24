@@ -3,11 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../shared/theme/app_theme.dart';
 import 'analytics_service.dart';
 
 // ─────────────────────────────────────────────
-// Tela principal de Analytics
+// Tela principal de Analytics — Redesenhada (Premium Neon)
 // ─────────────────────────────────────────────
 
 class AnalyticsScreen extends StatefulWidget {
@@ -54,48 +56,6 @@ class _AnalyticsScreenState extends State<AnalyticsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.background,
-      appBar: AppBar(
-        backgroundColor: AppTheme.surface,
-        elevation: 0,
-        title: const Text(
-          'Estatísticas',
-          style: TextStyle(
-            color: AppTheme.textPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: BackButton(color: AppTheme.textSecondary),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh_rounded, color: AppTheme.textSecondary),
-            onPressed: _load,
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(49),
-          child: Column(
-            children: [
-              Container(height: 1, color: Colors.white.withValues(alpha: 0.06)),
-              TabBar(
-                controller: _tabController,
-                indicatorColor: AppTheme.accent,
-                indicatorWeight: 2,
-                labelColor: AppTheme.accent,
-                unselectedLabelColor: AppTheme.textSecondary,
-                labelStyle: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                ),
-                tabs: const [
-                  Tab(text: 'TREINOS'),
-                  Tab(text: 'PESO'),
-                  Tab(text: 'MÚSCULOS'),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
       body: FutureBuilder<AnalyticsData>(
         future: _future,
         builder: (context, snap) {
@@ -112,26 +72,80 @@ class _AnalyticsScreenState extends State<AnalyticsScreen>
             return const _EmptyState();
           }
 
-          return TabBarView(
-            controller: _tabController,
-            children: [
-              // Tab 1 — Volume semanal
-              _VolumeTab(data: data),
-
-              // Tab 2 — Evolução de carga
-              _LoadTab(
-                data: data,
-                selectedId: _selectedExerciseId,
-                onSelectExercise: (id) {
-                  setState(() {
-                    _selectedExerciseId = id;
-                  });
-                },
+          return NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
+              SliverAppBar(
+                backgroundColor: AppTheme.background,
+                expandedHeight: 120,
+                floating: true,
+                pinned: true,
+                elevation: 0,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppTheme.textPrimary, size: 20),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Text(
+                    'ESTATÍSTICAS',
+                    style: GoogleFonts.outfit(
+                      color: AppTheme.textPrimary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 2,
+                    ),
+                  ),
+                ),
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.refresh_rounded, color: AppTheme.textSecondary),
+                    onPressed: _load,
+                  ),
+                ],
+                bottom: PreferredSize(
+                  preferredSize: const Size.fromHeight(48),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+                    ),
+                    child: TabBar(
+                      controller: _tabController,
+                      indicatorColor: const Color(0xFFCCFF00),
+                      indicatorWeight: 3,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      labelColor: const Color(0xFFCCFF00),
+                      unselectedLabelColor: AppTheme.textSecondary,
+                      labelStyle: GoogleFonts.outfit(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.5,
+                      ),
+                      tabs: const [
+                        Tab(text: 'TREINOS'),
+                        Tab(text: 'PESO'),
+                        Tab(text: 'MÚSCULOS'),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-
-              // Tab 3 — Volume por músculo
-              _MuscleTab(data: data),
             ],
+            body: TabBarView(
+              controller: _tabController,
+              children: [
+                _VolumeTab(data: data),
+                _LoadTab(
+                  data: data,
+                  selectedId: _selectedExerciseId,
+                  onSelectExercise: (id) {
+                    setState(() {
+                      _selectedExerciseId = id;
+                    });
+                  },
+                ),
+                _MuscleTab(data: data),
+              ],
+            ),
           );
         },
       ),
@@ -150,87 +164,94 @@ class _VolumeTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       children: [
         // Stats rápidos
-        _QuickStatsRow(data: data),
-        const SizedBox(height: 20),
+        _QuickStatsRow(data: data).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1),
+        const SizedBox(height: 32),
 
         // Gráfico de linha — volume semanal
         _ChartCard(
-          title: 'Histórico de Treinos',
-          subtitle: 'Peso total levantado por semana (toneladas)',
+          title: 'HISTÓRICO DE TREINOS',
+          subtitle: 'Volume total semanal (toneladas)',
           child: SfCartesianChart(
             plotAreaBorderWidth: 0,
+            margin: EdgeInsets.zero,
             primaryXAxis: CategoryAxis(
-              labelStyle: const TextStyle(
-                color: AppTheme.textSecondary,
+              labelStyle: GoogleFonts.outfit(
+                color: AppTheme.textSecondary.withValues(alpha: 0.5),
                 fontSize: 10,
+                fontWeight: FontWeight.w600,
               ),
               axisLine: const AxisLine(width: 0),
               majorTickLines: const MajorTickLines(size: 0),
               majorGridLines: const MajorGridLines(width: 0),
             ),
             primaryYAxis: NumericAxis(
-              labelStyle: const TextStyle(
-                color: AppTheme.textSecondary,
+              labelStyle: GoogleFonts.outfit(
+                color: AppTheme.textSecondary.withValues(alpha: 0.5),
                 fontSize: 10,
+                fontWeight: FontWeight.w600,
               ),
               axisLine: const AxisLine(width: 0),
               majorTickLines: const MajorTickLines(size: 0),
               majorGridLines: MajorGridLines(
-                color: Colors.white.withValues(alpha: 0.05),
+                color: Colors.white.withValues(alpha: 0.03),
+                width: 1,
               ),
               numberFormat: NumberFormat.compact(),
             ),
             tooltipBehavior: TooltipBehavior(
               enable: true,
-              color: AppTheme.surfaceHighlight,
-              textStyle: const TextStyle(color: AppTheme.textPrimary),
-              format: 'point.x\npoint.y kg',
+              color: const Color(0xFF161616),
+              textStyle: GoogleFonts.outfit(color: AppTheme.textPrimary, fontSize: 12),
+              format: 'point.x: point.y kg',
+              shouldAlwaysShow: false,
+              canShowMarker: true,
             ),
             series: <CartesianSeries>[
-              // Área preenchida
               AreaSeries<WeeklyVolumePoint, String>(
                 dataSource: data.weeklyVolume,
                 xValueMapper: (p, _) => 'S${p.weekNumber}',
                 yValueMapper: (p, _) => p.volume,
                 gradient: LinearGradient(
                   colors: [
-                    AppTheme.accent.withValues(alpha: 0.3),
-                    AppTheme.accent.withValues(alpha: 0.0),
+                    const Color(0xFFCCFF00).withValues(alpha: 0.2),
+                    const Color(0xFFCCFF00).withValues(alpha: 0.0),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
                 borderWidth: 0,
+                animationDuration: 1500,
               ),
-              // Linha principal
               SplineSeries<WeeklyVolumePoint, String>(
                 dataSource: data.weeklyVolume,
                 xValueMapper: (p, _) => 'S${p.weekNumber}',
                 yValueMapper: (p, _) => p.volume,
-                color: AppTheme.accent,
-                width: 2.5,
+                color: const Color(0xFFCCFF00),
+                width: 3,
                 splineType: SplineType.monotonic,
-                markerSettings: MarkerSettings(
+                markerSettings: const MarkerSettings(
                   isVisible: true,
-                  color: AppTheme.accent,
+                  color: Color(0xFFCCFF00),
                   borderColor: AppTheme.background,
                   borderWidth: 2,
-                  height: 7,
-                  width: 7,
+                  height: 8,
+                  width: 8,
                 ),
                 enableTooltip: true,
+                animationDuration: 1500,
               ),
             ],
           ),
-        ),
+        ).animate().fadeIn(duration: 500.ms, delay: 100.ms).slideY(begin: 0.1),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 32),
 
         // Tabela de semanas
-        _WeeklyTable(data: data),
+        _WeeklyTable(data: data).animate().fadeIn(duration: 500.ms, delay: 200.ms).slideY(begin: 0.1),
+        const SizedBox(height: 48),
       ],
     );
   }
@@ -263,12 +284,22 @@ class _LoadTab extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.show_chart_rounded,
-                  size: 48, color: AppTheme.textSecondary.withValues(alpha: 0.4)),
-              const SizedBox(height: 16),
-              const Text(
-                'Nenhum exercício com\n2 ou mais registros ainda.',
+                  size: 64, color: AppTheme.textSecondary.withValues(alpha: 0.2)),
+              const SizedBox(height: 24),
+              Text(
+                'HISTÓRICO INSUFICIENTE',
+                style: GoogleFonts.outfit(
+                  color: AppTheme.textPrimary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 2,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Complete mais treinos para visualizar a evolução de carga por exercício.',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppTheme.textSecondary, fontSize: 15),
+                style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 13),
               ),
             ],
           ),
@@ -284,47 +315,54 @@ class _LoadTab extends StatelessWidget {
     final points = data.exerciseLoad[activeId] ?? [];
 
     return ListView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       children: [
         // Seletor de exercício
+        Text(
+          'SELECIONE O EXERCÍCIO',
+          style: GoogleFonts.outfit(
+            color: AppTheme.textSecondary,
+            fontSize: 10,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.5,
+          ),
+        ).animate().fadeIn(),
+        const SizedBox(height: 12),
         _ExerciseSelector(
           exercises: exercises,
           selectedId: activeId,
           onSelect: onSelectExercise,
-        ),
+        ).animate().fadeIn().slideX(begin: 0.05),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 32),
 
         // Gráfico de carga
         _ChartCard(
-          title: activeExercise.name,
+          title: activeExercise.name.toUpperCase(),
           subtitle: '${_translateMuscle(activeExercise.muscleGroup)} • Evolução do Peso (kg)',
           child: points.length < 2
-              ? const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 40),
-                  child: Center(
-                    child: Text(
-                      'Registros insuficientes\npara este exercício.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: AppTheme.textSecondary,
-                        fontSize: 14,
-                      ),
-                    ),
+              ? Center(
+                  child: Text(
+                    'DADOS INSUFICIENTES',
+                    style: GoogleFonts.outfit(color: AppTheme.textSecondary.withValues(alpha: 0.5), fontWeight: FontWeight.bold),
                   ),
                 )
               : SfCartesianChart(
                   plotAreaBorderWidth: 0,
+                  margin: EdgeInsets.zero,
                   legend: Legend(
                     isVisible: true,
-                    textStyle: const TextStyle(
+                    position: LegendPosition.top,
+                    alignment: ChartAlignment.center,
+                    textStyle: GoogleFonts.outfit(
                       color: AppTheme.textSecondary,
-                      fontSize: 11,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   primaryXAxis: DateTimeAxis(
-                    labelStyle: const TextStyle(
-                      color: AppTheme.textSecondary,
+                    labelStyle: GoogleFonts.outfit(
+                      color: AppTheme.textSecondary.withValues(alpha: 0.5),
                       fontSize: 10,
                     ),
                     axisLine: const AxisLine(width: 0),
@@ -334,66 +372,72 @@ class _LoadTab extends StatelessWidget {
                     intervalType: DateTimeIntervalType.days,
                   ),
                   primaryYAxis: NumericAxis(
-                    labelStyle: const TextStyle(
-                      color: AppTheme.textSecondary,
+                    labelStyle: GoogleFonts.outfit(
+                      color: AppTheme.textSecondary.withValues(alpha: 0.5),
                       fontSize: 10,
                     ),
                     axisLine: const AxisLine(width: 0),
                     majorTickLines: const MajorTickLines(size: 0),
                     majorGridLines: MajorGridLines(
-                      color: Colors.white.withValues(alpha: 0.05),
+                      color: Colors.white.withValues(alpha: 0.03),
                     ),
                     labelFormat: '{value} kg',
                   ),
                   tooltipBehavior: TooltipBehavior(
                     enable: true,
-                    color: AppTheme.surfaceHighlight,
-                    textStyle: const TextStyle(color: AppTheme.textPrimary),
+                    color: const Color(0xFF161616),
+                    textStyle: GoogleFonts.outfit(color: AppTheme.textPrimary),
                   ),
                   series: <CartesianSeries>[
                     SplineSeries<ExerciseLoadPoint, DateTime>(
-                      name: 'Carga máx.',
+                      name: 'Carga Máxima',
                       dataSource: points,
                       xValueMapper: (p, _) => p.date,
                       yValueMapper: (p, _) => p.maxWeight,
-                      color: AppTheme.accent,
-                      width: 2.5,
+                      color: const Color(0xFFCCFF00),
+                      width: 3,
                       splineType: SplineType.monotonic,
-                      markerSettings: MarkerSettings(
+                      markerSettings: const MarkerSettings(
                         isVisible: true,
-                        color: AppTheme.accent,
+                        color: Color(0xFFCCFF00),
                         borderColor: AppTheme.background,
                         borderWidth: 2,
-                        height: 7,
-                        width: 7,
+                        height: 8,
+                        width: 8,
                       ),
+                      animationDuration: 1500,
                     ),
                     SplineSeries<ExerciseLoadPoint, DateTime>(
-                      name: 'Carga média',
+                      name: 'Carga Média',
                       dataSource: points,
                       xValueMapper: (p, _) => p.date,
                       yValueMapper: (p, _) => p.avgWeight,
-                      color: AppTheme.success.withValues(alpha: 0.7),
+                      color: const Color(0xFF00E5FF).withValues(alpha: 0.6),
                       width: 2,
-                      dashArray: const <double>[5, 4],
+                      dashArray: const <double>[6, 4],
                       splineType: SplineType.monotonic,
-                      markerSettings: MarkerSettings(
+                      markerSettings: const MarkerSettings(
                         isVisible: true,
-                        color: AppTheme.success,
+                        color: Color(0xFF00E5FF),
                         borderColor: AppTheme.background,
-                        borderWidth: 2,
-                        height: 5,
-                        width: 5,
+                        borderWidth: 1.5,
+                        height: 6,
+                        width: 6,
                       ),
+                      animationDuration: 1500,
                     ),
                   ],
                 ),
-        ),
+        ).animate().fadeIn(duration: 500.ms, delay: 100.ms).slideY(begin: 0.1),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 24),
 
         // PR destacado
-        if (points.isNotEmpty) _PrCard(points: points, name: activeExercise.name),
+        if (points.isNotEmpty) 
+          _PrCard(points: points, name: activeExercise.name)
+            .animate().fadeIn(duration: 500.ms, delay: 200.ms).slideY(begin: 0.1),
+        
+        const SizedBox(height: 48),
       ],
     );
   }
@@ -408,16 +452,16 @@ class _MuscleTab extends StatelessWidget {
   const _MuscleTab({required this.data});
 
   static const Map<String, Color> _colors = {
-    'Peito': Color(0xFF6366F1),
-    'Costas': Color(0xFF0EA5E9),
-    'Ombro': Color(0xFF8B5CF6),
-    'Bíceps': Color(0xFF10B981),
-    'Tríceps': Color(0xFF14B8A6),
-    'Quadríceps': Color(0xFFF59E0B),
-    'Posterior': Color(0xFFEF4444),
+    'Peito': Color(0xFFCCFF00),
+    'Costas': Color(0xFF00E5FF),
+    'Ombro': Color(0xFFFE2D55),
+    'Bíceps': Color(0xFFA855F7),
+    'Tríceps': Color(0xFFF97316),
+    'Quadríceps': Color(0xFF22C55E),
+    'Posterior': Color(0xFF3B82FF),
     'Glúteo': Color(0xFFEC4899),
-    'Core': Color(0xFFF97316),
-    'Panturrilha': Color(0xFF84CC16),
+    'Core': Color(0xFFFFD600),
+    'Panturrilha': Color(0xFF94A3B8),
   };
 
   @override
@@ -427,72 +471,69 @@ class _MuscleTab extends StatelessWidget {
     }
 
     return ListView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       children: [
         // Legenda temporal
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppTheme.surface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+            color: const Color(0xFF161616),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.02)),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(width: 12, height: 12, color: AppTheme.accent),
-              const SizedBox(width: 8),
-              const Text('Últimas 4 semanas',
-                  style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
-              const SizedBox(width: 20),
-              Container(width: 12, height: 12, color: AppTheme.textSecondary.withValues(alpha: 0.4)),
-              const SizedBox(width: 8),
-              const Text('4 semanas anteriores',
-                  style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+              _buildLegendItem('Atual (4 sem)', const Color(0xFFCCFF00)),
+              const SizedBox(width: 24),
+              _buildLegendItem('Anterior', AppTheme.textSecondary.withValues(alpha: 0.3)),
             ],
           ),
-        ),
+        ).animate().fadeIn(),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 32),
 
         // Gráfico de barras agrupadas
         _ChartCard(
-          title: 'Foco por Músculo',
-          subtitle: 'Quais regiões você mais treinou (kg)',
+          title: 'FOCO POR MÚSCULO',
+          subtitle: 'Distribuição de volume (kg)',
           child: SfCartesianChart(
             plotAreaBorderWidth: 0,
+            margin: EdgeInsets.zero,
             primaryXAxis: CategoryAxis(
-              labelStyle: const TextStyle(
-                color: AppTheme.textSecondary,
-                fontSize: 10,
+              labelStyle: GoogleFonts.outfit(
+                color: AppTheme.textSecondary.withValues(alpha: 0.5),
+                fontSize: 9,
+                fontWeight: FontWeight.w600,
               ),
               axisLine: const AxisLine(width: 0),
               majorTickLines: const MajorTickLines(size: 0),
               majorGridLines: const MajorGridLines(width: 0),
+              labelRotation: -45,
             ),
             primaryYAxis: NumericAxis(
-              labelStyle: const TextStyle(
-                color: AppTheme.textSecondary,
+              labelStyle: GoogleFonts.outfit(
+                color: AppTheme.textSecondary.withValues(alpha: 0.5),
                 fontSize: 10,
               ),
               axisLine: const AxisLine(width: 0),
               majorTickLines: const MajorTickLines(size: 0),
               majorGridLines: MajorGridLines(
-                color: Colors.white.withValues(alpha: 0.05),
+                color: Colors.white.withValues(alpha: 0.03),
               ),
               numberFormat: NumberFormat.compact(),
             ),
             tooltipBehavior: TooltipBehavior(
               enable: true,
-              color: AppTheme.surfaceHighlight,
-              textStyle: const TextStyle(color: AppTheme.textPrimary),
-              // Traduzir o conteúdo do tooltip
+              color: const Color(0xFF161616),
+              textStyle: GoogleFonts.outfit(color: Colors.white, fontSize: 12),
               builder: (data, point, series, pointIndex, seriesIndex) {
                  final bar = data as MuscleVolumeBar;
                  return Container(
                    padding: const EdgeInsets.all(10),
                    child: Text(
-                     '${_translateMuscle(bar.muscle)}\n${bar.volume.toStringAsFixed(0)} kg',
-                     style: const TextStyle(color: Colors.white, fontSize: 12),
+                     '${_translateMuscle(bar.muscle)}: ${bar.volume.toStringAsFixed(0)} kg',
+                     style: GoogleFonts.outfit(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
                    ),
                  );
               },
@@ -503,48 +544,53 @@ class _MuscleTab extends StatelessWidget {
                 dataSource: data.muscleVolume,
                 xValueMapper: (d, _) => _translateMuscle(d.muscle),
                 yValueMapper: (d, _) => d.volume,
-                color: AppTheme.accent,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(4),
-                  topRight: Radius.circular(4),
-                ),
-                spacing: 0.1,
-                width: 0.4,
+                color: const Color(0xFFCCFF00),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
+                spacing: 0.2,
+                width: 0.5,
+                animationDuration: 1500,
               ),
               ColumnSeries<MuscleVolumeBar, String>(
                 name: 'Anterior',
                 dataSource: data.muscleVolume,
                 xValueMapper: (d, _) => _translateMuscle(d.muscle),
                 yValueMapper: (d, _) => d.lastPeriodVolume,
-                color: AppTheme.textSecondary.withValues(alpha: 0.35),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(4),
-                  topRight: Radius.circular(4),
-                ),
-                spacing: 0.1,
-                width: 0.4,
+                color: AppTheme.textSecondary.withValues(alpha: 0.15),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
+                spacing: 0.2,
+                width: 0.5,
+                animationDuration: 1500,
               ),
             ],
           ),
-        ),
+        ).animate().fadeIn(duration: 500.ms, delay: 100.ms).slideY(begin: 0.1),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 32),
 
         // Lista com barras horizontais + delta
         Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: AppTheme.surface,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+            color: const Color(0xFF161616),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.02)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const _Label('DETALHE POR MÚSCULO'),
-              const SizedBox(height: 16),
-              ...data.muscleVolume.map((bar) {
-                final color = _colors[bar.muscle] ?? AppTheme.accent;
+              Text(
+                'DETALHE POR MÚSCULO',
+                style: GoogleFonts.outfit(
+                  color: AppTheme.textSecondary,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 2,
+                ),
+              ),
+              const SizedBox(height: 24),
+              ...data.muscleVolume.asMap().entries.map((entry) {
+                final bar = entry.value;
+                final color = _colors[bar.muscle] ?? const Color(0xFFCCFF00);
                 final hasPrev = bar.lastPeriodVolume > 0;
                 final delta = hasPrev
                     ? ((bar.volume - bar.lastPeriodVolume) /
@@ -553,81 +599,119 @@ class _MuscleTab extends StatelessWidget {
                         .round()
                     : null;
                 final isUp = delta != null && delta >= 0;
-                final maxVol =
-                    data.muscleVolume.first.volume; // já ordenado por volume
+                final maxVol = data.muscleVolume.isNotEmpty ? data.muscleVolume.first.volume : 1.0;
 
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 14),
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
                           Container(
-                            width: 8,
-                            height: 8,
+                            width: 10,
+                            height: 10,
                             decoration: BoxDecoration(
                               color: color,
-                              shape: BoxShape.circle,
+                              borderRadius: BorderRadius.circular(3),
+                              boxShadow: [
+                                BoxShadow(color: color.withValues(alpha: 0.3), blurRadius: 8)
+                              ],
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              bar.muscle,
-                              style: const TextStyle(
+                              _translateMuscle(bar.muscle),
+                              style: GoogleFonts.outfit(
                                 color: AppTheme.textPrimary,
                                 fontSize: 13,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                           Text(
-                            '${bar.volume.toStringAsFixed(0)} kg',
-                            style: TextStyle(
-                              color: color,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
+                            '${(bar.volume / 1000).toStringAsFixed(1)}t',
+                            style: GoogleFonts.outfit(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 14,
                             ),
                           ),
                           if (delta != null) ...[
-                            const SizedBox(width: 8),
+                            const SizedBox(width: 12),
                             Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 2),
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
                                 color: isUp
-                                    ? AppTheme.success.withValues(alpha: 0.15)
-                                    : AppTheme.danger.withValues(alpha: 0.15),
-                                borderRadius: BorderRadius.circular(6),
+                                    ? const Color(0xFF22C55E).withValues(alpha: 0.1)
+                                    : const Color(0xFFEF4444).withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Text(
-                                '${delta >= 0 ? '+' : ''}$delta%',
-                                style: TextStyle(
-                                  color: isUp ? AppTheme.success : AppTheme.danger,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    isUp ? Icons.trending_up_rounded : Icons.trending_down_rounded,
+                                    size: 10,
+                                    color: isUp ? const Color(0xFF22C55E) : const Color(0xFFEF4444),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '${delta.abs()}%',
+                                    style: GoogleFonts.outfit(
+                                      color: isUp ? const Color(0xFF22C55E) : const Color(0xFFEF4444),
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ],
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(4),
                         child: LinearProgressIndicator(
                           value: maxVol > 0 ? bar.volume / maxVol : 0,
-                          backgroundColor: color.withValues(alpha: 0.08),
+                          backgroundColor: Colors.white.withValues(alpha: 0.05),
                           valueColor: AlwaysStoppedAnimation(color),
-                          minHeight: 5,
+                          minHeight: 6,
                         ),
                       ),
                     ],
                   ),
-                );
+                ).animate().fadeIn(delay: (entry.key * 100).ms).slideX(begin: 0.05);
               }),
             ],
+          ),
+        ).animate().fadeIn(duration: 500.ms, delay: 200.ms).slideY(begin: 0.1),
+        const SizedBox(height: 48),
+      ],
+    );
+  }
+
+  Widget _buildLegendItem(String label, Color color) {
+    return Row(
+      children: [
+        Container(
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(3),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          label.toUpperCase(),
+          style: GoogleFonts.outfit(
+            color: AppTheme.textSecondary,
+            fontSize: 9,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1,
           ),
         ),
       ],
@@ -647,80 +731,64 @@ class _QuickStatsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(
-          child: _StatChip(
-            label: 'Total de Treinos',
-            value: '${data.totalSessions}',
-            icon: Icons.calendar_month_rounded,
-            color: AppTheme.accent,
-          ),
+        _buildStatCard(
+          'TREINOS',
+          '${data.totalSessions}',
+          Icons.calendar_today_rounded,
+          const Color(0xFFFE2D55),
         ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: _StatChip(
-            label: 'Peso Levantado',
-            value: '${(data.totalVolume / 1000).toStringAsFixed(1)}t',
-            icon: Icons.fitness_center_rounded,
-            color: const Color(0xFF8B5CF6),
-          ),
+        const SizedBox(width: 12),
+        _buildStatCard(
+          'VOLUME',
+          '${(data.totalVolume / 1000).toStringAsFixed(1)}t',
+          Icons.fitness_center_rounded,
+          const Color(0xFFCCFF00),
         ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: _StatChip(
-            label: 'Melhor Treino',
-            value: '${data.bestWeekVolume.toStringAsFixed(0)} kg',
-            icon: Icons.emoji_events_rounded,
-            color: const Color(0xFFF59E0B),
-          ),
+        const SizedBox(width: 12),
+        _buildStatCard(
+          'MELHOR',
+          '${(data.bestWeekVolume / 1000).toStringAsFixed(1)}t',
+          Icons.emoji_events_rounded,
+          const Color(0xFFFFD600),
         ),
       ],
     );
   }
-}
 
-class _StatChip extends StatelessWidget {
-  final String label;
-  final String value;
-  final IconData icon;
-  final Color color;
-
-  const _StatChip({
-    required this.label,
-    required this.value,
-    required this.icon,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: color, size: 16),
-          const SizedBox(height: 6),
-          Text(
-            value,
-            style: const TextStyle(
-              color: AppTheme.textPrimary,
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
+  Widget _buildStatCard(String label, String value, IconData icon, Color accent) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        decoration: BoxDecoration(
+          color: const Color(0xFF161616),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.02)),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, color: accent.withValues(alpha: 0.8), size: 18),
+            const SizedBox(height: 12),
+            Text(
+              value,
+              style: GoogleFonts.outfit(
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+                fontSize: 18,
+                letterSpacing: -0.5,
+              ),
             ),
-          ),
-          Text(
-            label,
-            style: const TextStyle(
-              color: AppTheme.textSecondary,
-              fontSize: 10,
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: GoogleFonts.outfit(
+                color: AppTheme.textSecondary,
+                fontSize: 9,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 1.5,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -740,32 +808,54 @@ class _ChartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+        color: const Color(0xFF161616),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.02)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: AppTheme.textPrimary,
-              fontWeight: FontWeight.bold,
-              fontSize: 15,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: GoogleFonts.outfit(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 14,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: GoogleFonts.outfit(
+                        color: AppTheme.textSecondary,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.03),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.bar_chart_rounded, color: Color(0xFFCCFF00), size: 16),
+              ),
+            ],
           ),
-          const SizedBox(height: 2),
-          Text(
-            subtitle,
-            style: const TextStyle(
-              color: AppTheme.textSecondary,
-              fontSize: 11,
-            ),
-          ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 32),
           SizedBox(height: 220, child: child),
         ],
       ),
@@ -782,17 +872,25 @@ class _WeeklyTable extends StatelessWidget {
     final weeks = data.weeklyVolume.reversed.take(6).toList();
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+        color: const Color(0xFF161616),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.02)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const _Label('HISTÓRICO SEMANAL'),
-          const SizedBox(height: 12),
+          Text(
+            'HISTÓRICO SEMANAL',
+            style: GoogleFonts.outfit(
+              color: AppTheme.textSecondary,
+              fontSize: 10,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 2,
+            ),
+          ),
+          const SizedBox(height: 24),
           ...weeks.asMap().entries.map((entry) {
             final i = entry.key;
             final week = entry.value;
@@ -801,74 +899,70 @@ class _WeeklyTable extends StatelessWidget {
                 ? ((week.volume - prev.volume) / prev.volume * 100).round()
                 : null;
             final isUp = delta != null && delta >= 0;
-            final isBest = week.weekNumber == data.bestWeekNumber;
 
             return Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              margin: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               decoration: BoxDecoration(
-                color: isBest
-                    ? const Color(0xFFF59E0B).withValues(alpha: 0.08)
-                    : AppTheme.surfaceHighlight,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: isBest
-                      ? const Color(0xFFF59E0B).withValues(alpha: 0.3)
-                      : Colors.transparent,
-                ),
+                color: Colors.white.withValues(alpha: 0.02),
+                borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
                 children: [
-                  if (isBest)
-                    const Padding(
-                      padding: EdgeInsets.only(right: 6),
-                      child: Icon(Icons.emoji_events_rounded,
-                          color: Color(0xFFF59E0B), size: 14),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFCCFF00).withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  Text(
-                    'Semana ${week.weekNumber}',
-                    style: const TextStyle(
-                      color: AppTheme.textPrimary,
-                      fontSize: 13,
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    DateFormat('dd/MM').format(week.weekStart),
-                    style: const TextStyle(
-                      color: AppTheme.textSecondary,
-                      fontSize: 11,
+                    child: Text(
+                      'S${week.weekNumber}',
+                      style: GoogleFonts.outfit(
+                        color: const Color(0xFFCCFF00),
+                        fontWeight: FontWeight.w900,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
-                  const Spacer(),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Semana de ${DateFormat('dd MMM').format(week.weekStart)}',
+                          style: GoogleFonts.outfit(
+                            color: Colors.white,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          '${(week.volume / 1000).toStringAsFixed(1)} toneladas levantadas',
+                          style: GoogleFonts.outfit(
+                            color: AppTheme.textSecondary,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   if (delta != null)
                     Container(
-                      margin: const EdgeInsets.only(right: 8),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: isUp
-                            ? AppTheme.success.withValues(alpha: 0.12)
-                            : AppTheme.danger.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(6),
+                        color: isUp ? const Color(0xFF22C55E).withValues(alpha: 0.1) : const Color(0xFFEF4444).withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        '${delta >= 0 ? '+' : ''}$delta%',
-                        style: TextStyle(
-                          color: isUp ? AppTheme.success : AppTheme.danger,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
+                        '${isUp ? '+' : ''}$delta%',
+                        style: GoogleFonts.outfit(
+                          color: isUp ? const Color(0xFF22C55E) : const Color(0xFFEF4444),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
                     ),
-                  Text(
-                    '${week.volume.toStringAsFixed(0)} kg',
-                    style: const TextStyle(
-                      color: AppTheme.textPrimary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                    ),
-                  ),
                 ],
               ),
             );
@@ -892,39 +986,39 @@ class _ExerciseSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: selectedId,
-          isExpanded: true,
-          dropdownColor: AppTheme.surfaceHighlight,
-          icon: const Icon(Icons.expand_more_rounded, color: AppTheme.textSecondary),
-          style: const TextStyle(color: AppTheme.textPrimary, fontSize: 14),
-          items: exercises
-              .map((e) => DropdownMenuItem(
-                    value: e.id,
-                    child: Row(
-                      children: [
-                        Expanded(child: Text(e.name)),
-                        Text(
-                          e.muscleGroup,
-                          style: const TextStyle(
-                            color: AppTheme.textSecondary,
-                            fontSize: 11,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ))
-              .toList(),
-          onChanged: onSelect,
-        ),
+    return SizedBox(
+      height: 48,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        clipBehavior: Clip.none,
+        itemCount: exercises.length,
+        itemBuilder: (context, index) {
+          final ex = exercises[index];
+          final isSelected = ex.id == selectedId;
+          return Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: ChoiceChip(
+              label: Text(ex.name.toUpperCase()),
+              selected: isSelected,
+              onSelected: (val) => onSelect(val ? ex.id : null),
+              backgroundColor: const Color(0xFF161616),
+              selectedColor: const Color(0xFFCCFF00),
+              labelStyle: GoogleFonts.outfit(
+                color: isSelected ? Colors.black : Colors.white70,
+                fontSize: 11,
+                fontWeight: FontWeight.w900,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+                side: BorderSide(
+                  color: isSelected ? const Color(0xFFCCFF00) : Colors.white.withValues(alpha: 0.05),
+                ),
+              ),
+              showCheckmark: false,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            ),
+          );
+        },
       ),
     );
   }
@@ -938,122 +1032,85 @@ class _PrCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final maxPoint = points.reduce((a, b) => a.maxWeight > b.maxWeight ? a : b);
-    final firstPoint = points.first;
-    final lastPoint = points.last;
-    final evolution = firstPoint.maxWeight > 0
-        ? ((lastPoint.maxWeight - firstPoint.maxWeight) /
-                firstPoint.maxWeight *
-                100)
-            .round()
-        : 0;
+    double max = 0;
+    for (final p in points) {
+      if (p.maxWeight > max) max = p.maxWeight;
+    }
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            const Color(0xFFF59E0B).withValues(alpha: 0.12),
-            AppTheme.surface,
-          ],
+        gradient: const LinearGradient(
+          colors: [Color(0xFFCCFF00), Color(0xFF99FF00)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-            color: const Color(0xFFF59E0B).withValues(alpha: 0.25)),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFCCFF00).withValues(alpha: 0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF59E0B).withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(12),
+              color: Colors.black.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.emoji_events_rounded,
-              color: Color(0xFFF59E0B),
-              size: 24,
-            ),
+            child: const Icon(Icons.emoji_events_rounded, color: Colors.black, size: 28),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: 20),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Melhor marca (PR)',
-                  style: TextStyle(
-                    color: AppTheme.textSecondary,
-                    fontSize: 11,
+                Text(
+                  'RECORD PESSOAL (PR)',
+                  style: GoogleFonts.outfit(
+                    color: Colors.black.withValues(alpha: 0.6),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.5,
                   ),
                 ),
                 Text(
-                  '${maxPoint.maxWeight.toStringAsFixed(1)} kg',
-                  style: const TextStyle(
-                    color: Color(0xFFF59E0B),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
+                  '${max.toStringAsFixed(1)} kg',
+                  style: GoogleFonts.outfit(
+                    color: Colors.black,
+                    fontSize: 32,
+                    fontWeight: FontWeight.w900,
+                    height: 1.1,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
-                  DateFormat('dd/MM/yyyy').format(maxPoint.date),
-                  style: const TextStyle(
-                    color: AppTheme.textSecondary,
-                    fontSize: 11,
+                  'No exercício $name',
+                  style: GoogleFonts.outfit(
+                    color: Colors.black.withValues(alpha: 0.7),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
             ),
           ),
-          if (evolution != 0)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                const Text(
-                  'Evolução total',
-                  style: TextStyle(
-                    color: AppTheme.textSecondary,
-                    fontSize: 11,
-                  ),
-                ),
-                Text(
-                  '${evolution >= 0 ? '+' : ''}$evolution%',
-                  style: TextStyle(
-                    color: evolution >= 0 ? AppTheme.success : AppTheme.danger,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-              ],
-            ),
         ],
       ),
     );
   }
 }
 
-// ─── Estados de Loading / Erro / Vazio ──────
-
 class _LoadingState extends StatelessWidget {
   const _LoadingState();
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CircularProgressIndicator(color: AppTheme.accent, strokeWidth: 2),
-          SizedBox(height: 16),
-          Text(
-            'Carregando estatísticas...',
-            style: TextStyle(color: AppTheme.textSecondary),
-          ),
-        ],
-      ),
-    );
+    return const Center(child: CircularProgressIndicator(color: Color(0xFFCCFF00)));
   }
 }
 
@@ -1064,27 +1121,14 @@ class _ErrorState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.wifi_off_rounded,
-                color: AppTheme.danger, size: 40),
-            const SizedBox(height: 12),
-            const Text(
-              'Não foi possível carregar as estatísticas.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: AppTheme.textSecondary),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: onRetry,
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accent),
-              child: const Text('Tentar novamente'),
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.error_outline_rounded, color: AppTheme.danger, size: 48),
+          const SizedBox(height: 16),
+          const Text('Erro ao carregar dados', style: TextStyle(color: AppTheme.textPrimary)),
+          TextButton(onPressed: onRetry, child: const Text('Tentar novamente')),
+        ],
       ),
     );
   }
@@ -1096,73 +1140,43 @@ class _EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.bar_chart_rounded,
-                size: 56,
-                color: AppTheme.textSecondary.withValues(alpha: 0.3)),
-            const SizedBox(height: 16),
-            const Text(
-              'Nenhum dado ainda.',
-              style: TextStyle(
-                color: AppTheme.textPrimary,
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.analytics_outlined, size: 64, color: AppTheme.textSecondary.withValues(alpha: 0.2)),
+          const SizedBox(height: 24),
+          Text(
+            'SEM DADOS AINDA',
+            style: GoogleFonts.outfit(
+              color: AppTheme.textPrimary,
+              fontSize: 14,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 2,
             ),
-            const SizedBox(height: 8),
-            const Text(
-              'Registre alguns treinos para\nver seus gráficos de evolução.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: AppTheme.textSecondary, fontSize: 14),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Complete seu primeiro treino para ver suas estatísticas aqui.',
+            style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 13),
+          ),
+        ],
       ),
     );
   }
 }
 
-// Helper para leigos
 String _translateMuscle(String m) {
-  final map = {
-    'chest': 'Peitoral',
-    'back': 'Costas',
-    'shoulders': 'Ombros',
-    'side_delt': 'Ombro Lateral',
-    'rear_delt': 'Ombro Posterior',
-    'biceps': 'Bíceps',
-    'triceps': 'Tríceps',
-    'quads': 'Coxa (Frente)',
-    'hamstrings': 'Coxa (Atrás)',
-    'glutes': 'Glúteos',
-    'calves': 'Panturrilha',
-    'abs': 'Abdômen',
-    'core': 'Abdominal',
-    'Peito': 'Peitoral',
-    'Ombro': 'Ombros',
-    'Legs': 'Pernas',
-  };
-  return map[m.toLowerCase()] ?? map[m] ?? m;
-}
-
-class _Label extends StatelessWidget {
-  final String text;
-  const _Label(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(
-        color: AppTheme.textSecondary,
-        fontSize: 11,
-        fontWeight: FontWeight.w600,
-        letterSpacing: 1.2,
-      ),
-    );
+  switch (m.toLowerCase()) {
+    case 'chest': return 'Peito';
+    case 'back': return 'Costas';
+    case 'shoulders': return 'Ombro';
+    case 'biceps': return 'Bíceps';
+    case 'triceps': return 'Tríceps';
+    case 'quadriceps': return 'Quadríceps';
+    case 'hamstrings': return 'Posterior';
+    case 'glutes': return 'Glúteo';
+    case 'abs': case 'core': return 'Core';
+    case 'calves': return 'Panturrilha';
+    default: return m;
   }
 }
