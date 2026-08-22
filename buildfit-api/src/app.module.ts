@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { HealthController } from './common/controllers/health.controller';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { ExercisesModule } from './modules/exercises/exercises.module';
@@ -27,6 +28,7 @@ import { FirebaseService } from './common/services/firebase.service';
     PrModule,
     ProModule,
   ],
+  controllers: [HealthController],
   providers: [PrismaService, FirebaseService],
   exports: [PrismaService, FirebaseService],
 })
