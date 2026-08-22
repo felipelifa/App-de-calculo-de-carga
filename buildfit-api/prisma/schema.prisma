@@ -1,0 +1,387 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// USERS & AUTH
+// ============================================================
+
+model User {
+  id            String   @id @default(uuid())
+  firebaseUid   String   @unique
+  email         String   @unique
+  name          String
+  isPro         Boolean  @default(false)
+  proActivatedAt DateTime?
+  proTokenUsed  String?
+  fcmToken      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  profile         UserProfile?
+  workouts        Workout[]
+  exercises       UserExercise[]
+  progressionState ProgressionState?
+  personalRecords PersonalRecord[]
+  generatedWorkouts GeneratedWorkout[]
+  nutritionProfile  NutritionProfile?
+  nutritionLogs     NutritionDay[]
+  volumeHistory     VolumeHistory[]
+  suggestedProgressions SuggestedProgression[]
+}
+
+model UserProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  age             Int?
+  biologicalSex   String?  @db.VarChar(10)
+  weightKg        Float?
+  heightCm        Float?
+  experienceLevel String?  @db.VarChar(20)
+  trainingAge     Int?
+  bodyFatCategory String?  @db.VarChar(10)
+  primaryGoal     String?  @db.VarChar(30)
+  sportSubType    String?  @db.VarChar(30)
+  trainingModality String? @db.VarChar(30)
+  availableDaysPerWeek Int?
+  sessionDurationMinutes Int?
+  preferredStyle  String?  @db.VarChar(30)
+  sleepQuality    String?  @db.VarChar(10)
+  stressLevel     String?  @db.VarChar(10)
+  priorityMuscles String[]
+  environment     String?  @db.VarChar(20)
+  availableEquipment String[]
+  dislikedExercises  String[]
+  favoriteExercises  String[]
+  healthRestrictions String[]
+  currentWeek     Int      @default(1)
+  exerciseRotationOffset Int @default(0)
+
+  // Digital Twin / Adaptive
+  volumeTolerance  String?  @db.VarChar(10)
+  recoveryCapacity String?  @db.VarChar(10)
+  adherenceRate    Float    @default(0.0)
+  volumeSensitivity Float   @default(0.0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================================
+// EXERCISES
+// ============================================================
+
+model Exercise {
+  id              String   @id
+  name            String
+  nameEn          String?
+  primaryMuscles  String[]
+  secondaryMuscles String[]
+  movementPattern String   @db.VarChar(30)
+  equipment       String[]
+  environment     String[]
+  category        String   @db.VarChar(20)
+  difficulty      String   @db.VarChar(20)
+  restrictions    String[]
+  repRangeMin     Int      @default(8)
+  repRangeMax     Int      @default(12)
+  isUnilateral    Boolean  @default(false)
+  gifUrl          String?
+  videoUrl        String?
+  cues            String[]
+  instructions    String[]
+  substituteIds   String[]
+  progressionIds  String[]
+  regressionIds   String[]
+  tags            String[]
+  spinalLoad      Float    @default(0.0)
+  shoulderStress  Float    @default(0.0)
+  kneeStress      Float    @default(0.0)
+  cnsLoad         Float    @default(0.0)
+  stabilityType   String?  @db.VarChar(20)
+  lengthBias      String?  @db.VarChar(20)
+  skillLevel      Int      @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([primaryMuscles])
+  @@index([movementPattern])
+  @@index([category])
+  @@index([difficulty])
+}
+
+model UserExercise {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  seriesDefault Int     @default(3)
+  repMin       Int      @default(8)
+  repMax       Int      @default(12)
+  notes        String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// ============================================================
+// WORKOUTS
+// ============================================================
+
+model Workout {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date            DateTime @default(now())
+  weekNumber      Int
+  totalVolume     Float    @default(0)
+  exerciseCount   Int      @default(0)
+  durationMinutes Int?
+  notes           String?
+  sessionType     String?  @db.VarChar(20)
+
+  exercises       WorkoutExercise[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, date(sort: Desc)])
+  @@index([userId, weekNumber])
+}
+
+model WorkoutExercise {
+  id            String   @id @default(uuid())
+  workoutId     String
+  workout       Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  exerciseId    String
+  exerciseName  String
+  muscleGroup   String?
+  notes         String?
+  rir           Int?
+  tempo         String?  @db.VarChar(10)
+
+  sets          WorkoutSet[]
+
+  createdAt DateTime @default(now())
+
+  @@index([workoutId])
+  @@index([exerciseId])
+}
+
+model WorkoutSet {
+  id                String   @id @default(uuid())
+  workoutExerciseId String
+  workoutExercise   WorkoutExercise @relation(fields: [workoutExerciseId], references: [id], onDelete: Cascade)
+  setNumber         Int
+  reps              Int
+  weight            Float
+  volume            Float
+  isWarmup          Boolean  @default(false)
+
+  @@index([workoutExerciseId])
+}
+
+// ============================================================
+// PRESCRIPTION & PROGRESSION
+// ============================================================
+
+model GeneratedWorkout {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name            String
+  splitType       String   @db.VarChar(30)
+  periodizationModel String? @db.VarChar(20)
+  mesocycleDurationWeeks Int @default(4)
+  preferredStyle  String?  @db.VarChar(30)
+  isActive        Boolean  @default(false)
+  sessions        Json     // PrescribedSession[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt(sort: Desc)])
+}
+
+model ProgressionState {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phase       String   @default("normal") @db.VarChar(10)
+  currentWeek Int      @default(1)
+  isDeloadWeek Boolean @default(false)
+  exerciseStates Json  // Record<string, ExerciseProgressionState>
+  lastUpdated DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model VolumeHistory {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exerciseId   String
+  weekNumber   Int
+  totalVolume  Float
+  updatedAt    DateTime @updatedAt
+
+  @@index([exerciseId, weekNumber])
+  @@index([userId, weekNumber])
+}
+
+model SuggestedProgression {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exerciseId   String
+  weekNumber   Int
+  series       Int
+  reps         Int
+  weight       Float
+  volume       Float
+
+  createdAt DateTime @default(now())
+
+  @@index([exerciseId, weekNumber])
+  @@index([userId, weekNumber])
+}
+
+// ============================================================
+// PERSONAL RECORDS
+// ============================================================
+
+model PersonalRecord {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exerciseId   String
+  exerciseName String
+  muscleGroup  String?
+  maxWeight    Float    @default(0)
+  maxReps      Int      @default(0)
+  maxVolume    Float    @default(0)
+  achievedAt   DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, exerciseId])
+  @@index([exerciseId, updatedAt(sort: Desc)])
+}
+
+// ============================================================
+// NUTRITION (Bio-Gestão 7.0)
+// ============================================================
+
+model NutritionProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  targetCalories  Float    @default(0)
+  targetProtein   Float    @default(0)
+  targetCarb      Float    @default(0)
+  targetFat       Float    @default(0)
+  tmb             Float    @default(0)
+  tdee            Float    @default(0)
+  weeklyBudgetKcal Float   @default(0)
+
+  carbCycling     Boolean  @default(false)
+  highCarbMultiplier Float @default(1.10)
+  lowCarbMultiplier  Float @default(0.85)
+
+  adherenceScore      Float  @default(1.0)
+  nutritionalFatigueLevel Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model NutritionDay {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date      DateTime @db.Date
+  totalCalories Float @default(0)
+  totalProtein  Float @default(0)
+  totalCarb     Float @default(0)
+  totalFat      Float @default(0)
+
+  meals     MealEntry[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, date])
+  @@index([userId, date(sort: Desc)])
+}
+
+model MealEntry {
+  id            String   @id @default(uuid())
+  dayId         String
+  day           NutritionDay @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  foodId        String?
+  foodName      String
+  portionG      Float
+  calories      Float
+  protein       Float
+  carb          Float
+  fat           Float
+  mealType      String   @db.VarChar(20)
+  isCheatMeal   Boolean  @default(false)
+  loggedAt      DateTime @default(now())
+
+  @@index([dayId])
+}
+
+// ============================================================
+// PRO TOKENS
+// ============================================================
+
+model ProToken {
+  code             String   @id
+  maxRedemptions   Int      @default(-1)
+  currentRedemptions Int    @default(0)
+  label            String?
+  createdAt        DateTime @default(now())
+  expiresAt        DateTime?
+
+  redemptions      ProTokenRedemption[]
+}
+
+model ProTokenRedemption {
+  id         String   @id @default(uuid())
+  tokenCode  String
+  token      ProToken @relation(fields: [tokenCode], references: [code], onDelete: Cascade)
+  userId     String
+  redeemedAt DateTime @default(now())
+
+  @@unique([tokenCode, userId])
+  @@index([tokenCode])
+}
+
+// ============================================================
+// APP CONFIG
+// ============================================================
+
+model ApkVersion {
+  id                  String   @id @default("current")
+  version             String
+  releaseDate         DateTime
+  downloadUrl         String
+  changelog           String[]
+  minSupportedVersion String?
+  updatedAt           DateTime @updatedAt
+}
