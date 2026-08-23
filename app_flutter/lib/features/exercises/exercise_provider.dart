@@ -193,6 +193,9 @@ class ExerciseProvider extends ChangeNotifier {
     }
   }
 
+  // URL do proxy GIF no Vercel (funciona em mobile e web)
+  static const String _vercelGifProxy = 'https://buildfit-nine.vercel.app/api/gif';
+
   String? getEffectiveGifUrl(ExerciseModel ex) {
     final rawGifUrl = ex.gifUrl?.trim();
 
@@ -214,12 +217,11 @@ class ExerciseProvider extends ChangeNotifier {
       }
     }
 
-    final origin = Uri.base.origin;
     final resolvedName = _extractNameFromGifUrl(rawGifUrl) ?? ex.name;
     final nameParam = Uri.encodeComponent(resolvedName);
     final idParam = Uri.encodeComponent(ex.id);
     final nameEnParam = ex.nameEn != null ? '&nameEn=${Uri.encodeComponent(ex.nameEn!)}' : '';
-    return '$origin/api/gif?ts=9&name=$nameParam&id=$idParam$nameEnParam';
+    return '$_vercelGifProxy?ts=9&name=$nameParam&id=$idParam$nameEnParam';
   }
 
   String? _extractNameFromGifUrl(String? gifUrl) {

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../shared/theme/app_theme.dart';
@@ -152,6 +151,10 @@ class ExerciseCard extends StatelessWidget {
       height: 200,
       width: double.infinity,
       fit: BoxFit.contain,
+      gaplessPlayback: true,
+      headers: const {
+        'Accept': 'image/gif,image/*,*/*',
+      },
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) return child;
         return SizedBox(
@@ -169,6 +172,7 @@ class ExerciseCard extends StatelessWidget {
         );
       },
       errorBuilder: (context, error, stackTrace) {
+        debugPrint('Erro ao carregar GIF do card: $url - $error');
         final primaryMuscle = exercise.primaryMuscles.isNotEmpty ? exercise.primaryMuscles.first : 'Geral';
         return _MuscleGroupPlaceholder(muscleGroup: primaryMuscle);
       },

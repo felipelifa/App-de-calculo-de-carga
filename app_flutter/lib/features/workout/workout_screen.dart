@@ -691,23 +691,36 @@ class _AnimatedGifWidgetState extends State<_AnimatedGifWidget> {
   bool _isLoading = true;
 
   @override
+  void didUpdateWidget(_AnimatedGifWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.url != widget.url) {
+      setState(() {
+        _hasError = false;
+        _isLoading = true;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (_hasError) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline_rounded, size: 48, color: AppTheme.danger.withValues(alpha: 0.5)),
+            Icon(Icons.fitness_center_rounded, size: 48, color: AppTheme.textSecondary.withValues(alpha: 0.4)),
             const SizedBox(height: 12),
             const Text(
-              'Erro ao carregar animação',
+              'GIF não disponível',
               textAlign: TextAlign.center,
               style: TextStyle(color: AppTheme.textSecondary, fontSize: 13),
             ),
             const SizedBox(height: 8),
-            Text(
-              'Verifique sua conexão ou tente mais tarde',
-              style: TextStyle(color: AppTheme.textSecondary.withValues(alpha: 0.7), fontSize: 11),
+            TextButton.icon(
+              onPressed: () => setState(() { _hasError = false; _isLoading = true; }),
+              icon: const Icon(Icons.refresh_rounded, size: 16),
+              label: const Text('Tentar novamente', style: TextStyle(fontSize: 12)),
+              style: TextButton.styleFrom(foregroundColor: AppTheme.accent),
             ),
           ],
         ),
@@ -717,17 +730,17 @@ class _AnimatedGifWidgetState extends State<_AnimatedGifWidget> {
     return Stack(
       alignment: Alignment.center,
       children: [
-        // Image.network suporta GIF animado nativamente no Flutter
         Image.network(
           widget.url,
           fit: BoxFit.contain,
           width: double.infinity,
           height: double.infinity,
-          // gaplessPlayback mantém o último frame enquanto carrega novo GIF
           gaplessPlayback: true,
+          headers: const {
+            'Accept': 'image/gif,image/*,*/*',
+          },
           loadingBuilder: (context, child, loadingProgress) {
             if (loadingProgress == null) {
-              // Carregado — oculta o indicador
               if (_isLoading) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (mounted) setState(() => _isLoading = false);
@@ -735,7 +748,6 @@ class _AnimatedGifWidgetState extends State<_AnimatedGifWidget> {
               }
               return child;
             }
-            // Calculando progresso de download
             final progress = loadingProgress.expectedTotalBytes != null
                 ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                 : null;
@@ -760,11 +772,28 @@ class _AnimatedGifWidgetState extends State<_AnimatedGifWidget> {
             );
           },
           errorBuilder: (context, error, stackTrace) {
-            widget.onError?.call();
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (mounted) setState(() => _hasError = true);
-            });
-            return const SizedBox.shrink();
+            debugPrint('Erro ao carregar GIF: ${widget.url} - $error');
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.fitness_center_rounded, size: 48, color: AppTheme.textSecondary.withValues(alpha: 0.4)),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'GIF não disponível',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: AppTheme.textSecondary, fontSize: 13),
+                  ),
+                  const SizedBox(height: 8),
+                  TextButton.icon(
+                    onPressed: () => setState(() { _hasError = false; _isLoading = true; }),
+                    icon: const Icon(Icons.refresh_rounded, size: 16),
+                    label: const Text('Tentar novamente', style: TextStyle(fontSize: 12)),
+                    style: TextButton.styleFrom(foregroundColor: AppTheme.accent),
+                  ),
+                ],
+              ),
+            );
           },
         ),
       ],

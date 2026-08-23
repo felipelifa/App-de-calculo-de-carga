@@ -9,7 +9,6 @@ import 'prescribed_workout_model.dart';
 import 'workout_provider.dart';
 import '../exercises/exercise_provider.dart';
 import '../exercises/exercise_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'bio_adaptive_engine.dart';
 
 class PrescribedWorkoutScreen extends StatefulWidget {

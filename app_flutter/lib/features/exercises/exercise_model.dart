@@ -104,6 +104,40 @@ class ExerciseModel {
     );
   }
 
+  factory ExerciseModel.fromMap(Map<String, dynamic> d) {
+    return ExerciseModel(
+      id: d['id'] as String? ?? '',
+      name: d['name'] as String? ?? '',
+      nameEn: d['nameEn'] as String? ?? '',
+      primaryMuscles: (d['primaryMuscles'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      secondaryMuscles: (d['secondaryMuscles'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      movementPattern: d['movementPattern'] as String? ?? 'isolation',
+      equipment: List<String>.from(d['equipment'] ?? []),
+      environment: List<String>.from(d['environment'] ?? []),
+      category: d['category'] as String? ?? 'isolation',
+      difficulty: d['difficulty'] as String? ?? 'beginner',
+      restrictions: List<String>.from(d['restrictions'] ?? []),
+      repRangeMin: (d['repRangeMin'] as num?)?.toInt() ?? 8,
+      repRangeMax: (d['repRangeMax'] as num?)?.toInt() ?? 12,
+      isUnilateral: d['isUnilateral'] as bool? ?? false,
+      gifUrl: d['gifUrl'] as String?,
+      videoUrl: d['videoUrl'] as String?,
+      cues: List<String>.from(d['cues'] ?? []),
+      instructions: List<String>.from(d['instructions'] ?? []),
+      substituteIds: List<String>.from(d['substituteIds'] ?? []),
+      progressionIds: List<String>.from(d['progressionIds'] ?? []),
+      regressionIds: List<String>.from(d['regressionIds'] ?? []),
+      tags: List<String>.from(d['tags'] ?? []),
+      spinalLoad: (d['spinalLoad'] as num?)?.toDouble() ?? 0.0,
+      shoulderStress: (d['shoulderStress'] as num?)?.toDouble() ?? 0.0,
+      kneeStress: (d['kneeStress'] as num?)?.toDouble() ?? 0.0,
+      cnsLoad: (d['cnsLoad'] as num?)?.toDouble() ?? 0.0,
+      stabilityType: d['stabilityType'] as String? ?? 'none',
+      lengthBias: d['lengthBias'] as String? ?? 'mid_range',
+      skillLevel: (d['skillLevel'] as num?)?.toInt() ?? 1,
+    );
+  }
+
   Map<String, dynamic> toMap() => {
         'name': name,
         'nameEn': nameEn,

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
@@ -203,11 +202,18 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
       url,
       fit: BoxFit.contain,
       width: double.infinity,
+      gaplessPlayback: true,
+      headers: const {
+        'Accept': 'image/gif,image/*,*/*',
+      },
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) return child;
         return _shimmerBox();
       },
-      errorBuilder: (context, error, stackTrace) => _placeholderHero(primaryMuscle),
+      errorBuilder: (context, error, stackTrace) {
+        debugPrint('Erro ao carregar GIF do detail: $url - $error');
+        return _placeholderHero(primaryMuscle);
+      },
     );
   }
 

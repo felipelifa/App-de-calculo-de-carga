@@ -1,5 +1,5 @@
-import '../../core/services/api_service.dart';
-import 'workout_models.dart';
+import 'api_service.dart';
+import '../../features/workout/workout_models.dart';
 
 class WorkoutsApiService {
   final ApiService _api;
@@ -16,11 +16,11 @@ class WorkoutsApiService {
       'exerciseId': ex.exerciseId,
       'exerciseName': ex.exerciseName,
       'muscleGroup': ex.muscleGroup,
-      'sets': ex.sets.map((s) => {
-        'setNumber': ex.sets.indexOf(s) + 1,
-        'reps': s.reps,
-        'weight': s.weight,
-        'isWarmup': s.isWarmup,
+      'sets': ex.sets.asMap().entries.map((entry) => {
+        'setNumber': entry.key + 1,
+        'reps': entry.value.reps,
+        'weight': entry.value.weight,
+        'isWarmup': entry.value.isWarmup,
       }).toList(),
     }).toList();
 
