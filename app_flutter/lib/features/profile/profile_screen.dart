@@ -51,8 +51,22 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(height: 32),
                   ],
 
-                  _buildSectionHeader('ESTRATÉGIA'),
+                  _buildSectionHeader('CONFIGURAÇÕES'),
                   _buildSettingsGroup([
+                    _SettingsTile(
+                      icon: Icons.fitness_center_rounded,
+                      title: 'Refazer Anamnese de Treino',
+                      subtitle: 'Atualizar perfil de treino',
+                      iconColor: AppTheme.accent,
+                      onTap: () => context.push('/anamnese'),
+                    ),
+                    _SettingsTile(
+                      icon: Icons.restaurant_rounded,
+                      title: 'Refazer Anamnese de Nutrição',
+                      subtitle: 'Atualizar perfil nutricional',
+                      iconColor: AppTheme.success,
+                      onTap: () => context.push('/nutrition/anamnese'),
+                    ),
                     _SettingsTile(
                       icon: Icons.auto_awesome_rounded,
                       title: 'Bio-Gestão 7.0',

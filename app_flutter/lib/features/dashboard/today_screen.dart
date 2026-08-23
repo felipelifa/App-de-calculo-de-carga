@@ -660,6 +660,12 @@ class _TodayScreenState extends State<TodayScreen> {
         Row(
           children: [
             _buildActionButton(
+              icon: Icons.list_alt,
+              label: 'Meus Treinos',
+              onTap: () => context.push('/prescribed'),
+            ),
+            const SizedBox(width: 12),
+            _buildActionButton(
               icon: Icons.fitness_center,
               label: 'Exercícios',
               onTap: () => context.push('/exercises'),
@@ -670,12 +676,25 @@ class _TodayScreenState extends State<TodayScreen> {
               label: 'Histórico',
               onTap: () => context.push('/workout/history'),
             ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            _buildActionButton(
+              icon: Icons.analytics,
+              label: 'Progresso',
+              onTap: () => context.push('/analytics'),
+            ),
             const SizedBox(width: 12),
             _buildActionButton(
               icon: Icons.settings,
               label: 'Config',
               onTap: () => context.push('/profile'),
             ),
+            const SizedBox(width: 12),
+            // Espaço vazio para alinhar
+            const Expanded(child: SizedBox()),
           ],
         ),
       ],

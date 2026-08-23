@@ -29,16 +29,16 @@ class MainLayoutScreen extends StatelessWidget {
           onTap: (int idx) => _onItemTapped(idx, context),
           items: const [
             BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: 'Hoje',
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.fitness_center_rounded),
-              label: 'Treino',
+              label: 'Treinos',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.local_dining_rounded),
               label: 'Nutrição',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart_rounded),
-              label: 'Progresso',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),
@@ -52,19 +52,19 @@ class MainLayoutScreen extends StatelessWidget {
 
   static int _calculateSelectedIndex(BuildContext context) {
     final String location = GoRouterState.of(context).uri.path;
-    if (location.startsWith('/dashboard') || location.startsWith('/prescribed')) {
-      return 0; // The home/workout feed
+    if (location.startsWith('/dashboard')) {
+      return 0; // Hoje
+    }
+    if (location.startsWith('/workout') || location.startsWith('/prescribed') || location.startsWith('/exercises')) {
+      return 1; // Treinos
     }
     if (location.startsWith('/nutrition')) {
-      return 1;
+      return 2; // Nutrição
     }
-    if (location.startsWith('/analytics')) {
-      return 2;
+    if (location.startsWith('/profile') || location.startsWith('/analytics') || location.startsWith('/change-history')) {
+      return 3; // Perfil
     }
-    if (location.startsWith('/profile')) {
-      return 3;
-    }
-    return 0; // fallback
+    return 0;
   }
 
   void _onItemTapped(int index, BuildContext context) {
@@ -73,10 +73,10 @@ class MainLayoutScreen extends StatelessWidget {
         context.go('/dashboard');
         break;
       case 1:
-        context.go('/nutrition');
+        context.go('/prescribed');
         break;
       case 2:
-        context.go('/analytics');
+        context.go('/nutrition');
         break;
       case 3:
         context.go('/profile');
