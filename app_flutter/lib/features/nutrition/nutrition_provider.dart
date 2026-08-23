@@ -171,26 +171,23 @@ class NutritionProvider extends ChangeNotifier {
     final uid = _auth.currentUser?.uid;
     if (uid == null) return;
     
-    // Tenta carregar existente primeiro
-    await loadExistingProfile();
+    // Se já temos perfil, não fazer nada
+    if (_profile != null) return;
     
-    // Se após tentar carregar ainda for null, gera um novo
-    if (_profile == null) {
-      _isLoading = true;
+    _isLoading = true;
+    notifyListeners();
+    try {
+      _profile = NutritionEngine.generateInitialProfile(wp, id: uid);
+      await saveSettings();
+      await loadToday();
+      await loadFavorites();
+      await loadSelectedDay();
+      await _fetchWeeklyPlants();
+    } catch (e) {
+      _lastError = e.toString();
+    } finally {
+      _isLoading = false;
       notifyListeners();
-      try {
-        _profile = NutritionEngine.generateInitialProfile(wp, id: uid);
-        await saveSettings();
-        await loadToday();
-        await loadFavorites();
-        await loadSelectedDay();
-        await _fetchWeeklyPlants();
-      } catch (e) {
-        _lastError = e.toString();
-      } finally {
-        _isLoading = false;
-        notifyListeners();
-      }
     }
   }
 

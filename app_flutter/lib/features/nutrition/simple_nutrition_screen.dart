@@ -18,20 +18,35 @@ class SimpleNutritionScreen extends StatefulWidget {
 }
 
 class _SimpleNutritionScreenState extends State<SimpleNutritionScreen> {
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = context.read<NutritionProvider>();
-      provider.loadExistingProfile();
-      if (provider.profile == null) {
-        final wp = context.read<WorkoutProfileProvider>().profile;
-        if (wp != null) {
-          provider.initFromProfile(wp);
-        }
-      }
-      provider.loadToday();
+      _loadData();
     });
+  }
+
+  Future<void> _loadData() async {
+    if (_isLoading) return;
+    _isLoading = true;
+    
+    final provider = context.read<NutritionProvider>();
+    await provider.loadExistingProfile();
+    
+    if (provider.profile == null && mounted) {
+      final wp = context.read<WorkoutProfileProvider>().profile;
+      if (wp != null) {
+        await provider.initFromProfile(wp);
+      }
+    }
+    
+    if (mounted) {
+      await provider.loadToday();
+    }
+    
+    _isLoading = false;
   }
 
   @override
