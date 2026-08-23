@@ -194,7 +194,7 @@ class ExerciseProvider extends ChangeNotifier {
   }
 
   // URL do proxy GIF no Vercel (funciona em mobile e web)
-  static const String _vercelGifProxy = 'https://buildfit-nine.vercel.app/api/gif';
+  static const String _vercelGifProxy = 'https://apptreino-cyan.vercel.app/api/gif';
 
   String? getEffectiveGifUrl(ExerciseModel ex) {
     final rawGifUrl = ex.gifUrl?.trim();
