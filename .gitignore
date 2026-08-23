@@ -2,14 +2,23 @@
 app/build/
 app/.dart_tool/
 app/pubspec.lock
+app_flutter/build/
+app_flutter/.dart_tool/
 
 # Next.js website
 website/.next/
 website/node_modules/
+.next/
 
 # Node
 firebase/functions/node_modules/
-website/node_modules/
+node_modules/
+
+# BuildFit API (backend próprio)
+buildfit-api/node_modules/
+buildfit-api/dist/
+buildfit-api/.env
+buildfit-api/.env.local
 
 # OS
 .DS_Store
