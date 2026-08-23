@@ -29,6 +29,11 @@ dependencies:
   url_launcher: ^6.3.2
   http: ^1.2.0
   shared_preferences: ^2.5.2
+  
+  # Vision Nutrition Engine
+  mobile_scanner: ^5.0.0        # Barcode scanner com câmera
+  image_picker: ^1.0.0          # Captura de foto
+  google_generative_ai: ^0.4.0  # Gemini Vision para reconhecimento
 
 dev_dependencies:
   flutter_test:

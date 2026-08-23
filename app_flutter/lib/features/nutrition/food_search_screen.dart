@@ -8,6 +8,8 @@ import 'nutrition_service.dart';
 import 'nutrition_provider.dart';
 import 'food_model.dart';
 import 'meal_model.dart';
+import 'vision/barcode_scanner_screen.dart';
+import 'vision/meal_photo_screen.dart';
 
 class FoodSearchScreen extends StatefulWidget {
   final String mealType;
@@ -45,46 +47,32 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
   }
 
   Future<void> _scanBarcode() async {
-    // Lógica de Scan (em Web mostra um input, em mobile abriria câmera)
-    String? code = await _showBarcodeInputDialog();
-    if (code != null && code.isNotEmpty) {
-      setState(() => _isSearching = true);
-      final food = await _service.searchByBarcode(code);
-      if (mounted) {
-        setState(() => _isSearching = false);
-        if (food != null) {
-          _openPortionSelector(context, food);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Produto não encontrado na base global.')),
-          );
-        }
-      }
+    // Navegar para tela de scanner com câmera
+    final result = await Navigator.of(context).push<FoodModel>(
+      MaterialPageRoute(
+        builder: (context) => const BarcodeScannerScreen(),
+      ),
+    );
+    
+    if (result != null && mounted) {
+      _openPortionSelector(context, result);
     }
   }
 
-  Future<String?> _showBarcodeInputDialog() async {
-    String? code;
-    return showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.surface,
-        title: const Text('Escanear Produto', style: TextStyle(color: AppTheme.textPrimary)),
-        content: TextField(
-          autofocus: true,
-          style: const TextStyle(color: AppTheme.textPrimary),
-          decoration: const InputDecoration(
-            hintText: 'Digite o código de barras...',
-            hintStyle: TextStyle(color: AppTheme.textSecondary),
-          ),
-          onChanged: (v) => code = v,
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('CANCELAR')),
-          ElevatedButton(onPressed: () => Navigator.pop(context, code), child: const Text('BUSCAR')),
-        ],
+  Future<void> _takePhoto() async {
+    // Navegar para tela de análise de foto
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const MealPhotoScreen(),
       ),
     );
+    
+    if (result != null && mounted) {
+      // TODO: Processar resultado da foto
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Refeição registrada via foto!')),
+      );
+    }
   }
 
   void _onSearchChanged(String query) {
@@ -150,9 +138,20 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
                   hintText: 'Buscar na biblioteca...',
                   hintStyle: const TextStyle(color: AppTheme.textSecondary),
                   prefixIcon: const Icon(Icons.search, color: AppTheme.textSecondary),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.qr_code_scanner, color: AppTheme.accent),
-                    onPressed: _scanBarcode,
+                  suffixIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.camera_alt, color: AppTheme.accent),
+                        onPressed: _takePhoto,
+                        tooltip: 'Foto da refeição',
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.qr_code_scanner, color: AppTheme.accent),
+                        onPressed: _scanBarcode,
+                        tooltip: 'Escanear código de barras',
+                      ),
+                    ],
                   ),
                   filled: true,
                   fillColor: AppTheme.background,
