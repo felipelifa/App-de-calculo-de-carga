@@ -121,12 +121,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       dislikedExercises: [],
       favoriteExercises: [],
       healthRestrictions: List.from(_restrictions),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
     );
 
     try {
       final provider = context.read<WorkoutProfileProvider>();
       await provider.saveProfile(profile);
-      await provider.generateAndSaveWorkout(profile);
+      await provider.generateAndSaveWorkout();
 
       if (mounted) {
         context.go('/dashboard');
@@ -194,7 +196,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Expanded(
               child: PageView(
                 controller: _pageController,
-                physics: const NeverScrollScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 onPageChanged: (page) => setState(() => _currentPage = page),
                 children: [
                   _buildGoalStep(),

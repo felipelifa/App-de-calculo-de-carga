@@ -74,6 +74,7 @@ class CoachService {
     // Buscar perfil nutricional
     final profileSnap = await _db
         .collection('users/$_uid/nutrition/settings')
+        .doc('settings')
         .get();
 
     final targetCalories = (profileSnap.data()?['targetCalories'] as num?)?.toDouble() ?? 2000;
@@ -101,6 +102,7 @@ class CoachService {
     // Buscar registro de água de hoje
     final waterSnap = await _db
         .collection('users/$_uid/nutrition/logs/${_formatDate(today)}')
+        .doc('summary')
         .get();
 
     final waterMl = (waterSnap.data()?['waterMl'] as num?)?.toInt() ?? 0;

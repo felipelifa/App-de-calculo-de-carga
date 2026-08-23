@@ -156,7 +156,7 @@ class IntegrationService {
   }
 
   Future<Map<String, dynamic>?> _getProfile() async {
-    final doc = await _db.collection('users/$_uid/profile/current').get();
+    final doc = await _db.collection('users/$_uid/profile/current').doc('current').get();
     return doc.data();
   }
 
