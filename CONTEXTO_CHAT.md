@@ -1277,3 +1277,317 @@ flutter build ios --release             # Build iOS
 git push origin main                    # Deploy Railway automático
 git push origin main --tags v1.0.0      # Tag release
 ```
+
+---
+
+# 🔧 SESSÃO 2026-08-23 — BuildFit UX 1.0 + Vision Engine + Correções
+
+## Resumo da Sessão
+
+Sessão completa de evolução do BuildFit incluindo:
+- **BuildFit UX 1.0** (interface simplificada)
+- **Vision Nutrition Engine** (reconhecimento de alimentos por foto)
+- **Correções de equipamento** (treinos para casa sem equipamentos)
+- **Correções de bugs** (loop infinito, compilação)
+- **APK otimizado** (30.6MB)
+
+---
+
+## 1. BuildFit UX 1.0 — Interface Simplificada
+
+### Princípio Central
+O usuário não precisa entender como o BuildFit funciona. Ele informa objetivo, modalidade, nível, disponibilidade, equipamentos, limitações. O BuildFit decide automaticamente.
+
+### Arquivos Criados
+
+| Arquivo | Descrição |
+|---------|-----------|
+| `onboarding_screen.dart` | Onboarding simplificado (7 etapas com linguagem simples) |
+| `today_screen.dart` | Dashboard "Hoje" com coach digital e mensagens contextuais |
+| `simple_workout_screen.dart` | Treino simplificado (Fácil/Boa/Difícil em vez de RIR) |
+| `simple_nutrition_screen.dart` | Nutrição simplificada com resumo e sugestões |
+| `integration_service.dart` | Integração treino+nutrição com mensagens contextuais |
+| `coach_service.dart` | Coach digital com feedback contextual |
+| `change_history_service.dart` | Serviço de histórico de alterações |
+| `change_history_screen.dart` | Tela de histórico de alterações |
+
+### Onboarding (7 Etapas)
+
+1. **Objetivo**: Ganhar músculo, Perder gordura, Ficar mais forte, Saúde, Condicionamento, Não sei
+2. **Modalidade**: Musculação, Corrida, Mobilidade, Reabilitação, Funcional, Calistenia, Lutas, Ciclismo, Natação
+3. **Nível**: Estou começando, Alguma experiência, Bastante experiência, Não sei
+4. **Dias**: 2-6 com seletor visual
+5. **Duração**: 30-90 minutos
+6. **Ambiente**: Academia, Casa, Ao ar livre (com equipamentos condicionais)
+7. **Restrições**: Nenhuma, Ombro, Joelho, Lombar, Cotovelo, Punho, Quadril, Tornozelo
+
+### Tela "Hoje"
+
+- Saudação baseada no horário
+- Card de treino com progresso semanal
+- Card de nutrição com mensagem contextual
+- Card de hidratação com mensagem contextual
+- Card de progresso com mensagem contextual
+- Card do Coach Digital com feedback e dicas
+- Ações rápidas: Meus Treinos, Exercícios, Histórico, Progresso, Config
+
+### Treino Simplificado
+
+- Tela inicial com botão "COMEÇAR TREINO"
+- Timer de sessão
+- Cards de exercícios com séries editáveis
+- Botão "Trocar exercício" com motivo
+- Botão "Senti desconforto" com localização e intensidade
+- Finalização com feedback: Fácil, Boa, Difícil, Muito difícil
+
+### Nutrição Simplificada
+
+- Card de calorias com indicador circular
+- Macros com barras de progresso e porcentagens
+- Sugestão do BuildFit em linguagem humana
+- Lista de refeições do dia
+- Botão "Registrar refeição"
+
+### Coach Digital
+
+- Feedback sobre treino
+- Feedback sobre nutrição
+- Feedback sobre hidratação
+- Feedback sobre progresso
+- Mensagens de motivação
+- Dicas do dia
+
+### Navegação Atualizada
+
+| Aba | Rota | Conteúdo |
+|-----|------|----------|
+| 🏠 Hoje | `/dashboard` | Dashboard com resumo do dia |
+| 🏋️ Treinos | `/prescribed` | Planos prescritos, exercícios |
+| 🍽️ Nutrição | `/nutrition` | Calorias, macros, refeições |
+| 👤 Perfil | `/profile` | Config, anamneses |
+
+---
+
+## 2. Vision Nutrition Engine
+
+### Arquitetura
+
+```
+Foto → Vision Engine → Food Detection → Portion Estimation → Food Database → Nutrition Engine → Confirmação → Registro
+```
+
+### Arquivos Criados
+
+| Arquivo | Descrição |
+|---------|-----------|
+| `vision/food_detection_model.dart` | Modelo de detecção (FoodDetection, PortionEstimate, BoundingBox) |
+| `vision/vision_provider.dart` | Interface abstrata (VisionProvider) + implementações |
+| `vision/confidence_engine.dart` | Motor de confiança (HIGH/MEDIUM/LOW/UNKNOWN) |
+| `vision/food_matching_engine.dart` | Motor de correspondência (deteção → banco nutricional) |
+| `vision/portion_estimation_engine.dart` | Estimativa de porção (pouco/normal/bastante) |
+| `vision/barcode_scanner_screen.dart` | Scanner de barcode com câmera |
+| `vision/meal_photo_screen.dart` | Análise de foto de refeição |
+
+### Dependências Adicionadas
+
+```yaml
+mobile_scanner: ^5.0.0        # Barcode scanner com câmera
+image_picker: ^1.0.0          # Captura de foto
+google_generative_ai: ^0.4.0  # Gemini Vision (futuro)
+```
+
+### Funcionalidades
+
+- **Barcode Scanner**: Câmera para escanear código de barras
+- **Photo Recognition**: Captura de foto para identificar alimentos
+- **Food Matching**: Correspondência automática com banco nutricional
+- **Portion Estimation**: Estimativa por faixas (pouco/normal/bastante)
+- **Confidence Engine**: Níveis de confiança (alta/média/baixa)
+- **User Confirmation**: Confirmação antes de salvar
+
+---
+
+## 3. Correções de Equipamento
+
+### Problema Identificado
+Quando o usuário selecionava "Casa sem equipamentos", o motor ainda prescrevia exercícios que necessitavam de equipamentos.
+
+### Causas Raiz
+
+| Bug | Descrição |
+|-----|-----------|
+| `_pickScapularExercise` | Sem filtro de ambiente/equipamento |
+| `face_pull` | Equipamento incorreto (bodyweight → cable) |
+| `pull_up` | Equipamento incorreto (bodyweight → pull_up_bar) |
+| Filtro academia | Não incluía exercícios bodyweight |
+| Blocos reabilitação | Sem filtro de ambiente/equipamento |
+
+### Correções
+
+| Arquivo | Correção |
+|---------|----------|
+| `exercise_library.dart` | Corrigido `pull_up`, `face_pull`, `pullover` |
+| `exercise_library.dart` | Adicionados 4 exercícios scapulares bodyweight |
+| `exercise_library.dart` | Adicionados 2 exercícios reabilitação ombro bodyweight |
+| `exercise_library.dart` | Atualizado `injuryRehabExercises` |
+| `prescription_engine.dart` | `_pickScapularExercise` com filtro ambiente/equipamento |
+| `prescription_engine.dart` | `_filterCandidates` com fallback bodyweight para academia |
+| `prescription_engine.dart` | `_buildRehabBlockUpper/Lower` com filtro ambiente/equipamento |
+
+---
+
+## 4. Correções de Bugs
+
+### Loop Infinito na Nutrição
+
+**Problema**: Tela de nutrição ficava em loop infinito.
+
+**Causa**: `initFromProfile` chamava `loadExistingProfile()` novamente (redundante), causando múltiplos `notifyListeners()`.
+
+**Correção**:
+- Adicionada guarda `_isLoading` em `SimpleNutritionScreen`
+- Removida chamada redundante em `initFromProfile`
+- Adicionada verificação `if (_profile != null) return`
+
+### Erros de Compilação
+
+| Erro | Correção |
+|------|----------|
+| `AppTheme.warning` não existia | Adicionado `static const Color warning` |
+| `WorkoutProfile` sem `createdAt` | Adicionado `createdAt` e `updatedAt` |
+| `generateAndSaveWorkout(profile)` | Removido parâmetro |
+| `NeverScrollScrollPhysics` | Trocado por `ClampingScrollPhysics` |
+| `QuerySnapshot.data()` | Corrigido para usar `.doc().get()` |
+| `MobileScanner onBarcodeDetected` | Trocado por `onDetect` |
+| `MealEntry` sem `id` | Adicionado `id` no construtor |
+
+---
+
+## 5. APK Otimizado
+
+### Build Split-per-ABI
+
+| Arquitetura | Tamanho | Uso |
+|-------------|---------|-----|
+| armeabi-v7a | 27.1 MB | Celulares antigos (32-bit) |
+| arm64-v8a | 30.6 MB | Maioria dos celulares modernos |
+| x86_64 | 33.3 MB | Emuladores |
+
+### APK Final (arm64-v8a)
+
+- **Tamanho**: 30.6 MB
+- **Download**: https://apptreino-cyan.vercel.app/download/apk.apk
+- **Inclui**: Todas as features (UX 1.0, Vision Engine, correções)
+
+---
+
+## 6. Arquivos Criados/Modificados
+
+### Novos Arquivos
+
+| Arquivo | Descrição |
+|---------|-----------|
+| `app_flutter/lib/features/workout/onboarding_screen.dart` | Onboarding 7 etapas |
+| `app_flutter/lib/features/dashboard/today_screen.dart` | Dashboard "Hoje" |
+| `app_flutter/lib/features/workout/simple_workout_screen.dart` | Treino simplificado |
+| `app_flutter/lib/features/nutrition/simple_nutrition_screen.dart` | Nutrição simplificada |
+| `app_flutter/lib/features/nutrition/vision/food_detection_model.dart` | Modelo de detecção |
+| `app_flutter/lib/features/nutrition/vision/vision_provider.dart` | Interface Vision |
+| `app_flutter/lib/features/nutrition/vision/confidence_engine.dart` | Engine de confiança |
+| `app_flutter/lib/features/nutrition/vision/food_matching_engine.dart` | Engine de correspondência |
+| `app_flutter/lib/features/nutrition/vision/portion_estimation_engine.dart` | Estimativa de porção |
+| `app_flutter/lib/features/nutrition/vision/barcode_scanner_screen.dart` | Scanner barcode |
+| `app_flutter/lib/features/nutrition/vision/meal_photo_screen.dart` | Análise de foto |
+| `app_flutter/lib/core/services/integration_service.dart` | Integração treino+nutrição |
+| `app_flutter/lib/core/services/coach_service.dart` | Coach digital |
+| `app_flutter/lib/core/services/change_history_service.dart` | Histórico de alterações |
+| `app_flutter/lib/features/profile/change_history_screen.dart` | Tela de histórico |
+| `buildfit-api/` | Backend NestJS completo (15 tabelas, 40+ endpoints) |
+| `.codemagic/workflow.yaml` | CI/CD para iOS |
+
+### Arquivos Modificados
+
+| Arquivo | Alteração |
+|---------|-----------|
+| `app_flutter/lib/shared/theme/app_theme.dart` | Adicionado `warning` color |
+| `app_flutter/lib/features/workout/prescription_engine.dart` | Corrigido filtros ambiente/equipamento |
+| `app_flutter/lib/core/data/exercise_library.dart` | Corrigidos 71 exercícios, adicionados 6 novos |
+| `app_flutter/lib/core/router/app_router.dart` | Atualizado para novas telas |
+| `app_flutter/lib/core/router/main_layout_screen.dart` | Nova navegação 4 abas |
+| `app_flutter/lib/features/nutrition/food_search_screen.dart` | Adicionados botões foto/barcode |
+| `app_flutter/lib/features/profile/profile_screen.dart` | Adicionado refazer anamneses |
+| `app_flutter/lib/features/workout/workout_provider.dart` | Migrado para API própria |
+| `app_flutter/lib/features/exercises/exercise_provider.dart` | Corrigido URL proxy GIF |
+| `app_flutter/lib/features/nutrition/nutrition_provider.dart` | Corrigido loop infinito |
+| `app_flutter/pubspec.yaml` | Adicionadas dependências Vision Engine |
+| `.gitignore` | Atualizado com buildfit-api |
+| `tsconfig.json` | Excluído buildfit-api |
+| `CONTEXTO_CHAT.md` | Atualizado com contexto completo |
+
+---
+
+## 7. Próximos Passos
+
+| Fase | Descrição | Prioridade |
+|------|-----------|-----------|
+| **1** | Configurar Railway (deploy backend) | ALTA |
+| **2** | Migrar mais providers para API | ALTA |
+| **3** | Produtos portugueses na busca | ALTA |
+| **4** | Gemini Vision para reconhecimento | MÉDIA |
+| **5** | Aprendizado com correções | MÉDIA |
+| **6** | OCR de rótulos | BAIXA |
+| **7** | Meal templates | BAIXA |
+| **8** | Dataset proprietário | FUTURO |
+| **9** | Modelo próprio BuildFit Vision | FUTURO |
+
+---
+
+## 8. Decisões Importantes
+
+1. **Backend próprio** (NestJS + PostgreSQL) — mais controle e escalabilidade
+2. **Híbrido durante migração** — API própria + fallback Firebase
+3. **Lógica de treino 100% no app** — sem IA para prescrição
+4. **iOS via Codemagic** — sem MacBook
+5. **APK otimizado** — split-per-abi (30.6MB)
+6. **Interface simplificada** — esconder complexidade técnica
+7. **Vision Engine modular** — pluggável (Gemini, local, híbrido)
+
+---
+
+## 9. Padrões de Código
+
+- Todos os services tentam API própria, fallback Firebase
+- `ApiService` usa `FirebaseAuth.instance.currentUser?.getIdToken()` para auth
+- Erros tratados graciosamente (não quebram o app)
+- Providers continuam usando `ChangeNotifier`
+- `withValues(alpha:)` em vez de `withOpacity()` (deprecado)
+- FCM: `if (!kIsWeb)` antes de qualquer chamada FirebaseMessaging
+- Features PRO: gate via `ProGate.show(context)` + `ProService.isPro()`
+- GIFs: sempre `Image.network` com `gaplessPlayback: true`
+
+---
+
+## 10. Comandos Úteis
+
+```bash
+# Backend
+cd buildfit-api
+docker-compose up -d                    # PostgreSQL + Redis
+npm run start:dev                       # API em http://localhost:3000
+npx prisma migrate dev                  # Criar migration
+npx prisma generate                     # Gerar client
+npx prisma studio                       # GUI do banco
+npm run build                           # Build produção
+
+# Flutter
+cd app_flutter
+flutter pub get                         # Dependências
+flutter run -d chrome                   # Rodar no Chrome
+flutter build apk --release             # Build Android
+flutter build apk --split-per-abi --release  # Build otimizado
+flutter build ios --release             # Build iOS
+
+# Deploy
+git push origin main                    # Deploy Railway automático
+git push origin main --tags v1.0.0      # Tag release
+```
