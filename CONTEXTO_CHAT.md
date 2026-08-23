@@ -927,3 +927,353 @@ String? getEffectiveGifUrl(ExerciseModel ex) {
 | 3.3 | Técnicas avançadas (Drop Set, Rest-Pause, Cluster) | ⏳ Pendente |
 | 3.4 | Progressão bodyweight completa (cadeia Push/Pull/Squat) | ⏳ Pendente |
 | 5.3 | Tela de exercício com histórico de carga + badges | ⏳ Pendente |
+
+---
+
+# 🔧 SESSÃO 2026-08-22 — Backend Próprio + Migração Flutter
+
+## Decisões Tomadas
+
+1. **Backend próprio NestJS** (substituir Firebase Functions)
+2. **PostgreSQL** via Prisma ORM
+3. **Deploy na Railway**
+4. **iOS via Codemagic** (sem MacBook)
+5. **Lógica de treino 100% no app** (sem IA)
+6. **Híbrido durante migração**: API própria + fallback Firebase
+
+---
+
+## Backend Criado: `buildfit-api/`
+
+### Estrutura
+
+```
+buildfit-api/
+├── prisma/schema.prisma          ← 15 tabelas PostgreSQL
+├── src/
+│   ├── main.ts                   ← Bootstrap + Swagger (/docs)
+│   ├── app.module.ts             ← 10 módulos
+│   ├── common/
+│   │   ├── services/
+│   │   │   ├── prisma.service.ts
+│   │   │   └── firebase.service.ts
+│   │   ├── guards/
+│   │   │   ├── firebase-auth.guard.ts
+│   │   │   └── pro.guard.ts
+│   │   ├── decorators/
+│   │   │   └── current-user.decorator.ts
+│   │   ├── interceptors/
+│   │   │   └── logging.interceptor.ts
+│   │   ├── filters/
+│   │   │   └── all-exceptions.filter.ts
+│   │   └── controllers/
+│   │       └── health.controller.ts
+│   └── modules/
+│       ├── auth/         (register, validate)
+│       ├── users/        (profile CRUD)
+│       ├── exercises/    (949 exercícios, filtros)
+│       ├── workouts/     (treinos, volume semanal)
+│       ├── prescription/ (planos de treino)
+│       ├── progression/  (estado RIR, sugestões)
+│       ├── analytics/    (dashboard, volume por músculo)
+│       ├── nutrition/    (Bio-Gestão 7.0)
+│       ├── pr/           (records pessoais)
+│       └── pro/          (token redemption)
+├── Dockerfile
+├── docker-compose.yml    ← PostgreSQL + Redis
+├── railway.json
+├── .env.example
+├── .gitignore
+└── README.md
+```
+
+### Tabelas PostgreSQL (Prisma)
+
+| Tabela | Descrição |
+|--------|-----------|
+| `User` | Usuários (firebaseUid, email, isPro) |
+| `UserProfile` | Perfil/anamnese (30+ campos) |
+| `Exercise` | Biblioteca global (949 exercícios) |
+| `UserExercise` | Exercícios personalizados |
+| `Workout` | Sessões de treino |
+| `WorkoutExercise` | Exercícios na sessão |
+| `WorkoutSet` | Séries (reps, weight, volume) |
+| `GeneratedWorkout` | Planos prescritos |
+| `ProgressionState` | Estado RIR/deload |
+| `VolumeHistory` | Histórico semanal |
+| `SuggestedProgression` | Sugestões de carga |
+| `PersonalRecord` | Records pessoais |
+| `NutritionProfile` | Perfil nutricional |
+| `NutritionDay` | Log diário |
+| `MealEntry` | Refeições |
+| `ProToken` | Tokens Pro |
+| `ProTokenRedemption` | Resgates |
+| `ApkVersion` | Versão do APK |
+
+### Endpoints (40+)
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| `GET` | `/api/health` | Health check |
+| `POST` | `/api/auth/register` | Registrar |
+| `POST` | `/api/auth/validate` | Validar token |
+| `GET` | `/api/users/profile` | Obter perfil |
+| `PUT` | `/api/users/profile` | Atualizar perfil |
+| `GET` | `/api/exercises` | Listar exercícios |
+| `GET` | `/api/exercises/muscles` | Grupos musculares |
+| `GET` | `/api/exercises/patterns` | Padrões de movimento |
+| `GET` | `/api/exercises/count` | Total de exercícios |
+| `GET` | `/api/exercises/:id` | Detalhe exercício |
+| `GET` | `/api/exercises/:id/substitutes` | Substitutos |
+| `POST` | `/api/exercises` | Criar exercício |
+| `POST` | `/api/workouts` | Criar treino |
+| `GET` | `/api/workouts` | Listar treinos |
+| `GET` | `/api/workouts/weekly-volume` | Volume semanal |
+| `GET` | `/api/workouts/muscle-volume` | Volume por músculo |
+| `GET` | `/api/workouts/:id` | Detalhe treino |
+| `PUT` | `/api/workouts/:id` | Atualizar treino |
+| `DELETE` | `/api/workouts/:id` | Deletar treino |
+| `GET` | `/api/prescription` | Plano ativo |
+| `GET` | `/api/prescription/all` | Todos os planos |
+| `POST` | `/api/prescription` | Salvar plano |
+| `PUT` | `/api/prescription/:id/activate` | Ativar plano |
+| `DELETE` | `/api/prescription/:id` | Deletar plano |
+| `GET` | `/api/progression/state` | Estado progressão |
+| `PUT` | `/api/progression/state` | Atualizar estado |
+| `GET` | `/api/progression/suggestions` | Sugestões |
+| `POST` | `/api/progression/suggestions` | Salvar sugestões |
+| `GET` | `/api/progression/volume-history` | Histórico volume |
+| `GET` | `/api/analytics/dashboard` | Dashboard |
+| `GET` | `/api/analytics/weekly-volume` | Volume semanal |
+| `GET` | `/api/analytics/muscle-volume` | Volume por músculo |
+| `GET` | `/api/analytics/exercise-progress` | Progressão exercício |
+| `GET` | `/api/nutrition/profile` | Perfil nutricional |
+| `PUT` | `/api/nutrition/profile` | Atualizar perfil |
+| `GET` | `/api/nutrition/daily` | Log do dia |
+| `POST` | `/api/nutrition/log` | Registrar refeição |
+| `DELETE` | `/api/nutrition/log/:mealId` | Deletar refeição |
+| `GET` | `/api/nutrition/weekly` | Log semanal |
+| `GET` | `/api/pr` | Todos os PRs |
+| `GET` | `/api/pr/:exerciseId` | PR de exercício |
+| `POST` | `/api/pr/check` | Verificar/atualizar PR |
+| `GET` | `/api/pr/recent/list` | PRs recentes |
+| `GET` | `/api/pro/status` | Status Pro |
+| `POST` | `/api/pro/redeem` | Resgatar token |
+
+### Como rodar
+
+```bash
+cd buildfit-api
+
+# 1. Iniciar PostgreSQL + Redis
+docker-compose up -d
+
+# 2. Copiar variáveis de ambiente
+cp .env.example .env
+# Editar .env com FIREBASE_SERVICE_ACCOUNT
+
+# 3. Rodar migrations
+npx prisma migrate dev
+
+# 4. Gerar Prisma Client
+npx prisma generate
+
+# 5. Iniciar servidor
+npm run start:dev
+# Swagger: http://localhost:3000/docs
+```
+
+---
+
+## Flutter API Client Criado
+
+### Novos services em `app_flutter/lib/core/services/`
+
+| Arquivo | Função |
+|---------|--------|
+| `api_service.dart` | Client HTTP base com auth Firebase automática |
+| `workouts_api_service.dart` | Treinos via API |
+| `analytics_api_service.dart` | Métricas via API |
+| `nutrition_api_service.dart` | Nutrição via API |
+| `progression_api_service.dart` | Progressão via API |
+| `prescription_api_service.dart` | Prescrição via API |
+| `pr_api_service.dart` | PRs via API |
+| `pro_api_service.dart` | Pro via API |
+
+### Padrão de cada service
+
+```dart
+// Tenta backend próprio primeiro
+try {
+  return await _api.get('/exercises');
+} catch (_) {
+  // Fallback para Firebase
+}
+```
+
+### Services atualizados (híbrido Firebase + API)
+
+| Service | Mudança |
+|---------|---------|
+| `AuthService` | Login/register tenta API, fallback Firebase |
+| `ProService` | `redeemProToken` tenta API `/pro/redeem`, fallback Cloud Functions |
+| `ExerciseProvider` | `_loadFromApi()` busca `/exercises`, merge com library local |
+| `main.dart` | Adicionados 8 API services como Providers |
+
+---
+
+## CI/CD para iOS
+
+### Arquivo: `.codemagic/workflow.yaml`
+
+- **Trigger:** push main/develop, tags v*
+- **Instance:** mac_mini_m2
+- **Build:** `flutter build ios --release --no-codesign`
+- **Output:** IPA pronto para distribuição
+
+---
+
+## Arquivos criados/modificados nesta sessão
+
+### Backend (buildfit-api/)
+- `package.json`
+- `tsconfig.json`
+- `nest-cli.json`
+- `prisma/schema.prisma`
+- `src/main.ts`
+- `src/app.module.ts`
+- `src/common/services/prisma.service.ts`
+- `src/common/services/firebase.service.ts`
+- `src/common/guards/firebase-auth.guard.ts`
+- `src/common/guards/pro.guard.ts`
+- `src/common/decorators/current-user.decorator.ts`
+- `src/common/interceptors/logging.interceptor.ts`
+- `src/common/filters/all-exceptions.filter.ts`
+- `src/common/controllers/health.controller.ts`
+- `src/modules/auth/*` (3 arquivos + dto)
+- `src/modules/users/*` (3 arquivos + dto)
+- `src/modules/exercises/*` (3 arquivos + 2 dto)
+- `src/modules/workouts/*` (3 arquivos + 2 dto)
+- `src/modules/prescription/*` (3 arquivos)
+- `src/modules/progression/*` (3 arquivos)
+- `src/modules/analytics/*` (3 arquivos)
+- `src/modules/nutrition/*` (3 arquivos)
+- `src/modules/pr/*` (3 arquivos)
+- `src/modules/pro/*` (3 arquivos)
+- `Dockerfile`
+- `docker-compose.yml`
+- `railway.json`
+- `.env.example`
+- `.dockerignore`
+- `.gitignore`
+- `README.md`
+
+### Flutter (app_flutter/)
+- `lib/core/services/api_service.dart` (novo)
+- `lib/core/services/workouts_api_service.dart` (novo)
+- `lib/core/services/analytics_api_service.dart` (novo)
+- `lib/core/services/nutrition_api_service.dart` (novo)
+- `lib/core/services/progression_api_service.dart` (novo)
+- `lib/core/services/prescription_api_service.dart` (novo)
+- `lib/core/services/pr_api_service.dart` (novo)
+- `lib/core/services/pro_api_service.dart` (novo)
+- `lib/core/services/auth_service.dart` (atualizado)
+- `lib/core/services/pro_service.dart` (atualizado)
+- `lib/features/exercises/exercise_provider.dart` (atualizado)
+- `lib/main.dart` (atualizado)
+
+### CI/CD
+- `.codemagic/workflow.yaml` (novo)
+
+---
+
+## O que fazer na próxima sessão
+
+### Prioridade Alta
+
+1. **Configurar Railway**
+   - Conectar repositório GitHub
+   - Criar PostgreSQL managed
+   - Configurar variáveis de ambiente (`DATABASE_URL`, `FIREBASE_SERVICE_ACCOUNT`)
+   - Deploy automático
+
+2. **Configurar Codemagic**
+   - Conectar GitHub repo
+   - Criar group `buildfit_credentials` com:
+     - `FIREBASE_TOKEN`
+     - `APPLE_CERTIFICATE`
+     - `APPLE_PROVISIONING_PROFILE`
+   - Testar build iOS
+
+3. **Seed de exercícios no PostgreSQL**
+   - Criar script para migrar 949 exercícios do `exercise_library.dart` para PostgreSQL
+   - Usar `prisma/seed.ts`
+
+4. **Migrar WorkoutProvider para API**
+   - `finishSession()` → `POST /api/workouts`
+   - `loadHistory()` → `GET /api/workouts`
+   - Manter fallback Firestore
+
+### Prioridade Média
+
+5. **Sistema de Rank de Atleta (Sprint 3.1)**
+   - Criar `rank_engine.dart` com tiers (Ferro → Lenda)
+   - XP = volume total deslocado (kg)
+   - Progress bar no Dashboard
+   - Feedback pós-treino ("+12.450 XP!")
+
+6. **Analytics Volume por Músculo (Sprint 3.2)**
+   - Gráfico de rosca/radar com Syncfusion
+   - Mostrar distribuição de treino por grupo muscular
+   - Comparativo semanal
+
+7. **Migrar mais providers**
+   - `WorkoutProfileProvider` → API
+   - `NutritionProvider` → API
+   - `ProgressionProvider` → API
+   - `PrService` → API
+
+### Prioridade Baixa
+
+8. **Deploy Firebase Functions em produção**
+9. **Stripe para pagamentos**
+10. **Sprint 4** (Drop Set, Bodyweight, Badges)
+
+---
+
+## Padrões de código para manter
+
+- Todos os services tentam API própria, fallback Firebase
+- `ApiService` usa `FirebaseAuth.instance.currentUser?.getIdToken()` para auth
+- Erros são tratados graciosamente (não quebram o app)
+- Providers continuam usando `ChangeNotifier`
+- `withValues(alpha:)` em vez de `withOpacity()` (deprecado)
+- FCM: `if (!kIsWeb)` antes de qualquer chamada FirebaseMessaging
+- Features PRO: gate via `ProGate.show(context)` + `ProService.isPro()`
+- GIFs: sempre `Image.network` com `gaplessPlayback: true`
+
+---
+
+## Comandos úteis
+
+```bash
+# Backend
+cd buildfit-api
+docker-compose up -d                    # PostgreSQL + Redis
+npm run start:dev                       # API em http://localhost:3000
+npx prisma migrate dev                  # Criar migration
+npx prisma generate                     # Gerar client
+npx prisma studio                       # GUI do banco
+npm run build                           # Build produção
+
+# Flutter
+cd app_flutter
+flutter pub get                         # Dependências
+flutter run -d chrome                   # Rodar no Chrome
+flutter build apk --release             # Build Android
+flutter build ios --release             # Build iOS
+
+# Deploy
+git push origin main                    # Deploy Railway automático
+git push origin main --tags v1.0.0      # Tag release
+```

@@ -10,15 +10,19 @@ import 'pr_service.dart';
 import 'workout_routine_model.dart';
 import 'progression_engine.dart';
 import '../exercises/exercise_model.dart';
+import '../../core/services/api_service.dart';
+import '../../core/services/workouts_api_service.dart';
 
 class WorkoutProvider extends ChangeNotifier {
   final FirebaseFirestore _db;
   final FirebaseAuth _auth;
   final ProgressionEngine _progressionEngine;
+  final WorkoutsApiService _api;
 
-  WorkoutProvider({FirebaseFirestore? db, FirebaseAuth? auth})
+  WorkoutProvider({FirebaseFirestore? db, FirebaseAuth? auth, WorkoutsApiService? api})
       : _db = db ?? FirebaseFirestore.instance,
         _auth = auth ?? FirebaseAuth.instance,
+        _api = api ?? WorkoutsApiService(),
         _progressionEngine = ProgressionEngine(
           db: db ?? FirebaseFirestore.instance,
           auth: auth ?? FirebaseAuth.instance,
@@ -106,19 +110,17 @@ class WorkoutProvider extends ChangeNotifier {
     return (dayOfYear / 7).ceil();
   }
 
-  // ── Gerenciar RIR por exercício ───────────────────────────────
-
+  // ── Gerenciar RIR por exercício ──
   void setRirForExercise(String exerciseId, int rir) {
     _rirByExercise[exerciseId] = rir.clamp(0, 5);
     notifyListeners();
   }
 
   int getRirForExercise(String exerciseId) {
-    return _rirByExercise[exerciseId] ?? 3; // default RIR 3 (moderado)
+    return _rirByExercise[exerciseId] ?? 3;
   }
 
-  // ── Iniciar sessão ────────────────────────────────────────────
-
+  // ── Iniciar sessão ──
   void startSession() {
     _isSessionActive = true;
     _sessionStart = DateTime.now();
@@ -143,10 +145,7 @@ class WorkoutProvider extends ChangeNotifier {
         exerciseId: re.exerciseId,
         exerciseName: re.name,
         muscleGroup: re.muscleGroup,
-        sets: List.generate(
-          re.sets,
-          (_) => WorkoutSet(reps: re.reps, weight: 0, volume: 0),
-        ),
+        sets: List.generate(re.sets, (_) => WorkoutSet(reps: re.reps, weight: 0, volume: 0)),
       );
       _currentExercises.add(entry);
     }
@@ -154,7 +153,6 @@ class WorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Inicia sessão a partir de uma PrescribedSession com metadados completos
   void startSessionFromPrescribed({
     required String sessionId,
     required String sessionName,
@@ -178,25 +176,16 @@ class WorkoutProvider extends ChangeNotifier {
         exerciseName: pe['exerciseName'] as String? ?? '',
         muscleGroup: pe['muscleGroup'] as String? ?? '',
         injuryNote: pe['injuryNote'] as String?,
-        sets: List.generate(
-          sets,
-          (_) => WorkoutSet(
-            reps: repsMax,
-            weight: defaultWeight,
-            volume: repsMax * defaultWeight,
-          ),
-        ),
+        sets: List.generate(sets, (_) => WorkoutSet(reps: repsMax, weight: defaultWeight, volume: repsMax * defaultWeight)),
       );
       _currentExercises.add(entry);
 
-      // Salva metadados para o motor de progressão
       _exerciseMetadata[exId] = {
         'isBodyweight': pe['isBodyweight'] ?? false,
         'progressionIds': pe['progressionIds'] ?? [],
         'substituteIds': pe['substituteIds'] ?? [],
       };
 
-      // RIR padrão do exercício prescrito
       final defaultRir = (pe['rir'] as int?) ?? 3;
       _rirByExercise[exId] = defaultRir;
     }
@@ -204,8 +193,7 @@ class WorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ── Adicionar/remover exercícios ──────────────────────────────
-
+  // ── Adicionar/remover exercícios ──
   void addExerciseToSession({
     required String exerciseId,
     required String exerciseName,
@@ -222,24 +210,17 @@ class WorkoutProvider extends ChangeNotifier {
     );
     for (int i = 0; i < defaultSeries; i++) {
       final vol = defaultReps * defaultWeight;
-      entry.sets.add(WorkoutSet(
-        reps: defaultReps,
-        weight: defaultWeight,
-        volume: vol,
-      ));
+      entry.sets.add(WorkoutSet(reps: defaultReps, weight: defaultWeight, volume: vol));
     }
     _currentExercises.add(entry);
 
-    // Salva metadados se exercício model disponível
     if (exerciseModel != null) {
       _exerciseMetadata[exerciseId] = {
-        'isBodyweight': exerciseModel.equipment.contains('bodyweight') &&
-            exerciseModel.equipment.length == 1,
+        'isBodyweight': exerciseModel.equipment.contains('bodyweight') && exerciseModel.equipment.length == 1,
         'progressionIds': exerciseModel.progressionIds,
         'substituteIds': exerciseModel.substituteIds,
       };
     }
-
     _saveSessionToLocal();
     notifyListeners();
   }
@@ -254,34 +235,23 @@ class WorkoutProvider extends ChangeNotifier {
 
   void replaceExerciseInSession(int index, ExerciseModel newEx) {
     if (index < 0 || index >= _currentExercises.length) return;
-    
     final oldEntry = _currentExercises[index];
-    
-    // Mantém o número de séries do exercício anterior para consistência
     final setsCount = oldEntry.sets.length;
     final reps = newEx.repRangeMax;
-    
+
     final newEntry = WorkoutExerciseEntry(
       exerciseId: newEx.id,
       exerciseName: newEx.name,
       muscleGroup: newEx.primaryMuscles.isNotEmpty ? newEx.primaryMuscles.first : 'Geral',
-      sets: List.generate(
-        setsCount,
-        (_) => WorkoutSet(reps: reps, weight: 0, volume: 0),
-      ),
+      sets: List.generate(setsCount, (_) => WorkoutSet(reps: reps, weight: 0, volume: 0)),
     );
 
     _currentExercises[index] = newEntry;
-    
-    // Atualiza metadados
     _exerciseMetadata[newEx.id] = {
       'isBodyweight': newEx.equipment.contains('bodyweight') && newEx.equipment.length == 1,
       'progressionIds': newEx.progressionIds,
       'substituteIds': newEx.substituteIds,
     };
-    
-    // Remove RIR do anterior se necessário ou deixa como está (será sobreposto ao salvar)
-    
     _saveSessionToLocal();
     notifyListeners();
   }
@@ -314,12 +284,7 @@ class WorkoutProvider extends ChangeNotifier {
     final last = exercise.sets.isNotEmpty ? exercise.sets.last : null;
     final reps = last?.reps ?? 10;
     final weight = last?.weight ?? 20;
-    exercise.sets.add(WorkoutSet(
-      reps: reps,
-      weight: weight,
-      volume: reps * weight,
-      isWarmup: false, // New sets default to normal sets
-    ));
+    exercise.sets.add(WorkoutSet(reps: reps, weight: weight, volume: reps * weight, isWarmup: false));
     _saveSessionToLocal();
     notifyListeners();
   }
@@ -337,19 +302,12 @@ class WorkoutProvider extends ChangeNotifier {
   void addWarmupSetForExercise(String exerciseId) {
     final idx = _currentExercises.indexWhere((e) => e.exerciseId == exerciseId);
     if (idx == -1) return;
-    
     final exercise = _currentExercises[idx];
     final lastSet = exercise.sets.isNotEmpty ? exercise.sets.last : null;
     final reps = lastSet?.reps ?? 12;
-    // Sugestão de carga de aquecimento: 50% da última 
     final weight = (lastSet?.weight ?? 20) * 0.5;
 
-    exercise.sets.insert(0, WorkoutSet(
-      reps: reps,
-      weight: weight,
-      volume: reps * weight,
-      isWarmup: true,
-    ));
+    exercise.sets.insert(0, WorkoutSet(reps: reps, weight: weight, volume: reps * weight, isWarmup: true));
     _saveSessionToLocal();
     notifyListeners();
   }
@@ -368,17 +326,35 @@ class WorkoutProvider extends ChangeNotifier {
     final rirCopy = Map<String, int>.from(_rirByExercise);
     final metaCopy = Map<String, Map<String, dynamic>>.from(_exerciseMetadata);
 
-    final session = {
-      'date': FieldValue.serverTimestamp(),
-      'weekNumber': currentWeekNumber,
-      'totalVolume': currentTotalVolume,
-      'exerciseCount': _currentExercises.length,
-      'exercises': _currentExercises.map((e) => e.toMap()).toList(),
-      'rirByExercise': rirCopy,
-      if (notes != null && notes.isNotEmpty) 'notes': notes,
-    };
+    // Tentar salvar via API própria
+    bool savedViaApi = false;
+    try {
+      await _api.createWorkout(
+        exercises: exercisesCopy,
+        durationMinutes: _sessionStart != null
+            ? DateTime.now().difference(_sessionStart!).inMinutes
+            : null,
+        notes: notes,
+      );
+      savedViaApi = true;
+    } catch (e) {
+      debugPrint('API não disponível, salvando no Firestore: $e');
+    }
 
-    await _db.collection('users/$uid/workouts').add(session);
+    // Fallback: salvar no Firestore
+    if (!savedViaApi) {
+      final session = {
+        'date': FieldValue.serverTimestamp(),
+        'weekNumber': currentWeekNumber,
+        'totalVolume': currentTotalVolume,
+        'exerciseCount': _currentExercises.length,
+        'exercises': _currentExercises.map((e) => e.toMap()).toList(),
+        'rirByExercise': rirCopy,
+        if (notes != null && notes.isNotEmpty) 'notes': notes,
+      };
+
+      await _db.collection('users/$uid/workouts').add(session);
+    }
 
     // Detecta PRs em background
     _newPrs = [];
@@ -431,6 +407,10 @@ class WorkoutProvider extends ChangeNotifier {
     _isLoadingHistory = true;
     notifyListeners();
 
+    // Tentar carregar da API primeiro
+    _loadHistoryFromApi();
+
+    // Também escutar Firestore como fallback
     _historySub?.cancel();
     _historySub = _db
         .collection('users/$uid/workouts')
@@ -450,12 +430,34 @@ class WorkoutProvider extends ChangeNotifier {
     );
   }
 
+  Future<void> _loadHistoryFromApi() async {
+    try {
+      final result = await _api.getWorkouts(limit: 20);
+      if (result.isNotEmpty) {
+        // API retornou dados — usar eles
+        final sessions = result.map((w) => WorkoutSession.fromMap(w)).toList();
+        _history = sessions;
+        _isLoadingHistory = false;
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('API não disponível para histórico, usando Firestore: $e');
+    }
+  }
+
   Future<void> deleteSession(String sessionId) async {
     final uid = _auth.currentUser?.uid;
     if (uid == null) return;
+
+    // Tentar deletar via API
+    try {
+      await _api.deleteWorkout(sessionId);
+    } catch (_) {
+      // Fallback para Firestore
+    }
+
     try {
       await _db.collection('users/$uid/workouts').doc(sessionId).delete();
-      // O listener de snapshots atualizará a lista automaticamente
     } catch (e) {
       debugPrint('Erro ao excluir sessão: $e');
       rethrow;
@@ -496,7 +498,7 @@ class WorkoutProvider extends ChangeNotifier {
       _isSessionActive = true;
       _sessionStart = DateTime.tryParse(data['sessionStart'] ?? '');
       _activeSessionName = data['activeSessionName'];
-      
+
       _currentExercises.clear();
       if (data['currentExercises'] != null) {
         for (var exMap in data['currentExercises']) {

@@ -118,4 +118,29 @@ class WorkoutSession {
       }).toList(),
     );
   }
+
+  factory WorkoutSession.fromMap(Map<String, dynamic> d) {
+    final rawExercises = (d['exercises'] as List<dynamic>?) ?? [];
+    return WorkoutSession(
+      id: d['id'] as String? ?? '',
+      date: d['date'] != null
+          ? DateTime.tryParse(d['date']) ?? DateTime.now()
+          : DateTime.now(),
+      weekNumber: (d['weekNumber'] as num?)?.toInt() ?? 1,
+      notes: d['notes'] as String?,
+      exercises: rawExercises.map((e) {
+        final em = e as Map<String, dynamic>;
+        final rawSets = (em['sets'] as List<dynamic>?) ?? [];
+        return WorkoutExerciseEntry(
+          exerciseId: em['exerciseId'] as String? ?? '',
+          exerciseName: em['exerciseName'] as String? ?? '',
+          muscleGroup: em['muscleGroup'] as String? ?? '',
+          sets: rawSets
+              .map((s) => WorkoutSet.fromMap(s as Map<String, dynamic>))
+              .toList(),
+          injuryNote: em['injuryNote'] as String?,
+        );
+      }).toList(),
+    );
+  }
 }

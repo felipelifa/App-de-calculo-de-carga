@@ -6,7 +6,7 @@ export class AnalyticsService {
   constructor(private prisma: PrismaService) {}
 
   async getWeeklyVolume(userId: string, weeks: number = 12) {
-    const results = [];
+    const results: { weekNumber: number; totalVolume: number; workoutCount: number }[] = [];
     const now = new Date();
 
     for (let i = 0; i < weeks; i++) {

@@ -1,0 +1,57 @@
+workflows:
+  buildfit-ios:
+    name: BuildFit iOS Build
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      groups:
+        - buildfit_credentials
+    triggering:
+      events:
+        - push
+        - tag
+        - pull_request
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+          source: true
+        - pattern: 'develop'
+          include: true
+          source: true
+      tag_patterns:
+        - pattern: 'v*'
+          include: true
+    scripts:
+      - name: Setup Environment
+        script: |
+          echo "FLUTTER_ROOT=$FLUTTER_ROOT"
+          flutter pub get
+      - name: Install Dependencies
+        script: |
+          cd app_flutter
+          flutter pub get
+      - name: Flutter Analyze
+        script: |
+          cd app_flutter
+          flutter analyze --no-pub
+      - name: iOS Build
+        script: |
+          cd app_flutter
+          flutter build ios --release --no-codesign
+          cd build/ios/iphoneos
+          mkdir -p Payload
+          mv Runner.app Payload/
+          zip -r ../app-release.ipa Payload/
+    artifacts:
+      - app_flutter/build/ios/**/*.ipa
+      - app_flutter/build/ios/**/*.dSYM.zip
+    publishing:
+      email:
+        recipients:
+          - admin@buildfit.com
+      firebase:
+        firebase_token: $FIREBASE_TOKEN
+        project_id: appcalculotreino-51f23

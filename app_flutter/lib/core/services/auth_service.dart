@@ -2,15 +2,16 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'api_service.dart';
 
 class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final ApiService _api = ApiService();
 
   StreamSubscription<User?>? _authSub;
 
   AuthService() {
-    // Escuta mudanças de estado e notifica o GoRouter imediatamente
     _authSub = _auth.authStateChanges().listen((_) {
       notifyListeners();
     });
@@ -23,7 +24,16 @@ class AuthService extends ChangeNotifier {
   Future<void> login(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      // notifyListeners() é chamado pelo stream acima automaticamente
+
+      // Sincronizar com backend próprio
+      final token = await _auth.currentUser?.getIdToken();
+      if (token != null) {
+        try {
+          await _api.post('/auth/validate', body: {'token': token});
+        } catch (_) {
+          // Backend pode não estar disponível, login local funciona
+        }
+      }
     } catch (e) {
       throw Exception(_handleAuthError(e));
     }
@@ -39,11 +49,23 @@ class AuthService extends ChangeNotifier {
       await cred.user?.updateDisplayName(name);
 
       if (cred.user != null) {
+        // Criar no Firestore (legado) E no backend próprio
         await _db.collection('users').doc(cred.user!.uid).set({
           'name': name,
           'email': email,
           'createdAt': FieldValue.serverTimestamp(),
         });
+
+        // Registrar no backend próprio
+        try {
+          await _api.post('/auth/register', body: {
+            'name': name,
+            'email': email,
+            'password': password,
+          });
+        } catch (_) {
+          // Backend pode não estar disponível
+        }
       }
     } catch (e) {
       throw Exception(_handleAuthError(e));
@@ -52,7 +74,6 @@ class AuthService extends ChangeNotifier {
 
   Future<void> logout() async {
     await _auth.signOut();
-    // notifyListeners() é chamado pelo stream acima automaticamente
   }
 
   @override

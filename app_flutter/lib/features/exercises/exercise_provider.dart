@@ -4,14 +4,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'exercise_model.dart';
 import '../../core/data/exercise_library.dart';
+import '../../core/services/api_service.dart';
 
 class ExerciseProvider extends ChangeNotifier {
   final FirebaseFirestore _db;
   final FirebaseAuth _auth;
+  final ApiService _api;
 
-  ExerciseProvider({FirebaseFirestore? db, FirebaseAuth? auth})
+  ExerciseProvider({FirebaseFirestore? db, FirebaseAuth? auth, ApiService? api})
     : _db = db ?? FirebaseFirestore.instance,
-      _auth = auth ?? FirebaseAuth.instance {
+      _auth = auth ?? FirebaseAuth.instance,
+      _api = api ?? ApiService() {
     _init();
   }
 
@@ -22,8 +25,6 @@ class ExerciseProvider extends ChangeNotifier {
   String? _error;
   StreamSubscription<QuerySnapshot>? _sub;
 
-  // 🔗 PROXY DE GIFs VIA NEXT.JS API ROUTE (sem CORS issues)
-  // Incrementar este timestamp força rebuild no Vercel
   static const String baseGifUrl =
       'https://app-calculo-carga.vercel.app/api/gif?ts=2';
 
@@ -52,13 +53,15 @@ class ExerciseProvider extends ChangeNotifier {
   }
 
   void _init() {
-    // Carrega imediatamente da biblioteca local para não bloquear a UI
+    // Carrega da biblioteca local primeiro
     _allExercises = List.from(exerciseLibrary);
     _isLoading = false;
     notifyListeners();
 
-    // Em paralelo, tenta buscar do Firestore global para sobrescrever
-    // (útil quando o admin popula exercícios com gifUrl no banco)
+    // Buscar do backend próprio
+    _loadFromApi();
+
+    // Escutar Firestore como fallback
     _sub = _db
         .collection('exercises')
         .orderBy('name')
@@ -66,8 +69,6 @@ class ExerciseProvider extends ChangeNotifier {
         .listen(
           (snap) {
             if (snap.docs.isNotEmpty) {
-              // Merge: combina os do Firestore com os da biblioteca local
-              // IDs do Firestore têm prioridade (podem ter gifUrl atualizado)
               final fromFirestore = snap.docs
                   .map(ExerciseModel.fromDoc)
                   .toList();
@@ -75,26 +76,47 @@ class ExerciseProvider extends ChangeNotifier {
               final localOnly = exerciseLibrary
                   .where((e) => !firestoreIds.contains(e.id))
                   .toList();
-              
+
               var merged = [...fromFirestore, ...localOnly];
-              
-              // Remove duplicados que terminam com '(1)', ex: "Abudção de quadril com faixa (1)"
               merged = merged.where((e) => !e.name.trim().endsWith('(1)')).toList();
-              
+
               _allExercises = merged;
             }
-            // Se vazio, mantém a biblioteca local já carregada
             _isLoading = false;
             _error = null;
             notifyListeners();
           },
           onError: (e) {
-            // Em caso de erro no Firestore, mantém a biblioteca local
-            _error = null; // não mostra erro — biblioteca local é suficiente
+            _error = null;
             _isLoading = false;
             notifyListeners();
           },
         );
+  }
+
+  Future<void> _loadFromApi() async {
+    try {
+      final result = await _api.get('/exercises', queryParams: {
+        'limit': '1000',
+      });
+
+      final data = result['data'] as List<dynamic>;
+      if (data.isNotEmpty) {
+        final exercises = data.map((e) => ExerciseModel.fromMap(e)).toList();
+        // Merge: API > local
+        final apiIds = exercises.map((e) => e.id).toSet();
+        final localOnly = exerciseLibrary
+            .where((e) => !apiIds.contains(e.id))
+            .toList();
+        _allExercises = [...exercises, ...localOnly];
+        _isLoading = false;
+        _error = null;
+        notifyListeners();
+      }
+    } catch (e) {
+      // Manter dados locais se API falhar
+      debugPrint('API não disponível, usando dados locais: $e');
+    }
   }
 
   Future<void> addExercise({
@@ -119,6 +141,26 @@ class ExerciseProvider extends ChangeNotifier {
       gifUrl: gifUrl,
     );
 
+    // Salvar no backend próprio
+    try {
+      await _api.post('/exercises', body: {
+        'id': exercise.id,
+        'name': exercise.name,
+        'primaryMuscles': exercise.primaryMuscles,
+        'secondaryMuscles': exercise.secondaryMuscles,
+        'movementPattern': 'isolation',
+        'equipment': exercise.equipment,
+        'environment': ['gym'],
+        'category': 'isolation',
+        'difficulty': 'beginner',
+        'repRangeMin': exercise.repRangeMin,
+        'repRangeMax': exercise.repRangeMax,
+      });
+    } catch (_) {
+      // Fallback para Firestore
+    }
+
+    // Salvar no Firestore (legado)
     await _db
         .collection('users/$uid/exercises')
         .doc(exercise.id)
@@ -138,13 +180,11 @@ class ExerciseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Retorna exercício por ID — busca na biblioteca completa
   ExerciseModel? getById(String id) {
     if (id.isEmpty) return null;
     try {
       return _allExercises.firstWhere((e) => e.id == id);
     } catch (_) {
-      // Fallback direto na biblioteca estática (nunca retorna null para IDs válidos)
       try {
         return exerciseLibrary.firstWhere((e) => e.id == id);
       } catch (_) {
@@ -153,7 +193,6 @@ class ExerciseProvider extends ChangeNotifier {
     }
   }
 
-  /// Resolve a URL do GIF com base no modelo ou no nome do exercício
   String? getEffectiveGifUrl(ExerciseModel ex) {
     final rawGifUrl = ex.gifUrl?.trim();
 
@@ -164,12 +203,10 @@ class ExerciseProvider extends ChangeNotifier {
           (parsed.scheme == 'http' || parsed.scheme == 'https') &&
           parsed.host.isNotEmpty;
 
-      // BLOQUEIA URLs do Firebase Storage - sempre usar proxy
       if (isAbsoluteHttp &&
           (rawGifUrl.contains('firebasestorage') ||
            rawGifUrl.contains('exercises_gifs') ||
            rawGifUrl.contains('biblioteca de gif') ||
-           rawGifUrl.contains('biblioteca de gifs') ||
            rawGifUrl.contains('/gifs/'))) {
         // Usa o proxy
       } else if (isAbsoluteHttp) {
@@ -177,8 +214,6 @@ class ExerciseProvider extends ChangeNotifier {
       }
     }
 
-    // Sempre usa o proxy do Next.js para evitar CORS no navegador
-    // Usa Uri.base.origin para funcionar em qualquer domínio (Vercel, localhost, etc)
     final origin = Uri.base.origin;
     final resolvedName = _extractNameFromGifUrl(rawGifUrl) ?? ex.name;
     final nameParam = Uri.encodeComponent(resolvedName);
@@ -203,6 +238,19 @@ class ExerciseProvider extends ChangeNotifier {
   Future<List<VolumeHistoryEntry>> getExerciseHistory(String exerciseId) async {
     final uid = _auth.currentUser?.uid;
     if (uid == null) return [];
+
+    // Tentar backend próprio
+    try {
+      final result = await _api.get('/progression/volume-history', queryParams: {
+        'exerciseId': exerciseId,
+      });
+
+      return (result as List<dynamic>)
+          .map((e) => VolumeHistoryEntry.fromMap(e))
+          .toList();
+    } catch (_) {
+      // Fallback para Firestore
+    }
 
     try {
       final snap = await _db

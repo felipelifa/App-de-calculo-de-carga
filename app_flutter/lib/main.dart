@@ -11,6 +11,14 @@ import 'firebase_options.dart';
 import 'core/router/app_router.dart';
 import 'core/services/auth_service.dart';
 import 'core/services/notification_service.dart';
+import 'core/services/api_service.dart';
+import 'core/services/workouts_api_service.dart';
+import 'core/services/analytics_api_service.dart';
+import 'core/services/nutrition_api_service.dart';
+import 'core/services/progression_api_service.dart';
+import 'core/services/prescription_api_service.dart';
+import 'core/services/pr_api_service.dart';
+import 'core/services/pro_api_service.dart';
 import 'features/exercises/exercise_provider.dart';
 import 'features/workout/workout_provider.dart';
 import 'features/workout/workout_profile_provider.dart';
@@ -118,6 +126,17 @@ class WorkoutApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // API Services
+        Provider<ApiService>(create: (_) => ApiService()),
+        Provider<WorkoutsApiService>(create: (_) => WorkoutsApiService()),
+        Provider<AnalyticsApiService>(create: (_) => AnalyticsApiService()),
+        Provider<NutritionApiService>(create: (_) => NutritionApiService()),
+        Provider<ProgressionApiService>(create: (_) => ProgressionApiService()),
+        Provider<PrescriptionApiService>(create: (_) => PrescriptionApiService()),
+        Provider<PrApiService>(create: (_) => PrApiService()),
+        Provider<ProApiService>(create: (_) => ProApiService()),
+
+        // Auth & Feature Providers
         ChangeNotifierProvider<AuthService>(create: (_) => AuthService()),
         ChangeNotifierProvider<ExerciseProvider>(
           create: (_) => ExerciseProvider(),
@@ -128,7 +147,6 @@ class WorkoutApp extends StatelessWidget {
         ChangeNotifierProvider<WorkoutProfileProvider>(
           create: (_) => WorkoutProfileProvider(),
         ),
-        // Motor de Progressão — registrado globalmente
         ChangeNotifierProvider<ProgressionProvider>(
           create: (_) => ProgressionProvider(),
         ),
