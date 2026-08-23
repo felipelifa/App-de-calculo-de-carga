@@ -4,25 +4,26 @@ import '../services/auth_service.dart';
 import '../services/pro_service.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/auth/register_screen.dart';
-import '../../features/dashboard/dashboard_screen.dart';
+import '../../features/dashboard/today_screen.dart';
 import '../../features/exercises/exercise_screen.dart';
 import '../../features/exercises/exercise_detail_screen.dart';
 import '../../features/exercises/add_exercise_screen.dart';
 import '../../features/exercises/progression_screen.dart';
-import '../../features/workout/workout_screen.dart';
+import '../../features/workout/simple_workout_screen.dart';
 import '../../features/workout/workout_history_screen.dart';
 import '../../features/analytics/analytics_screen.dart';
 import '../../features/workout/routine_list_screen.dart';
 import '../../features/workout/routine_detail_screen.dart';
 import '../../features/workout/workout_routine_model.dart';
-import '../../features/workout/anamnese_screen.dart';
+import '../../features/workout/onboarding_screen.dart';
 import '../../features/workout/prescribed_workout_screen.dart';
 import '../../features/auth/splash_screen.dart';
 import 'main_layout_screen.dart';
-import '../../features/nutrition/nutrition_screen.dart';
+import '../../features/nutrition/simple_nutrition_screen.dart';
 import '../../features/nutrition/food_search_screen.dart';
 import '../../features/nutrition/nutrition_settings_screen.dart';
 import '../../features/profile/profile_screen.dart';
+import '../../features/profile/change_history_screen.dart';
 import '../../features/nutrition/nutrition_anamnese_screen.dart';
 import '../../features/nutrition/nutrition_dashboard_screen.dart';
 import '../../features/workout/athlete_profile_screen.dart';
@@ -64,11 +65,11 @@ class AppRouter {
           routes: [
             GoRoute(
               path: '/dashboard',
-              builder: (context, state) => const DashboardScreen(),
+              builder: (context, state) => const TodayScreen(),
             ),
             GoRoute(
               path: '/nutrition',
-              builder: (context, state) => const NutritionScreen(),
+              builder: (context, state) => const SimpleNutritionScreen(),
             ),
             GoRoute(
               path: '/analytics',
@@ -121,7 +122,7 @@ class AppRouter {
         ),
         GoRoute(
           path: '/workout',
-          builder: (context, state) => const WorkoutScreen(),
+          builder: (context, state) => const SimpleWorkoutScreen(),
         ),
         GoRoute(
           path: '/workout/history',
@@ -140,13 +141,13 @@ class AppRouter {
         ),
         GoRoute(
           path: '/anamnese',
-          builder: (context, state) => const AnamneseScreen(),
+          builder: (context, state) => const OnboardingScreen(),
         ),
         GoRoute(
           path: '/athlete-profile',
           builder: (context, state) {
             final profile = state.extra as dynamic;
-            if (profile == null) return const AnamneseScreen();
+            if (profile == null) return const OnboardingScreen();
             return AthleteProfileScreen(profile: profile);
           },
         ),
@@ -170,6 +171,10 @@ class AppRouter {
         GoRoute(
           path: '/prescribed',
           builder: (context, state) => const PrescribedWorkoutScreen(),
+        ),
+        GoRoute(
+          path: '/change-history',
+          builder: (context, state) => const ChangeHistoryScreen(),
         ),
       ],
     );
