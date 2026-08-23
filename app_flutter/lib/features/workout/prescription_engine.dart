@@ -1276,18 +1276,30 @@ class WorkoutPrescriptionEngine {
     Map<String, int> vols,
     SessionFatigueAccumulator fatigue,
   ) {
-    final scapularIds = [
-      'face_pull',
-      'y_raise_trap3',
-      'rotacao_externa_elastico',
-      'prone_Y_cobra',
-      'band_pull_apart',
-    ];
+    // Exercícios scapulares por ambiente
+    final isHome = profile.environment.contains('home') || profile.environment == 'outdoor';
+    
+    List<String> scapularIds;
+    if (isHome) {
+      // Para casa: apenas exercícios bodyweight
+      scapularIds = [
+        'scapular_push_up',
+        'prone_scapular_retraction',
+        'wall_scapular_slide',
+      ];
+    } else {
+      // Para academia: todos os exercícios scapulares
+      scapularIds = [
+        'face_pull',
+        'scapular_push_up',
+        'prone_scapular_retraction',
+        'wall_scapular_slide',
+        'scapular_pull_up',
+      ];
+    }
 
-    // Preferência: maior score, mas respeitando fadiga
-    ExerciseModel? best;
-    double bestScore = -double.infinity;
-
+    // Filtrar exercícios que existem na biblioteca e são compatíveis
+    final availableExercises = <ExerciseModel>[];
     for (final id in scapularIds) {
       final ex = _library.firstWhere(
         (e) => e.id == id,
@@ -1296,11 +1308,38 @@ class WorkoutPrescriptionEngine {
         ),
       );
       if (ex.id.isEmpty) continue;
+      
+      // Verificar compatibilidade de ambiente/equipamento
+      if (isHome) {
+        if (!ex.environment.contains('home')) continue;
+        if (profile.availableEquipment.isEmpty) {
+          if (!ex.equipment.contains('bodyweight') && !ex.tags.contains('no_equipment')) {
+            continue;
+          }
+        } else {
+          if (!ex.equipment.any((eq) => 
+            profile.availableEquipment.contains(eq) || eq == 'bodyweight'
+          )) {
+            continue;
+          }
+        }
+      }
+      
+      availableExercises.add(ex);
+    }
 
+    if (availableExercises.isEmpty) return null;
+
+    // Preferência: maior score, mas respeitando fadiga
+    ExerciseModel? best;
+    double bestScore = -double.infinity;
+
+    for (final ex in availableExercises) {
       double score = _scoreExercise(ex, profile, fatigue, _seed);
-      // Bonus extra para face pull e Y-raise (mais evidência para impingement)
-      if (id == 'face_pull') score += 1.5;
-      if (id == 'y_raise_trap3') score += 1.0;
+      // Bonus extra para exercícios mais evidenciados
+      if (ex.id == 'face_pull') score += 1.5;
+      if (ex.id == 'scapular_push_up') score += 1.0;
+      if (ex.id == 'prone_scapular_retraction') score += 0.8;
 
       if (score > bestScore) {
         bestScore = score;
@@ -1365,7 +1404,9 @@ class WorkoutPrescriptionEngine {
       } 
       // Para academia, se o usuário especificou equipamentos (ex: academia básica), filtra
       else if (isFullGym && profile.availableEquipment.isNotEmpty) {
-        final hasMatchingEquip = ex.equipment.any((eq) => profile.availableEquipment.contains(eq));
+        final hasMatchingEquip = ex.equipment.any((eq) => 
+          profile.availableEquipment.contains(eq) || eq == 'bodyweight'
+        );
         if (!hasMatchingEquip) return false;
       }
 
@@ -1397,11 +1438,29 @@ class WorkoutPrescriptionEngine {
   List<PrescribedExercise> _buildRehabBlockUpper(
       WorkoutProfile profile, int daysPerWeek) {
     final result = <PrescribedExercise>[];
+    final isHome = profile.environment.contains('home') || profile.environment == 'outdoor';
+    
     for (final injury in profile.healthRestrictions
         .where((r) => ['shoulder', 'wrist', 'elbow'].contains(r))) {
       for (final id in (injuryRehabExercises[injury] ?? []).take(2)) {
         final ex = _library.firstWhere((e) => e.id == id, orElse: () => _library.first);
         if (ex.id == id) {
+          // Filtrar por ambiente/equipamento
+          if (isHome) {
+            if (!ex.environment.contains('home')) continue;
+            if (profile.availableEquipment.isEmpty) {
+              if (!ex.equipment.contains('bodyweight') && !ex.tags.contains('no_equipment')) {
+                continue;
+              }
+            } else {
+              if (!ex.equipment.any((eq) => 
+                profile.availableEquipment.contains(eq) || eq == 'bodyweight'
+              )) {
+                continue;
+              }
+            }
+          }
+          
           result.add(PrescribedExercise(
             exercise: ex,
             sets: 3,
@@ -1422,11 +1481,29 @@ class WorkoutPrescriptionEngine {
   List<PrescribedExercise> _buildRehabBlockLower(
       WorkoutProfile profile, int daysPerWeek) {
     final result = <PrescribedExercise>[];
+    final isHome = profile.environment.contains('home') || profile.environment == 'outdoor';
+    
     for (final injury in profile.healthRestrictions
         .where((r) => ['knee', 'lower_back', 'hip'].contains(r))) {
       for (final id in (injuryRehabExercises[injury] ?? []).take(2)) {
         final ex = _library.firstWhere((e) => e.id == id, orElse: () => _library.first);
         if (ex.id == id) {
+          // Filtrar por ambiente/equipamento
+          if (isHome) {
+            if (!ex.environment.contains('home')) continue;
+            if (profile.availableEquipment.isEmpty) {
+              if (!ex.equipment.contains('bodyweight') && !ex.tags.contains('no_equipment')) {
+                continue;
+              }
+            } else {
+              if (!ex.equipment.any((eq) => 
+                profile.availableEquipment.contains(eq) || eq == 'bodyweight'
+              )) {
+                continue;
+              }
+            }
+          }
+          
           result.add(PrescribedExercise(
             exercise: ex,
             sets: 3,
