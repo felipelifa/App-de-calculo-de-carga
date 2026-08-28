@@ -15,6 +15,7 @@ class ProService {
     'workout_history',
     'exercise_rotation',
     'full_dashboard',
+    'nutrition',
   };
 
   static const Set<String> freeFeatures = {

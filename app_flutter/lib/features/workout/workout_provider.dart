@@ -97,6 +97,8 @@ class WorkoutProvider extends ChangeNotifier {
       _currentExercises.fold(0, (acc, e) => acc + e.totalVolume);
 
   List<WorkoutSession> _history = [];
+  List<WorkoutSession> _apiHistory = [];
+  List<WorkoutSession> _firestoreHistory = [];
   bool _isLoadingHistory = false;
   StreamSubscription<QuerySnapshot>? _historySub;
 
@@ -317,10 +319,14 @@ class WorkoutProvider extends ChangeNotifier {
   Future<void> finishSession({
     String? notes,
     String experienceLevel = 'beginner',
+    int sessionsPerWeek = 3,
   }) async {
     final uid = _auth.currentUser?.uid;
     if (uid == null) throw Exception('Usuário não autenticado');
     if (_currentExercises.isEmpty) throw Exception('Nenhum exercício registrado');
+    if (!_currentExercises.any((exercise) => exercise.hasCompletedWork)) {
+      throw Exception('Marque pelo menos uma série concluída antes de salvar');
+    }
 
     final exercisesCopy = List<WorkoutExerciseEntry>.from(_currentExercises);
     final rirCopy = Map<String, int>.from(_rirByExercise);
@@ -373,6 +379,7 @@ class WorkoutProvider extends ChangeNotifier {
           rirByExercise: rirCopy,
           exerciseMetadata: metaCopy,
           experienceLevel: experienceLevel,
+          sessionsPerWeek: sessionsPerWeek,
         )
         .then((decisions) {
       _progressionDecisions = decisions;
@@ -419,7 +426,8 @@ class WorkoutProvider extends ChangeNotifier {
         .snapshots()
         .listen(
       (snap) {
-        _history = snap.docs.map(WorkoutSession.fromDoc).toList();
+        _firestoreHistory = snap.docs.map(WorkoutSession.fromDoc).toList();
+        _publishHistory();
         _isLoadingHistory = false;
         notifyListeners();
       },
@@ -436,13 +444,26 @@ class WorkoutProvider extends ChangeNotifier {
       if (result.isNotEmpty) {
         // API retornou dados — usar eles
         final sessions = result.map((w) => WorkoutSession.fromMap(w)).toList();
-        _history = sessions;
+        _apiHistory = sessions;
+        _publishHistory();
         _isLoadingHistory = false;
         notifyListeners();
       }
     } catch (e) {
       debugPrint('API não disponível para histórico, usando Firestore: $e');
     }
+  }
+
+  void _publishHistory() {
+    final byId = <String, WorkoutSession>{};
+    for (final session in _apiHistory) {
+      byId[session.id] = session;
+    }
+    for (final session in _firestoreHistory) {
+      byId[session.id] = session;
+    }
+    _history = byId.values.toList()
+      ..sort((a, b) => b.date.compareTo(a.date));
   }
 
   Future<void> deleteSession(String sessionId) async {
@@ -462,6 +483,13 @@ class WorkoutProvider extends ChangeNotifier {
       debugPrint('Erro ao excluir sessão: $e');
       rethrow;
     }
+
+    // Atualizar lista local e notificar UI
+    _history.removeWhere((s) => s.id == sessionId);
+    _apiHistory.removeWhere((s) => s.id == sessionId);
+    _firestoreHistory.removeWhere((s) => s.id == sessionId);
+    _publishHistory();
+    notifyListeners();
   }
 
   // ── Persistência Local (F5 proof) ──────────────────────────

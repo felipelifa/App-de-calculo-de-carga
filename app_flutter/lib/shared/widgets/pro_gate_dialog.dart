@@ -25,7 +25,6 @@ class _ProGateDialog extends StatefulWidget {
 }
 
 class _ProGateDialogState extends State<_ProGateDialog> {
-  bool _loading = false;
   bool _redeeming = false;
   final _tokenController = TextEditingController();
   String? _tokenMessage;
@@ -35,12 +34,6 @@ class _ProGateDialogState extends State<_ProGateDialog> {
   void dispose() {
     _tokenController.dispose();
     super.dispose();
-  }
-
-  Future<void> _activateProTest() async {
-    setState(() => _loading = true);
-    await ProService.setProStatus(true);
-    if (mounted) Navigator.of(context).pop();
   }
 
   Future<void> _redeemToken() async {
@@ -175,37 +168,6 @@ class _ProGateDialogState extends State<_ProGateDialog> {
                   ],
                 ),
               ],
-              const SizedBox(height: 8),
-              // Botão de ativação para teste (pode ser removido em produção)
-              const Divider(color: Color(0xFF333344)),
-              const SizedBox(height: 8),
-              if (_loading)
-                const SizedBox(
-                  width: 24, height: 24,
-                  child: CircularProgressIndicator(color: AppTheme.accent, strokeWidth: 2),
-                )
-              else
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: _activateProTest,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: AppTheme.surfaceHighlight,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: Text(
-                      'Ativar Pro (teste local)',
-                      style: const TextStyle(
-                        color: AppTheme.textSecondary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                ),
               const SizedBox(height: 8),
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),

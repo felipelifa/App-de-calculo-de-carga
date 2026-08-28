@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { NutritionController } from './nutrition.controller';
 import { NutritionService } from './nutrition.service';
-import { PrismaService } from '../../common/services/prisma.service';
-import { FirebaseService } from '../../common/services/firebase.service';
+import { CommonModule } from '../../common/common.module';
 
 @Module({
+  imports: [CommonModule],
   controllers: [NutritionController],
-  providers: [NutritionService, PrismaService, FirebaseService],
+  providers: [NutritionService],
   exports: [NutritionService],
 })
 export class NutritionModule {}

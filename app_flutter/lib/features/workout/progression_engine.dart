@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -68,6 +69,7 @@ class ExerciseProgressState {
   final List<String> progressionIds; // próximos exercícios na cadeia
   final List<String> substituteIds;
   final bool sessionCompletedAllReps; // completou todas as reps da última sessão
+  final int consecutiveSuccessfulSessions;
 
   const ExerciseProgressState({
     required this.exerciseId,
@@ -81,6 +83,7 @@ class ExerciseProgressState {
     this.progressionIds = const [],
     this.substituteIds = const [],
     this.sessionCompletedAllReps = true,
+    this.consecutiveSuccessfulSessions = 0,
   });
 
   Map<String, dynamic> toMap() => {
@@ -95,6 +98,7 @@ class ExerciseProgressState {
         'progressionIds': progressionIds,
         'substituteIds': substituteIds,
         'sessionCompletedAllReps': sessionCompletedAllReps,
+        'consecutiveSuccessfulSessions': consecutiveSuccessfulSessions,
       };
 
   factory ExerciseProgressState.fromMap(Map<String, dynamic> map) {
@@ -110,6 +114,8 @@ class ExerciseProgressState {
       progressionIds: List<String>.from(map['progressionIds'] ?? []),
       substituteIds: List<String>.from(map['substituteIds'] ?? []),
       sessionCompletedAllReps: map['sessionCompletedAllReps'] as bool? ?? true,
+      consecutiveSuccessfulSessions:
+          (map['consecutiveSuccessfulSessions'] as num?)?.toInt() ?? 0,
     );
   }
 }
@@ -127,6 +133,7 @@ class ProgressionState {
   final Map<String, ExerciseProgressState> exerciseProgress;
   final Map<String, int> weeklyVolumeActual; // séries realizadas por grupo
   final DateTime lastUpdated;
+  final int sessionsInCurrentWeek;
 
   const ProgressionState({
     required this.currentWeek,
@@ -137,6 +144,7 @@ class ProgressionState {
     required this.exerciseProgress,
     required this.weeklyVolumeActual,
     required this.lastUpdated,
+    this.sessionsInCurrentWeek = 0,
   });
 
   Map<String, dynamic> toMap() => {
@@ -149,19 +157,23 @@ class ProgressionState {
             .map((k, v) => MapEntry(k, v.toMap())),
         'weeklyVolumeActual': weeklyVolumeActual,
         'lastUpdated': lastUpdated.toIso8601String(),
+        'sessionsInCurrentWeek': sessionsInCurrentWeek,
       };
 
   factory ProgressionState.fromMap(Map<String, dynamic>? map) {
-    if (map == null) return ProgressionState(
-      currentWeek: 1,
-      currentPhase: 'accumulation',
-      periodizationModel: 'linear',
-      isDeloadWeek: false,
-      weeksUntilDeload: 4,
-      exerciseProgress: {},
-      weeklyVolumeActual: {},
-      lastUpdated: DateTime.now(),
-    );
+    if (map == null) {
+      return ProgressionState(
+        currentWeek: 1,
+        currentPhase: 'accumulation',
+        periodizationModel: 'linear',
+        isDeloadWeek: false,
+        weeksUntilDeload: 4,
+        exerciseProgress: {},
+        weeklyVolumeActual: {},
+        lastUpdated: DateTime.now(),
+        sessionsInCurrentWeek: 0,
+      );
+    }
 
     final epRaw = map['exerciseProgress'] as Map<String, dynamic>? ?? {};
     final wvRaw = map['weeklyVolumeActual'] as Map<String, dynamic>? ?? {};
@@ -179,6 +191,8 @@ class ProgressionState {
       lastUpdated: map['lastUpdated'] != null
           ? DateTime.tryParse(map['lastUpdated'] as String) ?? DateTime.now()
           : DateTime.now(),
+      sessionsInCurrentWeek:
+          (map['sessionsInCurrentWeek'] as num?)?.toInt() ?? 0,
     );
   }
 
@@ -189,6 +203,7 @@ class ProgressionState {
     int? weeksUntilDeload,
     Map<String, ExerciseProgressState>? exerciseProgress,
     Map<String, int>? weeklyVolumeActual,
+    int? sessionsInCurrentWeek,
   }) {
     return ProgressionState(
       currentWeek: currentWeek ?? this.currentWeek,
@@ -199,6 +214,7 @@ class ProgressionState {
       exerciseProgress: exerciseProgress ?? this.exerciseProgress,
       weeklyVolumeActual: weeklyVolumeActual ?? this.weeklyVolumeActual,
       lastUpdated: DateTime.now(),
+      sessionsInCurrentWeek: sessionsInCurrentWeek ?? this.sessionsInCurrentWeek,
     );
   }
 }
@@ -260,6 +276,7 @@ class ProgressionEngine {
       exerciseProgress: {},
       weeklyVolumeActual: {},
       lastUpdated: DateTime.now(),
+      sessionsInCurrentWeek: 0,
     );
     await saveState(state);
     return state;
@@ -279,6 +296,7 @@ class ProgressionEngine {
     required Map<String, int> rirByExercise,
     required Map<String, Map<String, dynamic>> exerciseMetadata,
     required String experienceLevel,
+    int sessionsPerWeek = 3,
   }) async {
     ProgressionState state = await loadState() ??
         await initializeForNewWorkout(
@@ -311,6 +329,7 @@ class ProgressionEngine {
     final updatedProgress = Map<String, ExerciseProgressState>.from(
       state.exerciseProgress,
     );
+    final weeklyVolumeActual = Map<String, int>.from(state.weeklyVolumeActual);
 
     for (final entry in workoutEntries) {
       final exId = entry.exerciseId;
@@ -323,24 +342,34 @@ class ProgressionEngine {
       final substituteIds = List<String>.from(meta['substituteIds'] ?? []);
 
       // Calcula métricas da sessão
+      final workingSets = entry.sets.where((set) => !set.isWarmup).toList();
+      if (workingSets.isEmpty) continue;
+
       double maxWeight = 0;
       int totalReps = 0;
       bool completedAllSets = true;
 
-      for (final set in entry.sets) {
+      for (final set in workingSets) {
         if (set.weight > maxWeight) maxWeight = set.weight;
         totalReps += set.reps;
-        if (set.reps == 0) completedAllSets = false;
+        if (!set.isCompleted || set.reps <= 0) completedAllSets = false;
       }
-      final avgReps = (totalReps / entry.sets.length).round();
+      final avgReps = (totalReps / workingSets.length).round();
+      final completedVolume = workingSets
+          .where((set) => set.isCompleted)
+          .fold<double>(0, (sum, set) => sum + set.volume);
+      final muscle = entry.muscleGroup.isEmpty ? 'unknown' : entry.muscleGroup;
+      weeklyVolumeActual[muscle] =
+          (weeklyVolumeActual[muscle] ?? 0) + completedVolume.round();
 
       // Estado anterior deste exercício
       final prev = state.exerciseProgress[exId];
 
       // Verifica progressão
-      final hasMadeProgress = prev == null ||
-          maxWeight > prev.lastWeightKg ||
-          avgReps > prev.lastRepsCompleted;
+      final hasMadeProgress = completedAllSets &&
+          (prev == null ||
+              maxWeight > prev.lastWeightKg ||
+              avgReps > prev.lastRepsCompleted);
 
       final newSessionsWithoutProgress = hasMadeProgress
           ? 0
@@ -349,6 +378,9 @@ class ProgressionEngine {
       final newConsecutiveFailures = completedAllSets
           ? 0
           : (prev?.consecutiveFailures ?? 0) + 1;
+      final successfulHighRirSessions = completedAllSets && rir >= 3
+          ? (prev?.consecutiveSuccessfulSessions ?? 0) + 1
+          : 0;
 
       // Aplica tabela de decisão
       final decision = _decide(
@@ -361,7 +393,7 @@ class ProgressionEngine {
         isBodyweight: isBodyweight,
         progressionIds: progressionIds,
         substituteIds: substituteIds,
-        prevSessionsWithProgress: !hasMadeProgress ? (prev?.sessionsWithoutProgress ?? 0) : 0,
+        consecutiveSuccessfulSessions: successfulHighRirSessions,
       );
 
       decisions.add(decision);
@@ -379,16 +411,23 @@ class ProgressionEngine {
         progressionIds: progressionIds,
         substituteIds: substituteIds,
         sessionCompletedAllReps: completedAllSets,
+        consecutiveSuccessfulSessions: successfulHighRirSessions,
       );
     }
 
-    // Avança semana e salva
-    final nextWeek = state.currentWeek + 1;
+    // Uma semana de progressão só termina após o número esperado de sessões.
+    final completedSessions = state.sessionsInCurrentWeek + 1;
+    final weekFinished = completedSessions >= sessionsPerWeek;
+    final nextWeek = weekFinished ? state.currentWeek + 1 : state.currentWeek;
     final newState = state.copyWith(
       currentWeek: nextWeek,
-      weeksUntilDeload: state.weeksUntilDeload - 1,
+      weeksUntilDeload: weekFinished
+          ? max(0, state.weeksUntilDeload - 1)
+          : state.weeksUntilDeload,
       isDeloadWeek: false,
       exerciseProgress: updatedProgress,
+      weeklyVolumeActual: weekFinished ? {} : weeklyVolumeActual,
+      sessionsInCurrentWeek: weekFinished ? 0 : completedSessions,
       currentPhase: _currentPhase(
         state.periodizationModel,
         nextWeek,
@@ -412,7 +451,7 @@ class ProgressionEngine {
     required bool isBodyweight,
     required List<String> progressionIds,
     required List<String> substituteIds,
-    required int prevSessionsWithProgress,
+    required int consecutiveSuccessfulSessions,
   }) {
     // ── Regra 1: Substituição por plateau (3 sessões sem progressão)
     if (sessionsWithoutProgress >= 3 && substituteIds.isNotEmpty) {
@@ -444,7 +483,7 @@ class ProgressionEngine {
     // ── Regra 3: Bodyweight — avançar na cadeia
     if (isBodyweight && rir >= 3 && progressionIds.isNotEmpty) {
       // Avança 2 sessões consecutivas com RIR >= 3
-      if (prevSessionsWithProgress == 0) {
+      if (consecutiveSuccessfulSessions < 2) {
         // Esta é a primeira sessão com RIR >= 3 — consolidar por 1 mais
         return ProgressionDecision(
           exerciseId: exerciseId,

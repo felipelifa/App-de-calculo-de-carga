@@ -3,68 +3,54 @@ import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { ProgressionService } from './progression.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { FirebaseAuthGuard } from '../../common/guards/firebase-auth.guard';
+import { ProGuard } from '../../common/guards/pro.guard';
 
 @ApiTags('progression')
 @Controller('progression')
-@UseGuards(FirebaseAuthGuard)
+@UseGuards(FirebaseAuthGuard, ProGuard)
 @ApiBearerAuth()
 export class ProgressionController {
   constructor(private progressionService: ProgressionService) {}
 
   @Get('state')
   @ApiOperation({ summary: 'Obter estado de progressão' })
-  async getState(@CurrentUser('uid') uid: string) {
-    const user = await this.getUser(uid);
-    return this.progressionService.getState(user.id);
+  async getState(@CurrentUser('id') userId: string) {
+    return this.progressionService.getState(userId);
   }
 
   @Put('state')
   @ApiOperation({ summary: 'Atualizar estado de progressão' })
   async updateState(
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
     @Body() body: any,
   ) {
-    const user = await this.getUser(uid);
-    return this.progressionService.updateState(user.id, body);
+    return this.progressionService.updateState(userId, body);
   }
 
   @Get('suggestions')
   @ApiOperation({ summary: 'Obter sugestões de progressão' })
   async getSuggestions(
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
     @Query('exerciseId') exerciseId?: string,
   ) {
-    const user = await this.getUser(uid);
-    return this.progressionService.getSuggestions(user.id, exerciseId);
+    return this.progressionService.getSuggestions(userId, exerciseId);
   }
 
   @Post('suggestions')
   @ApiOperation({ summary: 'Salvar sugestões de progressão' })
   async saveSuggestions(
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
     @Body() body: { suggestions: any[] },
   ) {
-    const user = await this.getUser(uid);
-    return this.progressionService.saveSuggestions(user.id, body.suggestions);
+    return this.progressionService.saveSuggestions(userId, body.suggestions);
   }
 
   @Get('volume-history')
   @ApiOperation({ summary: 'Histórico de volume por exercício' })
   async getVolumeHistory(
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
     @Query('exerciseId') exerciseId: string,
   ) {
-    const user = await this.getUser(uid);
-    return this.progressionService.getVolumeHistory(user.id, exerciseId);
-  }
-
-  private async getUser(uid: string) {
-    const { PrismaService } = await import('../../common/services/prisma.service');
-    const prisma = new PrismaService();
-    await prisma.onModuleInit();
-    const user = await prisma.user.findUnique({ where: { firebaseUid: uid } });
-    await prisma.onModuleDestroy();
-    if (!user) throw new Error('User not found');
-    return user;
+    return this.progressionService.getVolumeHistory(userId, exerciseId);
   }
 }

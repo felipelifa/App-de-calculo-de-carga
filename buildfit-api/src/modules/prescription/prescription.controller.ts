@@ -3,65 +3,61 @@ import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { PrescriptionService } from './prescription.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { FirebaseAuthGuard } from '../../common/guards/firebase-auth.guard';
+import { ProGuard } from '../../common/guards/pro.guard';
 
 @ApiTags('prescription')
 @Controller('prescription')
-@UseGuards(FirebaseAuthGuard)
+@UseGuards(FirebaseAuthGuard, ProGuard)
 @ApiBearerAuth()
 export class PrescriptionController {
   constructor(private prescriptionService: PrescriptionService) {}
 
   @Get()
   @ApiOperation({ summary: 'Obter plano de treino ativo' })
-  async getActive(@CurrentUser('uid') uid: string) {
-    const user = await this.getUser(uid);
-    return this.prescriptionService.getActiveWorkout(user.id);
+  async getActive(@CurrentUser('id') userId: string) {
+    return this.prescriptionService.getActiveWorkout(userId);
   }
 
   @Get('all')
   @ApiOperation({ summary: 'Listar todos os planos de treino' })
-  async getAll(@CurrentUser('uid') uid: string) {
-    const user = await this.getUser(uid);
-    return this.prescriptionService.getAllWorkouts(user.id);
+  async getAll(@CurrentUser('id') userId: string) {
+    return this.prescriptionService.getAllWorkouts(userId);
   }
 
   @Post()
   @ApiOperation({ summary: 'Salvar plano de treino gerado' })
   async save(
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
     @Body() body: any,
   ) {
-    const user = await this.getUser(uid);
-    return this.prescriptionService.saveWorkout(user.id, body);
+    return this.prescriptionService.saveWorkout(userId, body);
   }
 
   @Put(':id/activate')
   @ApiOperation({ summary: 'Ativar plano de treino' })
   async activate(
     @Param('id') id: string,
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
   ) {
-    const user = await this.getUser(uid);
-    return this.prescriptionService.activateWorkout(user.id, id);
+    return this.prescriptionService.activateWorkout(userId, id);
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Atualizar plano de treino' })
+  async update(
+    @Param('id') id: string,
+    @CurrentUser('id') userId: string,
+    @Body() body: any,
+  ) {
+    return this.prescriptionService.updateWorkout(userId, id, body);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Deletar plano de treino' })
   async delete(
     @Param('id') id: string,
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
   ) {
-    const user = await this.getUser(uid);
-    return this.prescriptionService.deleteWorkout(user.id, id);
-  }
-
-  private async getUser(uid: string) {
-    const { PrismaService } = await import('../../common/services/prisma.service');
-    const prisma = new PrismaService();
-    await prisma.onModuleInit();
-    const user = await prisma.user.findUnique({ where: { firebaseUid: uid } });
-    await prisma.onModuleDestroy();
-    if (!user) throw new Error('User not found');
-    return user;
+    return this.prescriptionService.deleteWorkout(userId, id);
   }
 }

@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-import '../exercises/exercise_model.dart';
 import 'prescribed_workout_model.dart';
 
 /// 🧬 BIO-ADAPTIVE ENGINE v6.0
@@ -33,9 +31,10 @@ class BioAdaptiveEngine {
       accumulatedKnee += session.fatigue.kneeStress;
     }
 
-    // Médias normalizadas
-    final avgCns = (accumulatedCns / 3) * (1.2 - sleepQualityScore); 
-    final avgJoint = (accumulatedSpinal + accumulatedShoulder + accumulatedKnee) / 9;
+    // Médias normalizadas (dividir pelo número real de sessões analisadas)
+    final count = sessionsToAnalyze.length;
+    final avgCns = (accumulatedCns / count) * (1.2 - sleepQualityScore);
+    final avgJoint = (accumulatedSpinal + accumulatedShoulder + accumulatedKnee) / (count * 3);
 
     // Determina o estado
     BioStatus status = BioStatus.optimal;

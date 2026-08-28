@@ -2,8 +2,8 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const srcDir = path.join(__dirname, 'public/treino');
-const destDir = path.join(__dirname, 'out/treino');
+const srcDir = path.join(__dirname, '..', 'public/treino');
+const destDir = path.join(__dirname, '..', 'out/treino');
 
 console.log('Building Next.js...');
 execSync('npx next build', { stdio: 'inherit' });

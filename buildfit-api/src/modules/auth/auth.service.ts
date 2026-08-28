@@ -70,9 +70,9 @@ export class AuthService {
     }
   }
 
-  async getProfile(firebaseUid: string) {
+  async getProfile(userId: string) {
     return this.prisma.user.findUnique({
-      where: { firebaseUid },
+      where: { id: userId },
       include: {
         profile: true,
         _count: {

@@ -23,7 +23,7 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Validar token e retornar perfil' })
   @ApiResponse({ status: 200, description: 'Perfil do usuário' })
-  async validate(@CurrentUser('uid') uid: string) {
-    return this.authService.getProfile(uid);
+  async validate(@CurrentUser('id') userId: string) {
+    return this.authService.getProfile(userId);
   }
 }

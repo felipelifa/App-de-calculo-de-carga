@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import '../exercises/exercise_model.dart';
 import 'workout_profile_model.dart';
 import 'prescribed_workout_model.dart';
@@ -6,6 +7,10 @@ import 'session_fatigue_accumulator.dart';
 import 'exercise_rotation_manager.dart';
 import 'sport_plan_builders.dart';
 import '../../core/data/exercise_library.dart';
+import 'exercise_compatibility.dart';
+import 'exercise_dna.dart';
+import 'training_readiness.dart';
+import 'age_modifier.dart';
 
 // ═══════════════════════════════════════════════════════════════
 // MOTOR DE PRESCRIÇÃO v4.0
@@ -76,8 +81,11 @@ class WorkoutPrescriptionEngine {
       splitType = _selectSplit(profile);
       periodization = _selectPeriodization(profile);
       sessions = _buildSessions(profile, splitType, periodization);
-      sessions = _applyClinicalAdjustments(profile, sessions);
     }
+
+    // Builders diferentes devem obedecer às mesmas hard constraints.
+    sessions = _applyClinicalAdjustments(profile, sessions);
+    sessions = _auditAndSanitizeSessions(profile, sessions);
 
     // Registra padrões usados
     for (int i = 0; i < sessions.length; i++) {
@@ -88,6 +96,16 @@ class WorkoutPrescriptionEngine {
       _patternHistory.recordDay(dayKey, patterns);
     }
 
+    final envLabel = ExerciseCompatibility.isHome(profile.environment)
+        ? 'casa' : 'academia';
+    final totalExercises = sessions.fold(0, (sum, s) => sum + s.exercises.length);
+    final planExplanation = 'Plano de ${sessions.length} sessões com '
+        '$totalExercises exercícios, '
+        'divisão ${splitType.replaceAll('_', ' ')} '
+        '(${periodization.replaceAll('_', ' ')}) '
+        'compatível com $envLabel. '
+        '${profile.calibrationActive ? "Em fase de calibração — priorizando exercícios simples e seguros." : ""}';
+
     return GeneratedWorkout(
       id: 'gen_${DateTime.now().millisecondsSinceEpoch}',
       userId: profile.uid,
@@ -96,6 +114,7 @@ class WorkoutPrescriptionEngine {
       sessions: sessions,
       mesocycleDurationWeeks: _mesocycleDuration(profile),
       generatedAt: DateTime.now(),
+      planExplanation: planExplanation,
     );
   }
 
@@ -182,6 +201,59 @@ class WorkoutPrescriptionEngine {
       ));
     }
     return adjusted;
+  }
+
+  List<PrescribedSession> _auditAndSanitizeSessions(
+      WorkoutProfile profile, List<PrescribedSession> sessions) {
+    final originalCount = sessions.fold(0, (sum, s) => sum + s.exercises.length);
+
+    final result = sessions.map((session) {
+      final sessionFatigue = SessionFatigueAccumulator();
+      final safeExercises = <PrescribedExercise>[];
+      for (final prescribed in session.exercises) {
+        if (!ExerciseCompatibility.isCompatible(profile, prescribed.exercise)) {
+          continue;
+        }
+        if (!sessionFatigue.canAdd(prescribed.exercise, prescribed.sets)) {
+          continue;
+        }
+        sessionFatigue.add(prescribed.exercise, prescribed.sets);
+        safeExercises.add(prescribed);
+      }
+
+      final envLabel = ExerciseCompatibility.isHome(profile.environment)
+          ? 'casa' : 'academia';
+      final userExplanation = 'Treino de ${session.name.toLowerCase()} '
+          'com ${safeExercises.length} exercícios compatíveis com seu ambiente ($envLabel). '
+          'Objetivo: ${session.objective}';
+
+      // Sensibilidade: se muitos exercícios foram removidos, marcar decisão frágil
+      if (safeExercises.length < 2 && session.exercises.isNotEmpty) {
+        debugPrint('AVISO MOTOR: sessão ${session.name} ficou com apenas '
+            '${safeExercises.length} exercício(s) após auditoria.');
+      }
+
+      return PrescribedSession(
+        id: session.id,
+        name: session.name,
+        objective: session.objective,
+        estimatedDurationMinutes: session.estimatedDurationMinutes,
+        warmupInstructions: session.warmupInstructions,
+        exercises: safeExercises,
+        progressionNote: session.progressionNote,
+        fatigue: _fatigueMetrics(sessionFatigue),
+        userExplanation: userExplanation,
+      );
+    }).where((session) => session.exercises.isNotEmpty).toList();
+
+    // Sensibilidade global
+    final sanitizedCount = result.fold(0, (sum, s) => sum + s.exercises.length);
+    if (originalCount > 0 && sanitizedCount / originalCount < 0.6) {
+      debugPrint('AVISO MOTOR: ${(sanitizedCount / originalCount * 100).round()}% '
+          'dos exercícios restaram após auditoria. Decisão pode ser frágil.');
+    }
+
+    return result;
   }
 
   PrescribedExercise _handleInjuryRules(WorkoutProfile profile, PrescribedExercise pe) {
@@ -326,6 +398,22 @@ class WorkoutPrescriptionEngine {
     // BF baixo em iniciantes = potencial maior, +5%
     if (profile.bodyFatCategory == 'low' && isBeginner) recoveryMod += 0.05;
     recoveryMod = recoveryMod.clamp(0.65, 1.1);
+    final readiness = DailyReadiness.fromProfile(
+      sleepQuality: profile.sleepQuality,
+      stressLevel: profile.stressLevel,
+      lifeLoad: profile.lifeLoad,
+    );
+    recoveryMod *= readiness.volumeMultiplier;
+    if (profile.calibrationActive) recoveryMod *= 0.85;
+
+    // Modificador de idade: não regra rígida, apenas modificador contextual
+    final ageVolMod = AgeModifier.volumeModifier(
+      age: profile.age,
+      experienceLevel: profile.experienceLevel,
+      fitnessCapacity: profile.adaptive.volumeTolerance,
+      recoveryCapacity: profile.adaptive.recoveryCapacity,
+    );
+    recoveryMod *= ageVolMod;
 
     // Helper para extrair volume das faixas
     int getVol(List<int> rangeINI, List<int> rangeINT) {
@@ -684,7 +772,6 @@ class WorkoutPrescriptionEngine {
     required _DupPhase phase,
     required String periodization,
   }) {
-    final isA = slot.isEven;
     final exercises = <PrescribedExercise?>[];
     final fatigue = SessionFatigueAccumulator();
     final dupLabel = _dupLabel(phase, periodization);
@@ -744,7 +831,7 @@ class WorkoutPrescriptionEngine {
       sessions.add(_buildPushSession('B', profile, vols, slot: 1, periodization: periodization, phase: _dupPhase(periodization, 3, 3)));
       sessions.add(_buildPullSession('B', profile, vols, slot: 1, periodization: periodization, phase: _dupPhase(periodization, 4, 3)));
       sessions.add(_buildLegsSession('B', profile, vols, slot: 1, periodization: periodization, phase: _dupPhase(periodization, 5, 3)));
-    } else if (splitType == 'ppl_5days') {
+    } else if (splitType == 'ppl_5days' || splitType == 'ppl_ul_hybrid') {
       sessions.add(_buildPushSession('B', profile, vols, slot: 1, periodization: periodization, phase: _dupPhase(periodization, 3, 3)));
       sessions.add(_buildPullSession('B', profile, vols, slot: 1, periodization: periodization, phase: _dupPhase(periodization, 4, 3)));
     }
@@ -1073,9 +1160,23 @@ class WorkoutPrescriptionEngine {
 
     for (final candidate in candidates) {
       double score = 0;
+      final dna = ExerciseDna.fromExercise(candidate);
+      final desiredCapabilities = _desiredCapabilities(profile);
 
       // Positivos
       score += 2.0; // baseline
+      score += desiredCapabilities
+              .where(dna.capabilities.contains)
+              .length *
+          0.8;
+      // Em sessões curtas, densidade de função e baixo custo têm prioridade.
+      score -= dna.recoveryCost * 0.75;
+      if (profile.sessionDurationMinutes <= 45) {
+        score -= dna.technicalDemand * 0.5;
+      }
+      if (profile.calibrationActive) {
+        score -= dna.technicalDemand * 1.0;
+      }
 
       // Penalidade de fadiga
       if (fatigue != null) {
@@ -1113,6 +1214,25 @@ class WorkoutPrescriptionEngine {
         score += 2.0;
       }
 
+      // Bonus de idade: exercícios funcionais/unilaterais para 50+
+      if (profile.age >= 50) {
+        if (candidate.isUnilateral) score += 1.5;
+        if (candidate.movementPattern == 'squat' || candidate.movementPattern == 'hinge') {
+          score += 0.8; // Exercícios fundamentais
+        }
+      }
+      if (AgeModifier.shouldPrioritizeFunctional(
+        age: profile.age,
+        experienceLevel: profile.experienceLevel,
+        fitnessCapacity: profile.adaptive.volumeTolerance,
+      )) {
+        score += AgeModifier.functionalBonus(
+          age: profile.age,
+          experienceLevel: profile.experienceLevel,
+          primaryGoal: profile.primaryGoal,
+        );
+      }
+
       // Seed como tiebreaker determinístico
       score += ((_seed + slot + candidate.id.hashCode).abs() % 100) * 0.01;
 
@@ -1140,37 +1260,29 @@ class WorkoutPrescriptionEngine {
 
     if (bestEx == null) return null;
 
-    // Verifica se pode adicionar sem estourar fatigue
+    final weeklyVol = vols[muscle] ?? 10;
+    final freqPerWeek = max(1, sessionsPerWeek ~/ 2 + 1);
+    final rawSets = (weeklyVol / freqPerWeek).ceil();
+    final baseSets = (rawSets * setsModifier).clamp(2, 5);
+    final sets = phase == _DupPhase.strength ? min(baseSets + 1, 5) : baseSets;
+
+    // Verifica se pode adicionar sem estourar fatigue.
     if (fatigue != null) {
-      final weeklyVol = vols[muscle] ?? 10;
-      final freqPerWeek = max(1, sessionsPerWeek ~/ 2 + 1);
-      final rawSets = (weeklyVol / freqPerWeek).ceil();
-      final baseSets = (rawSets * setsModifier).clamp(2, 5);
-      final sets = phase == _DupPhase.strength ? min(baseSets + 1, 5) : baseSets;
-      if (!fatigue.canAdd(bestEx!, sets)) {
+      if (!fatigue.canAdd(bestEx, sets)) {
         // Candidata alternativa com menos fadiga
         final safeCands = candidates.where((c) {
-          final cScore = _scoreExercise(c, profile, fatigue, slot);
           return fatigue.canAdd(c, sets) && c.id != bestEx!.id;
         }).toList()
           ..sort((a, b) => _scoreExercise(b, profile, fatigue, slot)
               .compareTo(_scoreExercise(a, profile, fatigue, slot)));
         if (safeCands.isNotEmpty) bestEx = safeCands.first;
-        // Se não tem safe alternative, permite mesmo assim (não quebrar o treino)
+        // Sem alternativa segura, não prescreve este slot.
+        if (!fatigue.canAdd(bestEx, sets)) return null;
       }
-      fatigue.add(bestEx!, sets);
     }
 
-    final ex = bestEx!;
+    final ex = bestEx;
 
-    // Volume baseado em MEV/MRV
-    final weeklyVol = vols[muscle] ?? 10;
-    final freqPerWeek = max(1, sessionsPerWeek ~/ 2 + 1);
-    final rawSets = (weeklyVol / freqPerWeek).ceil();
-    final baseSets = (rawSets * setsModifier).clamp(2, 5);
-
-    final isHome = profile.environment.contains('home') || profile.environment == 'outdoor';
-    
     // Rotação semanal: troca exercício similar se semana > 1
     final rotatedId = _rotation.resolveExercise(
       ex.id,
@@ -1179,35 +1291,26 @@ class WorkoutPrescriptionEngine {
       disliked: profile.dislikedExercises,
       rotationSeed: _seed,
       filter: (candidate) {
-        // Usa as mesmas regras de filtro de ambiente/equipamento
-        if (!candidate.environment.contains(profile.environment)) {
-          if (isHome && !candidate.environment.contains('home')) return false;
-        }
-        if (isHome) {
-          if (profile.availableEquipment.isEmpty) {
-            if (!candidate.equipment.contains('bodyweight') && !candidate.tags.contains('no_equipment')) {
-              return false;
-            }
-          } else {
-            final hasMatchingEquip = candidate.equipment.any((eq) => 
-              profile.availableEquipment.contains(eq) || eq == 'bodyweight'
-            );
-            if (!hasMatchingEquip) return false;
-          }
-        }
-        if (candidate.restrictions.any((r) => profile.healthRestrictions.contains(r))) return false;
-        if (profile.experienceLevel == 'beginner' && candidate.difficulty == 'advanced') return false;
-        return true;
+        return ExerciseCompatibility.isCompatible(profile, candidate);
       },
     );
-    final finalEx = rotatedId != ex.id
+    final rotatedEx = rotatedId != ex.id
         ? _library.firstWhere((e) => e.id == rotatedId, orElse: () => ex)
         : ex;
+    final finalEx = ExerciseCompatibility.isCompatible(profile, rotatedEx)
+        ? rotatedEx
+        : ex;
+    if (fatigue != null) fatigue.add(finalEx, sets);
     final rx = _prescription(profile, finalEx, phase);
     final sessionCues = [
       ...finalEx.cues.take(2),
       'ROM completa — amplitude máxima segura em cada repetição.',
     ];
+
+    final wasRotated = rotatedId != ex.id;
+    final decisionReason = wasRotated
+        ? 'Exercício rotacionado de ${ex.name} para ${finalEx.name} (variação semanal)'
+        : 'Selecionado para $muscle com padrão $pattern (compatível com seu ambiente)';
 
     return PrescribedExercise(
       exercise: finalEx,
@@ -1217,8 +1320,9 @@ class WorkoutPrescriptionEngine {
       rir: rx.rir,
       restSeconds: rx.restSeconds,
       sessionCues: sessionCues,
-      progressionNote: _exerciseProgressionNote(ex, profile, phase),
+      progressionNote: _exerciseProgressionNote(finalEx, profile, phase),
       tempo: rx.tempo,
+      decisionReason: decisionReason,
     );
   }
 
@@ -1277,7 +1381,7 @@ class WorkoutPrescriptionEngine {
     SessionFatigueAccumulator fatigue,
   ) {
     // Exercícios scapulares por ambiente
-    final isHome = profile.environment.contains('home') || profile.environment == 'outdoor';
+    final isHome = ExerciseCompatibility.isHome(profile.environment);
     
     List<String> scapularIds;
     if (isHome) {
@@ -1308,23 +1412,7 @@ class WorkoutPrescriptionEngine {
         ),
       );
       if (ex.id.isEmpty) continue;
-      
-      // Verificar compatibilidade de ambiente/equipamento
-      if (isHome) {
-        if (!ex.environment.contains('home')) continue;
-        if (profile.availableEquipment.isEmpty) {
-          if (!ex.equipment.contains('bodyweight') && !ex.tags.contains('no_equipment')) {
-            continue;
-          }
-        } else {
-          if (!ex.equipment.any((eq) => 
-            profile.availableEquipment.contains(eq) || eq == 'bodyweight'
-          )) {
-            continue;
-          }
-        }
-      }
-      
+      if (!ExerciseCompatibility.isCompatible(profile, ex)) continue;
       availableExercises.add(ex);
     }
 
@@ -1349,16 +1437,19 @@ class WorkoutPrescriptionEngine {
 
     if (best == null) return null;
 
+    if (!fatigue.canAdd(best, 2)) return null;
+    fatigue.add(best, 2);
+
     // 2 séries leves, RIR 3, foco em ativação
     return PrescribedExercise(
-      exercise: best!,
+      exercise: best,
       sets: 2,
       repsMin: 15,
       repsMax: 20,
       rir: 3,
       restSeconds: 45,
       sessionCues: [
-        ...best!.cues.take(2),
+        ...best.cues.take(2),
         'ESCOPO ESCAPULAR: Foque em retração/depressão escapular. Carga leve, ativação máxima.',
       ],
       progressionNote: 'Estabilidade escapular: previne impingement. Não aumente carga a ponto de compensar trapézio superior.',
@@ -1377,38 +1468,7 @@ class WorkoutPrescriptionEngine {
       if (!forceIsolation && ex.movementPattern != pattern) return false;
       if (forceIsolation && ex.category != 'isolation') return false;
 
-      // Filtro ambiente e equipamentos (Dimenso 8: Home Fallback)
-      final isHome = profile.environment.contains('home') || profile.environment == 'outdoor';
-      final isFullGym = profile.environment == 'full_gym' || profile.environment == 'basic_gym';
-
-      // 1. Se o exercício não é compatível com o ambiente do usuário
-      if (!ex.environment.contains(profile.environment)) {
-        // Fallback: se estou em casa, o exercício DEVE ter tag 'home' ou ser compatível
-        if (isHome && !ex.environment.contains('home')) return false;
-      }
-
-      // 2. Filtro rigoroso de equipamentos para ambiente doméstico
-      if (isHome) {
-        // Se não tem nenhum equipamento selecionado, só pode ser peso do corpo
-        if (profile.availableEquipment.isEmpty) {
-          if (!ex.equipment.contains('bodyweight') && !ex.tags.contains('no_equipment')) {
-            return false;
-          }
-        } else {
-          // Se tem equipamentos, o exercício deve usar um deles OU ser peso do corpo
-          final hasMatchingEquip = ex.equipment.any((eq) => 
-            profile.availableEquipment.contains(eq) || eq == 'bodyweight'
-          );
-          if (!hasMatchingEquip) return false;
-        }
-      } 
-      // Para academia, se o usuário especificou equipamentos (ex: academia básica), filtra
-      else if (isFullGym && profile.availableEquipment.isNotEmpty) {
-        final hasMatchingEquip = ex.equipment.any((eq) => 
-          profile.availableEquipment.contains(eq) || eq == 'bodyweight'
-        );
-        if (!hasMatchingEquip) return false;
-      }
+      if (!ExerciseCompatibility.isCompatible(profile, ex)) return false;
 
       // Filtro restrições (NUNCA incluir exercícios contraindicados — Doral 2012)
       if (ex.restrictions.any((r) => profile.healthRestrictions.contains(r))) return false;
@@ -1426,6 +1486,24 @@ class WorkoutPrescriptionEngine {
     }).toList();
   }
 
+  List<String> _desiredCapabilities(WorkoutProfile profile) {
+    switch (profile.primaryGoal) {
+      case 'strength':
+        return const ['strength', 'isometric_strength'];
+      case 'running_hybrid':
+        return const ['lower_limb_control', 'posterior_chain_control', 'coordination'];
+      case 'athletic_agility':
+        return const ['coordination', 'stability', 'rotation_control'];
+      case 'endurance':
+      case 'fat_loss':
+        return const ['local_strength', 'coordination'];
+      case 'mobility_rehab':
+        return const ['motor_control', 'stability'];
+      default:
+        return const ['strength', 'local_strength', 'motor_control'];
+    }
+  }
+
   // ── Bloco de reabilitação ─────────────────────────────────────
 
   List<PrescribedExercise> _buildRehabBlock(WorkoutProfile profile, int daysPerWeek) {
@@ -1438,29 +1516,13 @@ class WorkoutPrescriptionEngine {
   List<PrescribedExercise> _buildRehabBlockUpper(
       WorkoutProfile profile, int daysPerWeek) {
     final result = <PrescribedExercise>[];
-    final isHome = profile.environment.contains('home') || profile.environment == 'outdoor';
-    
+
     for (final injury in profile.healthRestrictions
         .where((r) => ['shoulder', 'wrist', 'elbow'].contains(r))) {
       for (final id in (injuryRehabExercises[injury] ?? []).take(2)) {
         final ex = _library.firstWhere((e) => e.id == id, orElse: () => _library.first);
         if (ex.id == id) {
-          // Filtrar por ambiente/equipamento
-          if (isHome) {
-            if (!ex.environment.contains('home')) continue;
-            if (profile.availableEquipment.isEmpty) {
-              if (!ex.equipment.contains('bodyweight') && !ex.tags.contains('no_equipment')) {
-                continue;
-              }
-            } else {
-              if (!ex.equipment.any((eq) => 
-                profile.availableEquipment.contains(eq) || eq == 'bodyweight'
-              )) {
-                continue;
-              }
-            }
-          }
-          
+          if (!ExerciseCompatibility.isCompatible(profile, ex)) continue;
           result.add(PrescribedExercise(
             exercise: ex,
             sets: 3,
@@ -1481,29 +1543,13 @@ class WorkoutPrescriptionEngine {
   List<PrescribedExercise> _buildRehabBlockLower(
       WorkoutProfile profile, int daysPerWeek) {
     final result = <PrescribedExercise>[];
-    final isHome = profile.environment.contains('home') || profile.environment == 'outdoor';
-    
+
     for (final injury in profile.healthRestrictions
         .where((r) => ['knee', 'lower_back', 'hip'].contains(r))) {
       for (final id in (injuryRehabExercises[injury] ?? []).take(2)) {
         final ex = _library.firstWhere((e) => e.id == id, orElse: () => _library.first);
         if (ex.id == id) {
-          // Filtrar por ambiente/equipamento
-          if (isHome) {
-            if (!ex.environment.contains('home')) continue;
-            if (profile.availableEquipment.isEmpty) {
-              if (!ex.equipment.contains('bodyweight') && !ex.tags.contains('no_equipment')) {
-                continue;
-              }
-            } else {
-              if (!ex.equipment.any((eq) => 
-                profile.availableEquipment.contains(eq) || eq == 'bodyweight'
-              )) {
-                continue;
-              }
-            }
-          }
-          
+          if (!ExerciseCompatibility.isCompatible(profile, ex)) continue;
           result.add(PrescribedExercise(
             exercise: ex,
             sets: 3,

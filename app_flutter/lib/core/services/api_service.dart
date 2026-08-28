@@ -16,10 +16,13 @@ class ApiService {
   static final ApiService _instance = ApiService._();
   factory ApiService() => _instance;
 
-  // PRODUÇÃO: Trocar pela URL do Railway
-  // static const String _baseUrl = 'https://buildfit-api-production.up.railway.app/api';
-  // DESENVOLVIMENTO:
-  static const String _baseUrl = 'http://localhost:3000/api';
+  // Sobrescreva com --dart-define=BUILDFIT_API_URL=... em cada ambiente.
+  static const String _baseUrl = String.fromEnvironment(
+    'BUILDFIT_API_URL',
+    defaultValue: 'https://buildfit-api-production.up.railway.app/api',
+  );
+
+  static const _requestTimeout = Duration(seconds: 15);
 
   late final http.Client _client;
 
@@ -47,7 +50,7 @@ class ApiService {
     final uri = Uri.parse('$_baseUrl$path').replace(queryParameters: queryParams);
     final headers = await _headers();
 
-    final response = await _client.get(uri, headers: headers);
+    final response = await _client.get(uri, headers: headers).timeout(_requestTimeout);
     return _handleResponse<T>(response);
   }
 
@@ -59,7 +62,7 @@ class ApiService {
       uri,
       headers: headers,
       body: body != null ? jsonEncode(body) : null,
-    );
+    ).timeout(_requestTimeout);
     return _handleResponse<T>(response);
   }
 
@@ -71,7 +74,7 @@ class ApiService {
       uri,
       headers: headers,
       body: body != null ? jsonEncode(body) : null,
-    );
+    ).timeout(_requestTimeout);
     return _handleResponse<T>(response);
   }
 
@@ -79,13 +82,13 @@ class ApiService {
     final uri = Uri.parse('$_baseUrl$path');
     final headers = await _headers();
 
-    final response = await _client.delete(uri, headers: headers);
+    final response = await _client.delete(uri, headers: headers).timeout(_requestTimeout);
     return _handleResponse<T>(response);
   }
 
   T _handleResponse<T>(http.Response response) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      if (response.body.isEmpty) return {} as T;
+      if (response.body.trim().isEmpty) return null as T;
       return jsonDecode(response.body) as T;
     }
 

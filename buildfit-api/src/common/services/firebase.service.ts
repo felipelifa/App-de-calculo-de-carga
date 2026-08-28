@@ -9,6 +9,11 @@ export class FirebaseService implements OnModuleInit {
   constructor(private config: ConfigService) {}
 
   onModuleInit() {
+    if (admin.apps.length > 0) {
+      this.app = admin.app();
+      return;
+    }
+
     const serviceAccount = this.config.get<string>('FIREBASE_SERVICE_ACCOUNT');
 
     if (serviceAccount) {

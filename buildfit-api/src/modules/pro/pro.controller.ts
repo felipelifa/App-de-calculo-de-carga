@@ -13,28 +13,16 @@ export class ProController {
 
   @Get('status')
   @ApiOperation({ summary: 'Verificar status Pro' })
-  async getStatus(@CurrentUser('uid') uid: string) {
-    const user = await this.getUser(uid);
-    return this.proService.getStatus(user.id);
+  async getStatus(@CurrentUser('id') userId: string) {
+    return this.proService.getStatus(userId);
   }
 
   @Post('redeem')
   @ApiOperation({ summary: 'Resgatar token Pro' })
   async redeem(
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
     @Body() body: { code: string },
   ) {
-    const user = await this.getUser(uid);
-    return this.proService.redeemToken(user.id, body.code);
-  }
-
-  private async getUser(uid: string) {
-    const { PrismaService } = await import('../../common/services/prisma.service');
-    const prisma = new PrismaService();
-    await prisma.onModuleInit();
-    const user = await prisma.user.findUnique({ where: { firebaseUid: uid } });
-    await prisma.onModuleDestroy();
-    if (!user) throw new Error('User not found');
-    return user;
+    return this.proService.redeemToken(userId, body.code);
   }
 }

@@ -19,6 +19,9 @@ class ExerciseProvider extends ChangeNotifier {
   }
 
   List<ExerciseModel> _allExercises = [];
+  List<ExerciseModel> _apiExercises = [];
+  List<ExerciseModel> _firestoreExercises = [];
+  final Map<String, ExerciseModel> _customExercises = {};
   String? _selectedMuscle;
   String _searchQuery = '';
   bool _isLoading = true;
@@ -68,26 +71,14 @@ class ExerciseProvider extends ChangeNotifier {
         .snapshots()
         .listen(
           (snap) {
-            if (snap.docs.isNotEmpty) {
-              final fromFirestore = snap.docs
-                  .map(ExerciseModel.fromDoc)
-                  .toList();
-              final firestoreIds = fromFirestore.map((e) => e.id).toSet();
-              final localOnly = exerciseLibrary
-                  .where((e) => !firestoreIds.contains(e.id))
-                  .toList();
-
-              var merged = [...fromFirestore, ...localOnly];
-              merged = merged.where((e) => !e.name.trim().endsWith('(1)')).toList();
-
-              _allExercises = merged;
-            }
+            _firestoreExercises = snap.docs.map(ExerciseModel.fromDoc).toList();
+            _rebuildExerciseList();
             _isLoading = false;
             _error = null;
             notifyListeners();
           },
           onError: (e) {
-            _error = null;
+            _error = 'Não foi possível carregar a biblioteca remota.';
             _isLoading = false;
             notifyListeners();
           },
@@ -102,13 +93,8 @@ class ExerciseProvider extends ChangeNotifier {
 
       final data = result['data'] as List<dynamic>;
       if (data.isNotEmpty) {
-        final exercises = data.map((e) => ExerciseModel.fromMap(e)).toList();
-        // Merge: API > local
-        final apiIds = exercises.map((e) => e.id).toSet();
-        final localOnly = exerciseLibrary
-            .where((e) => !apiIds.contains(e.id))
-            .toList();
-        _allExercises = [...exercises, ...localOnly];
+        _apiExercises = data.map((e) => ExerciseModel.fromMap(e)).toList();
+        _rebuildExerciseList();
         _isLoading = false;
         _error = null;
         notifyListeners();
@@ -117,6 +103,26 @@ class ExerciseProvider extends ChangeNotifier {
       // Manter dados locais se API falhar
       debugPrint('API não disponível, usando dados locais: $e');
     }
+  }
+
+  void _rebuildExerciseList() {
+    final byId = <String, ExerciseModel>{};
+    for (final exercise in exerciseLibrary) {
+      byId[exercise.id] = exercise;
+    }
+    for (final exercise in _firestoreExercises) {
+      byId[exercise.id] = exercise;
+    }
+    for (final exercise in _apiExercises) {
+      byId[exercise.id] = exercise;
+    }
+    for (final exercise in _customExercises.values) {
+      byId[exercise.id] = exercise;
+    }
+
+    _allExercises = byId.values
+        .where((e) => !e.name.trim().endsWith('(1)'))
+        .toList();
   }
 
   Future<void> addExercise({
@@ -166,7 +172,8 @@ class ExerciseProvider extends ChangeNotifier {
         .doc(exercise.id)
         .set(exercise.toMap());
 
-    _allExercises = [...exerciseLibrary, exercise];
+    _customExercises[exercise.id] = exercise;
+    _rebuildExerciseList();
     notifyListeners();
   }
 
@@ -220,7 +227,9 @@ class ExerciseProvider extends ChangeNotifier {
     final resolvedName = _extractNameFromGifUrl(rawGifUrl) ?? ex.name;
     final nameParam = Uri.encodeComponent(resolvedName);
     final idParam = Uri.encodeComponent(ex.id);
-    final nameEnParam = ex.nameEn != null ? '&nameEn=${Uri.encodeComponent(ex.nameEn!)}' : '';
+    final nameEnParam = ex.nameEn.isNotEmpty
+        ? '&nameEn=${Uri.encodeComponent(ex.nameEn)}'
+        : '';
     return '$_vercelGifProxy?ts=9&name=$nameParam&id=$idParam$nameEnParam';
   }
 

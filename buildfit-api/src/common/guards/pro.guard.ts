@@ -9,12 +9,12 @@ export class ProGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user = request.user;
 
-    if (!user) {
+    if (!user?.id) {
       throw new ForbiddenException('Usuário não autenticado');
     }
 
     const dbUser = await this.prisma.user.findUnique({
-      where: { firebaseUid: user.uid },
+      where: { id: user.id },
       select: { isPro: true },
     });
 

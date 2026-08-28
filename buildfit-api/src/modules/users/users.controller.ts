@@ -14,17 +14,16 @@ export class UsersController {
 
   @Get('profile')
   @ApiOperation({ summary: 'Obter perfil do usuário' })
-  async getProfile(@CurrentUser('uid') uid: string) {
-    return this.usersService.getProfileByFirebaseUid(uid);
+  async getProfile(@CurrentUser('id') userId: string) {
+    return this.usersService.getProfile(userId);
   }
 
   @Put('profile')
   @ApiOperation({ summary: 'Atualizar perfil do usuário' })
   async updateProfile(
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
     @Body() dto: UpdateProfileDto,
   ) {
-    const user = await this.usersService.getProfileByFirebaseUid(uid);
-    return this.usersService.updateProfile(user.id, dto);
+    return this.usersService.updateProfile(userId, dto);
   }
 }

@@ -13,68 +13,52 @@ export class NutritionController {
 
   @Get('profile')
   @ApiOperation({ summary: 'Obter perfil nutricional' })
-  async getProfile(@CurrentUser('uid') uid: string) {
-    const user = await this.getUser(uid);
-    return this.nutritionService.getProfile(user.id);
+  async getProfile(@CurrentUser('id') userId: string) {
+    return this.nutritionService.getProfile(userId);
   }
 
   @Put('profile')
   @ApiOperation({ summary: 'Atualizar perfil nutricional' })
   async updateProfile(
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
     @Body() body: any,
   ) {
-    const user = await this.getUser(uid);
-    return this.nutritionService.updateProfile(user.id, body);
+    return this.nutritionService.updateProfile(userId, body);
   }
 
   @Get('daily')
   @ApiOperation({ summary: 'Obter log nutricional do dia' })
   async getDailyLog(
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
     @Query('date') date: string,
   ) {
-    const user = await this.getUser(uid);
-    return this.nutritionService.getDailyLog(user.id, date);
+    return this.nutritionService.getDailyLog(userId, date);
   }
 
   @Post('log')
   @ApiOperation({ summary: 'Registrar refeição' })
   async logMeal(
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
     @Body() body: any,
   ) {
-    const user = await this.getUser(uid);
-    return this.nutritionService.logMeal(user.id, body.date, body.meal);
+    return this.nutritionService.logMeal(userId, body.date, body.meal);
   }
 
   @Delete('log/:mealId')
   @ApiOperation({ summary: 'Deletar refeição' })
   async deleteMeal(
     @Param('mealId') mealId: string,
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
   ) {
-    const user = await this.getUser(uid);
-    return this.nutritionService.deleteMeal(user.id, mealId);
+    return this.nutritionService.deleteMeal(userId, mealId);
   }
 
   @Get('weekly')
   @ApiOperation({ summary: 'Log nutricional semanal' })
   async getWeeklyLog(
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
     @Query('startDate') startDate: string,
   ) {
-    const user = await this.getUser(uid);
-    return this.nutritionService.getWeeklyLog(user.id, startDate);
-  }
-
-  private async getUser(uid: string) {
-    const { PrismaService } = await import('../../common/services/prisma.service');
-    const prisma = new PrismaService();
-    await prisma.onModuleInit();
-    const user = await prisma.user.findUnique({ where: { firebaseUid: uid } });
-    await prisma.onModuleDestroy();
-    if (!user) throw new Error('User not found');
-    return user;
+    return this.nutritionService.getWeeklyLog(userId, startDate);
   }
 }

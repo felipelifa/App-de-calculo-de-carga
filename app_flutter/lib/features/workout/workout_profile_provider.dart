@@ -28,6 +28,7 @@ class WorkoutProfileProvider extends ChangeNotifier {
   StreamSubscription? _workoutsSub;
   StreamSubscription? _progressionSub;
   StreamSubscription? _authSub;
+  String? _listeningUid;
 
   bool _isLoading = true;
   String? _error;
@@ -35,12 +36,10 @@ class WorkoutProfileProvider extends ChangeNotifier {
   WorkoutProfile? get profile => _profile;
   List<GeneratedWorkout> get allWorkouts => _allWorkouts;
   GeneratedWorkout? get activeWorkout {
-    if (_allWorkouts.isEmpty) return null;
-    try {
-      return _allWorkouts.firstWhere((w) => w.isActive);
-    } catch (_) {
-      return _allWorkouts.first;
+    for (final workout in _allWorkouts) {
+      if (workout.isActive) return workout;
     }
+    return null;
   }
 
   bool get isLoading => _isLoading;
@@ -100,7 +99,7 @@ class WorkoutProfileProvider extends ChangeNotifier {
     // Re-hidratar se já temos dados carregados
     final uid = _auth.currentUser?.uid;
     if (uid != null) {
-      _setupListeners(uid);
+      _setupListeners(uid, force: true);
     }
   }
 
@@ -108,9 +107,11 @@ class WorkoutProfileProvider extends ChangeNotifier {
     return _exerciseProvider?.getById(id);
   }
 
-  void _setupListeners(String uid) {
+  void _setupListeners(String uid, {bool force = false}) {
+    if (!force && _listeningUid == uid && _workoutsSub != null) return;
     _workoutsSub?.cancel();
     _progressionSub?.cancel();
+    _listeningUid = uid;
 
     _workoutsSub = _db
         .collection('users')
@@ -123,6 +124,10 @@ class WorkoutProfileProvider extends ChangeNotifier {
         return GeneratedWorkout.fromMap(doc.data(), _resolveExercise); 
       }).toList();
       _isLoading = false;
+      notifyListeners();
+    }, onError: (e) {
+      _isLoading = false;
+      _error = 'Não foi possível carregar seus planos.';
       notifyListeners();
     });
 
@@ -146,6 +151,7 @@ class WorkoutProfileProvider extends ChangeNotifier {
     _profile = null;
     _allWorkouts = [];
     _progressionState = null;
+    _listeningUid = null;
     notifyListeners();
   }
 
@@ -287,6 +293,8 @@ class WorkoutProfileProvider extends ChangeNotifier {
     final uid = _auth.currentUser?.uid;
     if (uid == null) return;
 
+    final deletedWorkout = _allWorkouts.where((w) => w.id == id).firstOrNull;
+
     try {
       await _db
           .collection('users')
@@ -294,10 +302,25 @@ class WorkoutProfileProvider extends ChangeNotifier {
           .collection('generated_workouts')
           .doc(id)
           .delete();
+
+      // Nunca deixar o usuário sem plano ativo depois de apagar o plano ativo.
+      if (deletedWorkout?.isActive == true) {
+        final next = _allWorkouts.where((w) => w.id != id).firstOrNull;
+        if (next != null) {
+          await _db
+              .collection('users')
+              .doc(uid)
+              .collection('generated_workouts')
+              .doc(next.id)
+              .update({'isActive': true});
+        }
+      }
+      _allWorkouts.removeWhere((w) => w.id == id);
+      notifyListeners();
     } catch (e) {
       _error = 'Erro ao excluir treino: $e';
-    } finally {
       notifyListeners();
+      rethrow;
     }
   }
 

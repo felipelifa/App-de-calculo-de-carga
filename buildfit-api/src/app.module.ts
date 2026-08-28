@@ -11,12 +11,12 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { NutritionModule } from './modules/nutrition/nutrition.module';
 import { PrModule } from './modules/pr/pr.module';
 import { ProModule } from './modules/pro/pro.module';
-import { PrismaService } from './common/services/prisma.service';
-import { FirebaseService } from './common/services/firebase.service';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    CommonModule,
     AuthModule,
     UsersModule,
     ExercisesModule,
@@ -29,7 +29,5 @@ import { FirebaseService } from './common/services/firebase.service';
     ProModule,
   ],
   controllers: [HealthController],
-  providers: [PrismaService, FirebaseService],
-  exports: [PrismaService, FirebaseService],
 })
 export class AppModule {}

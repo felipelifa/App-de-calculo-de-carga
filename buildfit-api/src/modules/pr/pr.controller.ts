@@ -3,35 +3,34 @@ import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { PrService } from './pr.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { FirebaseAuthGuard } from '../../common/guards/firebase-auth.guard';
+import { ProGuard } from '../../common/guards/pro.guard';
 
 @ApiTags('pr')
 @Controller('pr')
-@UseGuards(FirebaseAuthGuard)
+@UseGuards(FirebaseAuthGuard, ProGuard)
 @ApiBearerAuth()
 export class PrController {
   constructor(private prService: PrService) {}
 
   @Get()
   @ApiOperation({ summary: 'Listar todos os records pessoais' })
-  async getAll(@CurrentUser('uid') uid: string) {
-    const user = await this.getUser(uid);
-    return this.prService.getAll(user.id);
+  async getAll(@CurrentUser('id') userId: string) {
+    return this.prService.getAll(userId);
   }
 
   @Get(':exerciseId')
   @ApiOperation({ summary: 'Obter PR de um exercício específico' })
   async getForExercise(
     @Param('exerciseId') exerciseId: string,
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
   ) {
-    const user = await this.getUser(uid);
-    return this.prService.getForExercise(user.id, exerciseId);
+    return this.prService.getForExercise(userId, exerciseId);
   }
 
   @Post('check')
   @ApiOperation({ summary: 'Verificar e atualizar PR após treino' })
   async checkPR(
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
     @Body() body: {
       exerciseId: string;
       exerciseName: string;
@@ -40,9 +39,8 @@ export class PrController {
       reps: number;
     },
   ) {
-    const user = await this.getUser(uid);
     return this.prService.checkAndUpdate(
-      user.id,
+      userId,
       body.exerciseId,
       body.exerciseName,
       body.muscleGroup,
@@ -54,20 +52,9 @@ export class PrController {
   @Get('recent/list')
   @ApiOperation({ summary: 'PRs recentes' })
   async getRecent(
-    @CurrentUser('uid') uid: string,
+    @CurrentUser('id') userId: string,
     @Query('limit') limit?: number,
   ) {
-    const user = await this.getUser(uid);
-    return this.prService.getRecentPRs(user.id, limit);
-  }
-
-  private async getUser(uid: string) {
-    const { PrismaService } = await import('../../common/services/prisma.service');
-    const prisma = new PrismaService();
-    await prisma.onModuleInit();
-    const user = await prisma.user.findUnique({ where: { firebaseUid: uid } });
-    await prisma.onModuleDestroy();
-    if (!user) throw new Error('User not found');
-    return user;
+    return this.prService.getRecentPRs(userId, limit);
   }
 }

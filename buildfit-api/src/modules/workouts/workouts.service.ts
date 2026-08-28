@@ -30,7 +30,7 @@ export class WorkoutsService {
                 setNumber: set.setNumber,
                 reps: set.reps,
                 weight: set.weight,
-                volume: set.reps * set.weight,
+                volume: set.isWarmup ? 0 : set.reps * set.weight,
                 isWarmup: set.isWarmup || false,
               })),
             },
@@ -119,7 +119,7 @@ export class WorkoutsService {
                     setNumber: set.setNumber,
                     reps: set.reps,
                     weight: set.weight,
-                    volume: set.reps * set.weight,
+                    volume: set.isWarmup ? 0 : set.reps * set.weight,
                     isWarmup: set.isWarmup || false,
                   })),
                 },
@@ -184,7 +184,10 @@ export class WorkoutsService {
     workouts.forEach((w) => {
       w.exercises.forEach((ex) => {
         const muscle = ex.muscleGroup || 'unknown';
-        const exVolume = ex.sets.reduce((sum, set) => sum + set.volume, 0);
+        const exVolume = ex.sets.reduce(
+          (sum, set) => sum + (set.isWarmup ? 0 : set.volume),
+          0,
+        );
         muscleVolume[muscle] = (muscleVolume[muscle] || 0) + exVolume;
       });
     });

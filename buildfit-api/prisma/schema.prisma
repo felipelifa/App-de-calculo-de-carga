@@ -36,6 +36,7 @@ model User {
   nutritionLogs     NutritionDay[]
   volumeHistory     VolumeHistory[]
   suggestedProgressions SuggestedProgression[]
+  proTokenRedemptions ProTokenRedemption[]
 }
 
 model UserProfile {
@@ -366,6 +367,7 @@ model ProTokenRedemption {
   tokenCode  String
   token      ProToken @relation(fields: [tokenCode], references: [code], onDelete: Cascade)
   userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   redeemedAt DateTime @default(now())
 
   @@unique([tokenCode, userId])

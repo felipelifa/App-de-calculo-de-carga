@@ -90,7 +90,7 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
                     return _WorkoutPlanCard(
                       workout: workout,
                       isActive: workout.id == activeWorkout?.id,
-                      onDelete: () => _confirmDeletion(context, workout.id),
+                       onDelete: () => _confirmDeletion(context, workout.id),
                       onSelect: () async {
                         await wpAuth.setActiveWorkout(workout.id);
                         if (context.mounted) {
@@ -157,9 +157,17 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
           TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('CANCELAR')),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
-            onPressed: () {
-              context.read<WorkoutProfileProvider>().deleteWorkout(id);
+            onPressed: () async {
               Navigator.pop(ctx);
+              try {
+                await context.read<WorkoutProfileProvider>().deleteWorkout(id);
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Erro ao excluir: $e')),
+                  );
+                }
+              }
             },
             child: const Text('EXCLUIR'),
           ),
@@ -169,7 +177,6 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
   }
 
   void _showWorkoutDetails(BuildContext context, GeneratedWorkout workout) {
-    context.read<WorkoutProfileProvider>().setActiveWorkout(workout.id);
     _showSessionsList(context, workout);
   }
 
@@ -278,6 +285,34 @@ class _WorkoutPlanCard extends StatelessWidget {
                     _buildInfoField('Estilo', _formatStyle(workout.preferredStyle), Icons.psychology_rounded),
                   ],
                 ),
+                if (workout.planExplanation != null) ...[
+                  const SizedBox(height: 16),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: neon.withValues(alpha: 0.05),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: neon.withValues(alpha: 0.15)),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.auto_awesome, color: neon.withValues(alpha: 0.7), size: 16),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            workout.planExplanation!,
+                            style: GoogleFonts.outfit(
+                              color: AppTheme.textSecondary,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -429,19 +464,54 @@ class _WorkoutSessionsSheet extends StatelessWidget {
                            Text('${session.estimatedDurationMinutes} min', style: GoogleFonts.outfit(color: neon, fontSize: 11, fontWeight: FontWeight.w900)),
                          ],
                        ),
-                       const SizedBox(height: 12),
-                       Text(session.objective, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.w500)),
-                       const Divider(height: 32, color: Colors.white10),
-                       ...session.exercises.take(3).map((e) => Padding(
-                         padding: const EdgeInsets.only(bottom: 10),
-                         child: Row(
-                           children : [
-                             const Icon(Icons.check_circle_rounded, size: 14, color: neon),
-                             const SizedBox(width: 12),
-                             Expanded(child: Text(e.exercise.name, style: GoogleFonts.outfit(color: Colors.white70, fontSize: 13))),
-                           ],
-                         ),
-                       )),
+                        const SizedBox(height: 12),
+                        Text(session.objective, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.w500)),
+                        if (session.userExplanation != null) ...[
+                          const SizedBox(height: 8),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: neon.withValues(alpha: 0.05),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              session.userExplanation!,
+                              style: GoogleFonts.outfit(
+                                color: neon.withValues(alpha: 0.8),
+                                fontSize: 11,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                        const Divider(height: 32, color: Colors.white10),
+                        ...session.exercises.take(3).map((e) => Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Row(
+                            children : [
+                              const Icon(Icons.check_circle_rounded, size: 14, color: neon),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(e.exercise.name, style: GoogleFonts.outfit(color: Colors.white70, fontSize: 13)),
+                                    if (e.decisionReason != null)
+                                      Text(
+                                        e.decisionReason!,
+                                        style: GoogleFonts.outfit(
+                                          color: Colors.white24,
+                                          fontSize: 10,
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )),
                        if (session.exercises.length > 3)
                          Padding(
                            padding: const EdgeInsets.only(left: 26, top: 4),

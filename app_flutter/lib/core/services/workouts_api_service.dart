@@ -16,7 +16,7 @@ class WorkoutsApiService {
       'exerciseId': ex.exerciseId,
       'exerciseName': ex.exerciseName,
       'muscleGroup': ex.muscleGroup,
-      'sets': ex.sets.asMap().entries.map((entry) => {
+        'sets': ex.sets.where((set) => set.isCompleted && !set.isWarmup).toList().asMap().entries.map((entry) => {
         'setNumber': entry.key + 1,
         'reps': entry.value.reps,
         'weight': entry.value.weight,
@@ -36,7 +36,10 @@ class WorkoutsApiService {
     if (week != null) params['week'] = week.toString();
     if (limit != null) params['limit'] = limit.toString();
 
-    return _api.get('/workouts', queryParams: params);
+    final result = await _api.get('/workouts', queryParams: params);
+    if (result is List) return result;
+    if (result is Map && result.containsKey('data')) return result['data'] as List? ?? [];
+    return [];
   }
 
   Future<Map<String, dynamic>> getWeeklyVolume({int? week}) async {
@@ -50,7 +53,10 @@ class WorkoutsApiService {
     final params = <String, String>{};
     if (week != null) params['week'] = week.toString();
 
-    return _api.get('/workouts/muscle-volume', queryParams: params);
+    final result = await _api.get('/workouts/muscle-volume', queryParams: params);
+    if (result is List) return result;
+    if (result is Map && result.containsKey('data')) return result['data'] as List? ?? [];
+    return [];
   }
 
   Future<void> deleteWorkout(String id) async {

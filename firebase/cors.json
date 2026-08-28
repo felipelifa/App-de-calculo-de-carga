@@ -1,7 +1,14 @@
 [
   {
-    "origin": ["*"],
-    "method": ["GET", "HEAD", "DELETE"],
+    "origin": [
+      "https://buildfit-nine.vercel.app",
+      "https://app-calculo-carga.vercel.app",
+      "https://appcalculotreino-51f23.web.app",
+      "https://appcalculotreino-51f23.firebaseapp.com",
+      "http://localhost:3000",
+      "http://localhost:3001"
+    ],
+    "method": ["GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"],
     "responseHeader": ["Content-Type", "Access-Control-Allow-Origin"],
     "maxAgeSeconds": 3600
   }

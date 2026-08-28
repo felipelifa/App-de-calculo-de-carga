@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ProController } from './pro.controller';
 import { ProService } from './pro.service';
-import { PrismaService } from '../../common/services/prisma.service';
-import { FirebaseService } from '../../common/services/firebase.service';
+import { CommonModule } from '../../common/common.module';
 
 @Module({
+  imports: [CommonModule],
   controllers: [ProController],
-  providers: [ProService, PrismaService, FirebaseService],
+  providers: [ProService],
   exports: [ProService],
 })
 export class ProModule {}

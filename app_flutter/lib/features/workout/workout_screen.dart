@@ -12,6 +12,9 @@ import '../exercises/exercise_model.dart';
 // Usando Image.network nativo do Flutter (suporta GIF no Android, iOS e Web).
 import 'workout_provider.dart';
 import 'workout_profile_provider.dart';
+import 'workout_profile_model.dart';
+import 'exercise_compatibility.dart';
+import 'training_readiness.dart';
 import 'pr_celebration_dialog.dart';
 import 'progression_provider.dart';
 import '../nutrition/nutrition_provider.dart';
@@ -60,7 +63,11 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   }
 
   Future<void> _showAddExerciseDialog(BuildContext context) async {
-    final exercises = context.read<ExerciseProvider>().filteredExercises;
+    final exerciseProvider = context.read<ExerciseProvider>();
+    final profile = context.read<WorkoutProfileProvider>().profile;
+    final exercises = exerciseProvider.filteredExercises.where((exercise) {
+      return profile == null || ExerciseCompatibility.isCompatible(profile, exercise);
+    }).toList();
     if (exercises.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Nenhum exercício cadastrado.')),
@@ -146,9 +153,11 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
 
   Future<void> _confirmFinish(BuildContext context) async {
     final provider = context.read<WorkoutProvider>();
-    final profileProvider = context.read<WorkoutProfileProvider>();
+        final profileProvider = context.read<WorkoutProfileProvider>();
     final experienceLevel =
         profileProvider.profile?.experienceLevel ?? 'beginner';
+    final sessionsPerWeek =
+        profileProvider.profile?.availableDaysPerWeek ?? 3;
 
     final confirmed = await showDialog<bool>(
       context: context,
@@ -187,17 +196,62 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             : 60;
         final exCount = provider.currentExercises.length;
         final vol = provider.currentTotalVolume;
+        final sessionName = provider.activeSessionName ?? 'Treino';
 
-        await provider.finishSession(experienceLevel: experienceLevel);
+        await provider.finishSession(
+          experienceLevel: experienceLevel,
+          sessionsPerWeek: sessionsPerWeek,
+        );
 
         if (context.mounted) {
           // Notifica o NutritionProvider sobre o treino concluído
           context.read<NutritionProvider>().applyPostWorkoutBonus(
-            sessionName: provider.activeSessionName ?? 'Treino',
+            sessionName: sessionName,
             durationMinutes: durationMinutes,
             exerciseCount: exCount,
             totalVolume: vol,
           );
+        }
+
+        // Decrementa calibração se ativa
+        if (context.mounted) {
+          final profileProvider = context.read<WorkoutProfileProvider>();
+          final profile = profileProvider.profile;
+          if (profile != null && profile.calibrationActive && profile.calibrationSessionsRemaining > 0) {
+            final updated = WorkoutProfile(
+              uid: profile.uid,
+              age: profile.age,
+              biologicalSex: profile.biologicalSex,
+              weightKg: profile.weightKg,
+              heightCm: profile.heightCm,
+              experienceLevel: profile.experienceLevel,
+              trainingAge: profile.trainingAge,
+              bodyFatCategory: profile.bodyFatCategory,
+              primaryGoal: profile.primaryGoal,
+              sportSubType: profile.sportSubType,
+              trainingModality: profile.trainingModality,
+              availableDaysPerWeek: profile.availableDaysPerWeek,
+              sessionDurationMinutes: profile.sessionDurationMinutes,
+              preferredStyle: profile.preferredStyle,
+              sleepQuality: profile.sleepQuality,
+              stressLevel: profile.stressLevel,
+              priorityMuscles: profile.priorityMuscles,
+              environment: profile.environment,
+              availableEquipment: profile.availableEquipment,
+              dislikedExercises: profile.dislikedExercises,
+              favoriteExercises: profile.favoriteExercises,
+              healthRestrictions: profile.healthRestrictions,
+              currentWeek: profile.currentWeek,
+              adaptive: profile.adaptive,
+              lifeLoad: profile.lifeLoad,
+              confidenceByVariable: profile.confidenceByVariable,
+              calibrationActive: profile.calibrationSessionsRemaining > 1,
+              calibrationSessionsRemaining: profile.calibrationSessionsRemaining - 1,
+              createdAt: profile.createdAt,
+              updatedAt: DateTime.now(),
+            );
+            await profileProvider.saveProfile(updated);
+          }
         }
 
         // Dispara o motor de progressão no provider global
@@ -635,7 +689,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
               onAddExercise: () => _showAddExerciseDialog(context),
               onShowTutorial: (ctx, e) => _showTutorial(ctx, e),
             )
-          : _EmptyState(onStart: () => provider.startSession()),
+          : _ReadyState(onStart: () => provider.startSession()),
     );
   }
   Widget _buildNoGifPlaceholder({bool isError = false}) {
@@ -803,21 +857,136 @@ class _AnimatedGifWidgetState extends State<_AnimatedGifWidget> {
 
 // ── Empty state ───────────────────────────────
 
-class _EmptyState extends StatelessWidget {
+class _ReadyState extends StatelessWidget {
   final VoidCallback onStart;
-  const _EmptyState({required this.onStart});
+  const _ReadyState({required this.onStart});
 
   @override
   Widget build(BuildContext context) {
+    final profile = context.read<WorkoutProfileProvider>().profile;
+    final lifeLoad = profile?.lifeLoad ?? const LifeLoad();
+    final readiness = DailyReadiness.fromProfile(
+      sleepQuality: profile?.sleepQuality ?? 'regular',
+      stressLevel: profile?.stressLevel ?? 'medium',
+      lifeLoad: lifeLoad,
+    );
+
+    final isCalibrating = profile?.calibrationActive ?? false;
+    final sessionsLeft = profile?.calibrationSessionsRemaining ?? 0;
+
+    Color bannerColor;
+    String bannerTitle;
+    String bannerSubtitle;
+    IconData bannerIcon;
+
+    switch (readiness.status) {
+      case 'ready':
+        bannerColor = AppTheme.success;
+        bannerTitle = 'Pronto para treinar';
+        bannerSubtitle = 'Sono e estresse estão favoráveis. Siga o plano como planejado.';
+        bannerIcon = Icons.check_circle_rounded;
+        break;
+      case 'adapt':
+        bannerColor = const Color(0xFFF59E0B);
+        bannerTitle = 'Sessão adaptada';
+        bannerSubtitle = 'Volume reduzido para respeitar sua recuperação. Foque em técnica.';
+        bannerIcon = Icons.adjust_rounded;
+        break;
+      case 'recover':
+        bannerColor = AppTheme.danger;
+        bannerTitle = 'Sessão de recuperação';
+        bannerSubtitle = 'Priorize técnica e amplitude. Evite cargas altas hoje.';
+        bannerIcon = Icons.healing_rounded;
+        break;
+      default:
+        bannerColor = AppTheme.accent;
+        bannerTitle = 'Iniciar treino';
+        bannerSubtitle = '';
+        bannerIcon = Icons.play_arrow_rounded;
+    }
+
     return Center(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Banner de prontidão
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: bannerColor.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: bannerColor.withValues(alpha: 0.3)),
+              ),
+              child: Row(
+                children: [
+                  Icon(bannerIcon, color: bannerColor, size: 28),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          bannerTitle,
+                          style: TextStyle(
+                            color: bannerColor,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        if (bannerSubtitle.isNotEmpty) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            bannerSubtitle,
+                            style: TextStyle(
+                              color: bannerColor.withValues(alpha: 0.8),
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Indicador de calibração
+            if (isCalibrating && sessionsLeft > 0) ...[
+              const SizedBox(height: 12),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                decoration: BoxDecoration(
+                  color: AppTheme.accent.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppTheme.accent.withValues(alpha: 0.2)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.science_rounded, color: AppTheme.accent, size: 18),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Fase de calibração: $sessionsLeft sessões restantes. '
+                        'Exercícios simples e seguros para calibrar seu perfil.',
+                        style: TextStyle(
+                          color: AppTheme.accent.withValues(alpha: 0.8),
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+
+            const SizedBox(height: 40),
             Icon(
               Icons.fitness_center_rounded,
-              size: 72,
+              size: 64,
               color: AppTheme.textSecondary.withValues(alpha: 0.3),
             ),
             const SizedBox(height: 24),
@@ -836,7 +1005,7 @@ class _EmptyState extends StatelessWidget {
               style: TextStyle(color: AppTheme.textSecondary, fontSize: 14),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 48),
+            const SizedBox(height: 40),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -1425,17 +1594,25 @@ class _ExerciseCard extends StatelessWidget {
     final directIds = [...oldEx.substituteIds, ...oldEx.regressionIds];
     for (final id in directIds) {
       final ex = exerciseProvider.getById(id);
-      if (ex != null && !replacements.any((r) => r.id == ex.id)) replacements.add(ex);
+      if (ex != null &&
+          (profile == null || ExerciseCompatibility.isCompatible(profile, ex)) &&
+          !replacements.any((r) => r.id == ex.id)) {
+        replacements.add(ex);
+      }
     }
     
     // 2. Fallback por padrão e músculo
     if (replacements.length < 4) {
+      final oldMuscle = oldEx.primaryMuscles.isNotEmpty
+          ? oldEx.primaryMuscles.first
+          : null;
       final fallbacks = exerciseProvider.filteredExercises.where((ex) =>
         ex.id != oldEx.id &&
-        ex.primaryMuscles.contains(oldEx.primaryMuscles.first) &&
+        oldMuscle != null &&
+        ex.primaryMuscles.contains(oldMuscle) &&
         ex.movementPattern == oldEx.movementPattern &&
         !replacements.any((r) => r.id == ex.id) &&
-        !(profile?.experienceLevel == 'beginner' && ex.difficulty == 'advanced')
+        (profile == null || ExerciseCompatibility.isCompatible(profile, ex))
       ).take(6);
       replacements.addAll(fallbacks);
     }

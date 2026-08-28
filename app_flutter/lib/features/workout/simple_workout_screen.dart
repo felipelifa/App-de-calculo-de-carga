@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../shared/theme/app_theme.dart';
-import '../exercises/exercise_provider.dart';
-import '../exercises/exercise_model.dart';
 import 'workout_provider.dart';
-import 'workout_profile_provider.dart';
 
 // ─────────────────────────────────────────────
 // Tela de Treino Simplificada
@@ -36,7 +33,20 @@ class _SimpleWorkoutScreenState extends State<SimpleWorkoutScreen> {
     if (provider.isSessionActive) {
       setState(() {
         _isSessionActive = true;
-        // Carregar exercícios da sessão ativa
+        _exercises.clear();
+        for (final ex in provider.currentExercises) {
+          _exercises.add({
+            'id': ex.exerciseId,
+            'name': ex.exerciseName,
+            'muscleGroup': ex.muscleGroup,
+            'sets': ex.sets.asMap().entries.map((entry) => {
+              'reps': entry.value.reps,
+              'weight': entry.value.weight,
+              'isCompleted': entry.value.isCompleted,
+              'isWarmup': entry.value.isWarmup,
+            }).toList(),
+          });
+        }
       });
     }
   }
@@ -437,9 +447,11 @@ class _SimpleWorkoutScreenState extends State<SimpleWorkoutScreen> {
               StreamBuilder<int>(
                 stream: Stream.periodic(const Duration(seconds: 1), (i) => i),
                 builder: (context, snapshot) {
-                  final seconds = snapshot.data ?? 0;
-                  final minutes = seconds ~/ 60;
-                  final secs = seconds % 60;
+                  final provider = context.read<WorkoutProvider>();
+                  final sessionStart = provider.sessionStart ?? DateTime.now();
+                  final elapsed = DateTime.now().difference(sessionStart);
+                  final minutes = elapsed.inMinutes;
+                  final secs = elapsed.inSeconds % 60;
                   return Text(
                     '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}',
                     style: const TextStyle(

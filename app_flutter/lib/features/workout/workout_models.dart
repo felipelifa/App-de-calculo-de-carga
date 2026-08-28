@@ -52,7 +52,12 @@ class WorkoutExerciseEntry {
   }) : sets = sets ?? [];
 
   double get totalVolume =>
-      sets.where((s) => !s.isWarmup).fold(0, (acc, s) => acc + s.volume);
+      sets
+          .where((s) => !s.isWarmup && s.isCompleted)
+          .fold(0, (acc, s) => acc + s.volume);
+
+  bool get hasCompletedWork =>
+      sets.any((s) => !s.isWarmup && s.isCompleted);
 
   Map<String, dynamic> toMap() => {
         'exerciseId': exerciseId,

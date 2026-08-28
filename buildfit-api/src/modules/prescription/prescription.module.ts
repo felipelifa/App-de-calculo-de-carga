@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { PrescriptionController } from './prescription.controller';
 import { PrescriptionService } from './prescription.service';
-import { PrismaService } from '../../common/services/prisma.service';
-import { FirebaseService } from '../../common/services/firebase.service';
+import { CommonModule } from '../../common/common.module';
 
 @Module({
+  imports: [CommonModule],
   controllers: [PrescriptionController],
-  providers: [PrescriptionService, PrismaService, FirebaseService],
+  providers: [PrescriptionService],
   exports: [PrescriptionService],
 })
 export class PrescriptionModule {}

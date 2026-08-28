@@ -11,7 +11,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 
 const prisma = new PrismaClient();
@@ -20,6 +20,9 @@ async function main() {
   console.log('Iniciando seed de exercícios...');
 
   const libPath = join(__dirname, '..', '..', '..', 'app_flutter', 'lib', 'core', 'data', 'exercise_library.dart');
+  if (!existsSync(libPath)) {
+    throw new Error(`Exercise library not found at ${libPath}`);
+  }
   const content = readFileSync(libPath, 'utf-8');
 
   const exercises = parseExercises(content);

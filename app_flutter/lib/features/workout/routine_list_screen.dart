@@ -235,10 +235,10 @@ class _RoutineCard extends StatelessWidget {
             onPressed: () async {
               final uid = FirebaseAuth.instance.currentUser?.uid;
               if (uid != null) {
+                Navigator.pop(ctx);
                 await RoutineService(db: FirebaseFirestore.instance, uid: uid)
                     .delete(routine.id);
                 onRefresh();
-                if (context.mounted) Navigator.pop(ctx);
               }
             },
             child: const Text('Excluir', style: TextStyle(color: AppTheme.danger)),

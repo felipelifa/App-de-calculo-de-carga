@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
-import '../../shared/widgets/pro_gate_dialog.dart';
+import '../../shared/widgets/pro_route_gate.dart';
 import '../services/auth_service.dart';
-import '../services/pro_service.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/auth/register_screen.dart';
 import '../../features/dashboard/today_screen.dart';
@@ -9,7 +8,7 @@ import '../../features/exercises/exercise_screen.dart';
 import '../../features/exercises/exercise_detail_screen.dart';
 import '../../features/exercises/add_exercise_screen.dart';
 import '../../features/exercises/progression_screen.dart';
-import '../../features/workout/simple_workout_screen.dart';
+import '../../features/workout/workout_screen.dart';
 import '../../features/workout/workout_history_screen.dart';
 import '../../features/analytics/analytics_screen.dart';
 import '../../features/workout/routine_list_screen.dart';
@@ -17,6 +16,7 @@ import '../../features/workout/routine_detail_screen.dart';
 import '../../features/workout/workout_routine_model.dart';
 import '../../features/workout/onboarding_screen.dart';
 import '../../features/workout/prescribed_workout_screen.dart';
+import '../../features/workout/training_mode_screen.dart';
 import '../../features/auth/splash_screen.dart';
 import 'main_layout_screen.dart';
 import '../../features/nutrition/simple_nutrition_screen.dart';
@@ -69,15 +69,28 @@ class AppRouter {
             ),
             GoRoute(
               path: '/nutrition',
-              builder: (context, state) => const SimpleNutritionScreen(),
+              builder: (context, state) => const ProRouteGate(
+                feature: 'nutrition',
+                child: SimpleNutritionScreen(),
+              ),
             ),
             GoRoute(
               path: '/analytics',
-              builder: (context, state) => const AnalyticsScreen(),
+              builder: (context, state) => const ProRouteGate(
+                feature: 'analytics',
+                child: AnalyticsScreen(),
+              ),
             ),
             GoRoute(
               path: '/profile',
               builder: (context, state) => const ProfileScreen(),
+            ),
+            GoRoute(
+              path: '/prescribed',
+              builder: (context, state) => const ProRouteGate(
+                feature: 'prescribed_workout',
+                child: PrescribedWorkoutScreen(),
+              ),
             ),
           ],
         ),
@@ -87,16 +100,25 @@ class AppRouter {
           path: '/nutrition/search',
           builder: (context, state) {
             final type = state.uri.queryParameters['type'] ?? 'snack';
-            return FoodSearchScreen(mealType: type);
+            return ProRouteGate(
+              feature: 'nutrition',
+              child: FoodSearchScreen(mealType: type),
+            );
           },
         ),
         GoRoute(
           path: '/nutrition/settings',
-          builder: (context, state) => const NutritionSettingsScreen(),
+          builder: (context, state) => const ProRouteGate(
+            feature: 'nutrition',
+            child: NutritionSettingsScreen(),
+          ),
         ),
         GoRoute(
           path: '/nutrition/dashboard',
-          builder: (context, state) => const NutritionDashboardScreen(),
+          builder: (context, state) => const ProRouteGate(
+            feature: 'nutrition',
+            child: NutritionDashboardScreen(),
+          ),
         ),
         GoRoute(
           path: '/nutrition/anamnese',
@@ -118,15 +140,21 @@ class AppRouter {
         ),
         GoRoute(
           path: '/progression',
-          builder: (context, state) => const ProgressionScreen(),
+          builder: (context, state) => const ProRouteGate(
+            feature: 'progression',
+            child: ProgressionScreen(),
+          ),
         ),
         GoRoute(
           path: '/workout',
-          builder: (context, state) => const SimpleWorkoutScreen(),
+          builder: (context, state) => const WorkoutScreen(),
         ),
         GoRoute(
           path: '/workout/history',
-          builder: (context, state) => const WorkoutHistoryScreen(),
+          builder: (context, state) => const ProRouteGate(
+            feature: 'workout_history',
+            child: WorkoutHistoryScreen(),
+          ),
         ),
         GoRoute(
           path: '/routines',
@@ -142,6 +170,10 @@ class AppRouter {
         GoRoute(
           path: '/anamnese',
           builder: (context, state) => const OnboardingScreen(),
+        ),
+        GoRoute(
+          path: '/training-mode',
+          builder: (context, state) => const TrainingModeScreen(),
         ),
         GoRoute(
           path: '/athlete-profile',
@@ -167,10 +199,6 @@ class AppRouter {
               ),
             );
           },
-        ),
-        GoRoute(
-          path: '/prescribed',
-          builder: (context, state) => const PrescribedWorkoutScreen(),
         ),
         GoRoute(
           path: '/change-history',

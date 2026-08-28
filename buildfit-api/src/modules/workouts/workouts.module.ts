@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { WorkoutsController } from './workouts.controller';
 import { WorkoutsService } from './workouts.service';
-import { PrismaService } from '../../common/services/prisma.service';
-import { FirebaseService } from '../../common/services/firebase.service';
+import { CommonModule } from '../../common/common.module';
 
 @Module({
+  imports: [CommonModule],
   controllers: [WorkoutsController],
-  providers: [WorkoutsService, PrismaService, FirebaseService],
+  providers: [WorkoutsService],
   exports: [WorkoutsService],
 })
 export class WorkoutsModule {}

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'training_readiness.dart';
 
 // ─────────────────────────────────────────────
 // ─────────────────────────────────────────────
@@ -76,6 +77,10 @@ class WorkoutProfile {
   final int exerciseRotationOffset; // seed de variação semanal
 
   final UserAdaptiveProfile adaptive; // perfil de adaptação
+  final LifeLoad lifeLoad;
+  final Map<String, ConfidenceLevel> confidenceByVariable;
+  final bool calibrationActive;
+  final int calibrationSessionsRemaining;
 
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -106,14 +111,38 @@ class WorkoutProfile {
     this.currentWeek = 1,
     this.exerciseRotationOffset = 0,
     this.adaptive = const UserAdaptiveProfile(),
+    this.lifeLoad = const LifeLoad(),
+    this.confidenceByVariable = const {},
+    this.calibrationActive = true,
+    this.calibrationSessionsRemaining = 6,
     required this.createdAt,
     required this.updatedAt,
   });
 
   factory WorkoutProfile.fromDoc(DocumentSnapshot doc) {
     final d = doc.data() as Map<String, dynamic>? ?? {};
+    final userId = d['uid'] as String? ?? doc.reference.parent.parent?.id ?? doc.id;
+
+    DateTime readDate(dynamic value) {
+      if (value is Timestamp) return value.toDate();
+      if (value is DateTime) return value;
+      if (value is String) return DateTime.tryParse(value) ?? DateTime.now();
+      return DateTime.now();
+    }
+
+    String normalizeEquipment(String value) {
+      switch (value.trim().toLowerCase()) {
+        case 'dumbbells': return 'dumbbell';
+        case 'cables': return 'cable';
+        case 'machines': return 'machine';
+        case 'bands': return 'band';
+        case 'pullup_bar': return 'pull_up_bar';
+        default: return value.trim().toLowerCase();
+      }
+    }
+
     return WorkoutProfile(
-      uid: doc.id,
+      uid: userId,
       age: (d['age'] as num?)?.toInt() ?? 25,
       biologicalSex: d['biologicalSex'] as String? ?? 'male',
       weightKg: (d['weightKg'] as num?)?.toDouble() ?? 70.0,
@@ -131,19 +160,28 @@ class WorkoutProfile {
       stressLevel: d['stressLevel'] as String? ?? 'medium',
       priorityMuscles: List<String>.from(d['priorityMuscles'] ?? []),
       environment: d['environment'] as String? ?? 'full_gym',
-      availableEquipment: List<String>.from(d['availableEquipment'] ?? []),
+      availableEquipment: List<String>.from(d['availableEquipment'] ?? [])
+          .map(normalizeEquipment)
+          .toSet()
+          .toList(),
       dislikedExercises: List<String>.from(d['dislikedExercises'] ?? []),
       favoriteExercises: List<String>.from(d['favoriteExercises'] ?? []),
       healthRestrictions: List<String>.from(d['healthRestrictions'] ?? []),
       currentWeek: (d['currentWeek'] as num?)?.toInt() ?? 1,
       exerciseRotationOffset: (d['exerciseRotationOffset'] as num?)?.toInt() ?? 0,
       adaptive: UserAdaptiveProfile.fromMap(d['adaptive'] as Map<String, dynamic>?),
-      createdAt: (d['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      updatedAt: (d['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      lifeLoad: LifeLoad.fromMap(d['lifeLoad'] as Map<String, dynamic>?),
+      confidenceByVariable: _confidenceFromMap(d['confidenceByVariable']),
+      calibrationActive: d['calibrationActive'] as bool? ?? true,
+      calibrationSessionsRemaining:
+          (d['calibrationSessionsRemaining'] as num?)?.toInt() ?? 6,
+      createdAt: readDate(d['createdAt']),
+      updatedAt: readDate(d['updatedAt']),
     );
   }
 
   Map<String, dynamic> toMap() => {
+        'uid': uid,
         'age': age,
         'biologicalSex': biologicalSex,
         'weightKg': weightKg,
@@ -168,7 +206,23 @@ class WorkoutProfile {
         'currentWeek': currentWeek,
         'exerciseRotationOffset': exerciseRotationOffset,
         'adaptive': adaptive.toMap(),
-        'createdAt': createdAt,
-        'updatedAt': updatedAt,
+        'lifeLoad': lifeLoad.toMap(),
+        'confidenceByVariable': confidenceByVariable.map(
+          (key, value) => MapEntry(key, value.name),
+        ),
+        'calibrationActive': calibrationActive,
+        'calibrationSessionsRemaining': calibrationSessionsRemaining,
+        'createdAt': Timestamp.fromDate(createdAt),
+        'updatedAt': Timestamp.fromDate(updatedAt),
       };
+
+  static Map<String, ConfidenceLevel> _confidenceFromMap(dynamic value) {
+    if (value is! Map) return {};
+    final result = <String, ConfidenceLevel>{};
+    for (final entry in value.entries) {
+      final level = ConfidenceLevel.values.where((item) => item.name == entry.value).firstOrNull;
+      if (level != null) result[entry.key.toString()] = level;
+    }
+    return result;
+  }
 }

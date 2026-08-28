@@ -23,9 +23,9 @@ service firebase.storage {
       allow write: if false;
     }
 
-    // Catch-all: public read for remaining resources
+    // Nenhum outro arquivo deve ser público por acidente.
     match /{allPaths=**} {
-      allow read: if true;
+      allow read: if false;
       allow write: if false;
     }
   }

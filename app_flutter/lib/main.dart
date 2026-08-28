@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -24,6 +25,7 @@ import 'features/workout/workout_provider.dart';
 import 'features/workout/workout_profile_provider.dart';
 import 'features/workout/progression_provider.dart';
 import 'features/nutrition/nutrition_provider.dart';
+import 'features/workout/collective_profile_provider.dart';
 import 'shared/theme/app_theme.dart';
 
 // Background message handler — chamado quando o app está em background
@@ -153,18 +155,39 @@ class WorkoutApp extends StatelessWidget {
         ChangeNotifierProvider<NutritionProvider>(
           create: (_) => NutritionProvider(),
         ),
+        ChangeNotifierProvider<CollectiveProfileProvider>(
+          create: (_) => CollectiveProfileProvider(),
+        ),
         Provider.value(value: FirebaseFirestore.instance),
       ],
-      child: Consumer<AuthService>(
-        builder: (context, authService, child) {
-          return MaterialApp.router(
-            title: 'Controle de Carga',
-            theme: AppTheme.darkTheme,
-            debugShowCheckedModeBanner: false,
-            routerConfig: AppRouter.createRouter(authService),
-          );
-        },
-      ),
+      child: const _RouterHost(),
+    );
+  }
+}
+
+class _RouterHost extends StatefulWidget {
+  const _RouterHost();
+
+  @override
+  State<_RouterHost> createState() => _RouterHostState();
+}
+
+class _RouterHostState extends State<_RouterHost> {
+  GoRouter? _router;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _router ??= AppRouter.createRouter(context.read<AuthService>());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'Controle de Carga',
+      theme: AppTheme.darkTheme,
+      debugShowCheckedModeBanner: false,
+      routerConfig: _router!,
     );
   }
 }

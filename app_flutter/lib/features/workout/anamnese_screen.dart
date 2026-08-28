@@ -591,13 +591,13 @@ class _StepPreferencesState extends State<_StepPreferences> {
         _MultiChoiceGroup(
           choices: {
             'barbell': 'Barra longa',
-            'dumbbells': 'Halteres',
-            'cables': 'Cabos/Polia',
-            'machines': 'Máquinas',
+            'dumbbell': 'Halteres',
+            'cable': 'Cabos/Polia',
+            'machine': 'Máquinas',
             'smith': 'Smith Machine',
-            'pullup_bar': 'Barra fixa',
+            'pull_up_bar': 'Barra fixa',
             'dip_station': 'Paralelas',
-            'bands': 'Elásticos/Bands',
+            'band': 'Elásticos/Bands',
             'kettlebell': 'Kettlebell',
             'trx': 'TRX/Suspension',
           },

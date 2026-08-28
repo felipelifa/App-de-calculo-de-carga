@@ -3,18 +3,26 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
+const defaultCorsOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'https://buildfit-nine.vercel.app',
+  'https://app-calculo-carga.vercel.app',
+  'https://apptreino-cyan.vercel.app',
+  'https://appcalculotreino-51f23.web.app',
+  'https://appcalculotreino-51f23.firebaseapp.com',
+];
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api');
 
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'https://buildfit-nine.vercel.app',
-      'https://app-calculo-carga.vercel.app',
-    ],
+    origin: (process.env.CORS_ORIGIN || defaultCorsOrigins.join(','))
+      .split(',')
+      .map((origin) => origin.trim())
+      .filter(Boolean),
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true,
   });

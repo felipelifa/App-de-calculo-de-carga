@@ -25,7 +25,9 @@ service cloud.firestore {
         && isValidString(request.resource.data.name, 100)
         && isValidString(request.resource.data.email, 255);
       allow update: if isOwner(uid)
-        && isValidString(request.resource.data.name, 100);
+        && isValidString(request.resource.data.name, 100)
+        && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['name', 'email', 'fcmToken']);
       allow delete: if false;
 
       // exercises
@@ -121,9 +123,9 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // ── proTokens — apenas leitura, resgate é via Cloud Function ─
+    // ── proTokens — o resgate ocorre somente via backend/Cloud Function ─
     match /proTokens/{code} {
-      allow read: if isAuthenticated();
+      allow read: if false;
       allow write: if false; // apenas Cloud Functions escreve
     }
 

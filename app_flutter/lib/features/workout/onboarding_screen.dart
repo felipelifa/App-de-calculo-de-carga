@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../shared/theme/app_theme.dart';
 import 'workout_profile_model.dart';
 import 'workout_profile_provider.dart';
+import 'training_readiness.dart';
 
 // ─────────────────────────────────────────────
 // Onboarding Simplificado — 7 etapas
@@ -45,14 +46,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   // Etapa 7: Restrições
   final List<String> _restrictions = [];
 
-  // Dados pessoais (coletados automaticamente quando possível)
-  int _age = 25;
-  String _sex = 'male';
-  double _weight = 70.0;
-  double _height = 175.0;
+  // Dados pessoais mínimos para personalização e cálculo nutricional.
+  int? _age;
+  String? _sex;
+  double? _weight;
+  double? _height;
 
   void _next() {
-    if (_currentPage < 6) {
+    if (_currentPage < 7) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -76,10 +77,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       case 0: return _goal != null;
       case 1: return _modality != null;
       case 2: return _level != null;
-      case 3: return true; // dias sempre tem valor padrão
-      case 4: return true; // duração sempre tem valor padrão
-      case 5: return _environment != null;
-      case 6: return true; // restrições são opcionais
+      case 3:
+        return _sex != null &&
+            _age != null && _age! >= 13 && _age! <= 100 &&
+            _weight != null && _weight! >= 30 && _weight! <= 300 &&
+            _height != null && _height! >= 120 && _height! <= 240;
+      case 4: return true; // dias sempre tem valor padrão
+      case 5: return true; // duração sempre tem valor padrão
+      case 6: return _environment != null;
+      case 7: return true; // restrições são opcionais
       default: return true;
     }
   }
@@ -94,19 +100,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
 
     // Mapear objetivo simples para objetivo técnico
-    String technicalGoal = _mapGoalToTechnical(_goal);
+    final technicalModality = _mapModalityToTechnical(_modality);
+    final technicalGoal = _mapGoalForModality(_modality) ?? _mapGoalToTechnical(_goal);
     String technicalLevel = _mapLevelToTechnical(_level);
-    String technicalModality = _mapModalityToTechnical(_modality);
 
     final profile = WorkoutProfile(
       uid: uid,
-      age: _age,
-      biologicalSex: _sex,
-      weightKg: _weight,
-      heightCm: _height,
-      bodyFatCategory: 'medium', // padrão, não obrigatório
+      age: _age!,
+      biologicalSex: _sex!,
+      weightKg: _weight!,
+      heightCm: _height!,
+      bodyFatCategory: 'medium',
       primaryGoal: technicalGoal,
-      sportSubType: 'none',
+      sportSubType: _mapSportSubtype(_modality),
       trainingModality: technicalModality,
       experienceLevel: technicalLevel,
       trainingAge: _level == 'beginner' ? 0 : (_level == 'intermediate' ? 18 : 48),
@@ -121,6 +127,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       dislikedExercises: [],
       favoriteExercises: [],
       healthRestrictions: List.from(_restrictions),
+      calibrationActive: true,
+      calibrationSessionsRemaining: 6,
+      confidenceByVariable: {
+        'experienceLevel': ConfidenceLevel.low,
+        'primaryGoal': ConfidenceLevel.low,
+        'environment': ConfidenceLevel.low,
+        'availableEquipment': ConfidenceLevel.low,
+        'healthRestrictions': ConfidenceLevel.low,
+        'availableDaysPerWeek': ConfidenceLevel.moderate,
+        'sessionDurationMinutes': ConfidenceLevel.moderate,
+        'age': ConfidenceLevel.moderate,
+        'biologicalSex': ConfidenceLevel.moderate,
+        'weightKg': ConfidenceLevel.moderate,
+        'heightCm': ConfidenceLevel.moderate,
+      },
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
@@ -131,7 +152,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       await provider.generateAndSaveWorkout();
 
       if (mounted) {
-        context.go('/dashboard');
+        // Após onboarding individual, oferecer escolha de modo
+        context.go('/training-mode');
       }
     } catch (e) {
       if (mounted) {
@@ -182,6 +204,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
+  String? _mapGoalForModality(String? modality) {
+    switch (modality) {
+      case 'running': return 'running_hybrid';
+      case 'combat': return 'combat_sports';
+      case 'cycling':
+      case 'swimming': return 'sport_specific';
+      case 'calisthenics': return 'calisthenics';
+      case 'functional': return 'functional_hiit';
+      case 'mobility':
+      case 'rehab': return 'mobility_rehab';
+      default: return null;
+    }
+  }
+
+  String _mapSportSubtype(String? modality) {
+    switch (modality) {
+      case 'running': return 'run_5k';
+      case 'combat': return 'mma';
+      case 'cycling': return 'cycling';
+      case 'swimming': return 'swimming';
+      default: return 'none';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -202,6 +248,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   _buildGoalStep(),
                   _buildModalityStep(),
                   _buildLevelStep(),
+                  _buildPersonalDataStep(),
                   _buildDaysStep(),
                   _buildDurationStep(),
                   _buildEnvironmentStep(),
@@ -218,6 +265,76 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
+  Widget _buildPersonalDataStep() {
+    return _buildStepContainer(
+      title: 'Sobre você',
+      subtitle: 'Esses dados ajudam a ajustar o treino e a recuperação',
+      child: Column(
+        children: [
+          _numberField(
+            label: 'Idade',
+            suffix: 'anos',
+            onChanged: (value) => setState(() => _age = int.tryParse(value)),
+          ),
+          const SizedBox(height: 12),
+          _numberField(
+            label: 'Peso',
+            suffix: 'kg',
+            decimal: true,
+            onChanged: (value) => setState(() => _weight = double.tryParse(value.replaceAll(',', '.'))),
+          ),
+          const SizedBox(height: 12),
+          _numberField(
+            label: 'Altura',
+            suffix: 'cm',
+            decimal: true,
+            onChanged: (value) => setState(() => _height = double.tryParse(value.replaceAll(',', '.'))),
+          ),
+          const SizedBox(height: 20),
+          _buildOptionCard(
+            icon: '♂️',
+            title: 'Masculino',
+            value: 'male',
+            groupValue: _sex,
+            onChanged: (value) => setState(() => _sex = value),
+          ),
+          _buildOptionCard(
+            icon: '♀️',
+            title: 'Feminino',
+            value: 'female',
+            groupValue: _sex,
+            onChanged: (value) => setState(() => _sex = value),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _numberField({
+    required String label,
+    required String suffix,
+    required ValueChanged<String> onChanged,
+    bool decimal = false,
+  }) {
+    return TextField(
+      keyboardType: TextInputType.numberWithOptions(decimal: decimal),
+      onChanged: onChanged,
+      style: const TextStyle(color: AppTheme.textPrimary),
+      decoration: InputDecoration(
+        labelText: label,
+        suffixText: suffix,
+        labelStyle: const TextStyle(color: AppTheme.textSecondary),
+        suffixStyle: const TextStyle(color: AppTheme.textSecondary),
+        filled: true,
+        fillColor: AppTheme.surfaceHighlight,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
   Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -225,7 +342,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         children: [
           // Barra de progresso
           Row(
-            children: List.generate(7, (index) {
+            children: List.generate(8, (index) {
               return Expanded(
                 child: Container(
                   height: 4,
@@ -243,7 +360,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           const SizedBox(height: 16),
           // Texto do passo
           Text(
-            'Passo ${_currentPage + 1} de 7',
+            'Passo ${_currentPage + 1} de 8',
             style: const TextStyle(
               color: AppTheme.textSecondary,
               fontSize: 14,
@@ -559,7 +676,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       {'icon': '🏋️', 'label': 'Banco', 'value': 'bench'},
       {'icon': '💪', 'label': 'Barra de pull-up', 'value': 'pull_up_bar'},
       {'icon': '🧘', 'label': 'Colchonete', 'value': 'mat'},
-      {'icon': '⭕', 'label': 'Elásticos', 'value': 'bands'},
+      {'icon': '⭕', 'label': 'Elásticos', 'value': 'band'},
       {'icon': '🏋️', 'label': 'Kettlebell', 'value': 'kettlebell'},
     ];
 
@@ -853,7 +970,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     )
                   : Text(
-                      _currentPage == 6 ? 'Começar!' : 'Próximo',
+                      _currentPage == 7 ? 'Começar!' : 'Próximo',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

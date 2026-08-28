@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../exercises/exercise_model.dart';
+import 'exercise_dna.dart';
 
 // ═══════════════════════════════════════════════════════════════
 // Modelos do Treino Prescrito
@@ -64,6 +66,8 @@ class PrescribedExercise {
   final List<String> sessionCues;
   final String progressionNote;
   final String? injuryNote; // Alertas de segurança baseados no histórico
+  final double defaultWeightKg;
+  final String? decisionReason;
 
   const PrescribedExercise({
     required this.exercise,
@@ -75,10 +79,16 @@ class PrescribedExercise {
     required this.sessionCues,
     required this.progressionNote,
     this.injuryNote,
+    this.defaultWeightKg = 0.0,
     this.tempo = '2-0-2',
+    this.decisionReason,
   });
 
   Map<String, dynamic> toMap() => {
+        'functions': ExerciseDna.fromExercise(exercise).functions,
+        'capabilities': ExerciseDna.fromExercise(exercise).capabilities,
+        'joints': ExerciseDna.fromExercise(exercise).joints,
+        'recoveryCost': ExerciseDna.fromExercise(exercise).recoveryCost,
         'exerciseId': exercise.id,
         'exerciseName': exercise.name,
         'muscleGroup': exercise.primaryMuscles.isNotEmpty
@@ -93,6 +103,8 @@ class PrescribedExercise {
         'sessionCues': sessionCues,
         'progressionNote': progressionNote,
         'injuryNote': injuryNote,
+        'defaultWeightKg': defaultWeightKg,
+        'decisionReason': decisionReason,
         // Metadados para o motor de progressão
         'isBodyweight': exercise.equipment.contains('bodyweight') &&
             exercise.equipment.length == 1,
@@ -110,9 +122,11 @@ class PrescribedExercise {
       rir: (map['rir'] as num?)?.toInt() ?? 2,
       restSeconds: (map['restSeconds'] as num?)?.toInt() ?? 90,
       tempo: map['tempo'] as String? ?? '2-0-2',
-      sessionCues: List<String>.from(map['sessionCues'] ?? []),
+      sessionCues: (map['sessionCues'] as List? ?? []).map((e) => e.toString()).toList(),
       progressionNote: map['progressionNote'] as String? ?? '',
       injuryNote: map['injuryNote'] as String?,
+      defaultWeightKg: (map['defaultWeightKg'] as num?)?.toDouble() ?? 0.0,
+      decisionReason: map['decisionReason'] as String?,
     );
   }
 }
@@ -125,7 +139,8 @@ class PrescribedSession {
   final List<String> warmupInstructions;
   final List<PrescribedExercise> exercises;
   final String progressionNote;
-  final FatigueMetrics fatigue; // métricas de fadiga desta sessão
+  final FatigueMetrics fatigue;
+  final String? userExplanation;
 
   const PrescribedSession({
     required this.id,
@@ -136,6 +151,7 @@ class PrescribedSession {
     required this.exercises,
     required this.progressionNote,
     this.fatigue = const FatigueMetrics(),
+    this.userExplanation,
   });
 
   Map<String, dynamic> toMap() => {
@@ -147,6 +163,7 @@ class PrescribedSession {
         'exercises': exercises.map((e) => e.toMap()).toList(),
         'progressionNote': progressionNote,
         if (fatigue != const FatigueMetrics()) 'fatigue': fatigue.toMap(),
+        if (userExplanation != null) 'userExplanation': userExplanation,
       };
 
   factory PrescribedSession.fromMap(
@@ -154,7 +171,7 @@ class PrescribedSession {
     ExerciseModel? Function(String) getExerciseById,
   ) {
     final exList = (map['exercises'] as List? ?? []).map((e) {
-      final data = e as Map<String, dynamic>;
+      final data = Map<String, dynamic>.from(e as Map);
       final ex = getExerciseById(data['exerciseId'] as String? ?? '');
       if (ex == null) return null;
       return PrescribedExercise.fromMap(data, ex);
@@ -167,12 +184,13 @@ class PrescribedSession {
       estimatedDurationMinutes:
           (map['estimatedDurationMinutes'] as num?)?.toInt() ?? 60,
       warmupInstructions:
-          List<String>.from(map['warmupInstructions'] ?? []),
+          (map['warmupInstructions'] as List? ?? []).map((e) => e.toString()).toList(),
       exercises: exList,
       progressionNote: map['progressionNote'] as String? ?? '',
       fatigue: map['fatigue'] != null
           ? FatigueMetrics.fromMap(map['fatigue'] as Map<String, dynamic>)
           : const FatigueMetrics(),
+      userExplanation: map['userExplanation'] as String?,
     );
   }
 }
@@ -188,6 +206,7 @@ class GeneratedWorkout {
   final String? preferredStyle;
   final DateTime generatedAt;
   final bool isActive;
+  final String? planExplanation;
 
   const GeneratedWorkout({
     required this.id,
@@ -200,6 +219,7 @@ class GeneratedWorkout {
     this.preferredStyle,
     required this.generatedAt,
     this.isActive = false,
+    this.planExplanation,
   });
 
   Map<String, dynamic> toMap() => {
@@ -213,6 +233,7 @@ class GeneratedWorkout {
         'preferredStyle': preferredStyle,
         'generatedAt': generatedAt.toIso8601String(),
         'isActive': isActive,
+        if (planExplanation != null) 'planExplanation': planExplanation,
       };
 
   factory GeneratedWorkout.fromMap(
@@ -227,15 +248,21 @@ class GeneratedWorkout {
       periodizationModel: map['periodizationModel'] as String? ?? 'linear',
       sessions: (map['sessions'] as List? ?? [])
           .map((s) => PrescribedSession.fromMap(
-              s as Map<String, dynamic>, getExerciseById))
+              Map<String, dynamic>.from(s as Map), getExerciseById))
           .toList(),
       mesocycleDurationWeeks:
           (map['mesocycleDurationWeeks'] as num?)?.toInt() ?? 8,
       preferredStyle: map['preferredStyle'] as String?,
-      generatedAt:
-          DateTime.tryParse(map['generatedAt'] as String? ?? '') ??
-              DateTime.now(),
+      generatedAt: _readDate(map['generatedAt'] ?? map['createdAt']),
       isActive: map['isActive'] as bool? ?? false,
+      planExplanation: map['planExplanation'] as String?,
     );
+  }
+
+  static DateTime _readDate(dynamic value) {
+    if (value is Timestamp) return value.toDate();
+    if (value is DateTime) return value;
+    if (value is String) return DateTime.tryParse(value) ?? DateTime.now();
+    return DateTime.now();
   }
 }

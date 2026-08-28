@@ -1280,314 +1280,371 @@ git push origin main --tags v1.0.0      # Tag release
 
 ---
 
-# 🔧 SESSÃO 2026-08-23 — BuildFit UX 1.0 + Vision Engine + Correções
+# 🔧 SESSÃO 2026-08-26 — Motor de Prescrição v6.0 + Treinamento Coletivo + Correções Críticas
 
 ## Resumo da Sessão
 
-Sessão completa de evolução do BuildFit incluindo:
-- **BuildFit UX 1.0** (interface simplificada)
-- **Vision Nutrition Engine** (reconhecimento de alimentos por foto)
-- **Correções de equipamento** (treinos para casa sem equipamentos)
-- **Correções de bugs** (loop infinito, compilação)
-- **APK otimizado** (30.6MB)
+Sessão massiva de evolução do BuildFit, incluindo:
+- **Motor de Prescrição v6.0** com DNA inteligente, compatibilidade universal e explicabilidade
+- **Treinamento Coletivo** (dupla + grupo) com núcleo comum e divergência controlada
+- **Idade como variável contextual** (modificador, não regra rígida)
+- **Correções críticas** de bugs que impediam funcionamento do app
+- **23 testes** validando todos os cenários
 
 ---
 
-## 1. BuildFit UX 1.0 — Interface Simplificada
+## 1. Correções Críticas (Sessão Anterior)
 
-### Princípio Central
-O usuário não precisa entender como o BuildFit funciona. Ele informa objetivo, modalidade, nível, disponibilidade, equipamentos, limitações. O BuildFit decide automaticamente.
+### Bugs que impediam funcionamento
 
-### Arquivos Criados
+| Bug | Arquivo | Correção |
+|-----|---------|----------|
+| `ExerciseProvider` nunca conectado ao `WorkoutProfileProvider` | `main.dart` | Adicionado `connectExerciseProvider` no Consumer |
+| URL `localhost:3000` hardcoded na API | `api_service.dart` | URL do Railway + `--dart-define` para ambientes |
+| Equipamentos no plural (`dumbbells`) vs biblioteca singular (`dumbbell`) | `anamnese_screen.dart` | Normalização: `dumbbells`→`dumbbell`, `cables`→`cable`, etc. |
+| `DateTime` escrito direto no Firestore | `workout_profile_model.dart` | Convertido com `Timestamp.fromDate()` |
+| `List<String>.from()` em `List<dynamic>` do Firestore | `prescribed_workout_model.dart` | Trocado por `.map((e) => e.toString()).toList()` |
+| `deleteSession` não atualiza UI | `workout_provider.dart` | Adicionado `_history.removeWhere()` + `notifyListeners()` |
+| `/prescribed` fora do ShellRoute | `app_router.dart` | Movido para dentro do ShellRoute |
+| Tela de treino inativa (`SimpleWorkoutScreen`) | `app_router.dart` | Rota `/workout` agora usa `WorkoutScreen` funcional |
+| Só coleta dados fictícios no onboarding | `onboarding_screen.dart` | Idade, peso, altura, sexo agora são coletados |
+| `WorkoutProfile.fromDoc` usa `doc.id` em vez de UID | `workout_profile_model.dart` | Corrigido para usar `uid` do documento |
+| API retornava `{}` como `T` para body vazio | `api_service.dart` | Retorna `null as T` (mais seguro) |
+| `WorkoutsApiService.getWorkouts` retornava Map em vez de List | `workouts_api_service.dart` | Adicionado fallback seguro |
+| Teste padrão de contador falhava | `widget_test.dart` | Substituído por `training_engine_test.dart` com 23 testes |
+
+---
+
+## 2. Motor de Prescrição v6.0
+
+### DNA Inteligente do Exercício
+
+**Novo arquivo**: `exercise_dna.dart`
+
+Cada exercício possui um DNA derivado automaticamente dos metadados existentes:
+- **Funções**: knee_extension, hip_extension, push_horizontal, etc.
+- **Capacidades**: strength, stability, coordination, etc.
+- **Articulações**: knee, hip, shoulder, etc.
+- **Demanda técnica**: 0.0-1.0 baseada em skillLevel + categoria
+- **Custo de recuperação**: média de spinalLoad, shoulderStress, kneeStress, cnsLoad
+
+### Compatibilidade Universal
+
+**Novo arquivo**: `exercise_compatibility.dart`
+
+Fonte ÚNICA de hard constraints para todo o sistema:
+- Normalização de equipamentos (`dumbbells`→`dumbbell`, `cables`→`cable`, `bands`→`band`)
+- Verificação de ambiente (home/gym/outdoor)
+- Equipamento disponível
+- Restrições de saúde
+- Nível de experiência
+- Usado por: motor principal, rotação, escapulares, reabilitação, esporte, templates
+
+### Explicabilidade em 3 Camadas
+
+**Usuário**: "Treino de superior com 6 exercícios compatíveis com seu ambiente (casa)"
+**Usuário avançado**: `decisionReason` em cada exercício
+**Profissional**: `decisionReason` + DNA + fadiga + contrafactuais
+
+### Confiança Granular por Variável
+
+Onboarding salva confiança por variável:
+- `experienceLevel`, `primaryGoal`, `environment`, `availableEquipment`, `healthRestrictions` → low (autodeclarados)
+- `availableDaysPerWeek`, `sessionDurationMinutes`, `age`, `biologicalSex`, `weightKg`, `heightCm` → moderate (inseridos manualmente)
+
+Motor usa confiança: calibração ativa = exercícios mais simples por 6 sessões.
+
+### Sensibilidade na Auditoria
+
+- Alerta se sessão fica com <2 exercícios após auditoria
+- Alerta se >40% dos exercícios são removidos
+- Logging via `debugPrint` para observabilidade
+
+---
+
+## 3. Idade como Variável Contextual
+
+**Novo arquivo**: `age_modifier.dart`
+
+A idade NÃO é regra rígida. É um modificador que atua sobre outras variáveis.
+
+### Modificadores implementados
+
+| Modificador | Idade 25 | Idade 50 | Idade 65 |
+|-------------|----------|----------|----------|
+| Volume | 1.0 (sem penalidade) | 0.97 | 0.85 (iniciante), 0.88 (avançado + alta capacidade) |
+| Complexidade | 1.0 | 0.85-0.9 | 0.7 (iniciante), 0.9 (avançado) |
+| Descanso | Base | Base | +15% (iniciante) |
+| Prioridade funcional | Não | Não | Sim (iniciante/baixa capacidade) |
+| Bonus unilateral | 0 | 1.5 | 1.5 |
+
+**Regra de ouro**: Duas pessoas com a mesma idade podem receber treinos completamente diferentes.
+
+### Integração no motor
+
+- **Volumes semanais**: `AgeModifier.volumeModifier()` aplicado ao `recoveryMod`
+- **Scoring**: bonus para exercícios funcionais/unilaterais quando idade >= 50
+- **Prioridade funcional**: exercícios de estabilidade/equilíbrio quando idade >= 55 + iniciante
+
+---
+
+## 4. Treinamento Coletivo
+
+### Novos arquivos
 
 | Arquivo | Descrição |
 |---------|-----------|
-| `onboarding_screen.dart` | Onboarding simplificado (7 etapas com linguagem simples) |
-| `today_screen.dart` | Dashboard "Hoje" com coach digital e mensagens contextuais |
-| `simple_workout_screen.dart` | Treino simplificado (Fácil/Boa/Difícil em vez de RIR) |
-| `simple_nutrition_screen.dart` | Nutrição simplificada com resumo e sugestões |
-| `integration_service.dart` | Integração treino+nutrição com mensagens contextuais |
-| `coach_service.dart` | Coach digital com feedback contextual |
-| `change_history_service.dart` | Serviço de histórico de alterações |
-| `change_history_screen.dart` | Tela de histórico de alterações |
+| `collective_training.dart` | Modelos: `TrainingMode`, `ParticipantProfile`, `DuoProfile`, `GroupProfile`, `CollectiveSessionBlock`, `SyncLevel`, `CompatibilityLevel`, `ParticipantRelation` |
+| `collective_engine.dart` | Motor coletivo: gera blocos com divergência controlada |
+| `collective_profile_provider.dart` | Provider para persistir e gerar treinos coletivos |
+| `training_mode_screen.dart` | Telas: seleção de modo, questionário dupla (5 passos), questionário grupo (3 passos) |
 
-### Onboarding (7 Etapas)
+### Modos de treinamento
 
-1. **Objetivo**: Ganhar músculo, Perder gordura, Ficar mais forte, Saúde, Condicionamento, Não sei
-2. **Modalidade**: Musculação, Corrida, Mobilidade, Reabilitação, Funcional, Calistenia, Lutas, Ciclismo, Natação
-3. **Nível**: Estou começando, Alguma experiência, Bastante experiência, Não sei
-4. **Dias**: 2-6 com seletor visual
-5. **Duração**: 30-90 minutos
-6. **Ambiente**: Academia, Casa, Ao ar livre (com equipamentos condicionais)
-7. **Restrições**: Nenhuma, Ombro, Joelho, Lombar, Cotovelo, Punho, Quadril, Tornozelo
+| Modo | Descrição |
+|------|-----------|
+| Individual | Fluxo existente preservado |
+| Dupla | Questionário adaptativo com 5 passos |
+| Grupo | Questionário adaptativo com 3 passos |
 
-### Tela "Hoje"
+### Questionário de Dupla (5 passos)
 
-- Saudação baseada no horário
-- Card de treino com progresso semanal
-- Card de nutrição com mensagem contextual
-- Card de hidratação com mensagem contextual
-- Card de progresso com mensagem contextual
-- Card do Coach Digital com feedback e dicas
-- Ações rápidas: Meus Treinos, Exercícios, Histórico, Progresso, Config
+1. **Nomes** dos participantes
+2. **Perfil da Pessoa A**: nome, idade, sexo, objetivo, nível
+3. **Perfil da Pessoa B**: nome, idade, sexo, objetivo, nível
+4. **Preferências da dupla**: mesmo treino?, treinar juntos?, sincronização, relação
+5. **Resumo**: compatibilidade, dados consolidados, botão "Gerar Treino"
 
-### Treino Simplificado
+### Questionário de Grupo (3 passos)
 
-- Tela inicial com botão "COMEÇAR TREINO"
-- Timer de sessão
-- Cards de exercícios com séries editáveis
-- Botão "Trocar exercício" com motivo
-- Botão "Senti desconforto" com localização e intensidade
-- Finalização com feedback: Fácil, Boa, Difícil, Muito difícil
+1. **Quantidade** de participantes (2-20)
+2. **Preferências do grupo**: objetivo coletivo, terminar juntos?, exercícios diferentes?, sincronização
+3. **Resumo**: dados consolidados, botão "Gerar Treino"
 
-### Nutrição Simplificada
+### Motor Coletivo
 
-- Card de calorias com indicador circular
-- Macros com barras de progresso e porcentagens
-- Sugestão do BuildFit em linguagem humana
-- Lista de refeições do dia
-- Botão "Registrar refeição"
+**Princípio central**: "Treinar juntos" ≠ "Fazer o mesmo treino"
 
-### Coach Digital
+**Núcleo comum**: exercícios que todos podem fazer (aquecimento, finalização)
+**Divergência controlada**: exercícios diferentes quando necessário, mantendo blocos sincronizados
 
-- Feedback sobre treino
-- Feedback sobre nutrição
-- Feedback sobre hidratação
-- Feedback sobre progresso
-- Mensagens de motivação
-- Dicas do dia
+**Níveis de sincronização**:
+- **Baixo**: cada participante pode ter exercícios bem diferentes
+- **Médio**: mesmos blocos, com variações individuais
+- **Alto**: maior parte do treino compartilhada
 
-### Navegação Atualizada
+**Regra de ouro**: qualidade individual > igualdade absoluta
 
-| Aba | Rota | Conteúdo |
-|-----|------|----------|
-| 🏠 Hoje | `/dashboard` | Dashboard com resumo do dia |
-| 🏋️ Treinos | `/prescribed` | Planos prescritos, exercícios |
-| 🍽️ Nutrição | `/nutrition` | Calorias, macros, refeições |
-| 👤 Perfil | `/profile` | Config, anamneses |
+### Compatibilidade entre Participantes
 
----
+Calculada automaticamente:
+- Objetivos iguais: +3 pontos
+- Níveis semelhantes: +2 pontos
+- Equipamentos semelhantes: +2 pontos
+- Sem restrições diferentes: +1 ponto
+- Aceitam exercícios diferentes: +1 ponto
+- Querem terminar juntos: +1 ponto
 
-## 2. Vision Nutrition Engine
+| Total | Classificação |
+|-------|---------------|
+| >= 7 | Alta compatibilidade |
+| >= 4 | Média compatibilidade |
+| < 4 | Baixa compatibilidade |
 
-### Arquitetura
+### Dados dos Participantes
 
-```
-Foto → Vision Engine → Food Detection → Portion Estimation → Food Database → Nutrition Engine → Confirmação → Registro
-```
+Cada participante mantém perfil individual completo:
+- idade, sexo, peso, altura
+- experiência, tempo de treino
+- objetivo, ambiente, equipamentos
+- restrições, duração, sono, estresse
+- capacidade física, capacidade de recuperação
 
-### Arquivos Criados
-
-| Arquivo | Descrição |
-|---------|-----------|
-| `vision/food_detection_model.dart` | Modelo de detecção (FoodDetection, PortionEstimate, BoundingBox) |
-| `vision/vision_provider.dart` | Interface abstrata (VisionProvider) + implementações |
-| `vision/confidence_engine.dart` | Motor de confiança (HIGH/MEDIUM/LOW/UNKNOWN) |
-| `vision/food_matching_engine.dart` | Motor de correspondência (deteção → banco nutricional) |
-| `vision/portion_estimation_engine.dart` | Estimativa de porção (pouco/normal/bastante) |
-| `vision/barcode_scanner_screen.dart` | Scanner de barcode com câmera |
-| `vision/meal_photo_screen.dart` | Análise de foto de refeição |
-
-### Dependências Adicionadas
-
-```yaml
-mobile_scanner: ^5.0.0        # Barcode scanner com câmera
-image_picker: ^1.0.0          # Captura de foto
-google_generative_ai: ^0.4.0  # Gemini Vision (futuro)
-```
-
-### Funcionalidades
-
-- **Barcode Scanner**: Câmera para escanear código de barras
-- **Photo Recognition**: Captura de foto para identificar alimentos
-- **Food Matching**: Correspondência automática com banco nutricional
-- **Portion Estimation**: Estimativa por faixas (pouco/normal/bastante)
-- **Confidence Engine**: Níveis de confiança (alta/média/baixa)
-- **User Confirmation**: Confirmação antes de salvar
+**Nunca substituir por perfil médio.**
 
 ---
 
-## 3. Correções de Equipamento
+## 5. Onboarding Atualizado
 
-### Problema Identificado
-Quando o usuário selecionava "Casa sem equipamentos", o motor ainda prescrevia exercícios que necessitavam de equipamentos.
+### Novas etapas
 
-### Causas Raiz
+| Etapa | Conteúdo |
+|-------|----------|
+| 1 | Objetivo |
+| 2 | Modalidade |
+| 3 | Nível |
+| 4 | **Dados pessoais** (idade, peso, altura, sexo) - NOVO |
+| 5 | Dias por semana |
+| 6 | Duração |
+| 7 | Ambiente |
+| 8 | Restrições |
 
-| Bug | Descrição |
-|-----|-----------|
-| `_pickScapularExercise` | Sem filtro de ambiente/equipamento |
-| `face_pull` | Equipamento incorreto (bodyweight → cable) |
-| `pull_up` | Equipamento incorreto (bodyweight → pull_up_bar) |
-| Filtro academia | Não incluía exercícios bodyweight |
-| Blocos reabilitação | Sem filtro de ambiente/equipamento |
+### Mapeamento de modalidades
+
+| Modalidade | Objetivo técnico | SportSubType |
+|------------|-----------------|--------------|
+| Corrida | `running_hybrid` | `run_5k` |
+| Lutas | `combat_sports` | `mma` |
+| Ciclismo | `sport_specific` | `cycling` |
+| Natação | `sport_specific` | `swimming` |
+| Calistenia | `calisthenics` | `none` |
+| Funcional | `functional_hiit` | `none` |
+| Mobilidade/Reabilitação | `mobility_rehab` | `none` |
+
+### Pós-onboarding
+
+Após completar, o usuário é redirecionado para `/training-mode` onde pode escolher:
+- **Individual**: fluxo existente
+- **Dupla**: questionário de parceiro
+- **Grupo**: questionário de grupo
+
+---
+
+## 6. Tela de Treino (WorkoutScreen)
+
+### Banner de Prontidão
+
+Antes de iniciar treino, mostra:
+- **Verde** ("Pronto para treinar"): sono e estresse favoráveis
+- **Amarelo** ("Sessão adaptada"): volume reduzido
+- **Vermelho** ("Sessão de recuperação"): foque em técnica
+
+### Indicador de Calibração
+
+Quando `calibrationActive = true`:
+- Mostra sessões restantes
+- Motor força exercícios mais simples
+- Após cada sessão, `calibrationSessionsRemaining` decrementa automaticamente
+
+### Exigência de Séries
+
+`finishSession()` agora exige pelo menos uma série marcada como concluída antes de salvar.
+
+---
+
+## 7. Backend (buildfit-api)
 
 ### Correções
 
-| Arquivo | Correção |
-|---------|----------|
-| `exercise_library.dart` | Corrigido `pull_up`, `face_pull`, `pullover` |
-| `exercise_library.dart` | Adicionados 4 exercícios scapulares bodyweight |
-| `exercise_library.dart` | Adicionados 2 exercícios reabilitação ombro bodyweight |
-| `exercise_library.dart` | Atualizado `injuryRehabExercises` |
-| `prescription_engine.dart` | `_pickScapularExercise` com filtro ambiente/equipamento |
-| `prescription_engine.dart` | `_filterCandidates` com fallback bodyweight para academia |
-| `prescription_engine.dart` | `_buildRehabBlockUpper/Lower` com filtro ambiente/equipamento |
-
----
-
-## 4. Correções de Bugs
-
-### Loop Infinito na Nutrição
-
-**Problema**: Tela de nutrição ficava em loop infinito.
-
-**Causa**: `initFromProfile` chamava `loadExistingProfile()` novamente (redundante), causando múltiplos `notifyListeners()`.
-
-**Correção**:
-- Adicionada guarda `_isLoading` em `SimpleNutritionScreen`
-- Removida chamada redundante em `initFromProfile`
-- Adicionada verificação `if (_profile != null) return`
-
-### Erros de Compilação
-
-| Erro | Correção |
+| Item | Correção |
 |------|----------|
-| `AppTheme.warning` não existia | Adicionado `static const Color warning` |
-| `WorkoutProfile` sem `createdAt` | Adicionado `createdAt` e `updatedAt` |
-| `generateAndSaveWorkout(profile)` | Removido parâmetro |
-| `NeverScrollScrollPhysics` | Trocado por `ClampingScrollPhysics` |
-| `QuerySnapshot.data()` | Corrigido para usar `.doc().get()` |
-| `MobileScanner onBarcodeDetected` | Trocado por `onDetect` |
-| `MealEntry` sem `id` | Adicionado `id` no construtor |
+| Startup de produção | `dist/src/main.js` (era `dist/main`) |
+| CORS | Usa variável `CORS_ORIGIN` + domínio atual |
+| Firebase UID → User.id | `FirebaseAuthGuard` resolve internamente |
+| Ownership | Verificado em todas as rotas |
+| ProGuard | Aplicado a analytics, nutrition, progression, pr, prescription |
+| Volume de aquecimento | Excluído do cálculo total |
+| Seed path | Corrigido para resolver corretamente |
+
+### Migration Prisma
+
+Criada `prisma/migrations/20260826_init/migration.sql` com todas as 17 tabelas.
+
+### Status de deploy
+
+- Backend compila ✅
+- Startup de produção requer `DATABASE_URL` e migrations
+- URL Railway retorna 404 (precisa deploy com configuração completa)
 
 ---
 
-## 5. APK Otimizado
+## 8. Testes (23 testes)
 
-### Build Split-per-ABI
+### Categorias
 
-| Arquitetura | Tamanho | Uso |
-|-------------|---------|-----|
-| armeabi-v7a | 27.1 MB | Celulares antigos (32-bit) |
-| arm64-v8a | 30.6 MB | Maioria dos celulares modernos |
-| x86_64 | 33.3 MB | Emuladores |
+| Categoria | Testes |
+|-----------|--------|
+| Compatibilidade de equipamento | 2 |
+| Motor de prescrição | 3 |
+| AgeModifier | 5 |
+| CollectiveTrainingEngine | 4 |
+| Cenários de validação | 9 |
 
-### APK Final (arm64-v8a)
+### Cenários testados
 
-- **Tamanho**: 30.6 MB
-- **Download**: https://apptreino-cyan.vercel.app/download/apk.apk
-- **Inclui**: Todas as features (UX 1.0, Vision Engine, correções)
+1. Casa sem equipamento rejeita exercício com halter
+2. Aliases de equipamento são normalizados
+3. Motor respeita cinco dias no plano híbrido
+4. Plano doméstico sem equipamento não contém equipamento externo
+5. Builders esportivos respeitam casa sem equipamento
+6. Idade 65 iniciante reduz volume
+7. Idade 65 avançado com alta capacidade quase não sofre penalidade
+8. Idade 25 não tem penalidade
+9. Iniciante + 60 anos prioriza funcional
+10. Avançado + 55 anos NÃO prioriza funcional automaticamente
+11. Dupla com sync alto gera núcleo comum
+12. Dupla com objetivos diferentes gera divergência controlada
+13. Compatibilidade alta para dupla com mesmos objetivos/níveis
+14. Motor coletivo gera bloco comum para grupo homogêneo
+15. Indivíduo jovem iniciante: plano sem penalidade de idade
+16. Indivíduo jovem avançado: plano com mais volume
+17. Indivíduo mais velho iniciante: volume reduzido
+18. Indivíduo mais velho avançado: penalidade mínima
+19. Dupla com objetivos diferentes: divergência controlada
+20. Dupla com níveis diferentes: divergência controlada
+21. Grupo heterogêneo: divergência controlada
+22. Grupo com limitação individual: exercício adaptado
+23. Grupo com múltiplas limitações
 
 ---
 
-## 6. Arquivos Criados/Modificados
+## 9. Arquivos Criados/Modificados (Sessão 2026-08-26)
 
-### Novos Arquivos
+### Novos Arquivos (16)
 
 | Arquivo | Descrição |
 |---------|-----------|
-| `app_flutter/lib/features/workout/onboarding_screen.dart` | Onboarding 7 etapas |
-| `app_flutter/lib/features/dashboard/today_screen.dart` | Dashboard "Hoje" |
-| `app_flutter/lib/features/workout/simple_workout_screen.dart` | Treino simplificado |
-| `app_flutter/lib/features/nutrition/simple_nutrition_screen.dart` | Nutrição simplificada |
-| `app_flutter/lib/features/nutrition/vision/food_detection_model.dart` | Modelo de detecção |
-| `app_flutter/lib/features/nutrition/vision/vision_provider.dart` | Interface Vision |
-| `app_flutter/lib/features/nutrition/vision/confidence_engine.dart` | Engine de confiança |
-| `app_flutter/lib/features/nutrition/vision/food_matching_engine.dart` | Engine de correspondência |
-| `app_flutter/lib/features/nutrition/vision/portion_estimation_engine.dart` | Estimativa de porção |
-| `app_flutter/lib/features/nutrition/vision/barcode_scanner_screen.dart` | Scanner barcode |
-| `app_flutter/lib/features/nutrition/vision/meal_photo_screen.dart` | Análise de foto |
-| `app_flutter/lib/core/services/integration_service.dart` | Integração treino+nutrição |
-| `app_flutter/lib/core/services/coach_service.dart` | Coach digital |
-| `app_flutter/lib/core/services/change_history_service.dart` | Histórico de alterações |
-| `app_flutter/lib/features/profile/change_history_screen.dart` | Tela de histórico |
-| `buildfit-api/` | Backend NestJS completo (15 tabelas, 40+ endpoints) |
-| `.codemagic/workflow.yaml` | CI/CD para iOS |
+| `exercise_dna.dart` | DNA inteligente do exercício |
+| `exercise_compatibility.dart` | Hard constraints universais |
+| `training_readiness.dart` | Confiança granular, LifeLoad, DailyReadiness |
+| `decision_memory.dart` | Memória de decisões e contrafactuais |
+| `age_modifier.dart` | Idade como variável contextual |
+| `collective_training.dart` | Modelos de treinamento coletivo |
+| `collective_engine.dart` | Motor coletivo |
+| `collective_profile_provider.dart` | Provider para perfis coletivos |
+| `training_mode_screen.dart` | Telas de seleção de modo e questionários |
+| `pro_route_gate.dart` | Gate Pro em rotas |
+| `training_engine_test.dart` | 23 testes do motor |
+| `start-prod.js` | Script de produção com verificação de migrations |
+| `prisma/migrations/20260826_init/migration.sql` | Migration inicial PostgreSQL |
+| `prisma/migrations/migration_lock.toml` | Lock de provider PostgreSQL |
 
-### Arquivos Modificados
+### Arquivos Modificados (59+)
 
-| Arquivo | Alteração |
-|---------|-----------|
-| `app_flutter/lib/shared/theme/app_theme.dart` | Adicionado `warning` color |
-| `app_flutter/lib/features/workout/prescription_engine.dart` | Corrigido filtros ambiente/equipamento |
-| `app_flutter/lib/core/data/exercise_library.dart` | Corrigidos 71 exercícios, adicionados 6 novos |
-| `app_flutter/lib/core/router/app_router.dart` | Atualizado para novas telas |
-| `app_flutter/lib/core/router/main_layout_screen.dart` | Nova navegação 4 abas |
-| `app_flutter/lib/features/nutrition/food_search_screen.dart` | Adicionados botões foto/barcode |
-| `app_flutter/lib/features/profile/profile_screen.dart` | Adicionado refazer anamneses |
-| `app_flutter/lib/features/workout/workout_provider.dart` | Migrado para API própria |
-| `app_flutter/lib/features/exercises/exercise_provider.dart` | Corrigido URL proxy GIF |
-| `app_flutter/lib/features/nutrition/nutrition_provider.dart` | Corrigido loop infinito |
-| `app_flutter/pubspec.yaml` | Adicionadas dependências Vision Engine |
-| `.gitignore` | Atualizado com buildfit-api |
-| `tsconfig.json` | Excluído buildfit-api |
-| `CONTEXTO_CHAT.md` | Atualizado com contexto completo |
+| Arquivo | Alteração Principal |
+|---------|-------------------|
+| `prescription_engine.dart` | DNA, compatibilidade universal, auditoria, age modifier, explicabilidade |
+| `prescribed_workout_model.dart` | `userExplanation`, `planExplanation`, `decisionReason`, `defaultWeightKg` |
+| `onboarding_screen.dart` | 8 etapas, dados pessoais, confiança, mapeamento de modalidades |
+| `workout_screen.dart` | Banner de prontidão, calibração, rotina para `WorkoutScreen` |
+| `workout_provider.dart` | `deleteSession` atualiza UI, `finishSession` com sessões/semana |
+| `workout_profile_model.dart` | `confidenceByVariable`, `lifeLoad`, `calibrationActive`, normalização |
+| `workout_profile_provider.dart` | Listener deduplicado, exclusão com ativação do próximo plano |
+| `exercise_provider.dart` | Merge determinístico (library < Firestore < API < custom) |
+| `main.dart` | Router única instância, `CollectiveProfileProvider` |
+| `app_router.dart` | `/prescribed` dentro do ShellRoute, rota `/training-mode` |
+| `api_service.dart` | URL configurável, timeout, null safety |
+| `progression_engine.dart` | Volume real por semana, aquecimentos excluídos, semana por sessões |
+| `workout_models.dart` | Volume conta apenas séries concluídas |
+| `workout_screen.dart` | Substituição e adição com filtro de compatibilidade |
+| `prescribed_workout_screen.dart` | Explicabilidade (planExplanation, userExplanation, decisionReason) |
+| `pro_gate_dialog.dart` | Botão de teste local removido |
+| `pro_service.dart` | `nutrition` adicionado a proFeatures |
+| `firebase/firestore.rules` | `isPro` protegido, `proTokens` não enumerable |
+| `firebase/storage.rules` | Catch-all não é mais público |
+| `buildfit-api/*` | Ownership, CORS, startup, migrations, seed |
 
 ---
 
-## 7. Próximos Passos
+## 10. Próximos Passos
 
 | Fase | Descrição | Prioridade |
 |------|-----------|-----------|
-| **1** | Configurar Railway (deploy backend) | ALTA |
-| **2** | Migrar mais providers para API | ALTA |
-| **3** | Produtos portugueses na busca | ALTA |
-| **4** | Gemini Vision para reconhecimento | MÉDIA |
-| **5** | Aprendizado com correções | MÉDIA |
-| **6** | OCR de rótulos | BAIXA |
-| **7** | Meal templates | BAIXA |
-| **8** | Dataset proprietário | FUTURO |
-| **9** | Modelo próprio BuildFit Vision | FUTURO |
-
----
-
-## 8. Decisões Importantes
-
-1. **Backend próprio** (NestJS + PostgreSQL) — mais controle e escalabilidade
-2. **Híbrido durante migração** — API própria + fallback Firebase
-3. **Lógica de treino 100% no app** — sem IA para prescrição
-4. **iOS via Codemagic** — sem MacBook
-5. **APK otimizado** — split-per-abi (30.6MB)
-6. **Interface simplificada** — esconder complexidade técnica
-7. **Vision Engine modular** — pluggável (Gemini, local, híbrido)
-
----
-
-## 9. Padrões de Código
-
-- Todos os services tentam API própria, fallback Firebase
-- `ApiService` usa `FirebaseAuth.instance.currentUser?.getIdToken()` para auth
-- Erros tratados graciosamente (não quebram o app)
-- Providers continuam usando `ChangeNotifier`
-- `withValues(alpha:)` em vez de `withOpacity()` (deprecado)
-- FCM: `if (!kIsWeb)` antes de qualquer chamada FirebaseMessaging
-- Features PRO: gate via `ProGate.show(context)` + `ProService.isPro()`
-- GIFs: sempre `Image.network` com `gaplessPlayback: true`
-
----
-
-## 10. Comandos Úteis
-
-```bash
-# Backend
-cd buildfit-api
-docker-compose up -d                    # PostgreSQL + Redis
-npm run start:dev                       # API em http://localhost:3000
-npx prisma migrate dev                  # Criar migration
-npx prisma generate                     # Gerar client
-npx prisma studio                       # GUI do banco
-npm run build                           # Build produção
-
-# Flutter
-cd app_flutter
-flutter pub get                         # Dependências
-flutter run -d chrome                   # Rodar no Chrome
-flutter build apk --release             # Build Android
-flutter build apk --split-per-abi --release  # Build otimizado
-flutter build ios --release             # Build iOS
-
-# Deploy
-git push origin main                    # Deploy Railway automático
-git push origin main --tags v1.0.0      # Tag release
-```
+| **1** | UI completa para visualizar treinos coletivos na sessão ativa | ALTA |
+| **2** | Deploy da API Railway com DATABASE_URL | ALTA |
+| **3** | Migrar mais providers para API | ALTA |
+| **4** | Gemini Vision para reconhecimento de alimentos | MÉDIA |
+| **5** | Calendário de demandas esportivas | MÉDIA |
+| **6** | Teste de sensibilidade completo (perturbação de inputs) | MÉDIA |
+| **7** | Stripe para pagamentos | BAIXA |
+| **8** | OCR de rótulos | BAIXA |
