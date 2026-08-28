@@ -35,3 +35,4 @@ firebase/functions/*.js
 firebase/functions/*.map
 firebase/functions/*.log
 .vercel
+.env*
