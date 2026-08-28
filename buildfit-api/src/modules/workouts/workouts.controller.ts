@@ -5,7 +5,6 @@ import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { UpdateWorkoutDto } from './dto/update-workout.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { FirebaseAuthGuard } from '../../common/guards/firebase-auth.guard';
-import { ProGuard } from '../../common/guards/pro.guard';
 
 @ApiTags('workouts')
 @Controller('workouts')
@@ -24,7 +23,7 @@ export class WorkoutsController {
   }
 
   @Get()
-  @UseGuards(FirebaseAuthGuard, ProGuard)
+  @UseGuards(FirebaseAuthGuard)
   @ApiOperation({ summary: 'Listar treinos do usuário' })
   async findAll(
     @CurrentUser('id') userId: string,
@@ -35,7 +34,7 @@ export class WorkoutsController {
   }
 
   @Get('weekly-volume')
-  @UseGuards(FirebaseAuthGuard, ProGuard)
+  @UseGuards(FirebaseAuthGuard)
   @ApiOperation({ summary: 'Volume semanal total' })
   async getWeeklyVolume(
     @CurrentUser('id') userId: string,
@@ -45,7 +44,7 @@ export class WorkoutsController {
   }
 
   @Get('muscle-volume')
-  @UseGuards(FirebaseAuthGuard, ProGuard)
+  @UseGuards(FirebaseAuthGuard)
   @ApiOperation({ summary: 'Volume por grupo muscular na semana' })
   async getMuscleVolume(
     @CurrentUser('id') userId: string,
@@ -55,7 +54,7 @@ export class WorkoutsController {
   }
 
   @Get(':id')
-  @UseGuards(FirebaseAuthGuard, ProGuard)
+  @UseGuards(FirebaseAuthGuard)
   @ApiOperation({ summary: 'Obter treino por ID' })
   async findOne(
     @Param('id') id: string,

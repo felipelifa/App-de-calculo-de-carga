@@ -3,11 +3,10 @@ import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from '@nestjs/swagger'
 import { AnalyticsService } from './analytics.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { FirebaseAuthGuard } from '../../common/guards/firebase-auth.guard';
-import { ProGuard } from '../../common/guards/pro.guard';
 
 @ApiTags('analytics')
 @Controller('analytics')
-@UseGuards(FirebaseAuthGuard, ProGuard)
+@UseGuards(FirebaseAuthGuard)
 @ApiBearerAuth()
 export class AnalyticsController {
   constructor(private analyticsService: AnalyticsService) {}

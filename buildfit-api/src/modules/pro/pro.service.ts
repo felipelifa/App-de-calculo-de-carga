@@ -71,6 +71,21 @@ export class ProService {
     };
   }
 
+  async createToken(code: string, maxRedemptions = 100, expiresAt?: Date) {
+    const existing = await this.prisma.proToken.findUnique({ where: { code } });
+    if (existing) {
+      throw new BadRequestException('Token já existe');
+    }
+    return this.prisma.proToken.create({
+      data: {
+        code: code.toUpperCase(),
+        maxRedemptions,
+        currentRedemptions: 0,
+        expiresAt: expiresAt || null,
+      },
+    });
+  }
+
   async getTokens() {
     return this.prisma.proToken.findMany({
       orderBy: { createdAt: 'desc' },

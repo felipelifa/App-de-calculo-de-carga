@@ -19,9 +19,6 @@ export {
   notifyInactiveUsers,
 } from "./pushNotifications";
 
-export {
-  redeemProToken,
-} from "./proToken";
 
 // ════════════════════════════════════════════════════════════
 // Firebase Admin Init (only once per cold start)

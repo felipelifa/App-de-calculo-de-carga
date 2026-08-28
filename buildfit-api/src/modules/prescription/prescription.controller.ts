@@ -3,11 +3,10 @@ import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { PrescriptionService } from './prescription.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { FirebaseAuthGuard } from '../../common/guards/firebase-auth.guard';
-import { ProGuard } from '../../common/guards/pro.guard';
 
 @ApiTags('prescription')
 @Controller('prescription')
-@UseGuards(FirebaseAuthGuard, ProGuard)
+@UseGuards(FirebaseAuthGuard)
 @ApiBearerAuth()
 export class PrescriptionController {
   constructor(private prescriptionService: PrescriptionService) {}

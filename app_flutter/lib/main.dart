@@ -19,7 +19,6 @@ import 'core/services/nutrition_api_service.dart';
 import 'core/services/progression_api_service.dart';
 import 'core/services/prescription_api_service.dart';
 import 'core/services/pr_api_service.dart';
-import 'core/services/pro_api_service.dart';
 import 'features/exercises/exercise_provider.dart';
 import 'features/workout/workout_provider.dart';
 import 'features/workout/workout_profile_provider.dart';
@@ -136,7 +135,6 @@ class WorkoutApp extends StatelessWidget {
         Provider<ProgressionApiService>(create: (_) => ProgressionApiService()),
         Provider<PrescriptionApiService>(create: (_) => PrescriptionApiService()),
         Provider<PrApiService>(create: (_) => PrApiService()),
-        Provider<ProApiService>(create: (_) => ProApiService()),
 
         // Auth & Feature Providers
         ChangeNotifierProvider<AuthService>(create: (_) => AuthService()),

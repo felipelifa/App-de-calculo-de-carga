@@ -10,7 +10,6 @@ import { ProgressionModule } from './modules/progression/progression.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { NutritionModule } from './modules/nutrition/nutrition.module';
 import { PrModule } from './modules/pr/pr.module';
-import { ProModule } from './modules/pro/pro.module';
 import { CommonModule } from './common/common.module';
 
 @Module({
@@ -26,7 +25,6 @@ import { CommonModule } from './common/common.module';
     AnalyticsModule,
     NutritionModule,
     PrModule,
-    ProModule,
   ],
   controllers: [HealthController],
 })

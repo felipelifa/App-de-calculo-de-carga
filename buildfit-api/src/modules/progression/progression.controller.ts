@@ -3,11 +3,10 @@ import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { ProgressionService } from './progression.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { FirebaseAuthGuard } from '../../common/guards/firebase-auth.guard';
-import { ProGuard } from '../../common/guards/pro.guard';
 
 @ApiTags('progression')
 @Controller('progression')
-@UseGuards(FirebaseAuthGuard, ProGuard)
+@UseGuards(FirebaseAuthGuard)
 @ApiBearerAuth()
 export class ProgressionController {
   constructor(private progressionService: ProgressionService) {}
