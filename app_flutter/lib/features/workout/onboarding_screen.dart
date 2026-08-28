@@ -8,7 +8,7 @@ import 'workout_profile_provider.dart';
 import 'training_readiness.dart';
 
 // ─────────────────────────────────────────────
-// Onboarding Simplificado — 7 etapas
+// Onboarding Simplificado — 9 etapas
 // Linguagem simples, sem termos técnicos
 // ─────────────────────────────────────────────
 
@@ -46,6 +46,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   // Etapa 7: Restrições
   final List<String> _restrictions = [];
 
+  // Etapa 8: Recuperação
+  String _sleepQuality = 'regular';
+  String _stressLevel = 'medium';
+  final List<String> _priorityMuscles = [];
+
   // Dados pessoais mínimos para personalização e cálculo nutricional.
   int? _age;
   String? _sex;
@@ -53,7 +58,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   double? _height;
 
   void _next() {
-    if (_currentPage < 7) {
+    if (_currentPage < 8) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -82,10 +87,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             _age != null && _age! >= 13 && _age! <= 100 &&
             _weight != null && _weight! >= 30 && _weight! <= 300 &&
             _height != null && _height! >= 120 && _height! <= 240;
-      case 4: return true; // dias sempre tem valor padrão
-      case 5: return true; // duração sempre tem valor padrão
+      case 4: return true;
+      case 5: return true;
       case 6: return _environment != null;
-      case 7: return true; // restrições são opcionais
+      case 7: return true;
+      case 8: return true;
       default: return true;
     }
   }
@@ -119,9 +125,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       availableDaysPerWeek: _days,
       sessionDurationMinutes: _duration,
       preferredStyle: 'compound_focus',
-      sleepQuality: 'regular',
-      stressLevel: 'medium',
-      priorityMuscles: [],
+      sleepQuality: _sleepQuality,
+      stressLevel: _stressLevel,
+      priorityMuscles: List.from(_priorityMuscles),
       environment: _environment ?? 'full_gym',
       availableEquipment: List.from(_equipment),
       dislikedExercises: [],
@@ -152,8 +158,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       await provider.generateAndSaveWorkout();
 
       if (mounted) {
-        // Após onboarding individual, oferecer escolha de modo
-        context.go('/training-mode');
+        context.go('/athlete-profile');
       }
     } catch (e) {
       if (mounted) {
@@ -252,6 +257,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   _buildDaysStep(),
                   _buildDurationStep(),
                   _buildEnvironmentStep(),
+                  _buildRecoveryStep(),
                   _buildRestrictionsStep(),
                 ],
               ),
@@ -342,7 +348,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         children: [
           // Barra de progresso
           Row(
-            children: List.generate(8, (index) {
+            children: List.generate(9, (index) {
               return Expanded(
                 child: Container(
                   height: 4,
@@ -360,7 +366,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           const SizedBox(height: 16),
           // Texto do passo
           Text(
-            'Passo ${_currentPage + 1} de 8',
+            'Passo ${_currentPage + 1} de 9',
             style: const TextStyle(
               color: AppTheme.textSecondary,
               fontSize: 14,
@@ -711,7 +717,143 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // ── ETAPA 7: RESTRIÇÕES ──
+  // ── ETAPA 8: RECUPERAÇÃO ──
+  Widget _buildRecoveryStep() {
+    return _buildStepContainer(
+      title: 'Como está sua recuperação?',
+      subtitle: 'Isso ajusta a intensidade e o volume do seu treino',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Qualidade do sono',
+            style: TextStyle(
+              color: AppTheme.textPrimary,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 12),
+          _buildOptionCard(
+            icon: '😴',
+            title: 'Dormo mal (até 5h ou acordo muito)',
+            value: 'poor',
+            groupValue: _sleepQuality,
+            onChanged: (v) => setState(() => _sleepQuality = v),
+          ),
+          _buildOptionCard(
+            icon: '🌙',
+            title: 'Dormo mais ou menos (5-7h)',
+            value: 'regular',
+            groupValue: _sleepQuality,
+            onChanged: (v) => setState(() => _sleepQuality = v),
+          ),
+          _buildOptionCard(
+            icon: '💤',
+            title: 'Dormo bem (7-9h e descansado)',
+            value: 'good',
+            groupValue: _sleepQuality,
+            onChanged: (v) => setState(() => _sleepQuality = v),
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            'Nível de estresse',
+            style: TextStyle(
+              color: AppTheme.textPrimary,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 12),
+          _buildOptionCard(
+            icon: '😰',
+            title: 'Muito estressado (trabalho, vida, etc.)',
+            value: 'high',
+            groupValue: _stressLevel,
+            onChanged: (v) => setState(() => _stressLevel = v),
+          ),
+          _buildOptionCard(
+            icon: '😐',
+            title: 'Moderado (algum estresse normal)',
+            value: 'medium',
+            groupValue: _stressLevel,
+            onChanged: (v) => setState(() => _stressLevel = v),
+          ),
+          _buildOptionCard(
+            icon: '😌',
+            title: 'Tranquilo (pouco ou nenhum estresse)',
+            value: 'low',
+            groupValue: _stressLevel,
+            onChanged: (v) => setState(() => _stressLevel = v),
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            'Músculos que quer priorizar',
+            style: TextStyle(
+              color: AppTheme.textPrimary,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            'Opcional — o treino vai focar mais nessas áreas',
+            style: TextStyle(
+              color: AppTheme.textSecondary,
+              fontSize: 13,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _muscleChip('Peito'),
+              _muscleChip('Costas'),
+              _muscleChip('Ombros'),
+              _muscleChip('Braços'),
+              _muscleChip('Pernas'),
+              _muscleChip('Glúteos'),
+              _muscleChip('Abdômen'),
+              _muscleChip('Panturrilhas'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _muscleChip(String muscle) {
+    final value = muscle.toLowerCase()
+        .replaceAll('ç', 'c')
+        .replaceAll('õ', 'o')
+        .replaceAll('ú', 'u');
+    final isSelected = _priorityMuscles.contains(value);
+    return FilterChip(
+      label: Text(muscle),
+      selected: isSelected,
+      onSelected: (selected) {
+        setState(() {
+          if (selected) {
+            _priorityMuscles.add(value);
+          } else {
+            _priorityMuscles.remove(value);
+          }
+        });
+      },
+      selectedColor: AppTheme.accent.withValues(alpha: 0.2),
+      checkmarkColor: AppTheme.accent,
+      labelStyle: TextStyle(
+        color: isSelected ? AppTheme.accent : AppTheme.textPrimary,
+      ),
+      backgroundColor: AppTheme.surfaceHighlight,
+      side: BorderSide(
+        color: isSelected ? AppTheme.accent : Colors.transparent,
+      ),
+    );
+  }
+
+  // ── ETAPA 9: RESTRIÇÕES ──
   Widget _buildRestrictionsStep() {
     return _buildStepContainer(
       title: 'Existe alguma coisa que devemos levar em consideração?',
@@ -970,7 +1112,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     )
                   : Text(
-                      _currentPage == 7 ? 'Começar!' : 'Próximo',
+                      _currentPage == 8 ? 'Começar!' : 'Próximo',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
