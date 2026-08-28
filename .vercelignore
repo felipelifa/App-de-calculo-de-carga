@@ -1,0 +1,18 @@
+# Flutter build artifacts (duplicate)
+out/
+
+# Flutter app source
+app_flutter/
+
+# BuildFit API (deployed separately on Railway)
+buildfit-api/
+
+# Firebase functions
+firebase/functions/node_modules/
+firebase/functions/lib/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

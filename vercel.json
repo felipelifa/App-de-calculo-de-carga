@@ -1,26 +1,53 @@
 {
-  "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "installCommand": "npm install",
   "rewrites": [
-    { "source": "/download/apk", "destination": "/download/apk.apk" },
-    { "source": "/treino", "destination": "/treino/index.html" },
-    { "source": "/treino/((?!.*\\..*).*)", "destination": "/treino/index.html" }
+    {
+      "source": "/download/apk",
+      "destination": "/download/apk.apk"
+    },
+    {
+      "source": "/treino",
+      "destination": "/treino/index.html"
+    },
+    {
+      "source": "/treino/((?!.*\\..*).*)",
+      "destination": "/treino/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "type": "service",
+        "service": "buildfit-api"
+      }
+    }
   ],
   "headers": [
     {
       "source": "/download/apk.apk",
       "headers": [
-        { "key": "Content-Disposition", "value": "attachment; filename=buildfit.apk" },
-        { "key": "Content-Type", "value": "application/vnd.android.package-archive" }
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=buildfit.apk"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/vnd.android.package-archive"
+        }
       ]
     },
     {
       "source": "/treino/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
       ]
     }
-  ]
+  ],
+  "services": {
+    "buildfit-api": {
+      "root": "buildfit-api",
+      "entrypoint": "src/main.ts"
+    }
+  }
 }
