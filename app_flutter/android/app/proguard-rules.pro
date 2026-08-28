@@ -1,17 +1,16 @@
-# Flutter specific rules
--keep class io.flutter.app.** { *; }
--keep class io.flutter.plugin.** { *; }
--keep class io.flutter.util.** { *; }
--keep class io.flutter.view.** { *; }
--keep class io.flutter.** { *; }
--keep class io.flutter.plugins.** { *; }
+# Flutter - keep only what's needed for plugin registration
+-keep class io.flutter.embedding.** { *; }
+-keep class io.flutter.plugin.common.** { *; }
 
-# Firebase rules
--keep class com.google.firebase.** { *; }
--keep class com.google.android.gms.** { *; }
+# Firebase - keep only necessary classes
+-keep class com.google.firebase.FirebaseException { *; }
+-keep class com.google.firebase.auth.** { *; }
+-keep class com.google.firebase.firestore.** { *; }
+-keep class com.google.firebase.messaging.** { *; }
+-keep class com.google.firebase.functions.** { *; }
 
-# Google Play Core - missing classes
--keep class com.google.android.play.core.** { *; }
+# Google Play Core
+-keep class com.google.android.play.core.splitcompat.** { *; }
 -dontwarn com.google.android.play.core.**
 
 # Keep annotations
