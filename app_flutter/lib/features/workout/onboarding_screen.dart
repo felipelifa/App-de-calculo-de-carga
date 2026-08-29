@@ -29,9 +29,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   // Etapa 2: Modalidade
   String? _modality;
+  String? _sportSubtype;
+  String _rehabTarget = 'rehab_general';
 
   // Etapa 3: Nível
   String? _level;
+  int _trainingAge = 0;
+  String _bodyFatCategory = 'medium';
 
   // Etapa 4: Disponibilidade
   int _days = 3;
@@ -50,6 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   String _sleepQuality = 'regular';
   String _stressLevel = 'medium';
   final List<String> _priorityMuscles = [];
+  String _preferredStyle = 'compound_focus';
 
   // Dados pessoais mínimos para personalização e cálculo nutricional.
   int? _age;
@@ -58,6 +63,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   double? _height;
 
   void _next() {
+    if (_isLoading || !_canProceed()) return;
     if (_currentPage < 8) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
@@ -66,6 +72,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     } else {
       _finish();
     }
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   void _back() {
@@ -80,7 +92,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   bool _canProceed() {
     switch (_currentPage) {
       case 0: return _goal != null;
-      case 1: return _modality != null;
+      case 1:
+        if (_modality == null) return false;
+        if (_modality == 'running' ||
+            _modality == 'combat' ||
+            _modality == 'field_sports') {
+          return _sportSubtype != null;
+        }
+        if (_modality == 'rehab') return _rehabTarget != 'rehab_general';
+        return true;
       case 2: return _level != null;
       case 3:
         return _sex != null &&
@@ -116,15 +136,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       biologicalSex: _sex!,
       weightKg: _weight!,
       heightCm: _height!,
-      bodyFatCategory: 'medium',
+      bodyFatCategory: _bodyFatCategory,
       primaryGoal: technicalGoal,
-      sportSubType: _mapSportSubtype(_modality),
+      sportSubType: _sportSubtype ?? _mapSportSubtype(_modality),
       trainingModality: technicalModality,
       experienceLevel: technicalLevel,
-      trainingAge: _level == 'beginner' ? 0 : (_level == 'intermediate' ? 18 : 48),
+      trainingAge: _trainingAge,
       availableDaysPerWeek: _days,
       sessionDurationMinutes: _duration,
-      preferredStyle: 'compound_focus',
+      preferredStyle: _preferredStyle,
       sleepQuality: _sleepQuality,
       stressLevel: _stressLevel,
       priorityMuscles: List.from(_priorityMuscles),
@@ -158,7 +178,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       await provider.generateAndSaveWorkout();
 
       if (mounted) {
-        context.go('/athlete-profile');
+        context.go('/athlete-profile', extra: profile);
       }
     } catch (e) {
       if (mounted) {
@@ -181,6 +201,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       case 'strength': return 'strength';
       case 'health': return 'general_health';
       case 'conditioning': return 'endurance';
+      case 'sport_specific': return 'sport_specific';
+      case 'power_explosive': return 'power_explosive';
+      case 'calisthenics': return 'calisthenics';
+      case 'functional_hiit': return 'functional_hiit';
+      case 'mobility_rehab': return 'mobility_rehab';
       default: return 'hypertrophy';
     }
   }
@@ -195,16 +220,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   String _mapModalityToTechnical(String? modality) {
+    if (_goal == 'calisthenics') return 'calisthenics';
+    if (_goal == 'functional_hiit') return 'functional';
+    if (_goal == 'mobility_rehab' && modality != 'mobility' && modality != 'rehab') {
+      return 'mobility';
+    }
     switch (modality) {
       case 'gym': return 'traditional';
       case 'running': return 'none';
       case 'mobility': return 'mobility';
-      case 'rehab': return 'rehab';
+      case 'rehab': return _rehabTarget;
       case 'functional': return 'functional';
       case 'calisthenics': return 'calisthenics';
       case 'combat': return 'none';
       case 'cycling': return 'none';
       case 'swimming': return 'none';
+      case 'field_sports': return 'none';
       default: return 'traditional';
     }
   }
@@ -215,6 +246,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       case 'combat': return 'combat_sports';
       case 'cycling':
       case 'swimming': return 'sport_specific';
+      case 'field_sports': return 'sport_specific';
       case 'calisthenics': return 'calisthenics';
       case 'functional': return 'functional_hiit';
       case 'mobility':
@@ -229,8 +261,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       case 'combat': return 'mma';
       case 'cycling': return 'cycling';
       case 'swimming': return 'swimming';
+      case 'field_sports': return 'soccer';
       default: return 'none';
     }
+  }
+
+  void _setModality(String? modality) {
+    setState(() {
+      _modality = modality;
+      switch (modality) {
+        case 'running': _sportSubtype = 'run_5k'; break;
+        case 'combat': _sportSubtype = 'mma'; break;
+        case 'cycling': _sportSubtype = 'cycling'; break;
+        case 'swimming': _sportSubtype = 'swimming'; break;
+        case 'field_sports': _sportSubtype = 'soccer'; break;
+        default: _sportSubtype = null;
+      }
+    });
   }
 
   @override
@@ -247,7 +294,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Expanded(
               child: PageView(
                 controller: _pageController,
-                physics: const ClampingScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (page) => setState(() => _currentPage = page),
                 children: [
                   _buildGoalStep(),
@@ -420,6 +467,42 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             onChanged: (v) => setState(() => _goal = v),
           ),
           _buildOptionCard(
+            icon: '🏅',
+            title: 'Performance esportiva',
+            subtitle: 'Treino complementar para seu esporte',
+            value: 'sport_specific',
+            groupValue: _goal,
+            onChanged: (v) => setState(() => _goal = v),
+          ),
+          _buildOptionCard(
+            icon: '⚡',
+            title: 'Potência e explosão',
+            value: 'power_explosive',
+            groupValue: _goal,
+            onChanged: (v) => setState(() => _goal = v),
+          ),
+          _buildOptionCard(
+            icon: '🤸',
+            title: 'Calistenia',
+            value: 'calisthenics',
+            groupValue: _goal,
+            onChanged: (v) => setState(() => _goal = v),
+          ),
+          _buildOptionCard(
+            icon: '🔄',
+            title: 'Funcional / HIIT',
+            value: 'functional_hiit',
+            groupValue: _goal,
+            onChanged: (v) => setState(() => _goal = v),
+          ),
+          _buildOptionCard(
+            icon: '🧘',
+            title: 'Mobilidade e reabilitação',
+            value: 'mobility_rehab',
+            groupValue: _goal,
+            onChanged: (v) => setState(() => _goal = v),
+          ),
+          _buildOptionCard(
             icon: '❓',
             title: 'Não sei',
             value: 'unknown',
@@ -443,66 +526,130 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             title: 'Musculação',
             value: 'gym',
             groupValue: _modality,
-            onChanged: (v) => setState(() => _modality = v),
+            onChanged: (v) => _setModality(v),
           ),
           _buildOptionCard(
             icon: '🏃',
             title: 'Corrida',
             value: 'running',
             groupValue: _modality,
-            onChanged: (v) => setState(() => _modality = v),
+            onChanged: (v) => _setModality(v),
           ),
           _buildOptionCard(
             icon: '🧘',
             title: 'Mobilidade',
             value: 'mobility',
             groupValue: _modality,
-            onChanged: (v) => setState(() => _modality = v),
+            onChanged: (v) => _setModality(v),
           ),
           _buildOptionCard(
             icon: '🩹',
             title: 'Reabilitação',
             value: 'rehab',
             groupValue: _modality,
-            onChanged: (v) => setState(() => _modality = v),
+            onChanged: (v) => _setModality(v),
           ),
           _buildOptionCard(
             icon: '⚡',
             title: 'Funcional',
             value: 'functional',
             groupValue: _modality,
-            onChanged: (v) => setState(() => _modality = v),
+            onChanged: (v) => _setModality(v),
           ),
           _buildOptionCard(
             icon: '🤸',
             title: 'Calistenia',
             value: 'calisthenics',
             groupValue: _modality,
-            onChanged: (v) => setState(() => _modality = v),
+            onChanged: (v) => _setModality(v),
           ),
           _buildOptionCard(
             icon: '🥊',
             title: 'Lutas',
             value: 'combat',
             groupValue: _modality,
-            onChanged: (v) => setState(() => _modality = v),
+            onChanged: (v) => _setModality(v),
           ),
           _buildOptionCard(
             icon: '🚴',
             title: 'Ciclismo',
             value: 'cycling',
             groupValue: _modality,
-            onChanged: (v) => setState(() => _modality = v),
+            onChanged: (v) => _setModality(v),
           ),
           _buildOptionCard(
             icon: '🏊',
             title: 'Natação',
             value: 'swimming',
             groupValue: _modality,
-            onChanged: (v) => setState(() => _modality = v),
+            onChanged: (v) => _setModality(v),
           ),
+          _buildOptionCard(
+            icon: '🏅',
+            title: 'Esportes de campo',
+            value: 'field_sports',
+            groupValue: _modality,
+            onChanged: (v) => _setModality(v),
+          ),
+          if (_modality == 'running') ...[
+            const SizedBox(height: 16),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Distância principal', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
+            ),
+            _detailChoice('5 km', 'run_5k'),
+            _detailChoice('10 km', 'run_10k'),
+            _detailChoice('Meia maratona', 'run_half'),
+            _detailChoice('Maratona', 'run_marathon'),
+          ],
+          if (_modality == 'combat') ...[
+            const SizedBox(height: 16),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Modalidade de luta', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
+            ),
+            _detailChoice('MMA', 'mma'),
+            _detailChoice('Jiu-jitsu', 'bjj'),
+            _detailChoice('Boxe / Muay Thai', 'boxing'),
+          ],
+          if (_modality == 'field_sports') ...[
+            const SizedBox(height: 16),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Esporte de campo', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
+            ),
+            _detailChoice('Futebol', 'soccer'),
+            _detailChoice('Basquete', 'basketball'),
+            _detailChoice('Agilidade / campo', 'agility'),
+          ],
+          if (_modality == 'rehab') ...[
+            const SizedBox(height: 16),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Região de atenção', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
+            ),
+            _detailChoice('Ombro', 'rehab_shoulder'),
+            _detailChoice('Joelho', 'rehab_knee'),
+            _detailChoice('Lombar', 'rehab_lower_back'),
+          ],
         ],
       ),
+    );
+  }
+
+  Widget _detailChoice(String title, String value) {
+    return _buildOptionCard(
+      icon: '•',
+      title: title,
+      value: value,
+      groupValue: _sportSubtype ?? _rehabTarget,
+      onChanged: (selected) => setState(() {
+        if (_modality == 'rehab') {
+          _rehabTarget = selected as String;
+        } else {
+          _sportSubtype = selected as String;
+        }
+      }),
     );
   }
 
@@ -543,6 +690,43 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             value: 'unknown',
             groupValue: _level,
             onChanged: (v) => setState(() => _level = v),
+          ),
+          const SizedBox(height: 16),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text('Tempo total de treino', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
+          ),
+          _buildNumberSelector(
+            value: _trainingAge,
+            min: 0,
+            max: 120,
+            unit: 'meses',
+            onChanged: (value) => setState(() => _trainingAge = value),
+          ),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text('Percentual de gordura estimado', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
+          ),
+          _buildOptionCard(
+            icon: '•',
+            title: 'Baixo (menos de 15%)',
+            value: 'low',
+            groupValue: _bodyFatCategory,
+            onChanged: (v) => setState(() => _bodyFatCategory = v),
+          ),
+          _buildOptionCard(
+            icon: '•',
+            title: 'Médio (15% a 25%)',
+            value: 'medium',
+            groupValue: _bodyFatCategory,
+            onChanged: (v) => setState(() => _bodyFatCategory = v),
+          ),
+          _buildOptionCard(
+            icon: '•',
+            title: 'Alto (mais de 25%)',
+            value: 'high',
+            groupValue: _bodyFatCategory,
+            onChanged: (v) => setState(() => _bodyFatCategory = v),
           ),
         ],
       ),
@@ -617,6 +801,32 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             value: 90,
             groupValue: _duration,
             onChanged: (v) => setState(() => _duration = v),
+          ),
+          const SizedBox(height: 16),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text('Estilo de treino preferido', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
+          ),
+          _buildOptionCard(
+            icon: '🏋️',
+            title: 'Multiarticulares (base)',
+            value: 'compound_focus',
+            groupValue: _preferredStyle,
+            onChanged: (v) => setState(() => _preferredStyle = v),
+          ),
+          _buildOptionCard(
+            icon: '🎯',
+            title: 'Mais isoladores (detalhe)',
+            value: 'isolation_focus',
+            groupValue: _preferredStyle,
+            onChanged: (v) => setState(() => _preferredStyle = v),
+          ),
+          _buildOptionCard(
+            icon: '🔄',
+            title: 'Circuito / intenso',
+            value: 'circuit',
+            groupValue: _preferredStyle,
+            onChanged: (v) => setState(() => _preferredStyle = v),
           ),
         ],
       ),
@@ -824,10 +1034,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _muscleChip(String muscle) {
-    final value = muscle.toLowerCase()
-        .replaceAll('ç', 'c')
-        .replaceAll('õ', 'o')
-        .replaceAll('ú', 'u');
+    const values = {
+      'Peito': 'chest',
+      'Costas': 'back',
+      'Ombros': 'shoulders',
+      'Braços': 'biceps',
+      'Pernas': 'quads',
+      'Glúteos': 'glutes',
+      'Abdômen': 'abs',
+      'Panturrilhas': 'calves',
+    };
+    final value = values[muscle] ?? muscle.toLowerCase();
     final isSelected = _priorityMuscles.contains(value);
     return FilterChip(
       label: Text(muscle),
@@ -868,6 +1085,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           _buildRestrictionChip('Punho', 'wrist'),
           _buildRestrictionChip('Quadril', 'hip'),
           _buildRestrictionChip('Tornozelo', 'ankle'),
+          _buildRestrictionChip('Hipertensão', 'hypertension'),
+          _buildRestrictionChip('Hérnia', 'hernia'),
+          _buildRestrictionChip('Pós-cirurgia', 'post_surgery'),
           const SizedBox(height: 16),
           const Text(
             'Se tiver alguma limitação, o BuildFit vai adaptar seus exercícios automaticamente.',
@@ -1024,6 +1244,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     required int value,
     required int min,
     required int max,
+    String unit = 'dias',
     required ValueChanged<int> onChanged,
   }) {
     return Row(
@@ -1047,7 +1268,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             Text(
-              'dias',
+              unit,
               style: const TextStyle(
                 color: AppTheme.textSecondary,
                 fontSize: 16,

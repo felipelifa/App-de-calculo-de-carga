@@ -158,7 +158,10 @@ class WorkoutProfile {
       preferredStyle: d['preferredStyle'] as String? ?? 'compound_focus',
       sleepQuality: d['sleepQuality'] as String? ?? 'regular',
       stressLevel: d['stressLevel'] as String? ?? 'medium',
-      priorityMuscles: List<String>.from(d['priorityMuscles'] ?? []),
+      priorityMuscles: List<String>.from(d['priorityMuscles'] ?? [])
+          .map(_normalizePriorityMuscle)
+          .toSet()
+          .toList(),
       environment: d['environment'] as String? ?? 'full_gym',
       availableEquipment: List<String>.from(d['availableEquipment'] ?? [])
           .map(normalizeEquipment)
@@ -224,5 +227,32 @@ class WorkoutProfile {
       if (level != null) result[entry.key.toString()] = level;
     }
     return result;
+  }
+
+  static String _normalizePriorityMuscle(String value) {
+    const aliases = {
+      'peito': 'chest',
+      'costas': 'back',
+      'ombro': 'shoulders',
+      'ombros': 'shoulders',
+      'biceps': 'biceps',
+      'bíceps': 'biceps',
+      'triceps': 'triceps',
+      'tríceps': 'triceps',
+      'bracos': 'biceps',
+      'braços': 'biceps',
+      'pernas': 'quads',
+      'quadriceps': 'quads',
+      'quadríceps': 'quads',
+      'posterior': 'hamstrings',
+      'posterior de coxa': 'hamstrings',
+      'gluteos': 'glutes',
+      'glúteos': 'glutes',
+      'panturrilha': 'calves',
+      'panturrilhas': 'calves',
+      'abdomen': 'abs',
+      'abdômen': 'abs',
+    };
+    return aliases[value.trim().toLowerCase()] ?? value.trim().toLowerCase();
   }
 }

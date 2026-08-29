@@ -1049,6 +1049,10 @@ class SportPlanBuilders {
       // focar em adaptação de tendões/ligamentos antes de carga pesada.
     }
 
+    if (profile.priorityMuscles.contains(muscle)) {
+      sets = (sets * 1.3).ceil().clamp(2, 6).toInt();
+    }
+
     final candidates = _library.where((ex) {
       if (!ex.primaryMuscles.contains(muscle)) return false;
 

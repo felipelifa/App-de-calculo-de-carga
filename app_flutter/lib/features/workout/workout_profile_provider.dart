@@ -8,6 +8,7 @@ import 'prescribed_workout_model.dart';
 import 'prescription_engine.dart';
 import '../exercises/exercise_model.dart';
 import '../exercises/exercise_provider.dart';
+import '../../core/data/exercise_library.dart';
 import 'progression_engine.dart';
 
 class WorkoutProfileProvider extends ChangeNotifier {
@@ -104,7 +105,12 @@ class WorkoutProfileProvider extends ChangeNotifier {
   }
 
   ExerciseModel? _resolveExercise(String id) {
-    return _exerciseProvider?.getById(id);
+    final remoteExercise = _exerciseProvider?.getById(id);
+    if (remoteExercise != null) return remoteExercise;
+    for (final exercise in exerciseLibrary) {
+      if (exercise.id == id) return exercise;
+    }
+    return null;
   }
 
   void _setupListeners(String uid, {bool force = false}) {
@@ -216,16 +222,22 @@ class WorkoutProfileProvider extends ChangeNotifier {
         periodizationModel: workoutRaw.periodizationModel,
         sessions: workoutRaw.sessions,
         mesocycleDurationWeeks: workoutRaw.mesocycleDurationWeeks,
+        preferredStyle: _profile!.preferredStyle,
         generatedAt: DateTime.now(),
-        isActive: _allWorkouts.isEmpty, // Auto-active if it's the first
+        isActive: true,
+        planExplanation: workoutRaw.planExplanation,
       );
 
-      await _db
+      final collection = _db
           .collection('users')
           .doc(uid)
-          .collection('generated_workouts')
-          .doc(id)
-          .set(workout.toMap());
+          .collection('generated_workouts');
+      final batch = _db.batch();
+      for (final existing in _allWorkouts.where((item) => item.isActive)) {
+        batch.update(collection.doc(existing.id), {'isActive': false});
+      }
+      batch.set(collection.doc(id), workout.toMap());
+      await batch.commit();
 
     } catch (e) {
       _error = 'Erro ao gerar treino: $e';
@@ -252,8 +264,10 @@ class WorkoutProfileProvider extends ChangeNotifier {
              periodizationModel: w.periodizationModel,
              sessions: w.sessions,
              mesocycleDurationWeeks: w.mesocycleDurationWeeks,
+             preferredStyle: w.preferredStyle,
              generatedAt: w.generatedAt,
              isActive: true,
+             planExplanation: w.planExplanation,
            );
         } else if (w.id != id && w.isActive) {
           _allWorkouts[i] = GeneratedWorkout(
@@ -264,8 +278,10 @@ class WorkoutProfileProvider extends ChangeNotifier {
              periodizationModel: w.periodizationModel,
              sessions: w.sessions,
              mesocycleDurationWeeks: w.mesocycleDurationWeeks,
+             preferredStyle: w.preferredStyle,
              generatedAt: w.generatedAt,
              isActive: false,
+             planExplanation: w.planExplanation,
            );
         }
     }

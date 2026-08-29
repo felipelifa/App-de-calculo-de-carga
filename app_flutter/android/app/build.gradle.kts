@@ -43,8 +43,16 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        ndk {
-            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+        // Flutter configures its own ABI splits when --split-per-abi is used.
+        // Keep the universal release limited to the ARM ABIs otherwise.
+        val splitPerAbi = project.findProperty("split-per-abi")
+            ?.toString()
+            ?.toBoolean() == true
+        if (!splitPerAbi) {
+            ndk {
+                abiFilters.clear()
+                abiFilters.addAll(listOf("arm64-v8a", "armeabi-v7a"))
+            }
         }
     }
 

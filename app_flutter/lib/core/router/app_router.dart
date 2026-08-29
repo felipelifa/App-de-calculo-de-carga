@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/auth/register_screen.dart';
@@ -26,6 +27,8 @@ import '../../features/profile/change_history_screen.dart';
 import '../../features/nutrition/nutrition_anamnese_screen.dart';
 import '../../features/nutrition/nutrition_dashboard_screen.dart';
 import '../../features/workout/athlete_profile_screen.dart';
+import '../../features/workout/workout_profile_model.dart';
+import '../../features/workout/workout_profile_provider.dart';
 import '../../features/workout/deload_screen.dart';
 import '../../features/workout/warmup_screen.dart';
 
@@ -153,7 +156,8 @@ class AppRouter {
         GoRoute(
           path: '/athlete-profile',
           builder: (context, state) {
-            final profile = state.extra as dynamic;
+            final profile = state.extra as WorkoutProfile? ??
+                context.read<WorkoutProfileProvider>().profile;
             if (profile == null) return const OnboardingScreen();
             return AthleteProfileScreen(profile: profile);
           },

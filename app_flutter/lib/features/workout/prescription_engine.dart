@@ -86,6 +86,7 @@ class WorkoutPrescriptionEngine {
     // Builders diferentes devem obedecer às mesmas hard constraints.
     sessions = _applyClinicalAdjustments(profile, sessions);
     sessions = _auditAndSanitizeSessions(profile, sessions);
+    sessions = _fitRequestedSessionCount(profile, sessions);
 
     // Registra padrões usados
     for (int i = 0; i < sessions.length; i++) {
@@ -256,6 +257,32 @@ class WorkoutPrescriptionEngine {
     return result;
   }
 
+  List<PrescribedSession> _fitRequestedSessionCount(
+      WorkoutProfile profile, List<PrescribedSession> sessions) {
+    if (sessions.isEmpty) return sessions;
+    final requested = profile.availableDaysPerWeek.clamp(2, 6);
+    if (sessions.length >= requested) return sessions.take(requested).toList();
+
+    final result = List<PrescribedSession>.from(sessions);
+    var variant = 1;
+    while (result.length < requested) {
+      final source = sessions[(result.length - sessions.length) % sessions.length];
+      result.add(PrescribedSession(
+        id: '${source.id}_variant_$variant',
+        name: '${source.name} — Variação $variant',
+        objective: source.objective,
+        estimatedDurationMinutes: source.estimatedDurationMinutes,
+        warmupInstructions: source.warmupInstructions,
+        exercises: List<PrescribedExercise>.from(source.exercises),
+        progressionNote: source.progressionNote,
+        fatigue: source.fatigue,
+        userExplanation: source.userExplanation,
+      ));
+      variant++;
+    }
+    return result;
+  }
+
   PrescribedExercise _handleInjuryRules(WorkoutProfile profile, PrescribedExercise pe) {
     String? injuryNote;
     String tempo = pe.tempo;
@@ -339,7 +366,8 @@ class WorkoutPrescriptionEngine {
     }
 
     if (level == 'intermediate') {
-      if (days <= 3) return 'ppl_3days';
+      if (days <= 2) return 'full_body';
+      if (days == 3) return 'ppl_3days';
       if (days == 4) return 'upper_lower';
       if (days == 5) return 'ppl_ul_hybrid'; // híbrido: Push/Pull/Legs/Upper/Lower
       return 'ppl_6days';
@@ -347,9 +375,13 @@ class WorkoutPrescriptionEngine {
 
     // Advanced
     if (goal == 'strength') {
-      if (days <= 4) return 'upper_lower_strength';
-      return 'ppl_strength';
+      if (days <= 2) return 'full_body';
+      if (days == 3) return 'ppl_3days';
+      if (days == 4) return 'upper_lower_strength';
+      if (days == 5) return 'ppl_ul_hybrid';
+      return 'ppl_6days';
     }
+    if (days <= 2) return 'full_body';
     if (days <= 3) return 'ppl_3days';
     if (days == 4) return 'upper_lower';
     if (days == 5) return 'arnold'; // Arnold split para avançados com 5-6 dias
@@ -832,8 +864,15 @@ class WorkoutPrescriptionEngine {
       sessions.add(_buildPullSession('B', profile, vols, slot: 1, periodization: periodization, phase: _dupPhase(periodization, 4, 3)));
       sessions.add(_buildLegsSession('B', profile, vols, slot: 1, periodization: periodization, phase: _dupPhase(periodization, 5, 3)));
     } else if (splitType == 'ppl_5days' || splitType == 'ppl_ul_hybrid') {
-      sessions.add(_buildPushSession('B', profile, vols, slot: 1, periodization: periodization, phase: _dupPhase(periodization, 3, 3)));
-      sessions.add(_buildPullSession('B', profile, vols, slot: 1, periodization: periodization, phase: _dupPhase(periodization, 4, 3)));
+      // Híbrido real: Push / Pull / Legs / Upper / Lower.
+      sessions.add(_buildUpperSession('B', profile, vols, false,
+          slot: 1,
+          phase: _dupPhase(periodization, 3, 5),
+          periodization: periodization));
+      sessions.add(_buildLowerSession('B', profile, vols, false,
+          slot: 1,
+          phase: _dupPhase(periodization, 4, 5),
+          periodization: periodization));
     }
 
     return sessions;
@@ -1165,6 +1204,14 @@ class WorkoutPrescriptionEngine {
 
       // Positivos
       score += 2.0; // baseline
+      if (profile.preferredStyle == 'compound_focus' &&
+          candidate.category == 'compound') {
+        score += 1.0;
+      }
+      if (profile.preferredStyle == 'isolation_focus' &&
+          candidate.category == 'isolation') {
+        score += 1.0;
+      }
       score += desiredCapabilities
               .where(dna.capabilities.contains)
               .length *
@@ -1297,9 +1344,13 @@ class WorkoutPrescriptionEngine {
     final rotatedEx = rotatedId != ex.id
         ? _library.firstWhere((e) => e.id == rotatedId, orElse: () => ex)
         : ex;
-    final finalEx = ExerciseCompatibility.isCompatible(profile, rotatedEx)
+    var finalEx = ExerciseCompatibility.isCompatible(profile, rotatedEx)
         ? rotatedEx
         : ex;
+    if (fatigue != null && !fatigue.canAdd(finalEx, sets)) {
+      if (!fatigue.canAdd(ex, sets)) return null;
+      finalEx = ex;
+    }
     if (fatigue != null) fatigue.add(finalEx, sets);
     final rx = _prescription(profile, finalEx, phase);
     final sessionCues = [
