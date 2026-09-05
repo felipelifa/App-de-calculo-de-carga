@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../core/services/auth_service.dart';
 import '../../shared/theme/app_theme.dart';
 import 'nutrition_provider.dart';
 import '../workout/workout_profile_provider.dart';
 import 'nutrition_engine.dart';
 import 'package:go_router/go_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class NutritionAnamneseScreen extends StatefulWidget {
   const NutritionAnamneseScreen({super.key});
@@ -48,7 +48,7 @@ class _NutritionAnamneseScreenState extends State<NutritionAnamneseScreen> {
         return;
       }
 
-      final uid = FirebaseAuth.instance.currentUser?.uid ?? 'anon';
+      final uid = context.read<AuthService>().currentUser?.id ?? 'anon';
       final provider = context.read<NutritionProvider>();
       
       final initialProfile = NutritionEngine.generateInitialProfile(

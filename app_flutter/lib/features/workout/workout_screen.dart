@@ -1090,6 +1090,10 @@ class _ActiveSession extends StatelessWidget {
                 ),
               ),
               const Spacer(),
+              if (provider.activeDupPhase != null) ...[
+                _buildDupBadge(provider.activeDupPhase!),
+                const SizedBox(width: 12),
+              ],
               _buildSimpleStat('Volume', '${provider.currentTotalVolume.toInt()} kg'),
             ],
           ),
@@ -1134,6 +1138,53 @@ class _ActiveSession extends StatelessWidget {
         Text(label, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
         Text(value, style: GoogleFonts.outfit(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900)),
       ],
+    );
+  }
+
+  Widget _buildDupBadge(String phase) {
+    Color color;
+    String icon;
+    switch (phase) {
+      case 'Força':
+        color = Colors.orangeAccent;
+        icon = '💪';
+        break;
+      case 'Hipertrofia':
+        color = const Color(0xFF00E5FF);
+        icon = '🔥';
+        break;
+      case 'Resistência':
+        color = const Color(0xFFCCFF00);
+        icon = '🏃';
+        break;
+      default:
+        color = Colors.white70;
+        icon = '⚖️';
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(icon, style: const TextStyle(fontSize: 12)),
+          const SizedBox(width: 4),
+          Text(
+            phase,
+            style: GoogleFonts.outfit(
+              color: color,
+              fontSize: 10,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 0.5,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

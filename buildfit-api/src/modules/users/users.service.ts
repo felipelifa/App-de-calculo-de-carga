@@ -6,38 +6,9 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async getOrCreateUser(firebaseUid: string, email: string, name: string) {
-    let user = await this.prisma.user.findUnique({
-      where: { firebaseUid },
-    });
-
-    if (!user) {
-      user = await this.prisma.user.create({
-        data: {
-          firebaseUid,
-          email,
-          name,
-          profile: { create: {} },
-        },
-      });
-    }
-
-    return user;
-  }
-
   async getProfile(userId: string) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
-      include: { profile: true },
-    });
-
-    if (!user) throw new NotFoundException('Usuário não encontrado');
-    return user;
-  }
-
-  async getProfileByFirebaseUid(firebaseUid: string) {
-    const user = await this.prisma.user.findUnique({
-      where: { firebaseUid },
       include: { profile: true },
     });
 
@@ -56,9 +27,9 @@ export class UsersService {
     });
   }
 
-  async updateFcmToken(firebaseUid: string, fcmToken: string) {
+  async updateFcmToken(userId: string, fcmToken: string) {
     return this.prisma.user.update({
-      where: { firebaseUid },
+      where: { id: userId },
       data: { fcmToken },
     });
   }

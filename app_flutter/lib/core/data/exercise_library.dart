@@ -1,14 +1,14 @@
 import '../../features/exercises/exercise_model.dart';
 
-// ═══════════════════════════════════════════════════════════════
-// BIBLIOTECA CIENTÍFICA DE EXERCÍCIOS COMPLETA — 940+ Itens
-// Gerada automaticamente com mapeamento biomecânico avançado
-// ═══════════════════════════════════════════════════════════════
+// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// BIBLIOTECA CIENT├ìFICA DE EXERC├ìCIOS COMPLETA ÔÇö 940+ Itens
+// Gerada automaticamente com mapeamento biomec├ónico avan├ºado
+// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
 
 final List<ExerciseModel> exerciseLibrary = [
   ExerciseModel(
     id: 'abducao_de_quadril_com_cabo',
-    name: 'Abdução de quadril com cabo',
+    name: 'Abdu├º├úo de quadril com cabo',
     nameEn: 'Cable Abduction',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -36,7 +36,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'abducao_de_quadril_com_faixa',
-    name: 'Abdução de Quadril com Faixa',
+    name: 'Abdu├º├úo de Quadril com Faixa',
     nameEn: 'Band Abduction',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -64,7 +64,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'abducao_de_quadril_com_ponte',
-    name: 'Abdução de Quadril com Ponte',
+    name: 'Abdu├º├úo de Quadril com Ponte',
     nameEn: 'Abduction',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -98,7 +98,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'abducao_de_quadril_em_decubito_lateral',
-    name: 'Abdução de Quadril em Decúbito Lateral',
+    name: 'Abdu├º├úo de Quadril em Dec├║bito Lateral',
     nameEn: 'Abduction',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -132,7 +132,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'abducao_de_quadril_em_pe',
-    name: 'Abdução de Quadril em Pé',
+    name: 'Abdu├º├úo de Quadril em P├®',
     nameEn: 'Standing Abduction',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -166,7 +166,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'abducao_de_quadril_lateral',
-    name: 'Abdução de Quadril Lateral',
+    name: 'Abdu├º├úo de Quadril Lateral',
     nameEn: 'Abduction',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -200,7 +200,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'abducao_de_quadril_sentado_com_faixa_elastica',
-    name: 'Abdução de Quadril Sentado com Faixa Elástica',
+    name: 'Abdu├º├úo de Quadril Sentado com Faixa El├ística',
     nameEn: 'Seated Band Abduction',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -228,8 +228,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'abracos_nos_joelhos_em_pe',
-    name: 'Abraços nos Joelhos em Pé',
-    nameEn: 'Standing Abraços nos Joelhos em Pé',
+    name: 'Abra├ºos nos Joelhos em P├®',
+    nameEn: 'Standing Abra├ºos nos Joelhos em P├®',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -244,7 +244,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -260,7 +260,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'aducao_de_ombro_com_faixa_elastica',
-    name: 'Adução de Ombro com Faixa Elástica',
+    name: 'Adu├º├úo de Ombro com Faixa El├ística',
     nameEn: 'Band Adduction',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -286,7 +286,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'aducao_de_pernas_alongamento_do_adutor_maior',
-    name: 'adução de pernas (alongamento do adutor maior)',
+    name: 'adu├º├úo de pernas (alongamento do adutor maior)',
     nameEn: 'Stretch',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -300,9 +300,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -319,7 +319,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'aducao_de_quadril_deitado_de_lado',
-    name: 'Adução de quadril deitado de lado',
+    name: 'Adu├º├úo de quadril deitado de lado',
     nameEn: 'Lying Adduction',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -353,7 +353,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'aducao_do_quadril_com_cabo',
-    name: 'Adução do Quadril com Cabo',
+    name: 'Adu├º├úo do Quadril com Cabo',
     nameEn: 'Cable Adduction',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -381,7 +381,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'aducao_do_quadril_lateral_com_alavanca',
-    name: 'Adução do Quadril Lateral com Alavanca',
+    name: 'Adu├º├úo do Quadril Lateral com Alavanca',
     nameEn: 'Machine Adduction',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -423,8 +423,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -460,8 +460,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -490,8 +490,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -527,8 +527,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -557,8 +557,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -594,8 +594,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -624,8 +624,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -647,7 +647,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'afundo_na_maquina_smith',
-    name: 'Afundo na Máquina Smith',
+    name: 'Afundo na M├íquina Smith',
     nameEn: 'Smith Machine Machine Lunge',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -661,8 +661,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -691,8 +691,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -721,8 +721,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -758,8 +758,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -795,8 +795,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -833,8 +833,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -848,7 +848,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_bulgaro_calistenia',
-    name: 'Agachamento Búlgaro Calistenia',
+    name: 'Agachamento B├║lgaro Calistenia',
     nameEn: 'Bulgarian Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -863,8 +863,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -885,7 +885,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_bulgaro_com_barra',
-    name: 'Agachamento Búlgaro com Barra',
+    name: 'Agachamento B├║lgaro com Barra',
     nameEn: 'Bulgarian Barbell Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -900,8 +900,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -915,7 +915,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_bulgaro_com_halteres',
-    name: 'Agachamento Búlgaro com Halteres',
+    name: 'Agachamento B├║lgaro com Halteres',
     nameEn: 'Bulgarian Dumbbell Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -930,8 +930,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -945,7 +945,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_bulgaro_com_peso_corporal',
-    name: 'Agachamento Búlgaro com Peso Corporal',
+    name: 'Agachamento B├║lgaro com Peso Corporal',
     nameEn: 'Bulgarian Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -960,8 +960,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -982,7 +982,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_bulgaro_com_salto',
-    name: 'Agachamento búlgaro com salto',
+    name: 'Agachamento b├║lgaro com salto',
     nameEn: 'Bulgarian Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -997,8 +997,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1019,7 +1019,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_camarao',
-    name: 'Agachamento Camarão',
+    name: 'Agachamento Camar├úo',
     nameEn: 'Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -1034,8 +1034,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1071,8 +1071,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1086,7 +1086,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_com_barra_no_chao_seguido_de_levantamento_militar',
-    name: 'Agachamento com barra no chão seguido de levantamento militar',
+    name: 'Agachamento com barra no ch├úo seguido de levantamento militar',
     nameEn: 'Barbell Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -1101,8 +1101,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1116,7 +1116,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_com_barra_sobre_a_cabeca',
-    name: 'Agachamento com Barra Sobre a Cabeça',
+    name: 'Agachamento com Barra Sobre a Cabe├ºa',
     nameEn: 'Barbell Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -1131,8 +1131,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1161,8 +1161,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1198,8 +1198,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1220,7 +1220,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_com_elevacao_dos_joelhos',
-    name: 'Agachamento com Elevação dos Joelhos',
+    name: 'Agachamento com Eleva├º├úo dos Joelhos',
     nameEn: 'Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -1235,8 +1235,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1257,7 +1257,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_com_faixa_elastica_em_afundo',
-    name: 'Agachamento com Faixa Elástica em Afundo',
+    name: 'Agachamento com Faixa El├ística em Afundo',
     nameEn: 'Band Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -1272,8 +1272,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1287,7 +1287,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_com_faixa_elastica_sobre_a_cabeca',
-    name: 'Agachamento com Faixa Elástica sobre a Cabeça',
+    name: 'Agachamento com Faixa El├ística sobre a Cabe├ºa',
     nameEn: 'Band Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -1302,8 +1302,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1332,8 +1332,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1369,8 +1369,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1399,8 +1399,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1436,8 +1436,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1466,8 +1466,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1503,8 +1503,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1533,8 +1533,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1563,8 +1563,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1585,7 +1585,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_com_sustentacao_e_elevacao_de_panturrilhas',
-    name: 'Agachamento com Sustentação e Elevação de Panturrilhas',
+    name: 'Agachamento com Sustenta├º├úo e Eleva├º├úo de Panturrilhas',
     nameEn: 'Squat',
     primaryMuscles: ["calves"],
     secondaryMuscles: ["glutes", "lower_back", "calves"],
@@ -1600,8 +1600,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1635,8 +1635,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1672,8 +1672,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1709,8 +1709,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1746,8 +1746,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1761,7 +1761,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_em_plie_com_halteres',
-    name: 'Agachamento em plié com halteres',
+    name: 'Agachamento em pli├® com halteres',
     nameEn: 'Dumbbell Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -1776,8 +1776,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1806,8 +1806,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1836,8 +1836,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1866,8 +1866,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1896,8 +1896,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1926,8 +1926,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1956,8 +1956,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -1993,8 +1993,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2030,8 +2030,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2045,7 +2045,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_goblet_com_kettlebell_e_faixa_elastica',
-    name: 'Agachamento Goblet com Kettlebell e Faixa Elástica',
+    name: 'Agachamento Goblet com Kettlebell e Faixa El├ística',
     nameEn: 'Band Kettlebell Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -2060,8 +2060,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2090,8 +2090,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2120,8 +2120,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2150,8 +2150,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2187,8 +2187,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2209,7 +2209,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_na_maquina_abdutora',
-    name: 'Agachamento na Máquina Abdutora',
+    name: 'Agachamento na M├íquina Abdutora',
     nameEn: 'Machine Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -2224,8 +2224,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2239,7 +2239,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_na_maquina_hack',
-    name: 'Agachamento na Máquina Hack',
+    name: 'Agachamento na M├íquina Hack',
     nameEn: 'Hack Machine Machine Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -2254,8 +2254,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2269,7 +2269,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_na_parede_com_bola_de_exercicio',
-    name: 'Agachamento na Parede com Bola de Exercício',
+    name: 'Agachamento na Parede com Bola de Exerc├¡cio',
     nameEn: 'Ball Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -2284,8 +2284,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2321,8 +2321,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2358,8 +2358,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2395,8 +2395,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2425,8 +2425,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2462,8 +2462,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2499,8 +2499,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2536,8 +2536,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2566,8 +2566,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2596,8 +2596,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2633,8 +2633,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2670,8 +2670,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2707,8 +2707,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2744,8 +2744,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2766,7 +2766,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_sumo_com_halteres',
-    name: 'Agachamento Sumô com Halteres',
+    name: 'Agachamento Sum├┤ com Halteres',
     nameEn: 'Sumo Dumbbell Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -2781,8 +2781,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2796,7 +2796,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'agachamento_sumo_sem_pesos',
-    name: 'Agachamento Sumô sem Pesos',
+    name: 'Agachamento Sum├┤ sem Pesos',
     nameEn: 'Sumo Standing Squat',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -2811,8 +2811,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2848,8 +2848,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: true,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2878,8 +2878,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: true,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2908,8 +2908,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: true,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2945,8 +2945,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -2982,8 +2982,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3020,7 +3020,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3039,7 +3039,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_abraco_com_tapinhas_nas_costas',
-    name: 'Alongamento Abraço com Tapinhas nas Costas',
+    name: 'Alongamento Abra├ºo com Tapinhas nas Costas',
     nameEn: 'Stretch',
     primaryMuscles: ["back"],
     secondaryMuscles: [],
@@ -3053,9 +3053,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3086,9 +3086,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3119,9 +3119,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3138,7 +3138,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_com_pvc_na_posicao_frontal_de_rack',
-    name: 'Alongamento com PVC na Posição Frontal de Rack',
+    name: 'Alongamento com PVC na Posi├º├úo Frontal de Rack',
     nameEn: 'Stretch',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -3152,9 +3152,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3185,9 +3185,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3218,9 +3218,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3252,9 +3252,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3286,9 +3286,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3319,9 +3319,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3338,7 +3338,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_de_adutores_com_pernas_afastadas_em_pe',
-    name: 'Alongamento de Adutores com Pernas Afastadas em Pé',
+    name: 'Alongamento de Adutores com Pernas Afastadas em P├®',
     nameEn: 'Standing Stretch',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -3352,9 +3352,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3371,7 +3371,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_de_gluteos_deitado',
-    name: 'Alongamento de Glúteos Deitado',
+    name: 'Alongamento de Gl├║teos Deitado',
     nameEn: 'Lying Stretch',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -3385,9 +3385,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3419,9 +3419,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3438,7 +3438,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_de_isquiotibiais_em_pe',
-    name: 'Alongamento de Isquiotibiais em Pé',
+    name: 'Alongamento de Isquiotibiais em P├®',
     nameEn: 'Standing Stretch',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: [],
@@ -3452,9 +3452,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3471,7 +3471,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_de_ombro_com_o_braco_cruzado',
-    name: 'Alongamento de ombro com o braço cruzado',
+    name: 'Alongamento de ombro com o bra├ºo cruzado',
     nameEn: 'Stretch',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -3485,9 +3485,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3504,7 +3504,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_de_ombro_reverso_em_pe',
-    name: 'Alongamento de ombro reverso em pé',
+    name: 'Alongamento de ombro reverso em p├®',
     nameEn: 'Standing Stretch',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -3518,9 +3518,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3551,9 +3551,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3585,9 +3585,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3619,9 +3619,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3653,9 +3653,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3673,7 +3673,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_de_panturrilha_em_posicao_estatica',
-    name: 'Alongamento de panturrilha em posição estática',
+    name: 'Alongamento de panturrilha em posi├º├úo est├ítica',
     nameEn: 'Stretch',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
@@ -3687,9 +3687,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3721,9 +3721,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3755,9 +3755,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3788,9 +3788,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3821,9 +3821,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3840,7 +3840,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_de_quadriceps_ajoelhado',
-    name: 'Alongamento de Quadríceps ajoelhado',
+    name: 'Alongamento de Quadr├¡ceps ajoelhado',
     nameEn: 'Kneeling Stretch',
     primaryMuscles: ["quads"],
     secondaryMuscles: [],
@@ -3854,9 +3854,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3873,7 +3873,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_de_quadriceps_em_quatro_apoios',
-    name: 'Alongamento de Quadríceps em Quatro Apoios',
+    name: 'Alongamento de Quadr├¡ceps em Quatro Apoios',
     nameEn: 'Stretch',
     primaryMuscles: ["quads"],
     secondaryMuscles: [],
@@ -3887,9 +3887,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3906,7 +3906,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_de_rotacao_da_coluna_em_pe',
-    name: 'Alongamento de rotação da coluna em pé',
+    name: 'Alongamento de rota├º├úo da coluna em p├®',
     nameEn: 'Standing Stretch',
     primaryMuscles: ["back"],
     secondaryMuscles: [],
@@ -3920,9 +3920,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3939,7 +3939,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_de_triceps_em_pe',
-    name: 'Alongamento de tríceps em pé',
+    name: 'Alongamento de tr├¡ceps em p├®',
     nameEn: 'Standing Stretch',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -3953,9 +3953,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -3973,7 +3973,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_dinamico_do_peitoral',
-    name: 'Alongamento Dinâmico do Peitoral',
+    name: 'Alongamento Din├ómico do Peitoral',
     nameEn: 'Stretch',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -3987,9 +3987,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4020,9 +4020,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4039,7 +4039,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_do_gastrocnemio_com_joelho_flexionado',
-    name: 'Alongamento do Gastrocnêmio com Joelho Flexionado',
+    name: 'Alongamento do Gastrocn├¬mio com Joelho Flexionado',
     nameEn: 'Stretch',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
@@ -4053,9 +4053,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4087,9 +4087,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4120,9 +4120,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4139,7 +4139,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_do_peito_acima_da_cabeca',
-    name: 'Alongamento do Peito Acima da Cabeça',
+    name: 'Alongamento do Peito Acima da Cabe├ºa',
     nameEn: 'Stretch',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -4153,9 +4153,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4186,9 +4186,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4219,9 +4219,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4238,7 +4238,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_do_peitoral_ate_as_costas',
-    name: 'Alongamento do Peitoral até as Costas',
+    name: 'Alongamento do Peitoral at├® as Costas',
     nameEn: 'Stretch',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -4252,9 +4252,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4271,7 +4271,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_do_peitoral_com_um_braco_em_pe',
-    name: 'Alongamento do Peitoral com um Braço em Pé',
+    name: 'Alongamento do Peitoral com um Bra├ºo em P├®',
     nameEn: 'Standing Stretch',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -4285,9 +4285,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4318,9 +4318,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4351,9 +4351,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4384,9 +4384,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4403,7 +4403,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_do_tendao_de_aquiles_em_pe',
-    name: 'Alongamento do tendão de Aquiles em pé',
+    name: 'Alongamento do tend├úo de Aquiles em p├®',
     nameEn: 'Standing Stretch',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
@@ -4417,9 +4417,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4450,9 +4450,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4484,9 +4484,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4518,9 +4518,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4537,7 +4537,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_dos_adutores_com_pernas_abertas_em_pe',
-    name: 'Alongamento dos Adutores com Pernas Abertas em Pé',
+    name: 'Alongamento dos Adutores com Pernas Abertas em P├®',
     nameEn: 'Standing Stretch',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -4551,9 +4551,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4584,9 +4584,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4603,7 +4603,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_dos_adutores_em_posicao_sentada_com_pernas_abertas',
-    name: 'Alongamento dos Adutores em Posição Sentada com Pernas Abertas',
+    name: 'Alongamento dos Adutores em Posi├º├úo Sentada com Pernas Abertas',
     nameEn: 'Stretch',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -4617,9 +4617,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4650,9 +4650,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4669,7 +4669,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_dos_extensores_dos_dedos_dos_pes',
-    name: 'Alongamento dos Extensores dos Dedos dos Pés',
+    name: 'Alongamento dos Extensores dos Dedos dos P├®s',
     nameEn: 'Stretch',
     primaryMuscles: ["forearms"],
     secondaryMuscles: [],
@@ -4683,9 +4683,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4716,9 +4716,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4735,7 +4735,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_dos_flexores_do_quadril_em_posicao_de_joelho',
-    name: 'Alongamento dos flexores do quadril em posição de joelho',
+    name: 'Alongamento dos flexores do quadril em posi├º├úo de joelho',
     nameEn: 'Stretch',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -4749,9 +4749,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4768,7 +4768,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_dos_flexores_dos_dedos_dos_pes_em_pe',
-    name: 'Alongamento dos flexores dos dedos dos pés em pé',
+    name: 'Alongamento dos flexores dos dedos dos p├®s em p├®',
     nameEn: 'Standing Stretch',
     primaryMuscles: ["forearms"],
     secondaryMuscles: [],
@@ -4782,9 +4782,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4801,7 +4801,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_dos_isquiotibiais_em_pe_com_a_perna_cruzada',
-    name: 'Alongamento dos isquiotibiais em pé com a perna cruzada',
+    name: 'Alongamento dos isquiotibiais em p├® com a perna cruzada',
     nameEn: 'Standing Stretch',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: [],
@@ -4815,9 +4815,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4834,7 +4834,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_dos_isquiotibiais_em_pe',
-    name: 'Alongamento dos isquiotibiais em pé',
+    name: 'Alongamento dos isquiotibiais em p├®',
     nameEn: 'Standing Stretch',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: [],
@@ -4848,9 +4848,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4881,9 +4881,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4900,7 +4900,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_dos_latissimos_dorsais_com_rolo_de_espuma',
-    name: 'Alongamento dos latíssimos dorsais com rolo de espuma',
+    name: 'Alongamento dos lat├¡ssimos dorsais com rolo de espuma',
     nameEn: 'Stretch',
     primaryMuscles: ["back"],
     secondaryMuscles: [],
@@ -4914,9 +4914,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4933,7 +4933,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_dos_ombros_por_tras_das_costas',
-    name: 'Alongamento dos ombros por trás das costas',
+    name: 'Alongamento dos ombros por tr├ís das costas',
     nameEn: 'Stretch',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -4947,9 +4947,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4966,7 +4966,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_em_circulos_nos_punhos',
-    name: 'Alongamento em Círculos nos Punhos',
+    name: 'Alongamento em C├¡rculos nos Punhos',
     nameEn: 'Stretch',
     primaryMuscles: ["forearms"],
     secondaryMuscles: [],
@@ -4980,9 +4980,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -4999,7 +4999,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_em_pe_dos_quadriceps',
-    name: 'Alongamento em Pé dos Quadríceps',
+    name: 'Alongamento em P├® dos Quadr├¡ceps',
     nameEn: 'Standing Stretch',
     primaryMuscles: ["quads"],
     secondaryMuscles: [],
@@ -5013,9 +5013,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5032,7 +5032,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamento_inclinado_lateral_em_pe',
-    name: 'Alongamento Inclinado Lateral em Pé',
+    name: 'Alongamento Inclinado Lateral em P├®',
     nameEn: 'Standing Incline Stretch',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -5046,9 +5046,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5079,9 +5079,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5112,9 +5112,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5145,9 +5145,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5178,9 +5178,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5211,9 +5211,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5244,9 +5244,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5264,7 +5264,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'alongamentos_de_pes_e_tornozelos',
-    name: 'Alongamentos de pés e tornozelos',
+    name: 'Alongamentos de p├®s e tornozelos',
     nameEn: 'Stretch',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -5278,9 +5278,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5313,7 +5313,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5348,7 +5348,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5383,7 +5383,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5418,7 +5418,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5433,8 +5433,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'arranco_com_kettlebell_de_um_braco',
-    name: 'Arranco com kettlebell de um braço',
-    nameEn: 'Arranco com kettlebell de um braço',
+    name: 'Arranco com kettlebell de um bra├ºo',
+    nameEn: 'Arranco com kettlebell de um bra├ºo',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["shoulders", "back", "glutes"],
     movementPattern: 'squat',
@@ -5449,7 +5449,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5478,8 +5478,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -5494,8 +5494,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'arranco_de_potencia',
-    name: 'Arranco de Potência',
-    nameEn: 'Arranco de Potência',
+    name: 'Arranco de Pot├¬ncia',
+    nameEn: 'Arranco de Pot├¬ncia',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["shoulders", "back", "glutes"],
     movementPattern: 'squat',
@@ -5510,7 +5510,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5547,7 +5547,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5578,7 +5578,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5609,7 +5609,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5624,8 +5624,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'arremesso_com_haltere_de_um_braco',
-    name: 'Arremesso com haltere de um braço',
-    nameEn: 'Dumbbell Arremesso com haltere de um braço',
+    name: 'Arremesso com haltere de um bra├ºo',
+    nameEn: 'Dumbbell Arremesso com haltere de um bra├ºo',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["shoulders", "back", "glutes"],
     movementPattern: 'squat',
@@ -5640,7 +5640,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5655,8 +5655,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'arremesso_de_bola_de_reacao',
-    name: 'Arremesso de Bola de Reação',
-    nameEn: 'Ball Arremesso de Bola de Reação',
+    name: 'Arremesso de Bola de Rea├º├úo',
+    nameEn: 'Ball Arremesso de Bola de Rea├º├úo',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["shoulders", "back", "glutes"],
     movementPattern: 'squat',
@@ -5671,7 +5671,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5708,7 +5708,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5729,8 +5729,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'arremesso_e_pressao_com_barra',
-    name: 'Arremesso e Pressão com Barra',
-    nameEn: 'Barbell Arremesso e Pressão com Barra',
+    name: 'Arremesso e Press├úo com Barra',
+    nameEn: 'Barbell Arremesso e Press├úo com Barra',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["shoulders", "back", "glutes"],
     movementPattern: 'squat',
@@ -5745,7 +5745,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -5760,7 +5760,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'avanco_com_barra',
-    name: 'Avanço com Barra',
+    name: 'Avan├ºo com Barra',
     nameEn: 'Barbell Lunge',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -5774,8 +5774,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -5790,7 +5790,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'avanco_com_cabo',
-    name: 'Avanço com Cabo',
+    name: 'Avan├ºo com Cabo',
     nameEn: 'Cable Lunge',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -5804,8 +5804,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -5820,7 +5820,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'avanco_com_halteres_para_tras',
-    name: 'Avanço com Halteres para Trás',
+    name: 'Avan├ºo com Halteres para Tr├ís',
     nameEn: 'Dumbbell Lunge',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -5834,8 +5834,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -5850,7 +5850,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'avanco_com_halteres',
-    name: 'Avanço com Halteres',
+    name: 'Avan├ºo com Halteres',
     nameEn: 'Dumbbell Lunge',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -5864,8 +5864,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -5880,7 +5880,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'avanco_com_joelho_alto_em_cima_da_bola_bosu',
-    name: 'Avanço com Joelho Alto em Cima da Bola Bosu',
+    name: 'Avan├ºo com Joelho Alto em Cima da Bola Bosu',
     nameEn: 'Ball Lunge',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -5894,8 +5894,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -5917,7 +5917,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'avanco_com_joelho_elevado_em_caminhada',
-    name: 'Avanço com Joelho Elevado em Caminhada',
+    name: 'Avan├ºo com Joelho Elevado em Caminhada',
     nameEn: 'Lunge',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -5931,8 +5931,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -5954,7 +5954,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'avanco_com_puxador_de_cabo',
-    name: 'Avanço com Puxador de Cabo',
+    name: 'Avan├ºo com Puxador de Cabo',
     nameEn: 'Cable Lunge',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -5968,8 +5968,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -5984,7 +5984,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'avanco_invertido_com_halteres',
-    name: 'Avanço Invertido com Halteres',
+    name: 'Avan├ºo Invertido com Halteres',
     nameEn: 'Dumbbell Lunge',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -5998,8 +5998,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -6014,7 +6014,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'avanco_invertido',
-    name: 'Avanço Invertido',
+    name: 'Avan├ºo Invertido',
     nameEn: 'Lunge',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -6028,8 +6028,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -6051,7 +6051,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'avanco_sem_peso_corporal',
-    name: 'Avanço sem Peso Corporal',
+    name: 'Avan├ºo sem Peso Corporal',
     nameEn: 'Standing Lunge',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -6065,8 +6065,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Passo longo o suficiente para manter o equilíbrio",
-      "Joelho de trás em direção ao chão",
+      "Passo longo o suficiente para manter o equil├¡brio",
+      "Joelho de tr├ís em dire├º├úo ao ch├úo",
       "Tronco reto ou levemente inclinado",
     ],
     substituteIds: [],
@@ -6104,7 +6104,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6124,8 +6124,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'balanco_com_gymstick',
-    name: 'Balanço com gymstick',
-    nameEn: 'Balanço com gymstick',
+    name: 'Balan├ºo com gymstick',
+    nameEn: 'Balan├ºo com gymstick',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'rotation',
@@ -6140,7 +6140,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6156,8 +6156,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'balancos_com_kettlebell',
-    name: 'Balanços com Kettlebell',
-    nameEn: 'Balanços com Kettlebell',
+    name: 'Balan├ºos com Kettlebell',
+    nameEn: 'Balan├ºos com Kettlebell',
     primaryMuscles: ["glutes"],
     secondaryMuscles: ["hamstrings", "abs"],
     movementPattern: 'hinge',
@@ -6172,7 +6172,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6201,7 +6201,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6236,7 +6236,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6265,7 +6265,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6286,7 +6286,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'barra_fixa_assistida_com_faixa_elastica',
-    name: 'Barra fixa Assistida com Faixa Elástica',
+    name: 'Barra fixa Assistida com Faixa El├ística',
     nameEn: 'Band Barbell Pull Up',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -6300,9 +6300,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6337,9 +6337,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6367,9 +6367,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6383,7 +6383,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'barra_fixa_com_bracos_alternados',
-    name: 'Barra fixa com braços alternados',
+    name: 'Barra fixa com bra├ºos alternados',
     nameEn: 'Barbell Pull Up',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -6397,9 +6397,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6427,9 +6427,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6457,9 +6457,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6487,9 +6487,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6517,9 +6517,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6547,9 +6547,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6563,7 +6563,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'barra_fixa_com_pegada_por_tras_do_pescoco',
-    name: 'Barra Fixa com Pegada por Trás do Pescoço',
+    name: 'Barra Fixa com Pegada por Tr├ís do Pesco├ºo',
     nameEn: 'Barbell Pull Up',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -6577,9 +6577,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6607,9 +6607,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6637,9 +6637,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6667,9 +6667,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6683,7 +6683,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'barra_fixa_de_cabeca_para_baixo',
-    name: 'Barra Fixa de Cabeça para Baixo',
+    name: 'Barra Fixa de Cabe├ºa para Baixo',
     nameEn: 'Barbell Pull Up',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -6697,9 +6697,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6727,9 +6727,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6757,9 +6757,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6787,9 +6787,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6803,8 +6803,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'bicicleta_ergometrica_reclinada',
-    name: 'Bicicleta Ergométrica Reclinada',
-    nameEn: 'Bicicleta Ergométrica Reclinada',
+    name: 'Bicicleta Ergom├®trica Reclinada',
+    nameEn: 'Bicicleta Ergom├®trica Reclinada',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes", "calves", "abs"],
     movementPattern: 'squat',
@@ -6819,7 +6819,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6854,7 +6854,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6873,8 +6873,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'bola_medicinal_lancada_para_cima_e_para_baixo',
-    name: 'Bola medicinal lançada para cima e para baixo',
-    nameEn: 'Ball Bola medicinal lançada para cima e para baixo',
+    name: 'Bola medicinal lan├ºada para cima e para baixo',
+    nameEn: 'Ball Bola medicinal lan├ºada para cima e para baixo',
     primaryMuscles: ["abs"],
     secondaryMuscles: ["shoulders"],
     movementPattern: 'rotation',
@@ -6889,7 +6889,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6923,7 +6923,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6941,8 +6941,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'bom_dia_com_faixa_elastica_de_resistencia',
-    name: 'Bom Dia com Faixa Elástica de Resistência',
-    nameEn: 'Band Bom Dia com Faixa Elástica de Resistência',
+    name: 'Bom Dia com Faixa El├ística de Resist├¬ncia',
+    nameEn: 'Band Bom Dia com Faixa El├ística de Resist├¬ncia',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'hinge',
@@ -6957,7 +6957,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -6970,8 +6970,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'bom_dia_na_maquina_smith',
-    name: 'Bom Dia na Máquina Smith',
-    nameEn: 'Smith Machine Machine Bom Dia na Máquina Smith',
+    name: 'Bom Dia na M├íquina Smith',
+    nameEn: 'Smith Machine Machine Bom Dia na M├íquina Smith',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'hinge',
@@ -6986,7 +6986,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7015,7 +7015,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7050,7 +7050,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7085,7 +7085,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7118,9 +7118,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Movimento fluido e rápido",
-      "Mantenha o core rígido",
-      "Salte com impulsão",
+      "Movimento fluido e r├ípido",
+      "Mantenha o core r├¡gido",
+      "Salte com impuls├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7154,9 +7154,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Movimento fluido e rápido",
-      "Mantenha o core rígido",
-      "Salte com impulsão",
+      "Movimento fluido e r├ípido",
+      "Mantenha o core r├¡gido",
+      "Salte com impuls├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7191,7 +7191,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha as costas apoiadas",
-      "Pausa rápida no topo da contração",
+      "Pausa r├ípida no topo da contra├º├úo",
       "Controle a descida das pernas",
     ],
     substituteIds: [],
@@ -7254,7 +7254,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7267,8 +7267,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'caminhada_lateral_com_faixa_de_resistencia',
-    name: 'Caminhada Lateral com Faixa de Resistência',
-    nameEn: 'Band Caminhada Lateral com Faixa de Resistência',
+    name: 'Caminhada Lateral com Faixa de Resist├¬ncia',
+    nameEn: 'Band Caminhada Lateral com Faixa de Resist├¬ncia',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes", "calves", "abs"],
     movementPattern: 'squat',
@@ -7283,7 +7283,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7296,8 +7296,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'caminhada_na_parada_de_mao',
-    name: 'Caminhada na Parada de Mão',
-    nameEn: 'Caminhada na Parada de Mão',
+    name: 'Caminhada na Parada de M├úo',
+    nameEn: 'Caminhada na Parada de M├úo',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes", "calves", "abs"],
     movementPattern: 'squat',
@@ -7312,7 +7312,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7347,7 +7347,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7366,8 +7366,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'caminhada_rapida',
-    name: 'Caminhada Rápida',
-    nameEn: 'Caminhada Rápida',
+    name: 'Caminhada R├ípida',
+    nameEn: 'Caminhada R├ípida',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes", "calves", "abs"],
     movementPattern: 'squat',
@@ -7382,7 +7382,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7417,7 +7417,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7452,7 +7452,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7489,7 +7489,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7506,8 +7506,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'chutes_alternados_de_gluteos_no_banco',
-    name: 'Chutes Alternados de Glúteos no Banco',
-    nameEn: 'on Bench Chutes Alternados de Glúteos no Banco',
+    name: 'Chutes Alternados de Gl├║teos no Banco',
+    nameEn: 'on Bench Chutes Alternados de Gl├║teos no Banco',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -7522,7 +7522,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7540,8 +7540,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'chutes_ate_o_gluteo',
-    name: 'Chutes até o Glúteo',
-    nameEn: 'Chutes até o Glúteo',
+    name: 'Chutes at├® o Gl├║teo',
+    nameEn: 'Chutes at├® o Gl├║teo',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -7556,7 +7556,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7588,9 +7588,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Parte superior do braço imóvel paralela ao chão",
+      "Parte superior do bra├ºo im├│vel paralela ao ch├úo",
       "Estenda o cotovelo totalmente",
-      "Movimento sem balanço",
+      "Movimento sem balan├ºo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7622,9 +7622,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Parte superior do braço imóvel paralela ao chão",
+      "Parte superior do bra├ºo im├│vel paralela ao ch├úo",
       "Estenda o cotovelo totalmente",
-      "Movimento sem balanço",
+      "Movimento sem balan├ºo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7642,7 +7642,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'contracao_abdominal',
-    name: 'Contração abdominal',
+    name: 'Contra├º├úo abdominal',
     nameEn: 'Crunch',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
@@ -7656,9 +7656,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Retire apenas as escápulas do chão",
-      "Não puxe o pescoço com as mãos",
-      "Expulse o ar no topo da contração",
+      "Retire apenas as esc├ípulas do ch├úo",
+      "N├úo puxe o pesco├ºo com as m├úos",
+      "Expulse o ar no topo da contra├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7685,7 +7685,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7704,8 +7704,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'corrida_com_elevacao_dos_joelhos',
-    name: 'Corrida com Elevação dos Joelhos',
-    nameEn: 'Corrida com Elevação dos Joelhos',
+    name: 'Corrida com Eleva├º├úo dos Joelhos',
+    nameEn: 'Corrida com Eleva├º├úo dos Joelhos',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes", "calves", "abs"],
     movementPattern: 'squat',
@@ -7720,7 +7720,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7755,7 +7755,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7772,8 +7772,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'corrida_com_passos_rapidos',
-    name: 'Corrida com Passos Rápidos',
-    nameEn: 'Corrida com Passos Rápidos',
+    name: 'Corrida com Passos R├ípidos',
+    nameEn: 'Corrida com Passos R├ípidos',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes", "calves", "abs"],
     movementPattern: 'squat',
@@ -7788,7 +7788,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7822,7 +7822,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -7859,7 +7859,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7878,8 +7878,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'corrida_de_sprint_com_assistencia_de_faixa_elastica',
-    name: 'Corrida de Sprint com Assistência de Faixa Elástica',
-    nameEn: 'Band Corrida de Sprint com Assistência de Faixa Elástica',
+    name: 'Corrida de Sprint com Assist├¬ncia de Faixa El├ística',
+    nameEn: 'Band Corrida de Sprint com Assist├¬ncia de Faixa El├ística',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes", "calves", "abs"],
     movementPattern: 'squat',
@@ -7894,7 +7894,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7907,8 +7907,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'corrida_estacionaria',
-    name: 'Corrida Estacionária',
-    nameEn: 'Corrida Estacionária',
+    name: 'Corrida Estacion├íria',
+    nameEn: 'Corrida Estacion├íria',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes", "calves", "abs"],
     movementPattern: 'squat',
@@ -7923,7 +7923,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7958,7 +7958,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -7993,7 +7993,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8028,7 +8028,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8057,7 +8057,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8086,7 +8086,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8115,7 +8115,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8144,7 +8144,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8173,7 +8173,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8200,8 +8200,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve flexão de cotovelos constante",
-      "Imagine que está abraçando uma árvore",
+      "Leve flex├úo de cotovelos constante",
+      "Imagine que est├í abra├ºando uma ├írvore",
       "Sinta o alongamento no peitoral",
     ],
     substituteIds: [],
@@ -8229,8 +8229,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve flexão de cotovelos constante",
-      "Imagine que está abraçando uma árvore",
+      "Leve flex├úo de cotovelos constante",
+      "Imagine que est├í abra├ºando uma ├írvore",
       "Sinta o alongamento no peitoral",
     ],
     substituteIds: [],
@@ -8264,8 +8264,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve flexão de cotovelos constante",
-      "Imagine que está abraçando uma árvore",
+      "Leve flex├úo de cotovelos constante",
+      "Imagine que est├í abra├ºando uma ├írvore",
       "Sinta o alongamento no peitoral",
     ],
     substituteIds: [],
@@ -8299,8 +8299,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve flexão de cotovelos constante",
-      "Imagine que está abraçando uma árvore",
+      "Leve flex├úo de cotovelos constante",
+      "Imagine que est├í abra├ºando uma ├írvore",
       "Sinta o alongamento no peitoral",
     ],
     substituteIds: [],
@@ -8334,8 +8334,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve flexão de cotovelos constante",
-      "Imagine que está abraçando uma árvore",
+      "Leve flex├úo de cotovelos constante",
+      "Imagine que est├í abra├ºando uma ├írvore",
       "Sinta o alongamento no peitoral",
     ],
     substituteIds: [],
@@ -8370,8 +8370,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve flexão de cotovelos constante",
-      "Imagine que está abraçando uma árvore",
+      "Leve flex├úo de cotovelos constante",
+      "Imagine que est├í abra├ºando uma ├írvore",
       "Sinta o alongamento no peitoral",
     ],
     substituteIds: [],
@@ -8399,8 +8399,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve flexão de cotovelos constante",
-      "Imagine que está abraçando uma árvore",
+      "Leve flex├úo de cotovelos constante",
+      "Imagine que est├í abra├ºando uma ├írvore",
       "Sinta o alongamento no peitoral",
     ],
     substituteIds: [],
@@ -8435,8 +8435,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Leve flexão de cotovelos constante",
-      "Imagine que está abraçando uma árvore",
+      "Leve flex├úo de cotovelos constante",
+      "Imagine que est├í abra├ºando uma ├írvore",
       "Sinta o alongamento no peitoral",
     ],
     substituteIds: [],
@@ -8464,8 +8464,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve flexão de cotovelos constante",
-      "Imagine que está abraçando uma árvore",
+      "Leve flex├úo de cotovelos constante",
+      "Imagine que est├í abra├ºando uma ├írvore",
       "Sinta o alongamento no peitoral",
     ],
     substituteIds: [],
@@ -8500,8 +8500,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Leve flexão de cotovelos constante",
-      "Imagine que está abraçando uma árvore",
+      "Leve flex├úo de cotovelos constante",
+      "Imagine que est├í abra├ºando uma ├írvore",
       "Sinta o alongamento no peitoral",
     ],
     substituteIds: [],
@@ -8531,7 +8531,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8541,8 +8541,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'circulos_com_os_bracos',
-    name: 'Círculos com os braços',
-    nameEn: 'Círculos com os braços',
+    name: 'C├¡rculos com os bra├ºos',
+    nameEn: 'C├¡rculos com os bra├ºos',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -8557,7 +8557,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8575,8 +8575,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'circulos_com_um_braco',
-    name: 'Círculos com um braço',
-    nameEn: 'Círculos com um braço',
+    name: 'C├¡rculos com um bra├ºo',
+    nameEn: 'C├¡rculos com um bra├ºo',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -8591,7 +8591,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8609,8 +8609,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'circulos_de_braco_com_pesos',
-    name: 'Círculos de Braço com Pesos',
-    nameEn: 'Círculos de Braço com Pesos',
+    name: 'C├¡rculos de Bra├ºo com Pesos',
+    nameEn: 'C├¡rculos de Bra├ºo com Pesos',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -8625,7 +8625,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8643,7 +8643,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'copia_de_abdominal_de_ra_com_bola_de_exercicios',
-    name: 'Cópia de Abdominal de Rã com Bola de Exercícios',
+    name: 'C├│pia de Abdominal de R├ú com Bola de Exerc├¡cios',
     nameEn: 'Ball Crunch',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
@@ -8657,9 +8657,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Retire apenas as escápulas do chão",
-      "Não puxe o pescoço com as mãos",
-      "Expulse o ar no topo da contração",
+      "Retire apenas as esc├ípulas do ch├úo",
+      "N├úo puxe o pesco├ºo com as m├úos",
+      "Expulse o ar no topo da contra├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8670,8 +8670,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'descida_de_um_pe_so',
-    name: 'Descida de um Pé Só',
-    nameEn: 'Descida de um Pé Só',
+    name: 'Descida de um P├® S├│',
+    nameEn: 'Descida de um P├® S├│',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'squat',
@@ -8686,7 +8686,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8717,8 +8717,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8754,8 +8754,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8775,7 +8775,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_arnold_com_um_braco',
-    name: 'Desenvolvimento arnold com um braço',
+    name: 'Desenvolvimento arnold com um bra├ºo',
     nameEn: 'Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -8790,8 +8790,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: true,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8827,8 +8827,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8864,8 +8864,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8900,8 +8900,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8921,7 +8921,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_de_ombro_alternada_em_pe_com_halteres',
-    name: 'Desenvolvimento de Ombro Alternada em Pé com Halteres',
+    name: 'Desenvolvimento de Ombro Alternada em P├® com Halteres',
     nameEn: 'Standing Dumbbell Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -8936,8 +8936,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -8972,8 +8972,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9008,8 +9008,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9038,8 +9038,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9068,8 +9068,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9104,8 +9104,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9140,8 +9140,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9176,8 +9176,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9198,7 +9198,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_de_ombro_na_maquina_pegada_martelo',
-    name: 'Desenvolvimento de ombro na máquina (pegada martelo)',
+    name: 'Desenvolvimento de ombro na m├íquina (pegada martelo)',
     nameEn: 'Hammer Machine Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9213,8 +9213,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9228,7 +9228,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_de_ombro_na_maquina',
-    name: 'Desenvolvimento de ombro na máquina',
+    name: 'Desenvolvimento de ombro na m├íquina',
     nameEn: 'Machine Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9243,8 +9243,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9273,8 +9273,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9294,7 +9294,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_de_ombro_reversa_na_maquina',
-    name: 'Desenvolvimento de ombro reversa na máquina',
+    name: 'Desenvolvimento de ombro reversa na m├íquina',
     nameEn: 'Machine Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9309,8 +9309,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9324,7 +9324,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_de_ombro_sentado_com_faixa_de_resistencia',
-    name: 'Desenvolvimento de ombro sentado com faixa de resistência',
+    name: 'Desenvolvimento de ombro sentado com faixa de resist├¬ncia',
     nameEn: 'Seated Band Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9339,8 +9339,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9369,8 +9369,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: true,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9399,8 +9399,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: true,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9421,7 +9421,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_de_ombros_atras_da_cabeca_na_maquina_smith',
-    name: 'Desenvolvimento de ombros atrás da cabeça na máquina Smith',
+    name: 'Desenvolvimento de ombros atr├ís da cabe├ºa na m├íquina Smith',
     nameEn: 'Smith Machine Machine Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9436,8 +9436,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9451,7 +9451,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_de_ombros_atras_do_pescoco_sentado',
-    name: 'Desenvolvimento de ombros atrás do pescoço sentado',
+    name: 'Desenvolvimento de ombros atr├ís do pesco├ºo sentado',
     nameEn: 'Seated Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9466,8 +9466,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9503,8 +9503,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9524,7 +9524,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_de_ombros_com_halteres_em_pe_com_pegada_neutra',
-    name: 'Desenvolvimento de ombros com halteres em pé com pegada neutra',
+    name: 'Desenvolvimento de ombros com halteres em p├® com pegada neutra',
     nameEn: 'Standing Dumbbell Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9539,8 +9539,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9560,7 +9560,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_de_ombros_com_rotacao_alternada_com_halteres',
-    name: 'Desenvolvimento de Ombros com Rotação Alternada com Halteres',
+    name: 'Desenvolvimento de Ombros com Rota├º├úo Alternada com Halteres',
     nameEn: 'Dumbbell Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9575,8 +9575,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9596,7 +9596,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_de_ombros_na_maquina_smith',
-    name: 'Desenvolvimento de ombros na máquina Smith',
+    name: 'Desenvolvimento de ombros na m├íquina Smith',
     nameEn: 'Smith Machine Machine Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9611,8 +9611,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9626,7 +9626,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_de_ombros_na_maquina',
-    name: 'Desenvolvimento de ombros na máquina',
+    name: 'Desenvolvimento de ombros na m├íquina',
     nameEn: 'Machine Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9641,8 +9641,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9671,8 +9671,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9693,7 +9693,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_militar_atras_da_cabeca_com_gymstick',
-    name: 'Desenvolvimento militar atrás da cabeça com gymstick',
+    name: 'Desenvolvimento militar atr├ís da cabe├ºa com gymstick',
     nameEn: 'Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9708,8 +9708,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9730,7 +9730,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_militar_com_barra_no_chao_ajoelhado',
-    name: 'Desenvolvimento militar com barra no chão ajoelhado',
+    name: 'Desenvolvimento militar com barra no ch├úo ajoelhado',
     nameEn: 'Kneeling Barbell Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9745,8 +9745,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9781,8 +9781,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9817,8 +9817,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9854,8 +9854,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9876,7 +9876,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_militar_em_pe_na_maquina_smith',
-    name: 'Desenvolvimento militar em pé na máquina Smith',
+    name: 'Desenvolvimento militar em p├® na m├íquina Smith',
     nameEn: 'Standing Smith Machine Machine Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9891,8 +9891,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9906,7 +9906,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'desenvolvimento_militar_inclinado_com_barra_presa_no_chao',
-    name: 'Desenvolvimento militar inclinado com barra presa no chão',
+    name: 'Desenvolvimento militar inclinado com barra presa no ch├úo',
     nameEn: 'Incline Barbell Shoulder Press',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: ["triceps"],
@@ -9921,8 +9921,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9957,8 +9957,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: true,
     cues: [
       "Core ativado para proteger a lombar",
-      "Não trave os cotovelos no topo",
-      "Desça até a altura das orelhas",
+      "N├úo trave os cotovelos no topo",
+      "Des├ºa at├® a altura das orelhas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -9978,8 +9978,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'deslize_de_parede_do_serratil_com_rolo_de_espuma',
-    name: 'Deslize de parede do serrátil com rolo de espuma',
-    nameEn: 'Deslize de parede do serrátil com rolo de espuma',
+    name: 'Deslize de parede do serr├ítil com rolo de espuma',
+    nameEn: 'Deslize de parede do serr├ítil com rolo de espuma',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -9994,7 +9994,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10012,8 +10012,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'dips_de_escapula',
-    name: 'Dips de escápula',
-    nameEn: 'Dips de escápula',
+    name: 'Dips de esc├ípula',
+    nameEn: 'Dips de esc├ípula',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10028,7 +10028,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10062,7 +10062,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10081,7 +10081,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'dorsiflexao_plantar',
-    name: 'Dorsiflexão plantar',
+    name: 'Dorsiflex├úo plantar',
     nameEn: 'Push Up',
     primaryMuscles: ["calves"],
     secondaryMuscles: ["triceps", "core"],
@@ -10097,7 +10097,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10132,7 +10132,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10169,7 +10169,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10206,7 +10206,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10224,8 +10224,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_com_barra_em_degrau',
-    name: 'Elevação com Barra em Degrau',
-    nameEn: 'Barbell Elevação com Barra em Degrau',
+    name: 'Eleva├º├úo com Barra em Degrau',
+    nameEn: 'Barbell Eleva├º├úo com Barra em Degrau',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'squat',
@@ -10240,7 +10240,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10250,8 +10250,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_com_giro_do_cotovelo_oposto_para_o_joelho',
-    name: 'Elevação com Giro do Cotovelo Oposto para o Joelho',
-    nameEn: 'Elevação com Giro do Cotovelo Oposto para o Joelho',
+    name: 'Eleva├º├úo com Giro do Cotovelo Oposto para o Joelho',
+    nameEn: 'Eleva├º├úo com Giro do Cotovelo Oposto para o Joelho',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10266,7 +10266,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10282,9 +10282,9 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_da_perna_em_pe_com_faixa_elastica_de_resistencia',
-    name: 'Elevação da Perna em Pé com Faixa Elástica de Resistência',
+    name: 'Eleva├º├úo da Perna em P├® com Faixa El├ística de Resist├¬ncia',
     nameEn:
-        'Standing Band Elevação da Perna em Pé com Faixa Elástica de Resistência',
+        'Standing Band Eleva├º├úo da Perna em P├® com Faixa El├ística de Resist├¬ncia',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10299,7 +10299,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10309,8 +10309,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_deltoide_em_y_com_halteres_inclinado',
-    name: 'Elevação de Deltoide em Y com Halteres Inclinado',
-    nameEn: 'Incline Dumbbell Elevação de Deltoide em Y com Halteres Inclinado',
+    name: 'Eleva├º├úo de Deltoide em Y com Halteres Inclinado',
+    nameEn: 'Incline Dumbbell Eleva├º├úo de Deltoide em Y com Halteres Inclinado',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10325,7 +10325,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10336,9 +10336,9 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_deltoide_posterior_com_halteres_inclinado',
-    name: 'Elevação de Deltoide Posterior com Halteres Inclinado',
+    name: 'Eleva├º├úo de Deltoide Posterior com Halteres Inclinado',
     nameEn:
-        'Incline Dumbbell Elevação de Deltoide Posterior com Halteres Inclinado',
+        'Incline Dumbbell Eleva├º├úo de Deltoide Posterior com Halteres Inclinado',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10353,7 +10353,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10364,8 +10364,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_joelho_com_halteres',
-    name: 'Elevação de Joelho com Halteres',
-    nameEn: 'Dumbbell Elevação de Joelho com Halteres',
+    name: 'Eleva├º├úo de Joelho com Halteres',
+    nameEn: 'Dumbbell Eleva├º├úo de Joelho com Halteres',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10380,7 +10380,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10390,8 +10390,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilha_com_barra_em_pe',
-    name: 'Elevação de Panturrilha com Barra em Pé',
-    nameEn: 'Standing Barbell Elevação de Panturrilha com Barra em Pé',
+    name: 'Eleva├º├úo de Panturrilha com Barra em P├®',
+    nameEn: 'Standing Barbell Eleva├º├úo de Panturrilha com Barra em P├®',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10406,7 +10406,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10418,8 +10418,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilha_com_faixa_elastica_de_resistencia',
-    name: 'Elevação de Panturrilha com Faixa Elástica de Resistência',
-    nameEn: 'Band Elevação de Panturrilha com Faixa Elástica de Resistência',
+    name: 'Eleva├º├úo de Panturrilha com Faixa El├ística de Resist├¬ncia',
+    nameEn: 'Band Eleva├º├úo de Panturrilha com Faixa El├ística de Resist├¬ncia',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10434,7 +10434,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10446,9 +10446,9 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilha_com_uma_perna_na_maquina_hack',
-    name: 'Elevação de Panturrilha com Uma Perna na Máquina Hack',
+    name: 'Eleva├º├úo de Panturrilha com Uma Perna na M├íquina Hack',
     nameEn:
-        'Hack Machine Machine Elevação de Panturrilha com Uma Perna na Máquina Hack',
+        'Hack Machine Machine Eleva├º├úo de Panturrilha com Uma Perna na M├íquina Hack',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10463,7 +10463,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10475,8 +10475,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilha_em_maquina_em_pe',
-    name: 'Elevação de Panturrilha em Máquina em pé',
-    nameEn: 'Standing Machine Elevação de Panturrilha em Máquina em pé',
+    name: 'Eleva├º├úo de Panturrilha em M├íquina em p├®',
+    nameEn: 'Standing Machine Eleva├º├úo de Panturrilha em M├íquina em p├®',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10491,7 +10491,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10503,8 +10503,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilha_em_pe',
-    name: 'Elevação de panturrilha em pé',
-    nameEn: 'Standing Elevação de panturrilha em pé',
+    name: 'Eleva├º├úo de panturrilha em p├®',
+    nameEn: 'Standing Eleva├º├úo de panturrilha em p├®',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10519,7 +10519,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10537,8 +10537,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilha_em_uma_perna',
-    name: 'Elevação de Panturrilha em Uma Perna',
-    nameEn: 'Elevação de Panturrilha em Uma Perna',
+    name: 'Eleva├º├úo de Panturrilha em Uma Perna',
+    nameEn: 'Eleva├º├úo de Panturrilha em Uma Perna',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10553,7 +10553,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10571,8 +10571,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilha_na_maquina',
-    name: 'Elevação de Panturrilha na Máquina',
-    nameEn: 'Machine Elevação de Panturrilha na Máquina',
+    name: 'Eleva├º├úo de Panturrilha na M├íquina',
+    nameEn: 'Machine Eleva├º├úo de Panturrilha na M├íquina',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10587,7 +10587,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10599,7 +10599,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilha_no_leg_press_horizontal',
-    name: 'Elevação de Panturrilha no Leg Press horizontal',
+    name: 'Eleva├º├úo de Panturrilha no Leg Press horizontal',
     nameEn: 'Leg Press',
     primaryMuscles: ["calves"],
     secondaryMuscles: ["glutes", "calves"],
@@ -10613,9 +10613,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Pés firmes na plataforma",
-      "Não trave os joelhos no final",
-      "Desça até onde as costas fiquem apoiadas",
+      "P├®s firmes na plataforma",
+      "N├úo trave os joelhos no final",
+      "Des├ºa at├® onde as costas fiquem apoiadas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10634,7 +10634,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilha_no_leg_press',
-    name: 'Elevação de Panturrilha no Leg Press',
+    name: 'Eleva├º├úo de Panturrilha no Leg Press',
     nameEn: 'Leg Press',
     primaryMuscles: ["calves"],
     secondaryMuscles: ["glutes", "calves"],
@@ -10648,9 +10648,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Pés firmes na plataforma",
-      "Não trave os joelhos no final",
-      "Desça até onde as costas fiquem apoiadas",
+      "P├®s firmes na plataforma",
+      "N├úo trave os joelhos no final",
+      "Des├ºa at├® onde as costas fiquem apoiadas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10669,8 +10669,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilha_no_smith',
-    name: 'Elevação de Panturrilha no Smith',
-    nameEn: 'Smith Machine Elevação de Panturrilha no Smith',
+    name: 'Eleva├º├úo de Panturrilha no Smith',
+    nameEn: 'Smith Machine Eleva├º├úo de Panturrilha no Smith',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10685,7 +10685,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10697,8 +10697,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilha_sentado_com_alavanca',
-    name: 'Elevação de Panturrilha Sentado com Alavanca',
-    nameEn: 'Seated Machine Elevação de Panturrilha Sentado com Alavanca',
+    name: 'Eleva├º├úo de Panturrilha Sentado com Alavanca',
+    nameEn: 'Seated Machine Eleva├º├úo de Panturrilha Sentado com Alavanca',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10713,7 +10713,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10725,8 +10725,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilha_sentado_com_barra',
-    name: 'Elevação de Panturrilha Sentado com Barra',
-    nameEn: 'Seated Barbell Elevação de Panturrilha Sentado com Barra',
+    name: 'Eleva├º├úo de Panturrilha Sentado com Barra',
+    nameEn: 'Seated Barbell Eleva├º├úo de Panturrilha Sentado com Barra',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10741,7 +10741,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10753,8 +10753,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilha_sentado_com_peso',
-    name: 'Elevação de Panturrilha Sentado com Peso',
-    nameEn: 'Seated Elevação de Panturrilha Sentado com Peso',
+    name: 'Eleva├º├úo de Panturrilha Sentado com Peso',
+    nameEn: 'Seated Eleva├º├úo de Panturrilha Sentado com Peso',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10769,7 +10769,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10787,8 +10787,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilhas_no_hack',
-    name: 'Elevação de Panturrilhas no Hack',
-    nameEn: 'Hack Machine Elevação de Panturrilhas no Hack',
+    name: 'Eleva├º├úo de Panturrilhas no Hack',
+    nameEn: 'Hack Machine Eleva├º├úo de Panturrilhas no Hack',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10803,7 +10803,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10815,8 +10815,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_panturrilhas',
-    name: 'Elevação de Panturrilhas',
-    nameEn: 'Elevação de Panturrilhas',
+    name: 'Eleva├º├úo de Panturrilhas',
+    nameEn: 'Eleva├º├úo de Panturrilhas',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10831,7 +10831,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10849,8 +10849,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_perna_em_pe_com_alavanca',
-    name: 'Elevação de Perna em Pé com Alavanca',
-    nameEn: 'Standing Machine Elevação de Perna em Pé com Alavanca',
+    name: 'Eleva├º├úo de Perna em P├® com Alavanca',
+    nameEn: 'Standing Machine Eleva├º├úo de Perna em P├® com Alavanca',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10865,7 +10865,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10876,9 +10876,9 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_perna_reta_em_pe_com_faixa_de_resistencia',
-    name: 'Elevação de Perna Reta em Pé com Faixa de Resistência',
+    name: 'Eleva├º├úo de Perna Reta em P├® com Faixa de Resist├¬ncia',
     nameEn:
-        'Standing Band Elevação de Perna Reta em Pé com Faixa de Resistência',
+        'Standing Band Eleva├º├úo de Perna Reta em P├® com Faixa de Resist├¬ncia',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10893,7 +10893,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10904,7 +10904,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_perna_unica_com_equilibrio_e_rosca_de_biceps',
-    name: 'Elevação de Perna Única com Equilíbrio e Rosca de Bíceps',
+    name: 'Eleva├º├úo de Perna ├Ünica com Equil├¡brio e Rosca de B├¡ceps',
     nameEn: 'Curl',
     primaryMuscles: ["abs"],
     secondaryMuscles: ["forearms"],
@@ -10918,7 +10918,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -10937,8 +10937,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_pernas_deitado_de_lado',
-    name: 'Elevação de Pernas deitado de Lado',
-    nameEn: 'Lying Elevação de Pernas deitado de Lado',
+    name: 'Eleva├º├úo de Pernas deitado de Lado',
+    nameEn: 'Lying Eleva├º├úo de Pernas deitado de Lado',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10953,7 +10953,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -10970,8 +10970,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_pernas_estilo_sapo',
-    name: 'Elevação de Pernas estilo Sapo',
-    nameEn: 'Elevação de Pernas estilo Sapo',
+    name: 'Eleva├º├úo de Pernas estilo Sapo',
+    nameEn: 'Eleva├º├úo de Pernas estilo Sapo',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -10986,7 +10986,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11003,8 +11003,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_quadril_com_banda_de_resistencia_de_joelhos',
-    name: 'Elevação de Quadril com Banda de Resistência de Joelhos',
-    nameEn: 'Elevação de Quadril com Banda de Resistência de Joelhos',
+    name: 'Eleva├º├úo de Quadril com Banda de Resist├¬ncia de Joelhos',
+    nameEn: 'Eleva├º├úo de Quadril com Banda de Resist├¬ncia de Joelhos',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -11019,7 +11019,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11031,8 +11031,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_quadril_com_peso_corporal',
-    name: 'Elevação de Quadril com Peso Corporal',
-    nameEn: 'Elevação de Quadril com Peso Corporal',
+    name: 'Eleva├º├úo de Quadril com Peso Corporal',
+    nameEn: 'Eleva├º├úo de Quadril com Peso Corporal',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -11047,7 +11047,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11065,8 +11065,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_de_t_com_halteres_inclinada',
-    name: 'Elevação de T com Halteres Inclinada',
-    nameEn: 'Dumbbell Elevação de T com Halteres Inclinada',
+    name: 'Eleva├º├úo de T com Halteres Inclinada',
+    nameEn: 'Dumbbell Eleva├º├úo de T com Halteres Inclinada',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -11081,7 +11081,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11092,7 +11092,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_frontal_alternada_com_halteres',
-    name: 'Elevação Frontal Alternada Com Halteres',
+    name: 'Eleva├º├úo Frontal Alternada Com Halteres',
     nameEn: 'Dumbbell Front Raise',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -11106,9 +11106,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Corpo estável, evite o uso de impulso",
-      "Braços quase esticados",
-      "Suba até a altura dos olhos",
+      "Corpo est├ível, evite o uso de impulso",
+      "Bra├ºos quase esticados",
+      "Suba at├® a altura dos olhos",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11120,7 +11120,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_frontal_com_barra_girando',
-    name: 'Elevação frontal com barra girando',
+    name: 'Eleva├º├úo frontal com barra girando',
     nameEn: 'Barbell Front Raise',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -11134,9 +11134,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Corpo estável, evite o uso de impulso",
-      "Braços quase esticados",
-      "Suba até a altura dos olhos",
+      "Corpo est├ível, evite o uso de impulso",
+      "Bra├ºos quase esticados",
+      "Suba at├® a altura dos olhos",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11148,7 +11148,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_frontal_com_barra_w_inclinada',
-    name: 'Elevação frontal com barra w inclinada',
+    name: 'Eleva├º├úo frontal com barra w inclinada',
     nameEn: 'Barbell Front Raise',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -11162,9 +11162,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Corpo estável, evite o uso de impulso",
-      "Braços quase esticados",
-      "Suba até a altura dos olhos",
+      "Corpo est├ível, evite o uso de impulso",
+      "Bra├ºos quase esticados",
+      "Suba at├® a altura dos olhos",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11176,7 +11176,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_frontal_com_cabo_duplo_no_cross',
-    name: 'elevação frontal com cabo duplo no cross',
+    name: 'eleva├º├úo frontal com cabo duplo no cross',
     nameEn: 'Cable Front Raise',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -11190,9 +11190,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Corpo estável, evite o uso de impulso",
-      "Braços quase esticados",
-      "Suba até a altura dos olhos",
+      "Corpo est├ível, evite o uso de impulso",
+      "Bra├ºos quase esticados",
+      "Suba at├® a altura dos olhos",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11204,7 +11204,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_frontal_com_dois_bracos_com_halteres',
-    name: 'Elevação frontal com dois braços com halteres',
+    name: 'Eleva├º├úo frontal com dois bra├ºos com halteres',
     nameEn: 'Dumbbell Front Raise',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -11218,9 +11218,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Corpo estável, evite o uso de impulso",
-      "Braços quase esticados",
-      "Suba até a altura dos olhos",
+      "Corpo est├ível, evite o uso de impulso",
+      "Bra├ºos quase esticados",
+      "Suba at├® a altura dos olhos",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11232,7 +11232,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_frontal_com_halteres_sentado',
-    name: 'Elevação frontal com halteres sentado',
+    name: 'Eleva├º├úo frontal com halteres sentado',
     nameEn: 'Seated Dumbbell Front Raise',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -11246,9 +11246,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Corpo estável, evite o uso de impulso",
-      "Braços quase esticados",
-      "Suba até a altura dos olhos",
+      "Corpo est├ível, evite o uso de impulso",
+      "Bra├ºos quase esticados",
+      "Suba at├® a altura dos olhos",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11260,7 +11260,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_frontal_com_halteres',
-    name: 'Elevação frontal com halteres',
+    name: 'Eleva├º├úo frontal com halteres',
     nameEn: 'Dumbbell Front Raise',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -11274,9 +11274,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Corpo estável, evite o uso de impulso",
-      "Braços quase esticados",
-      "Suba até a altura dos olhos",
+      "Corpo est├ível, evite o uso de impulso",
+      "Bra├ºos quase esticados",
+      "Suba at├® a altura dos olhos",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11288,7 +11288,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_frontal_lateral_com_elastico',
-    name: 'Elevação frontal lateral com elástico',
+    name: 'Eleva├º├úo frontal lateral com el├ístico',
     nameEn: 'Front Raise',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -11302,9 +11302,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Corpo estável, evite o uso de impulso",
-      "Braços quase esticados",
-      "Suba até a altura dos olhos",
+      "Corpo est├ível, evite o uso de impulso",
+      "Bra├ºos quase esticados",
+      "Suba at├® a altura dos olhos",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11322,7 +11322,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_alternada_com_halteres',
-    name: 'Elevação lateral alternada com halteres',
+    name: 'Eleva├º├úo lateral alternada com halteres',
     nameEn: 'Dumbbell Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11336,9 +11336,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11350,7 +11350,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_com_barra_no_chao',
-    name: 'Elevação lateral com barra no chão',
+    name: 'Eleva├º├úo lateral com barra no ch├úo',
     nameEn: 'Barbell Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11364,9 +11364,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11378,7 +11378,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_com_braco_flexionado',
-    name: 'Elevação lateral com braço flexionado',
+    name: 'Eleva├º├úo lateral com bra├ºo flexionado',
     nameEn: 'Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11392,9 +11392,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11412,7 +11412,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_com_halteres_com_apoio_no_peito',
-    name: 'Elevação lateral com halteres com apoio no peito',
+    name: 'Eleva├º├úo lateral com halteres com apoio no peito',
     nameEn: 'Dumbbell Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11426,9 +11426,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11440,7 +11440,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_com_halteres_para_deltoides_posteriores_deitado',
-    name: 'Elevação lateral com halteres para deltoides posteriores deitado',
+    name: 'Eleva├º├úo lateral com halteres para deltoides posteriores deitado',
     nameEn: 'Lying Dumbbell Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11454,9 +11454,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11468,7 +11468,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_com_halteres_sentado',
-    name: 'Elevação lateral com halteres sentado',
+    name: 'Eleva├º├úo lateral com halteres sentado',
     nameEn: 'Seated Dumbbell Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11482,9 +11482,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11496,7 +11496,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_com_toalha_na_parede',
-    name: 'Elevação lateral com toalha na parede',
+    name: 'Eleva├º├úo lateral com toalha na parede',
     nameEn: 'Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11510,9 +11510,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11530,7 +11530,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_com_tronco_inclinado',
-    name: 'Elevação lateral com tronco inclinado',
+    name: 'Eleva├º├úo lateral com tronco inclinado',
     nameEn: 'Incline Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11544,9 +11544,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11564,7 +11564,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_cruzada_no_crossover',
-    name: 'Elevação lateral cruzada no crossover',
+    name: 'Eleva├º├úo lateral cruzada no crossover',
     nameEn: 'Lateral Raise',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -11578,9 +11578,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11599,7 +11599,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_de_bracos_com_cabo',
-    name: 'Elevação lateral de braços com cabo',
+    name: 'Eleva├º├úo lateral de bra├ºos com cabo',
     nameEn: 'Cable Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11613,9 +11613,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11627,7 +11627,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_de_bracos_com_halteres',
-    name: 'Elevação lateral de braços com halteres',
+    name: 'Eleva├º├úo lateral de bra├ºos com halteres',
     nameEn: 'Dumbbell Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11641,9 +11641,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11655,7 +11655,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_de_bracos',
-    name: 'Elevação lateral de braços',
+    name: 'Eleva├º├úo lateral de bra├ºos',
     nameEn: 'Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11669,9 +11669,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11689,7 +11689,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_de_deltoide_posterior_com_halteres',
-    name: 'Elevação lateral de deltóide posterior com halteres',
+    name: 'Eleva├º├úo lateral de delt├│ide posterior com halteres',
     nameEn: 'Dumbbell Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11703,9 +11703,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11717,7 +11717,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_de_halteres_inclinada',
-    name: 'Elevação lateral de halteres inclinada',
+    name: 'Eleva├º├úo lateral de halteres inclinada',
     nameEn: 'Dumbbell Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11731,9 +11731,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11745,7 +11745,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_de_perna_com_faixa_elastica_deitado_de_lado',
-    name: 'Elevação Lateral de Perna com Faixa Elástica Deitado de Lado',
+    name: 'Eleva├º├úo Lateral de Perna com Faixa El├ística Deitado de Lado',
     nameEn: 'Lying Band Lateral Raise',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -11759,9 +11759,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11772,7 +11772,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_de_perna_com_faixa_elastica',
-    name: 'Elevação Lateral de Perna com Faixa Elástica',
+    name: 'Eleva├º├úo Lateral de Perna com Faixa El├ística',
     nameEn: 'Band Lateral Raise',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -11786,9 +11786,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11799,7 +11799,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_deitado',
-    name: 'Elevação lateral deitado',
+    name: 'Eleva├º├úo lateral deitado',
     nameEn: 'Lying Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11813,9 +11813,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11833,7 +11833,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_e_frontal_com_halteres',
-    name: 'Elevação lateral e frontal com halteres',
+    name: 'Eleva├º├úo lateral e frontal com halteres',
     nameEn: 'Dumbbell Lateral Raise',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -11847,9 +11847,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11861,7 +11861,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_na_maquina',
-    name: 'Elevação lateral na máquina',
+    name: 'Eleva├º├úo lateral na m├íquina',
     nameEn: 'Machine Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11875,9 +11875,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11889,7 +11889,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_tronco_inclinado',
-    name: 'Elevação lateral tronco inclinado',
+    name: 'Eleva├º├úo lateral tronco inclinado',
     nameEn: 'Incline Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11903,9 +11903,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11923,7 +11923,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_unilateral_com_cabo',
-    name: 'Elevação lateral unilateral com cabo',
+    name: 'Eleva├º├úo lateral unilateral com cabo',
     nameEn: 'Single Arm/Leg Cable Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11937,9 +11937,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11951,7 +11951,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_unilateral_com_haltere_inclinado',
-    name: 'Elevação lateral unilateral com haltere inclinado',
+    name: 'Eleva├º├úo lateral unilateral com haltere inclinado',
     nameEn: 'Single Arm/Leg Incline Dumbbell Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11965,9 +11965,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -11979,7 +11979,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_unilateral_com_halteres',
-    name: 'Elevação lateral unilateral com halteres',
+    name: 'Eleva├º├úo lateral unilateral com halteres',
     nameEn: 'Single Arm/Leg Dumbbell Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -11993,9 +11993,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12007,9 +12007,9 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_posterior_unilateral_com_halteres_em_decubito_prono',
-    name: 'Elevação Posterior unilateral com halteres em Decúbito Prono',
+    name: 'Eleva├º├úo Posterior unilateral com halteres em Dec├║bito Prono',
     nameEn:
-        'Single Arm/Leg Dumbbell Elevação Posterior unilateral com halteres em Decúbito Prono',
+        'Single Arm/Leg Dumbbell Eleva├º├úo Posterior unilateral com halteres em Dec├║bito Prono',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -12024,7 +12024,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12034,8 +12034,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_pelvica_com_banda_de_resistencia',
-    name: 'Elevação Pélvica com Banda de Resistência',
-    nameEn: 'Elevação Pélvica com Banda de Resistência',
+    name: 'Eleva├º├úo P├®lvica com Banda de Resist├¬ncia',
+    nameEn: 'Eleva├º├úo P├®lvica com Banda de Resist├¬ncia',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'hinge',
@@ -12050,7 +12050,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12062,8 +12062,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_pelvica_com_barra_declinado',
-    name: 'Elevação Pélvica Com Barra Declinado',
-    nameEn: 'Decline Barbell Elevação Pélvica Com Barra Declinado',
+    name: 'Eleva├º├úo P├®lvica Com Barra Declinado',
+    nameEn: 'Decline Barbell Eleva├º├úo P├®lvica Com Barra Declinado',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'hinge',
@@ -12078,7 +12078,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12090,8 +12090,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_pelvica_com_barra',
-    name: 'Elevação Pélvica Com Barra',
-    nameEn: 'Barbell Elevação Pélvica Com Barra',
+    name: 'Eleva├º├úo P├®lvica Com Barra',
+    nameEn: 'Barbell Eleva├º├úo P├®lvica Com Barra',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'hinge',
@@ -12106,7 +12106,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12118,8 +12118,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_pelvica_declinado',
-    name: 'Elevação Pélvica Declinado',
-    nameEn: 'Decline Elevação Pélvica Declinado',
+    name: 'Eleva├º├úo P├®lvica Declinado',
+    nameEn: 'Decline Eleva├º├úo P├®lvica Declinado',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'hinge',
@@ -12134,7 +12134,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12152,8 +12152,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_pelvica_na_maquina_de_extensao_de_pernas',
-    name: 'Elevação Pélvica na Máquina de Extensão de Pernas',
-    nameEn: 'Machine Elevação Pélvica na Máquina de Extensão de Pernas',
+    name: 'Eleva├º├úo P├®lvica na M├íquina de Extens├úo de Pernas',
+    nameEn: 'Machine Eleva├º├úo P├®lvica na M├íquina de Extens├úo de Pernas',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'isolation',
@@ -12168,7 +12168,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12180,8 +12180,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_pelvica_na_maquina_smith',
-    name: 'Elevação Pélvica na Máquina Smith',
-    nameEn: 'Smith Machine Machine Elevação Pélvica na Máquina Smith',
+    name: 'Eleva├º├úo P├®lvica na M├íquina Smith',
+    nameEn: 'Smith Machine Machine Eleva├º├úo P├®lvica na M├íquina Smith',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'hinge',
@@ -12196,7 +12196,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12208,8 +12208,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_pelvica_na_maquina',
-    name: 'Elevação Pélvica Na Máquina',
-    nameEn: 'Machine Elevação Pélvica Na Máquina',
+    name: 'Eleva├º├úo P├®lvica Na M├íquina',
+    nameEn: 'Machine Eleva├º├úo P├®lvica Na M├íquina',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'hinge',
@@ -12224,7 +12224,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12236,8 +12236,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_pelvica_unilateral_com_barra',
-    name: 'Elevação Pélvica Unilateral Com Barra',
-    nameEn: 'Single Arm/Leg Barbell Elevação Pélvica Unilateral Com Barra',
+    name: 'Eleva├º├úo P├®lvica Unilateral Com Barra',
+    nameEn: 'Single Arm/Leg Barbell Eleva├º├úo P├®lvica Unilateral Com Barra',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'hinge',
@@ -12252,7 +12252,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12264,7 +12264,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_unilateral_de_panturrilha_no_leg_press',
-    name: 'Elevação Unilateral de Panturrilha no Leg Press',
+    name: 'Eleva├º├úo Unilateral de Panturrilha no Leg Press',
     nameEn: 'Single Arm/Leg Leg Press',
     primaryMuscles: ["calves"],
     secondaryMuscles: ["glutes", "calves"],
@@ -12278,9 +12278,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Pés firmes na plataforma",
-      "Não trave os joelhos no final",
-      "Desça até onde as costas fiquem apoiadas",
+      "P├®s firmes na plataforma",
+      "N├úo trave os joelhos no final",
+      "Des├ºa at├® onde as costas fiquem apoiadas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12299,8 +12299,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacoes_de_ombros_na_paralela',
-    name: 'Elevações de ombros na paralela',
-    nameEn: 'Elevações de ombros na paralela',
+    name: 'Eleva├º├Áes de ombros na paralela',
+    nameEn: 'Eleva├º├Áes de ombros na paralela',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -12315,7 +12315,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12333,8 +12333,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacoes_frontais_com_halteres_apoiadas_no_peito',
-    name: 'Elevações frontais com halteres apoiadas no peito',
-    nameEn: 'Dumbbell Elevações frontais com halteres apoiadas no peito',
+    name: 'Eleva├º├Áes frontais com halteres apoiadas no peito',
+    nameEn: 'Dumbbell Eleva├º├Áes frontais com halteres apoiadas no peito',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -12349,7 +12349,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12359,7 +12359,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'encolhimento_acima_da_cabeca',
-    name: 'Encolhimento Acima da Cabeça',
+    name: 'Encolhimento Acima da Cabe├ºa',
     nameEn: 'Shrug',
     primaryMuscles: ["traps"],
     secondaryMuscles: [],
@@ -12373,9 +12373,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Suba os ombros em direção às orelhas",
-      "Não gire os ombros",
-      "Pausa rápida no topo",
+      "Suba os ombros em dire├º├úo ├ás orelhas",
+      "N├úo gire os ombros",
+      "Pausa r├ípida no topo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12401,9 +12401,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Suba os ombros em direção às orelhas",
-      "Não gire os ombros",
-      "Pausa rápida no topo",
+      "Suba os ombros em dire├º├úo ├ás orelhas",
+      "N├úo gire os ombros",
+      "Pausa r├ípida no topo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12429,9 +12429,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Suba os ombros em direção às orelhas",
-      "Não gire os ombros",
-      "Pausa rápida no topo",
+      "Suba os ombros em dire├º├úo ├ás orelhas",
+      "N├úo gire os ombros",
+      "Pausa r├ípida no topo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12457,9 +12457,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Suba os ombros em direção às orelhas",
-      "Não gire os ombros",
-      "Pausa rápida no topo",
+      "Suba os ombros em dire├º├úo ├ás orelhas",
+      "N├úo gire os ombros",
+      "Pausa r├ípida no topo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12485,9 +12485,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Suba os ombros em direção às orelhas",
-      "Não gire os ombros",
-      "Pausa rápida no topo",
+      "Suba os ombros em dire├º├úo ├ás orelhas",
+      "N├úo gire os ombros",
+      "Pausa r├ípida no topo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12499,7 +12499,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'encolhimento_de_barra_atras_das_costas',
-    name: 'Encolhimento de Barra Atrás das Costas',
+    name: 'Encolhimento de Barra Atr├ís das Costas',
     nameEn: 'Barbell Shrug',
     primaryMuscles: ["traps"],
     secondaryMuscles: [],
@@ -12513,9 +12513,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Suba os ombros em direção às orelhas",
-      "Não gire os ombros",
-      "Pausa rápida no topo",
+      "Suba os ombros em dire├º├úo ├ás orelhas",
+      "N├úo gire os ombros",
+      "Pausa r├ípida no topo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12541,9 +12541,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Suba os ombros em direção às orelhas",
-      "Não gire os ombros",
-      "Pausa rápida no topo",
+      "Suba os ombros em dire├º├úo ├ás orelhas",
+      "N├úo gire os ombros",
+      "Pausa r├ípida no topo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12555,7 +12555,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'encolhimento_de_ombros_na_maquina_smith',
-    name: 'Encolhimento de Ombros na Máquina Smith',
+    name: 'Encolhimento de Ombros na M├íquina Smith',
     nameEn: 'Smith Machine Machine Shrug',
     primaryMuscles: ["traps"],
     secondaryMuscles: [],
@@ -12569,9 +12569,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Suba os ombros em direção às orelhas",
-      "Não gire os ombros",
-      "Pausa rápida no topo",
+      "Suba os ombros em dire├º├úo ├ás orelhas",
+      "N├úo gire os ombros",
+      "Pausa r├ípida no topo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12583,7 +12583,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'encolhimento_de_ombros_por_tras_com_barra',
-    name: 'Encolhimento de ombros por trás com barra',
+    name: 'Encolhimento de ombros por tr├ís com barra',
     nameEn: 'Barbell Shrug',
     primaryMuscles: ["traps"],
     secondaryMuscles: [],
@@ -12597,9 +12597,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Suba os ombros em direção às orelhas",
-      "Não gire os ombros",
-      "Pausa rápida no topo",
+      "Suba os ombros em dire├º├úo ├ás orelhas",
+      "N├úo gire os ombros",
+      "Pausa r├ípida no topo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12625,9 +12625,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Suba os ombros em direção às orelhas",
-      "Não gire os ombros",
-      "Pausa rápida no topo",
+      "Suba os ombros em dire├º├úo ├ás orelhas",
+      "N├úo gire os ombros",
+      "Pausa r├ípida no topo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12639,7 +12639,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'encolhimento_na_maquina',
-    name: 'Encolhimento na máquina',
+    name: 'Encolhimento na m├íquina',
     nameEn: 'Machine Shrug',
     primaryMuscles: ["traps"],
     secondaryMuscles: [],
@@ -12653,9 +12653,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Suba os ombros em direção às orelhas",
-      "Não gire os ombros",
-      "Pausa rápida no topo",
+      "Suba os ombros em dire├º├úo ├ás orelhas",
+      "N├úo gire os ombros",
+      "Pausa r├ípida no topo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12681,9 +12681,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Suba os ombros em direção às orelhas",
-      "Não gire os ombros",
-      "Pausa rápida no topo",
+      "Suba os ombros em dire├º├úo ├ás orelhas",
+      "N├úo gire os ombros",
+      "Pausa r├ípida no topo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12711,7 +12711,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12744,7 +12744,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12763,8 +12763,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'esteira_com_inclinacao',
-    name: 'Esteira com Inclinação',
-    nameEn: 'Esteira com Inclinação',
+    name: 'Esteira com Inclina├º├úo',
+    nameEn: 'Esteira com Inclina├º├úo',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes", "calves", "abs"],
     movementPattern: 'squat',
@@ -12779,7 +12779,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12798,8 +12798,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'esteira_ergometrica',
-    name: 'Esteira Ergométrica',
-    nameEn: 'Esteira Ergométrica',
+    name: 'Esteira Ergom├®trica',
+    nameEn: 'Esteira Ergom├®trica',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes", "calves", "abs"],
     movementPattern: 'squat',
@@ -12814,7 +12814,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12833,8 +12833,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'exercicio_de_bailarina_sentada',
-    name: 'Exercício de bailarina sentada',
-    nameEn: 'Exercício de bailarina sentada',
+    name: 'Exerc├¡cio de bailarina sentada',
+    nameEn: 'Exerc├¡cio de bailarina sentada',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -12849,7 +12849,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12865,8 +12865,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'exercicio_de_retracao_escapular_sentada',
-    name: 'Exercício de retração escapular sentada',
-    nameEn: 'Exercício de retração escapular sentada',
+    name: 'Exerc├¡cio de retra├º├úo escapular sentada',
+    nameEn: 'Exerc├¡cio de retra├º├úo escapular sentada',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -12881,7 +12881,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12899,8 +12899,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'exercicio_pliometrico_x',
-    name: 'Exercício Pliométrico X',
-    nameEn: 'Exercício Pliométrico X',
+    name: 'Exerc├¡cio Pliom├®trico X',
+    nameEn: 'Exerc├¡cio Pliom├®trico X',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["calves", "glutes"],
     movementPattern: 'squat',
@@ -12915,7 +12915,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12934,8 +12934,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'exercicios_das_5_marcas',
-    name: 'Exercícios das 5 Marcas',
-    nameEn: 'Exercícios das 5 Marcas',
+    name: 'Exerc├¡cios das 5 Marcas',
+    nameEn: 'Exerc├¡cios das 5 Marcas',
     primaryMuscles: ["quads"],
     secondaryMuscles: [],
     movementPattern: 'squat',
@@ -12950,7 +12950,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12966,8 +12966,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_concentrada_com_cabo_no_joelho',
-    name: 'Extensão Concentrada com Cabo no Joelho',
-    nameEn: 'Cable Extensão Concentrada com Cabo no Joelho',
+    name: 'Extens├úo Concentrada com Cabo no Joelho',
+    nameEn: 'Cable Extens├úo Concentrada com Cabo no Joelho',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -12982,7 +12982,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -12992,8 +12992,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_gluteo_em_pe',
-    name: 'Extensão De Glúteo Em Pé',
-    nameEn: 'Standing Extensão De Glúteo Em Pé',
+    name: 'Extens├úo De Gl├║teo Em P├®',
+    nameEn: 'Standing Extens├úo De Gl├║teo Em P├®',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -13008,7 +13008,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -13026,8 +13026,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_ombro_com_faixa',
-    name: 'Extensão de ombro com faixa',
-    nameEn: 'Band Extensão de ombro com faixa',
+    name: 'Extens├úo de ombro com faixa',
+    nameEn: 'Band Extens├úo de ombro com faixa',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -13042,7 +13042,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -13052,8 +13052,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_perna_em_pe_com_faixa_de_resistencia',
-    name: 'Extensão de Perna em Pé com Faixa de Resistência',
-    nameEn: 'Standing Band Extensão de Perna em Pé com Faixa de Resistência',
+    name: 'Extens├úo de Perna em P├® com Faixa de Resist├¬ncia',
+    nameEn: 'Standing Band Extens├úo de Perna em P├® com Faixa de Resist├¬ncia',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'isolation',
@@ -13068,7 +13068,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -13080,8 +13080,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_perna_na_maquina_smith_reversa',
-    name: 'Extensão de Perna na Máquina Smith Reversa',
-    nameEn: 'Smith Machine Machine Extensão de Perna na Máquina Smith Reversa',
+    name: 'Extens├úo de Perna na M├íquina Smith Reversa',
+    nameEn: 'Smith Machine Machine Extens├úo de Perna na M├íquina Smith Reversa',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'isolation',
@@ -13096,7 +13096,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -13108,8 +13108,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_perna_reta',
-    name: 'Extensão De Perna Reta',
-    nameEn: 'Extensão De Perna Reta',
+    name: 'Extens├úo De Perna Reta',
+    nameEn: 'Extens├úo De Perna Reta',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'isolation',
@@ -13124,7 +13124,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -13142,8 +13142,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_perna_unilateral',
-    name: 'Extensão de Perna Unilateral',
-    nameEn: 'Single Arm/Leg Extensão de Perna Unilateral',
+    name: 'Extens├úo de Perna Unilateral',
+    nameEn: 'Single Arm/Leg Extens├úo de Perna Unilateral',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'isolation',
@@ -13158,7 +13158,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -13176,8 +13176,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_pernas_com_faixa_elastica_sentado',
-    name: 'Extensão de Pernas com Faixa Elástica Sentado',
-    nameEn: 'Seated Band Extensão de Pernas com Faixa Elástica Sentado',
+    name: 'Extens├úo de Pernas com Faixa El├ística Sentado',
+    nameEn: 'Seated Band Extens├úo de Pernas com Faixa El├ística Sentado',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'isolation',
@@ -13192,7 +13192,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -13204,8 +13204,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_pernas_sentado_com_faixa_de_resistencia',
-    name: 'Extensão de Pernas Sentado com Faixa de Resistência',
-    nameEn: 'Seated Band Extensão de Pernas Sentado com Faixa de Resistência',
+    name: 'Extens├úo de Pernas Sentado com Faixa de Resist├¬ncia',
+    nameEn: 'Seated Band Extens├úo de Pernas Sentado com Faixa de Resist├¬ncia',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'isolation',
@@ -13220,7 +13220,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -13232,8 +13232,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_quadril_com_cabo',
-    name: 'Extensão de Quadril com Cabo',
-    nameEn: 'Cable Extensão de Quadril com Cabo',
+    name: 'Extens├úo de Quadril com Cabo',
+    nameEn: 'Cable Extens├úo de Quadril com Cabo',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -13248,7 +13248,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -13260,8 +13260,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_quadril_em_pe_com_alavanca',
-    name: 'Extensão de Quadril em Pé com Alavanca',
-    nameEn: 'Standing Machine Extensão de Quadril em Pé com Alavanca',
+    name: 'Extens├úo de Quadril em P├® com Alavanca',
+    nameEn: 'Standing Machine Extens├úo de Quadril em P├® com Alavanca',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -13276,7 +13276,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -13288,8 +13288,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_quadril_no_banco',
-    name: 'Extensão de Quadril no Banco',
-    nameEn: 'on Bench Extensão de Quadril no Banco',
+    name: 'Extens├úo de Quadril no Banco',
+    nameEn: 'on Bench Extens├úo de Quadril no Banco',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -13304,7 +13304,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -13322,7 +13322,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_acima_da_cabeca_com_gymstick',
-    name: 'Extensão de Tríceps Acima da Cabeça com Gymstick',
+    name: 'Extens├úo de Tr├¡ceps Acima da Cabe├ºa com Gymstick',
     nameEn: 'Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13336,8 +13336,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13356,7 +13356,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_barra_atras_da_cabeca',
-    name: 'Extensão de tríceps com barra atrás da cabeça',
+    name: 'Extens├úo de tr├¡ceps com barra atr├ís da cabe├ºa',
     nameEn: 'Barbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13370,8 +13370,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13384,7 +13384,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_barra_em_pe',
-    name: 'Extensão de tríceps com barra em pé',
+    name: 'Extens├úo de tr├¡ceps com barra em p├®',
     nameEn: 'Standing Barbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13398,8 +13398,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13412,7 +13412,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_barra_w_inclinada',
-    name: 'Extensão de tríceps com barra W inclinada',
+    name: 'Extens├úo de tr├¡ceps com barra W inclinada',
     nameEn: 'Barbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13426,8 +13426,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13440,7 +13440,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_cabo_ajoelhado',
-    name: 'Extensão de tríceps com cabo ajoelhado',
+    name: 'Extens├úo de tr├¡ceps com cabo ajoelhado',
     nameEn: 'Kneeling Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13454,8 +13454,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13468,7 +13468,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_cabo_em_posicao_ajoelhada',
-    name: 'Extensão de Tríceps com Cabo em Posição Ajoelhada',
+    name: 'Extens├úo de Tr├¡ceps com Cabo em Posi├º├úo Ajoelhada',
     nameEn: 'Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13482,8 +13482,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13496,7 +13496,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_cabo_inclinado',
-    name: 'Extensão de tríceps com cabo inclinado',
+    name: 'Extens├úo de tr├¡ceps com cabo inclinado',
     nameEn: 'Incline Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13510,8 +13510,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13524,7 +13524,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_cabo_na_posicao_horizontal',
-    name: 'Extensão de tríceps com cabo na posição horizontal',
+    name: 'Extens├úo de tr├¡ceps com cabo na posi├º├úo horizontal',
     nameEn: 'Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13538,8 +13538,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13552,7 +13552,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_cabos_cruzados',
-    name: 'Extensão de Tríceps com Cabos Cruzados',
+    name: 'Extens├úo de Tr├¡ceps com Cabos Cruzados',
     nameEn: 'Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13566,8 +13566,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13580,7 +13580,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_deitado_com_barra',
-    name: 'Extensão de Tríceps com deitado com Barra',
+    name: 'Extens├úo de Tr├¡ceps com deitado com Barra',
     nameEn: 'Lying Barbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13594,8 +13594,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13608,7 +13608,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_elastico_na_posicao_horizontal',
-    name: 'Extensão de tríceps com elástico na posição horizontal',
+    name: 'Extens├úo de tr├¡ceps com el├ístico na posi├º├úo horizontal',
     nameEn: 'Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13622,8 +13622,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13642,7 +13642,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_faixa_elastica',
-    name: 'Extensão de Tríceps com Faixa Elástica',
+    name: 'Extens├úo de Tr├¡ceps com Faixa El├ística',
     nameEn: 'Band Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13656,8 +13656,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13670,7 +13670,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_faixas_elasticas',
-    name: 'Extensão de Tríceps com Faixas Elásticas',
+    name: 'Extens├úo de Tr├¡ceps com Faixas El├ísticas',
     nameEn: 'Band Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13684,8 +13684,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13698,7 +13698,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_haltere_em_pronacao_com_um_braco',
-    name: 'Extensão de tríceps com haltere em pronação com um braço',
+    name: 'Extens├úo de tr├¡ceps com haltere em prona├º├úo com um bra├ºo',
     nameEn: 'Dumbbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13712,8 +13712,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13726,7 +13726,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_haltere_unilateral_sentado',
-    name: 'Extensão de tríceps com haltere unilateral sentado',
+    name: 'Extens├úo de tr├¡ceps com haltere unilateral sentado',
     nameEn: 'Seated Single Arm/Leg Dumbbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13740,8 +13740,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13754,7 +13754,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_pegada_invertida',
-    name: 'Extensão de tríceps com pegada invertida',
+    name: 'Extens├úo de tr├¡ceps com pegada invertida',
     nameEn: 'Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13768,8 +13768,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13788,7 +13788,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_um_braco',
-    name: 'Extensão de tríceps com um braço',
+    name: 'Extens├úo de tr├¡ceps com um bra├ºo',
     nameEn: 'Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13802,8 +13802,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13822,7 +13822,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_com_uma_mao_no_pulley_alto_sobre_a_cabeca',
-    name: 'Extensão de Tríceps com Uma Mão no Pulley Alto Sobre a Cabeça',
+    name: 'Extens├úo de Tr├¡ceps com Uma M├úo no Pulley Alto Sobre a Cabe├ºa',
     nameEn: 'Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13836,8 +13836,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13851,7 +13851,7 @@ final List<ExerciseModel> exerciseLibrary = [
   ExerciseModel(
     id: 'extensao_de_triceps_deitado_com_barra_w_pegada_fechada_atras_da_cabeca',
     name:
-        'Extensão de Tríceps deitado com Barra W Pegada Fechada atrás da Cabeça',
+        'Extens├úo de Tr├¡ceps deitado com Barra W Pegada Fechada atr├ís da Cabe├ºa',
     nameEn: 'Lying Barbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13865,8 +13865,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13877,7 +13877,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_deitado_com_corda',
-    name: 'Extensão de Tríceps deitado com Corda',
+    name: 'Extens├úo de Tr├¡ceps deitado com Corda',
     nameEn: 'Lying Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13891,8 +13891,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13911,7 +13911,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_invertida_com_unilateral',
-    name: 'Extensão de Tríceps Invertida com unilateral',
+    name: 'Extens├úo de Tr├¡ceps Invertida com unilateral',
     nameEn: 'Single Arm/Leg Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13925,8 +13925,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13945,7 +13945,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_lateral_com_cabo',
-    name: 'Extensão de tríceps lateral com cabo',
+    name: 'Extens├úo de tr├¡ceps lateral com cabo',
     nameEn: 'Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13959,8 +13959,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -13973,7 +13973,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_na_maquina_pegada_neutra',
-    name: 'Extensão de tríceps na máquina pegada neutra',
+    name: 'Extens├úo de tr├¡ceps na m├íquina pegada neutra',
     nameEn: 'Machine Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -13987,8 +13987,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -14001,7 +14001,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_na_maquina',
-    name: 'Extensão de tríceps na máquina',
+    name: 'Extens├úo de tr├¡ceps na m├íquina',
     nameEn: 'Machine Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -14015,8 +14015,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -14029,7 +14029,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_no_cabo_alto',
-    name: 'Extensão de tríceps no cabo alto',
+    name: 'Extens├úo de tr├¡ceps no cabo alto',
     nameEn: 'Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -14043,8 +14043,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -14057,7 +14057,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_no_cabo_deitado',
-    name: 'Extensão de tríceps no cabo deitado',
+    name: 'Extens├úo de tr├¡ceps no cabo deitado',
     nameEn: 'Lying Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -14071,8 +14071,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -14085,7 +14085,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps_testa_declinado_fechado',
-    name: 'Extensão de Tríceps Testa Declinado Fechado',
+    name: 'Extens├úo de Tr├¡ceps Testa Declinado Fechado',
     nameEn: 'Decline Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -14099,8 +14099,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -14119,7 +14119,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_de_triceps',
-    name: 'Extensão de tríceps',
+    name: 'Extens├úo de tr├¡ceps',
     nameEn: 'Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -14133,8 +14133,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -14153,8 +14153,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_lombar_com_peso',
-    name: 'Extensão Lombar com Peso',
-    nameEn: 'Extensão Lombar com Peso',
+    name: 'Extens├úo Lombar com Peso',
+    nameEn: 'Extens├úo Lombar com Peso',
     primaryMuscles: ["back"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'hinge',
@@ -14169,7 +14169,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14187,8 +14187,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'extensao_lombar_sentada',
-    name: 'Extensão lombar sentada',
-    nameEn: 'Extensão lombar sentada',
+    name: 'Extens├úo lombar sentada',
+    nameEn: 'Extens├úo lombar sentada',
     primaryMuscles: ["back"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'hinge',
@@ -14203,7 +14203,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14235,9 +14235,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Puxe a corda em direção à testa",
-      "Abra os braços fazendo um \"duplo bíceps\"",
-      "Foque na rotação externa do ombro",
+      "Puxe a corda em dire├º├úo ├á testa",
+      "Abra os bra├ºos fazendo um \"duplo b├¡ceps\"",
+      "Foque na rota├º├úo externa do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14255,7 +14255,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_alternada_de_ombro',
-    name: 'Flexão alternada de ombro',
+    name: 'Flex├úo alternada de ombro',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "core"],
@@ -14271,7 +14271,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14288,7 +14288,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_cobra',
-    name: 'Flexão cobra',
+    name: 'Flex├úo cobra',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14304,7 +14304,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14324,7 +14324,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_com_barras_de_apoio',
-    name: 'Flexão com barras de apoio',
+    name: 'Flex├úo com barras de apoio',
     nameEn: 'Barbell Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14340,7 +14340,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14353,7 +14353,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_com_cruzamento_dos_bracos',
-    name: 'Flexão com Cruzamento dos Braços',
+    name: 'Flex├úo com Cruzamento dos Bra├ºos',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14369,7 +14369,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14389,7 +14389,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_com_kettlebell_profunda',
-    name: 'Flexão com kettlebell profunda',
+    name: 'Flex├úo com kettlebell profunda',
     nameEn: 'Kettlebell Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14405,7 +14405,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14424,7 +14424,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_com_parada_de_maos',
-    name: 'Flexão com parada de mãos',
+    name: 'Flex├úo com parada de m├úos',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14440,7 +14440,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14460,7 +14460,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_com_peso',
-    name: 'Flexão com peso',
+    name: 'Flex├úo com peso',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14476,7 +14476,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14496,7 +14496,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_com_rotacao',
-    name: 'Flexão com Rotação',
+    name: 'Flex├úo com Rota├º├úo',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14512,7 +14512,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14532,7 +14532,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_com_toque_no_peito',
-    name: 'Flexão com Toque no Peito',
+    name: 'Flex├úo com Toque no Peito',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14548,7 +14548,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14568,7 +14568,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_com_toque_nos_dedos_dos_pes',
-    name: 'Flexão com Toque nos Dedos dos Pés',
+    name: 'Flex├úo com Toque nos Dedos dos P├®s',
     nameEn: 'Push Up',
     primaryMuscles: ["forearms"],
     secondaryMuscles: ["triceps", "core"],
@@ -14584,7 +14584,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14602,7 +14602,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_com_um_braco',
-    name: 'Flexão com um braço',
+    name: 'Flex├úo com um bra├ºo',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14618,7 +14618,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14638,7 +14638,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_apoio_com_elevacao_de_braco',
-    name: 'Flexão de apoio com elevação de braço',
+    name: 'Flex├úo de apoio com eleva├º├úo de bra├ºo',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14654,7 +14654,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14674,7 +14674,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_braco_com_aducao_da_escapula',
-    name: 'Flexão de braço com adução da escapula',
+    name: 'Flex├úo de bra├ºo com adu├º├úo da escapula',
     nameEn: 'Adduction',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14709,7 +14709,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_braco_com_arqueamento',
-    name: 'Flexão de Braço com Arqueamento',
+    name: 'Flex├úo de Bra├ºo com Arqueamento',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14725,7 +14725,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14745,7 +14745,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_braco_com_as_maos_entre_bancos',
-    name: 'Flexão de braço com as mãos entre bancos',
+    name: 'Flex├úo de bra├ºo com as m├úos entre bancos',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14761,7 +14761,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14781,7 +14781,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_braco_com_bola_de_estabilidade',
-    name: 'Flexão de Braço com Bola de Estabilidade',
+    name: 'Flex├úo de Bra├ºo com Bola de Estabilidade',
     nameEn: 'Ball Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14797,7 +14797,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14817,7 +14817,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_braco_com_bola_medicinal_com_apoio_em_um_braco',
-    name: 'Flexão de Braço com Bola Medicinal com Apoio em Um Braço',
+    name: 'Flex├úo de Bra├ºo com Bola Medicinal com Apoio em Um Bra├ºo',
     nameEn: 'Ball Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14833,7 +14833,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14853,7 +14853,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_braco_com_bola_medicinal_em_um_braco',
-    name: 'Flexão de Braço com Bola Medicinal em Um Braço',
+    name: 'Flex├úo de Bra├ºo com Bola Medicinal em Um Bra├ºo',
     nameEn: 'Ball Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14869,7 +14869,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14889,7 +14889,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_braco_com_palmas',
-    name: 'Flexão de braço com palmas',
+    name: 'Flex├úo de bra├ºo com palmas',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14905,7 +14905,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14925,7 +14925,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_braco_com_uma_perna',
-    name: 'Flexão de Braço com Uma Perna',
+    name: 'Flex├úo de Bra├ºo com Uma Perna',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "core"],
@@ -14941,7 +14941,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14958,7 +14958,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_braco_declinada_com_bola_de_estabilidade',
-    name: 'Flexão de Braço Declinada com Bola de Estabilidade',
+    name: 'Flex├úo de Bra├ºo Declinada com Bola de Estabilidade',
     nameEn: 'Ball Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -14974,7 +14974,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -14994,7 +14994,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_braco_em_posicao_de_parada_de_mao_com_balanco',
-    name: 'Flexão de braço em posição de parada de mão com balanço',
+    name: 'Flex├úo de bra├ºo em posi├º├úo de parada de m├úo com balan├ºo',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15010,7 +15010,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15030,7 +15030,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_braco_na_parede_com_pegada_fechada',
-    name: 'Flexão de Braço na Parede com Pegada Fechada',
+    name: 'Flex├úo de Bra├ºo na Parede com Pegada Fechada',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15046,7 +15046,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15066,7 +15066,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_braco_no_bosu',
-    name: 'Flexão de Braço no Bosu',
+    name: 'Flex├úo de Bra├ºo no Bosu',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15082,7 +15082,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15102,7 +15102,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_bracos_com_apoio_dos_joelhos_fechada',
-    name: 'Flexão de Braços com Apoio dos Joelhos Fechada',
+    name: 'Flex├úo de Bra├ºos com Apoio dos Joelhos Fechada',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15118,7 +15118,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15138,7 +15138,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_bracos_com_toque_no_ombro',
-    name: 'Flexão de Braços com Toque no Ombro',
+    name: 'Flex├úo de Bra├ºos com Toque no Ombro',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "core"],
@@ -15154,7 +15154,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15171,7 +15171,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_cotovelos_na_barra',
-    name: 'Flexão de Cotovelos na Barra',
+    name: 'Flex├úo de Cotovelos na Barra',
     nameEn: 'Barbell Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "core"],
@@ -15187,7 +15187,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15197,7 +15197,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_dedos',
-    name: 'Flexão de Dedos',
+    name: 'Flex├úo de Dedos',
     nameEn: 'Push Up',
     primaryMuscles: ["forearms"],
     secondaryMuscles: ["triceps", "core"],
@@ -15213,7 +15213,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15231,7 +15231,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_diamante_de_joelhos',
-    name: 'Flexão de diamante de joelhos',
+    name: 'Flex├úo de diamante de joelhos',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15247,7 +15247,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15267,7 +15267,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_joelhos',
-    name: 'Flexão de joelhos',
+    name: 'Flex├úo de joelhos',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15283,7 +15283,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15303,7 +15303,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_ombro_com_faixa',
-    name: 'Flexão de ombro com faixa',
+    name: 'Flex├úo de ombro com faixa',
     nameEn: 'Band Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "core"],
@@ -15319,7 +15319,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15329,7 +15329,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_parede',
-    name: 'Flexão de Parede',
+    name: 'Flex├úo de Parede',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15345,7 +15345,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15365,7 +15365,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_peito_com_trx',
-    name: 'Flexão de Peito com TRX',
+    name: 'Flex├úo de Peito com TRX',
     nameEn: 'Suspension Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15381,7 +15381,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15401,7 +15401,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_perna_com_halteres_em_decubito_dorsal',
-    name: 'Flexão de Perna com Halteres em Decúbito Dorsal',
+    name: 'Flex├úo de Perna com Halteres em Dec├║bito Dorsal',
     nameEn: 'Dumbbell Push Up',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["glutes"],
@@ -15417,7 +15417,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15429,7 +15429,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_pernas_com_alavanca',
-    name: 'Flexão de Pernas com Alavanca',
+    name: 'Flex├úo de Pernas com Alavanca',
     nameEn: 'Machine Push Up',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["glutes"],
@@ -15445,7 +15445,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15457,7 +15457,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_pernas_com_faixa_elastica',
-    name: 'Flexão de Pernas com Faixa Elástica',
+    name: 'Flex├úo de Pernas com Faixa El├ística',
     nameEn: 'Band Push Up',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["glutes"],
@@ -15473,7 +15473,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15485,7 +15485,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_pernas_com_halteres_declinado',
-    name: 'Flexão de Pernas com Halteres Declinado',
+    name: 'Flex├úo de Pernas com Halteres Declinado',
     nameEn: 'Decline Dumbbell Push Up',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["glutes"],
@@ -15501,7 +15501,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15513,7 +15513,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_pernas_com_toalha',
-    name: 'Flexão de pernas com toalha',
+    name: 'Flex├úo de pernas com toalha',
     nameEn: 'Push Up',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["glutes"],
@@ -15529,7 +15529,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15548,7 +15548,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_pernas_deitado_com_faixa_elastica',
-    name: 'Flexão de Pernas deitado com Faixa Elástica',
+    name: 'Flex├úo de Pernas deitado com Faixa El├ística',
     nameEn: 'Lying Band Push Up',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["glutes"],
@@ -15564,7 +15564,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15576,7 +15576,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_pernas_na_bola_de_estabilidade',
-    name: 'Flexão de Pernas na Bola de Estabilidade',
+    name: 'Flex├úo de Pernas na Bola de Estabilidade',
     nameEn: 'Ball Push Up',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["glutes"],
@@ -15592,7 +15592,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15611,7 +15611,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_pivo_com_banco',
-    name: 'Flexão de pivô com banco',
+    name: 'Flex├úo de piv├┤ com banco',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15627,7 +15627,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15647,7 +15647,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_pivo_entre_cadeiras',
-    name: 'Flexão de pivô entre cadeiras',
+    name: 'Flex├úo de piv├┤ entre cadeiras',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15663,7 +15663,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15683,7 +15683,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_pulso_neutra_sentado_com_halteres',
-    name: 'Flexão de Pulso Neutra Sentado com Halteres',
+    name: 'Flex├úo de Pulso Neutra Sentado com Halteres',
     nameEn: 'Seated Dumbbell Push Up',
     primaryMuscles: ["forearms"],
     secondaryMuscles: ["triceps", "core"],
@@ -15699,7 +15699,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15710,7 +15710,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_punho_com_cabo_em_um_braco_no_chao',
-    name: 'Flexão de Punho com Cabo em um Braço no Chão',
+    name: 'Flex├úo de Punho com Cabo em um Bra├ºo no Ch├úo',
     nameEn: 'Cable Push Up',
     primaryMuscles: ["forearms"],
     secondaryMuscles: ["triceps", "core"],
@@ -15726,7 +15726,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15737,7 +15737,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_punho_com_halteres',
-    name: 'Flexão de Punho com Halteres',
+    name: 'Flex├úo de Punho com Halteres',
     nameEn: 'Dumbbell Push Up',
     primaryMuscles: ["forearms"],
     secondaryMuscles: ["triceps", "core"],
@@ -15753,7 +15753,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15764,7 +15764,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_punho_fechado',
-    name: 'Flexão de Punho Fechado',
+    name: 'Flex├úo de Punho Fechado',
     nameEn: 'Push Up',
     primaryMuscles: ["forearms"],
     secondaryMuscles: ["triceps", "core"],
@@ -15780,7 +15780,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15798,7 +15798,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_punho_reversa_com_anilha',
-    name: 'Flexão de Punho Reversa com Anilha',
+    name: 'Flex├úo de Punho Reversa com Anilha',
     nameEn: 'Push Up',
     primaryMuscles: ["forearms"],
     secondaryMuscles: ["triceps", "core"],
@@ -15814,7 +15814,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15832,7 +15832,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_punho_reversa_com_barra_sobre_um_banco',
-    name: 'Flexão de Punho Reversa com Barra Sobre um Banco',
+    name: 'Flex├úo de Punho Reversa com Barra Sobre um Banco',
     nameEn: 'Barbell Push Up',
     primaryMuscles: ["forearms"],
     secondaryMuscles: ["triceps", "core"],
@@ -15848,7 +15848,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15859,7 +15859,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_queda',
-    name: 'Flexão de Queda',
+    name: 'Flex├úo de Queda',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15875,7 +15875,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15895,7 +15895,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_um_braco_com_apoio',
-    name: 'Flexão de um braço com apoio',
+    name: 'Flex├úo de um bra├ºo com apoio',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15911,7 +15911,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15931,7 +15931,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_de_um_braco_com_bola_medicinal',
-    name: 'Flexão de um braço com bola medicinal',
+    name: 'Flex├úo de um bra├ºo com bola medicinal',
     nameEn: 'Ball Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15947,7 +15947,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -15967,7 +15967,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_declinada',
-    name: 'Flexão Declinada',
+    name: 'Flex├úo Declinada',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -15983,7 +15983,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16003,7 +16003,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_diamante',
-    name: 'Flexão diamante',
+    name: 'Flex├úo diamante',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -16019,7 +16019,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16039,7 +16039,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_em_pivo',
-    name: 'Flexão em pivô',
+    name: 'Flex├úo em piv├┤',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -16055,7 +16055,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16075,7 +16075,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_fechada_com_bola_medicinal',
-    name: 'Flexão Fechada com bola medicinal',
+    name: 'Flex├úo Fechada com bola medicinal',
     nameEn: 'Ball Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -16091,7 +16091,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16111,7 +16111,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_hindu_modificada',
-    name: 'Flexão hindu modificada',
+    name: 'Flex├úo hindu modificada',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -16127,7 +16127,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16147,7 +16147,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_inclinada',
-    name: 'Flexão inclinada',
+    name: 'Flex├úo inclinada',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -16163,7 +16163,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16183,7 +16183,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_invertida',
-    name: 'Flexão Invertida',
+    name: 'Flex├úo Invertida',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -16199,7 +16199,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16219,7 +16219,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_na_parede',
-    name: 'Flexão na parede',
+    name: 'Flex├úo na parede',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -16235,7 +16235,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16255,7 +16255,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_nordica',
-    name: 'Flexão Nórdica',
+    name: 'Flex├úo N├│rdica',
     nameEn: 'Push Up',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["glutes"],
@@ -16271,7 +16271,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16291,7 +16291,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_plus',
-    name: 'Flexão plus',
+    name: 'Flex├úo plus',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -16307,7 +16307,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16327,7 +16327,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao_reversa_com_cotovelos',
-    name: 'Flexão reversa com cotovelos',
+    name: 'Flex├úo reversa com cotovelos',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "core"],
@@ -16343,7 +16343,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16360,7 +16360,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexao',
-    name: 'Flexão',
+    name: 'Flex├úo',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -16376,7 +16376,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16396,8 +16396,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexoes_de_apoio_de_mao_na_parede',
-    name: 'Flexões de apoio de mão na parede',
-    nameEn: 'Flexões de apoio de mão na parede',
+    name: 'Flex├Áes de apoio de m├úo na parede',
+    nameEn: 'Flex├Áes de apoio de m├úo na parede',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'push_vertical',
@@ -16412,7 +16412,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16428,8 +16428,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'flexoes_hindu',
-    name: 'Flexões hindu',
-    nameEn: 'Flexões hindu',
+    name: 'Flex├Áes hindu',
+    nameEn: 'Flex├Áes hindu',
     primaryMuscles: ["chest"],
     secondaryMuscles: [],
     movementPattern: 'push_horizontal',
@@ -16444,7 +16444,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16474,9 +16474,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Parte superior do braço imóvel paralela ao chão",
+      "Parte superior do bra├ºo im├│vel paralela ao ch├úo",
       "Estenda o cotovelo totalmente",
-      "Movimento sem balanço",
+      "Movimento sem balan├ºo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16488,7 +16488,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'gluteo_coice_com_gymstick',
-    name: 'Glúteo Coice com Gymstick',
+    name: 'Gl├║teo Coice com Gymstick',
     nameEn: 'Kickback',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -16502,9 +16502,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Parte superior do braço imóvel paralela ao chão",
+      "Parte superior do bra├ºo im├│vel paralela ao ch├úo",
       "Estenda o cotovelo totalmente",
-      "Movimento sem balanço",
+      "Movimento sem balan├ºo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16522,7 +16522,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'gluteo_coice_com_pernas_flexionada_com_faixa',
-    name: 'Glúteo Coice com Pernas Flexionada com Faixa',
+    name: 'Gl├║teo Coice com Pernas Flexionada com Faixa',
     nameEn: 'Band Kickback',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -16536,9 +16536,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Parte superior do braço imóvel paralela ao chão",
+      "Parte superior do bra├ºo im├│vel paralela ao ch├úo",
       "Estenda o cotovelo totalmente",
-      "Movimento sem balanço",
+      "Movimento sem balan├ºo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16550,7 +16550,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'gluteo_coice_em_pe_com_faixa_elastica',
-    name: 'Glúteo Coice em Pé com Faixa Elástica',
+    name: 'Gl├║teo Coice em P├® com Faixa El├ística',
     nameEn: 'Standing Band Kickback',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -16564,9 +16564,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Parte superior do braço imóvel paralela ao chão",
+      "Parte superior do bra├ºo im├│vel paralela ao ch├úo",
       "Estenda o cotovelo totalmente",
-      "Movimento sem balanço",
+      "Movimento sem balan├ºo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16578,7 +16578,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'gluteo_coice_na_alavanca',
-    name: 'Glúteo Coice Na Alavanca',
+    name: 'Gl├║teo Coice Na Alavanca',
     nameEn: 'Machine Kickback',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -16592,9 +16592,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Parte superior do braço imóvel paralela ao chão",
+      "Parte superior do bra├ºo im├│vel paralela ao ch├úo",
       "Estenda o cotovelo totalmente",
-      "Movimento sem balanço",
+      "Movimento sem balan├ºo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16606,7 +16606,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'gluteo_coice_na_maquina_de_extensao_de_pernas',
-    name: 'Glúteo Coice Na Máquina De Extensão De Pernas',
+    name: 'Gl├║teo Coice Na M├íquina De Extens├úo De Pernas',
     nameEn: 'Machine Kickback',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -16620,9 +16620,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Parte superior do braço imóvel paralela ao chão",
+      "Parte superior do bra├ºo im├│vel paralela ao ch├úo",
       "Estenda o cotovelo totalmente",
-      "Movimento sem balanço",
+      "Movimento sem balan├ºo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16634,7 +16634,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'gluteo_coice_na_maquina',
-    name: 'Glúteo Coice Na Máquina',
+    name: 'Gl├║teo Coice Na M├íquina',
     nameEn: 'Machine Kickback',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -16648,9 +16648,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Parte superior do braço imóvel paralela ao chão",
+      "Parte superior do bra├ºo im├│vel paralela ao ch├úo",
       "Estenda o cotovelo totalmente",
-      "Movimento sem balanço",
+      "Movimento sem balan├ºo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16662,7 +16662,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'gluteo_coice_no_smith',
-    name: 'Glúteo Coice No Smith',
+    name: 'Gl├║teo Coice No Smith',
     nameEn: 'Smith Machine Kickback',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -16676,9 +16676,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Parte superior do braço imóvel paralela ao chão",
+      "Parte superior do bra├ºo im├│vel paralela ao ch├úo",
       "Estenda o cotovelo totalmente",
-      "Movimento sem balanço",
+      "Movimento sem balan├ºo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16690,7 +16690,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'gluteos_coice_com_faixa_elastica',
-    name: 'Glúteos Coice com Faixa Elástica',
+    name: 'Gl├║teos Coice com Faixa El├ística',
     nameEn: 'Band Kickback',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -16704,9 +16704,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Parte superior do braço imóvel paralela ao chão",
+      "Parte superior do bra├ºo im├│vel paralela ao ch├úo",
       "Estenda o cotovelo totalmente",
-      "Movimento sem balanço",
+      "Movimento sem balan├ºo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16718,8 +16718,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'gluteos_na_polia_baixa',
-    name: 'Glúteos na Polia Baixa',
-    nameEn: 'Cable Glúteos na Polia Baixa',
+    name: 'Gl├║teos na Polia Baixa',
+    nameEn: 'Cable Gl├║teos na Polia Baixa',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -16734,7 +16734,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16762,7 +16762,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16795,7 +16795,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16830,7 +16830,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16851,7 +16851,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'hiperextensao_com_torcao',
-    name: 'Hiperextensão com Torção',
+    name: 'Hiperextens├úo com Tor├º├úo',
     nameEn: 'Twist',
     primaryMuscles: ["back"],
     secondaryMuscles: ["glutes"],
@@ -16866,8 +16866,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Gire o tronco de forma controlada",
-      "Mantenha o quadril estável",
-      "Sinta a contração lateral do abdômen",
+      "Mantenha o quadril est├ível",
+      "Sinta a contra├º├úo lateral do abd├┤men",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16886,8 +16886,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'hiperextensao_de_lombar_no_banco_plano',
-    name: 'Hiperextensão de Lombar no Banco Plano',
-    nameEn: 'on Bench Hiperextensão de Lombar no Banco Plano',
+    name: 'Hiperextens├úo de Lombar no Banco Plano',
+    nameEn: 'on Bench Hiperextens├úo de Lombar no Banco Plano',
     primaryMuscles: ["back"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'hinge',
@@ -16902,7 +16902,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16920,8 +16920,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'hiperextensao_invertida_de_sapo',
-    name: 'Hiperextensão Invertida de Sapo',
-    nameEn: 'Hiperextensão Invertida de Sapo',
+    name: 'Hiperextens├úo Invertida de Sapo',
+    nameEn: 'Hiperextens├úo Invertida de Sapo',
     primaryMuscles: ["back"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'hinge',
@@ -16936,7 +16936,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16954,8 +16954,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'hiperextensao_no_chao',
-    name: 'Hiperextensão no Chão',
-    nameEn: 'Hiperextensão no Chão',
+    name: 'Hiperextens├úo no Ch├úo',
+    nameEn: 'Hiperextens├úo no Ch├úo',
     primaryMuscles: ["back"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'hinge',
@@ -16970,7 +16970,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -16988,8 +16988,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'hiperextensao_reversa_com_faixa_de_resistencia',
-    name: 'Hiperextensão Reversa com Faixa de Resistência',
-    nameEn: 'Band Hiperextensão Reversa com Faixa de Resistência',
+    name: 'Hiperextens├úo Reversa com Faixa de Resist├¬ncia',
+    nameEn: 'Band Hiperextens├úo Reversa com Faixa de Resist├¬ncia',
     primaryMuscles: ["back"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'hinge',
@@ -17004,7 +17004,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17016,8 +17016,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'hiperextensao',
-    name: 'Hiperextensão',
-    nameEn: 'Hiperextensão',
+    name: 'Hiperextens├úo',
+    nameEn: 'Hiperextens├úo',
     primaryMuscles: ["back"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'hinge',
@@ -17032,7 +17032,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17066,7 +17066,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17101,7 +17101,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17112,8 +17112,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'inclinacao_lateral_em_pe',
-    name: 'Inclinação Lateral em Pé',
-    nameEn: 'Standing Inclinação Lateral em Pé',
+    name: 'Inclina├º├úo Lateral em P├®',
+    nameEn: 'Standing Inclina├º├úo Lateral em P├®',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -17128,7 +17128,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17145,8 +17145,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'inclinacao_lateral',
-    name: 'Inclinação Lateral',
-    nameEn: 'Inclinação Lateral',
+    name: 'Inclina├º├úo Lateral',
+    nameEn: 'Inclina├º├úo Lateral',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -17161,7 +17161,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17178,8 +17178,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'inclinacao_pelvica',
-    name: 'Inclinação Pélvica',
-    nameEn: 'Inclinação Pélvica',
+    name: 'Inclina├º├úo P├®lvica',
+    nameEn: 'Inclina├º├úo P├®lvica',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -17194,7 +17194,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17227,7 +17227,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17260,7 +17260,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17293,7 +17293,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17322,7 +17322,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17337,8 +17337,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'lancamento_de_bola_medicinal_deitado',
-    name: 'Lançamento de Bola Medicinal deitado',
-    nameEn: 'Lying Ball Lançamento de Bola Medicinal deitado',
+    name: 'Lan├ºamento de Bola Medicinal deitado',
+    nameEn: 'Lying Ball Lan├ºamento de Bola Medicinal deitado',
     primaryMuscles: ["abs"],
     secondaryMuscles: ["shoulders"],
     movementPattern: 'rotation',
@@ -17353,7 +17353,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17371,8 +17371,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'lancamento_de_bola_medicinal',
-    name: 'Lançamento de bola medicinal',
-    nameEn: 'Ball Lançamento de bola medicinal',
+    name: 'Lan├ºamento de bola medicinal',
+    nameEn: 'Ball Lan├ºamento de bola medicinal',
     primaryMuscles: ["abs"],
     secondaryMuscles: ["shoulders"],
     movementPattern: 'rotation',
@@ -17387,7 +17387,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17419,9 +17419,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Pés firmes na plataforma",
-      "Não trave os joelhos no final",
-      "Desça até onde as costas fiquem apoiadas",
+      "P├®s firmes na plataforma",
+      "N├úo trave os joelhos no final",
+      "Des├ºa at├® onde as costas fiquem apoiadas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17449,9 +17449,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Pés firmes na plataforma",
-      "Não trave os joelhos no final",
-      "Desça até onde as costas fiquem apoiadas",
+      "P├®s firmes na plataforma",
+      "N├úo trave os joelhos no final",
+      "Des├ºa at├® onde as costas fiquem apoiadas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17486,9 +17486,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Pés firmes na plataforma",
-      "Não trave os joelhos no final",
-      "Desça até onde as costas fiquem apoiadas",
+      "P├®s firmes na plataforma",
+      "N├úo trave os joelhos no final",
+      "Des├ºa at├® onde as costas fiquem apoiadas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17521,9 +17521,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Pés firmes na plataforma",
-      "Não trave os joelhos no final",
-      "Desça até onde as costas fiquem apoiadas",
+      "P├®s firmes na plataforma",
+      "N├úo trave os joelhos no final",
+      "Des├ºa at├® onde as costas fiquem apoiadas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17556,9 +17556,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Pés firmes na plataforma",
-      "Não trave os joelhos no final",
-      "Desça até onde as costas fiquem apoiadas",
+      "P├®s firmes na plataforma",
+      "N├úo trave os joelhos no final",
+      "Des├ºa at├® onde as costas fiquem apoiadas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17593,7 +17593,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17609,8 +17609,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'levantamento_de_braco_apoiado_na_parede',
-    name: 'Levantamento de braço apoiado na parede',
-    nameEn: 'Levantamento de braço apoiado na parede',
+    name: 'Levantamento de bra├ºo apoiado na parede',
+    nameEn: 'Levantamento de bra├ºo apoiado na parede',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -17625,7 +17625,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17657,7 +17657,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17683,7 +17683,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17711,7 +17711,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17745,7 +17745,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17779,7 +17779,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17814,7 +17814,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17842,7 +17842,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17876,7 +17876,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17888,8 +17888,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'levantamento_frontal_de_cabo_com_dois_bracos',
-    name: 'Levantamento frontal de cabo com dois braços',
-    nameEn: 'Cable Levantamento frontal de cabo com dois braços',
+    name: 'Levantamento frontal de cabo com dois bra├ºos',
+    nameEn: 'Cable Levantamento frontal de cabo com dois bra├ºos',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -17904,7 +17904,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17932,7 +17932,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17960,7 +17960,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -17988,7 +17988,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18021,7 +18021,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Peito orgulhoso e costas neutras",
       "Puxe a barra contra as pernas",
-      "Foque em empurrar o chão com os pés",
+      "Foque em empurrar o ch├úo com os p├®s",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18051,7 +18051,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Peito orgulhoso e costas neutras",
       "Puxe a barra contra as pernas",
-      "Foque em empurrar o chão com os pés",
+      "Foque em empurrar o ch├úo com os p├®s",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18089,7 +18089,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Peito orgulhoso e costas neutras",
       "Puxe a barra contra as pernas",
-      "Foque em empurrar o chão com os pés",
+      "Foque em empurrar o ch├úo com os p├®s",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18127,7 +18127,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Peito orgulhoso e costas neutras",
       "Puxe a barra contra as pernas",
-      "Foque em empurrar o chão com os pés",
+      "Foque em empurrar o ch├úo com os p├®s",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18165,7 +18165,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Peito orgulhoso e costas neutras",
       "Puxe a barra contra as pernas",
-      "Foque em empurrar o chão com os pés",
+      "Foque em empurrar o ch├úo com os p├®s",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18203,7 +18203,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Peito orgulhoso e costas neutras",
       "Puxe a barra contra as pernas",
-      "Foque em empurrar o chão com os pés",
+      "Foque em empurrar o ch├úo com os p├®s",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18241,7 +18241,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Peito orgulhoso e costas neutras",
       "Puxe a barra contra as pernas",
-      "Foque em empurrar o chão com os pés",
+      "Foque em empurrar o ch├úo com os p├®s",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18264,7 +18264,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'levantamento_terra_sumo_com_halteres',
-    name: 'Levantamento Terra Sumô com Halteres',
+    name: 'Levantamento Terra Sum├┤ com Halteres',
     nameEn: 'Sumo Dumbbell Deadlift',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["back", "glutes"],
@@ -18280,7 +18280,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Peito orgulhoso e costas neutras",
       "Puxe a barra contra as pernas",
-      "Foque em empurrar o chão com os pés",
+      "Foque em empurrar o ch├úo com os p├®s",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18302,7 +18302,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'levantamento_terra_sumo',
-    name: 'Levantamento Terra Sumô',
+    name: 'Levantamento Terra Sum├┤',
     nameEn: 'Sumo Deadlift',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["back", "glutes"],
@@ -18318,7 +18318,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Peito orgulhoso e costas neutras",
       "Puxe a barra contra as pernas",
-      "Foque em empurrar o chão com os pés",
+      "Foque em empurrar o ch├úo com os p├®s",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18357,7 +18357,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Peito orgulhoso e costas neutras",
       "Puxe a barra contra as pernas",
-      "Foque em empurrar o chão com os pés",
+      "Foque em empurrar o ch├úo com os p├®s",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18396,7 +18396,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Peito orgulhoso e costas neutras",
       "Puxe a barra contra as pernas",
-      "Foque em empurrar o chão com os pés",
+      "Foque em empurrar o ch├úo com os p├®s",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18435,7 +18435,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Peito orgulhoso e costas neutras",
       "Puxe a barra contra as pernas",
-      "Foque em empurrar o chão com os pés",
+      "Foque em empurrar o ch├úo com os p├®s",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18474,7 +18474,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18511,7 +18511,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18543,9 +18543,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18573,9 +18573,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Incline o tronco à frente para peito ou reto para tríceps",
+      "Incline o tronco ├á frente para peito ou reto para tr├¡ceps",
       "Controle a descida brusca",
-      "Estenda os braços quase totalmente",
+      "Estenda os bra├ºos quase totalmente",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18609,9 +18609,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Incline o tronco à frente para peito ou reto para tríceps",
+      "Incline o tronco ├á frente para peito ou reto para tr├¡ceps",
       "Controle a descida brusca",
-      "Estenda os braços quase totalmente",
+      "Estenda os bra├ºos quase totalmente",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18631,7 +18631,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'mergulho_de_triceps_com_alavanca',
-    name: 'Mergulho de tríceps com alavanca',
+    name: 'Mergulho de tr├¡ceps com alavanca',
     nameEn: 'Machine Dip',
     primaryMuscles: ["triceps"],
     secondaryMuscles: ["chest", "front_delt"],
@@ -18645,9 +18645,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Incline o tronco à frente para peito ou reto para tríceps",
+      "Incline o tronco ├á frente para peito ou reto para tr├¡ceps",
       "Controle a descida brusca",
-      "Estenda os braços quase totalmente",
+      "Estenda os bra├ºos quase totalmente",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18659,7 +18659,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'mergulho_de_triceps',
-    name: 'Mergulho de tríceps',
+    name: 'Mergulho de tr├¡ceps',
     nameEn: 'Dip',
     primaryMuscles: ["triceps"],
     secondaryMuscles: ["chest", "front_delt"],
@@ -18673,9 +18673,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Incline o tronco à frente para peito ou reto para tríceps",
+      "Incline o tronco ├á frente para peito ou reto para tr├¡ceps",
       "Controle a descida brusca",
-      "Estenda os braços quase totalmente",
+      "Estenda os bra├ºos quase totalmente",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18708,9 +18708,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Incline o tronco à frente para peito ou reto para tríceps",
+      "Incline o tronco ├á frente para peito ou reto para tr├¡ceps",
       "Controle a descida brusca",
-      "Estenda os braços quase totalmente",
+      "Estenda os bra├ºos quase totalmente",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18730,7 +18730,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'mergulhos_assistidos_para_triceps',
-    name: 'Mergulhos Assistidos para Tríceps',
+    name: 'Mergulhos Assistidos para Tr├¡ceps',
     nameEn: 'Dip',
     primaryMuscles: ["triceps"],
     secondaryMuscles: ["chest", "front_delt"],
@@ -18744,9 +18744,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Incline o tronco à frente para peito ou reto para tríceps",
+      "Incline o tronco ├á frente para peito ou reto para tr├¡ceps",
       "Controle a descida brusca",
-      "Estenda os braços quase totalmente",
+      "Estenda os bra├ºos quase totalmente",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18765,7 +18765,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'mergulhos_para_triceps_no_chao',
-    name: 'Mergulhos para tríceps no chão',
+    name: 'Mergulhos para tr├¡ceps no ch├úo',
     nameEn: 'Dip',
     primaryMuscles: ["triceps"],
     secondaryMuscles: ["chest", "front_delt"],
@@ -18779,9 +18779,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Incline o tronco à frente para peito ou reto para tríceps",
+      "Incline o tronco ├á frente para peito ou reto para tr├¡ceps",
       "Controle a descida brusca",
-      "Estenda os braços quase totalmente",
+      "Estenda os bra├ºos quase totalmente",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18884,7 +18884,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18917,7 +18917,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18946,7 +18946,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -18972,7 +18972,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19009,7 +19009,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19029,7 +19029,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'maquina_de_abducao_de_quadril',
-    name: 'Máquina de Abdução de Quadril',
+    name: 'M├íquina de Abdu├º├úo de Quadril',
     nameEn: 'Machine Abduction',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -19057,7 +19057,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'maquina_de_aducao_de_quadril',
-    name: 'Máquina de Adução de Quadril',
+    name: 'M├íquina de Adu├º├úo de Quadril',
     nameEn: 'Machine Adduction',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
@@ -19085,8 +19085,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'maquina_de_caminhada_ondulatorio',
-    name: 'Máquina de Caminhada Ondulatório',
-    nameEn: 'Machine Máquina de Caminhada Ondulatório',
+    name: 'M├íquina de Caminhada Ondulat├│rio',
+    nameEn: 'Machine M├íquina de Caminhada Ondulat├│rio',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes", "calves", "abs"],
     movementPattern: 'squat',
@@ -19101,7 +19101,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19114,7 +19114,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'maquina_de_elevacao_lateral',
-    name: 'Máquina de elevação lateral',
+    name: 'M├íquina de eleva├º├úo lateral',
     nameEn: 'Machine Lateral Raise',
     primaryMuscles: ["side_delt"],
     secondaryMuscles: [],
@@ -19128,9 +19128,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Leve inclinação do tronco à frente",
+      "Leve inclina├º├úo do tronco ├á frente",
       "Lidere o movimento com os cotovelos",
-      "Não suba os halteres acima da linha do ombro",
+      "N├úo suba os halteres acima da linha do ombro",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19142,7 +19142,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'maquina_de_flexao_de_perna_unilateral',
-    name: 'Máquina de Flexão de Perna Unilateral',
+    name: 'M├íquina de Flex├úo de Perna Unilateral',
     nameEn: 'Single Arm/Leg Machine Push Up',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["glutes"],
@@ -19158,7 +19158,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19170,7 +19170,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'maquina_de_flexao_de_triceps',
-    name: 'Máquina de flexão de tríceps',
+    name: 'M├íquina de flex├úo de tr├¡ceps',
     nameEn: 'Machine Triceps Extension',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -19184,8 +19184,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -19199,8 +19199,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'maquina_de_remo',
-    name: 'Máquina de remo',
-    nameEn: 'Machine Máquina de remo',
+    name: 'M├íquina de remo',
+    nameEn: 'Machine M├íquina de remo',
     primaryMuscles: ["back"],
     secondaryMuscles: [],
     movementPattern: 'pull_horizontal',
@@ -19215,7 +19215,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19225,7 +19225,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'maquina_de_rosca_direta',
-    name: 'Máquina de rosca direta',
+    name: 'M├íquina de rosca direta',
     nameEn: 'Straight Machine Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -19239,7 +19239,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -19253,7 +19253,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'maquina_de_voador_de_peito_inclinado',
-    name: 'Máquina de voador de peito inclinado',
+    name: 'M├íquina de voador de peito inclinado',
     nameEn: 'Incline Machine Butterfly',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -19268,7 +19268,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha os cotovelos na linha dos ombros",
-      "Não deixe os pesos baterem no centro",
+      "N├úo deixe os pesos baterem no centro",
       "Postura ereta",
     ],
     substituteIds: [],
@@ -19282,8 +19282,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'maquina_eliptica',
-    name: 'Máquina Elíptica',
-    nameEn: 'Machine Máquina Elíptica',
+    name: 'M├íquina El├¡ptica',
+    nameEn: 'Machine M├íquina El├¡ptica',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes", "calves", "abs"],
     movementPattern: 'squat',
@@ -19298,7 +19298,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19311,8 +19311,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'maquina_simulador_escada',
-    name: 'Máquina Simulador Escada',
-    nameEn: 'Machine Máquina Simulador Escada',
+    name: 'M├íquina Simulador Escada',
+    nameEn: 'Machine M├íquina Simulador Escada',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes", "calves", "abs"],
     movementPattern: 'squat',
@@ -19327,7 +19327,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19354,9 +19354,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Movimento fluido e rápido",
-      "Mantenha o core rígido",
-      "Salte com impulsão",
+      "Movimento fluido e r├ípido",
+      "Mantenha o core r├¡gido",
+      "Salte com impuls├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19376,8 +19376,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'panturrilha_em_pe_no_smith',
-    name: 'Panturrilha em Pé no Smith',
-    nameEn: 'Standing Smith Machine Panturrilha em Pé no Smith',
+    name: 'Panturrilha em P├® no Smith',
+    nameEn: 'Standing Smith Machine Panturrilha em P├® no Smith',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -19392,7 +19392,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19404,8 +19404,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'panturrilhas_em_pe',
-    name: 'Panturrilhas em Pé',
-    nameEn: 'Standing Panturrilhas em Pé',
+    name: 'Panturrilhas em P├®',
+    nameEn: 'Standing Panturrilhas em P├®',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -19420,7 +19420,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19454,7 +19454,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19489,7 +19489,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19524,7 +19524,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19559,7 +19559,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19588,7 +19588,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19607,8 +19607,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'passagem_de_bola_medicinal_de_peito_em_pe',
-    name: 'Passagem de Bola Medicinal de Peito em Pé',
-    nameEn: 'Standing Ball Passagem de Bola Medicinal de Peito em Pé',
+    name: 'Passagem de Bola Medicinal de Peito em P├®',
+    nameEn: 'Standing Ball Passagem de Bola Medicinal de Peito em P├®',
     primaryMuscles: ["abs"],
     secondaryMuscles: ["shoulders"],
     movementPattern: 'rotation',
@@ -19623,7 +19623,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19657,7 +19657,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19673,8 +19673,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'passo_invertido_com_elevacao_do_joelho',
-    name: 'Passo Invertido com Elevação do Joelho',
-    nameEn: 'Passo Invertido com Elevação do Joelho',
+    name: 'Passo Invertido com Eleva├º├úo do Joelho',
+    nameEn: 'Passo Invertido com Eleva├º├úo do Joelho',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'squat',
@@ -19689,7 +19689,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19725,7 +19725,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19745,8 +19745,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'peso_muerto_piernas_rigidas_con_barra',
-    name: 'Peso muerto piernas rígidas con barra',
-    nameEn: 'Barbell Peso muerto piernas rígidas con barra',
+    name: 'Peso muerto piernas r├¡gidas con barra',
+    nameEn: 'Barbell Peso muerto piernas r├¡gidas con barra',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["back", "glutes"],
     movementPattern: 'hinge',
@@ -19761,7 +19761,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19775,7 +19775,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'planche_com_flexao_de_braco',
-    name: 'Planche com Flexão de Braço',
+    name: 'Planche com Flex├úo de Bra├ºo',
     nameEn: 'Push Up',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -19791,7 +19791,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Corpo reto como uma prancha",
       "Cotovelos a 45 graus do tronco",
-      "Peito quase toca o chão",
+      "Peito quase toca o ch├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19827,7 +19827,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19862,7 +19862,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19897,7 +19897,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -19916,7 +19916,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'ponte_com_faixa_elastica',
-    name: 'Ponte com Faixa Elástica',
+    name: 'Ponte com Faixa El├ística',
     nameEn: 'Band Glute Bridge',
     primaryMuscles: ["glutes"],
     secondaryMuscles: ["hamstrings"],
@@ -19930,8 +19930,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Esmague os glúteos no topo",
-      "Não arqueie excessivamente a lombar",
+      "Esmague os gl├║teos no topo",
+      "N├úo arqueie excessivamente a lombar",
       "Peso nos calcanhares",
     ],
     substituteIds: [],
@@ -19958,8 +19958,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Esmague os glúteos no topo",
-      "Não arqueie excessivamente a lombar",
+      "Esmague os gl├║teos no topo",
+      "N├úo arqueie excessivamente a lombar",
       "Peso nos calcanhares",
     ],
     substituteIds: [],
@@ -19972,7 +19972,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'ponte_de_gluteos_com_barra',
-    name: 'Ponte de Glúteos com Barra',
+    name: 'Ponte de Gl├║teos com Barra',
     nameEn: 'Barbell Glute Bridge',
     primaryMuscles: ["glutes"],
     secondaryMuscles: ["hamstrings"],
@@ -19986,8 +19986,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Esmague os glúteos no topo",
-      "Não arqueie excessivamente a lombar",
+      "Esmague os gl├║teos no topo",
+      "N├úo arqueie excessivamente a lombar",
       "Peso nos calcanhares",
     ],
     substituteIds: [],
@@ -20000,7 +20000,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'ponte_de_gluteos',
-    name: 'Ponte de Glúteos',
+    name: 'Ponte de Gl├║teos',
     nameEn: 'Glute Bridge',
     primaryMuscles: ["glutes"],
     secondaryMuscles: ["hamstrings"],
@@ -20014,8 +20014,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Esmague os glúteos no topo",
-      "Não arqueie excessivamente a lombar",
+      "Esmague os gl├║teos no topo",
+      "N├úo arqueie excessivamente a lombar",
       "Peso nos calcanhares",
     ],
     substituteIds: [],
@@ -20049,8 +20049,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Esmague os glúteos no topo",
-      "Não arqueie excessivamente a lombar",
+      "Esmague os gl├║teos no topo",
+      "N├úo arqueie excessivamente a lombar",
       "Peso nos calcanhares",
     ],
     substituteIds: [],
@@ -20084,8 +20084,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Esmague os glúteos no topo",
-      "Não arqueie excessivamente a lombar",
+      "Esmague os gl├║teos no topo",
+      "N├úo arqueie excessivamente a lombar",
       "Peso nos calcanhares",
     ],
     substituteIds: [],
@@ -20119,8 +20119,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Esmague os glúteos no topo",
-      "Não arqueie excessivamente a lombar",
+      "Esmague os gl├║teos no topo",
+      "N├úo arqueie excessivamente a lombar",
       "Peso nos calcanhares",
     ],
     substituteIds: [],
@@ -20154,9 +20154,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Respire profundamente durante a posição",
-      "Mantenha a posição de forma relaxada",
-      "Não force além do limite de dor",
+      "Respire profundamente durante a posi├º├úo",
+      "Mantenha a posi├º├úo de forma relaxada",
+      "N├úo force al├®m do limite de dor",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20189,7 +20189,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20222,7 +20222,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20255,7 +20255,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20288,7 +20288,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20322,7 +20322,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20340,8 +20340,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'postura_do_bebe_feliz',
-    name: 'Postura do Bebê Feliz',
-    nameEn: 'Postura do Bebê Feliz',
+    name: 'Postura do Beb├¬ Feliz',
+    nameEn: 'Postura do Beb├¬ Feliz',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -20356,7 +20356,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20389,7 +20389,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20422,7 +20422,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20443,8 +20443,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'pressao_unilateral_assistida_por_alavanca',
-    name: 'Pressão Unilateral Assistida por Alavanca',
-    nameEn: 'Single Arm/Leg Machine Pressão Unilateral Assistida por Alavanca',
+    name: 'Press├úo Unilateral Assistida por Alavanca',
+    nameEn: 'Single Arm/Leg Machine Press├úo Unilateral Assistida por Alavanca',
     primaryMuscles: ["chest"],
     secondaryMuscles: [],
     movementPattern: 'push_horizontal',
@@ -20459,7 +20459,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20469,8 +20469,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'protracao_e_retracao_da_escapula',
-    name: 'Protração e retração da escápula',
-    nameEn: 'Protração e retração da escápula',
+    name: 'Protra├º├úo e retra├º├úo da esc├ípula',
+    nameEn: 'Protra├º├úo e retra├º├úo da esc├ípula',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -20485,7 +20485,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20519,7 +20519,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20553,7 +20553,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Pegada pronada na barra",
-      "Puxe até o queixo passar a barra",
+      "Puxe at├® o queixo passar a barra",
       "Controle a descida",
     ],
     substituteIds: [],
@@ -20589,7 +20589,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20625,7 +20625,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20661,7 +20661,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20691,7 +20691,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20721,7 +20721,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20751,7 +20751,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20781,7 +20781,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20811,7 +20811,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20841,7 +20841,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20870,7 +20870,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Apoie a parte superior das costas na bola",
-      "Segure o halter com as duas mãos",
+      "Segure o halter com as duas m├úos",
       "Controle o movimento durante toda a amplitude",
     ],
     substituteIds: [],
@@ -20891,8 +20891,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'pullover_de_braco_reto_com_halteres_joelhos_a_90_graus',
-    name: 'Pullover de braço reto com halteres (joelhos a 90 graus)',
-    nameEn: 'Dumbbell Pullover de braço reto com halteres (joelhos a 90 graus)',
+    name: 'Pullover de bra├ºo reto com halteres (joelhos a 90 graus)',
+    nameEn: 'Dumbbell Pullover de bra├ºo reto com halteres (joelhos a 90 graus)',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
     movementPattern: 'pull_vertical',
@@ -20907,7 +20907,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20921,8 +20921,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'pullover_na_maquina_de_alavanca',
-    name: 'Pullover na Máquina de Alavanca',
-    nameEn: 'Machine Pullover na Máquina de Alavanca',
+    name: 'Pullover na M├íquina de Alavanca',
+    nameEn: 'Machine Pullover na M├íquina de Alavanca',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
     movementPattern: 'pull_vertical',
@@ -20937,7 +20937,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -20967,7 +20967,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21001,7 +21001,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21036,7 +21036,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21055,7 +21055,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'puxada_ajoelhada_com_banda_de_resistencia',
-    name: 'Puxada ajoelhada com banda de resistência',
+    name: 'Puxada ajoelhada com banda de resist├¬ncia',
     nameEn: 'Band Pulldown',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -21069,9 +21069,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21099,9 +21099,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21115,7 +21115,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'puxada_alta_com_triangulo',
-    name: 'Puxada Alta com Triângulo',
+    name: 'Puxada Alta com Tri├óngulo',
     nameEn: 'Pulldown',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -21129,9 +21129,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21166,9 +21166,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21203,9 +21203,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21226,7 +21226,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'puxada_alta_na_maquina_nuca',
-    name: 'Puxada alta na Máquina Nuca',
+    name: 'Puxada alta na M├íquina Nuca',
     nameEn: 'Machine Pulldown',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -21240,9 +21240,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21270,9 +21270,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21286,7 +21286,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'puxada_alta_neutra_com_cabos_duplos_no_chao',
-    name: 'Puxada Alta Neutra com Cabos Duplos no Chão',
+    name: 'Puxada Alta Neutra com Cabos Duplos no Ch├úo',
     nameEn: 'Cable Pulldown',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -21300,9 +21300,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21330,9 +21330,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21367,9 +21367,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21390,7 +21390,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'puxada_com_faixa_elastica',
-    name: 'Puxada com Faixa Elástica',
+    name: 'Puxada com Faixa El├ística',
     nameEn: 'Band Pulldown',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -21404,9 +21404,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21434,9 +21434,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21450,7 +21450,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'puxada_com_um_braco_com_cabo',
-    name: 'Puxada com Um Braço com Cabo',
+    name: 'Puxada com Um Bra├ºo com Cabo',
     nameEn: 'Cable Pulldown',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -21464,9 +21464,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21480,7 +21480,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'puxada_com_um_braco_com_peso_adicional',
-    name: 'Puxada com Um Braço com Peso Adicional',
+    name: 'Puxada com Um Bra├ºo com Peso Adicional',
     nameEn: 'Pulldown',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -21494,9 +21494,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21531,9 +21531,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21561,9 +21561,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21577,7 +21577,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'puxada_em_pe_com_torcao_no_cabo',
-    name: 'Puxada em Pé com Torção no Cabo',
+    name: 'Puxada em P├® com Tor├º├úo no Cabo',
     nameEn: 'Standing Cable Pulldown',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -21591,9 +21591,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21621,9 +21621,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Depressão escapular inicial",
+      "Depress├úo escapular inicial",
       "Passe o queixo da barra",
-      "Não balance as pernas",
+      "N├úo balance as pernas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21651,9 +21651,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21674,7 +21674,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'puxada_isometrica',
-    name: 'Puxada isométrica',
+    name: 'Puxada isom├®trica',
     nameEn: 'Pulldown',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -21688,9 +21688,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21725,9 +21725,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21755,9 +21755,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21778,8 +21778,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'puxar_com_faixa_elastica',
-    name: 'Puxar com Faixa Elástica',
-    nameEn: 'Band Puxar com Faixa Elástica',
+    name: 'Puxar com Faixa El├ística',
+    nameEn: 'Band Puxar com Faixa El├ística',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
     movementPattern: 'pull_vertical',
@@ -21794,7 +21794,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21808,8 +21808,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'pendulo_de_ombro',
-    name: 'Pêndulo de ombro',
-    nameEn: 'Pêndulo de ombro',
+    name: 'P├¬ndulo de ombro',
+    nameEn: 'P├¬ndulo de ombro',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -21824,7 +21824,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21842,8 +21842,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'quadrupede_com_elevacao_de_braco_e_perna_contralateral',
-    name: 'Quadrúpede com elevação de braço e perna contralateral',
-    nameEn: 'Quadrúpede com elevação de braço e perna contralateral',
+    name: 'Quadr├║pede com eleva├º├úo de bra├ºo e perna contralateral',
+    nameEn: 'Quadr├║pede com eleva├º├úo de bra├ºo e perna contralateral',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -21858,7 +21858,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21891,7 +21891,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21924,7 +21924,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21941,7 +21941,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'remada_afastada_com_banda_de_resistencia',
-    name: 'Remada afastada com banda de resistência',
+    name: 'Remada afastada com banda de resist├¬ncia',
     nameEn: 'Band Row',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -21955,9 +21955,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -21985,9 +21985,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22015,9 +22015,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22045,9 +22045,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22082,9 +22082,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22098,7 +22098,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'remada_com_banda_de_resistencia_curvada_para_deltoides_posterior',
-    name: 'Remada com banda de resistência curvada para deltoides posterior',
+    name: 'Remada com banda de resist├¬ncia curvada para deltoides posterior',
     nameEn: 'Bent Over Band Row',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -22112,9 +22112,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22128,7 +22128,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'remada_com_barra_curvada_para_tras',
-    name: 'Remada com barra curvada para trás',
+    name: 'Remada com barra curvada para tr├ís',
     nameEn: 'Bent Over Barbell Row',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -22142,9 +22142,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22172,9 +22172,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22188,7 +22188,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'remada_com_cabo_sentada_unilateral_com_torcao',
-    name: 'Remada com Cabo Sentada Unilateral com Torção',
+    name: 'Remada com Cabo Sentada Unilateral com Tor├º├úo',
     nameEn: 'Single Arm/Leg Cable Row',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -22202,9 +22202,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22218,7 +22218,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'remada_com_halteres_em_posicao_prancha',
-    name: 'Remada com Halteres em Posição Prancha',
+    name: 'Remada com Halteres em Posi├º├úo Prancha',
     nameEn: 'Dumbbell Plank',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
@@ -22233,7 +22233,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Corpo em linha reta",
-      "Esmague o abdômen e glúteos",
+      "Esmague o abd├┤men e gl├║teos",
       "Respire curto e controlado",
     ],
     substituteIds: [],
@@ -22259,9 +22259,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22289,9 +22289,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22326,9 +22326,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22350,7 +22350,7 @@ final List<ExerciseModel> exerciseLibrary = [
   ExerciseModel(
     id: 'remada_curvada_com_barra_de_pegada_alternada_ampla_com_aducao_de_escapula',
     name:
-        'Remada curvada com barra de pegada alternada ampla com adução de escapula',
+        'Remada curvada com barra de pegada alternada ampla com adu├º├úo de escapula',
     nameEn: 'Bent Over Barbell Row',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps", "rear_delt", "mid_back"],
@@ -22364,9 +22364,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22390,9 +22390,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22420,9 +22420,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22450,9 +22450,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22480,9 +22480,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22516,9 +22516,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22546,9 +22546,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22583,9 +22583,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22613,9 +22613,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22643,9 +22643,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22673,9 +22673,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22710,9 +22710,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22740,9 +22740,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22770,9 +22770,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22807,9 +22807,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22837,9 +22837,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22867,9 +22867,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22897,9 +22897,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22927,9 +22927,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22957,9 +22957,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -22994,9 +22994,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23031,9 +23031,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23061,9 +23061,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23098,9 +23098,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23135,9 +23135,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23165,9 +23165,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23195,9 +23195,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23232,9 +23232,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23262,9 +23262,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23292,9 +23292,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23308,7 +23308,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'remada_sentada_na_maquina',
-    name: 'Remada Sentada na Máquina',
+    name: 'Remada Sentada na M├íquina',
     nameEn: 'Machine Row',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -23322,9 +23322,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23352,9 +23352,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23382,9 +23382,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23412,9 +23412,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23449,9 +23449,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23479,9 +23479,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23509,9 +23509,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23539,9 +23539,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23569,9 +23569,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Puxe com os cotovelos, não com as mãos",
-      "Mantenha o tronco estável",
-      "Aproxime as escápulas no final do movimento",
+      "Puxe com os cotovelos, n├úo com as m├úos",
+      "Mantenha o tronco est├ível",
+      "Aproxime as esc├ípulas no final do movimento",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23608,7 +23608,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23641,7 +23641,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23658,8 +23658,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rolamento_de_espuma_nos_quadriceps',
-    name: 'Rolamento de espuma nos quadríceps',
-    nameEn: 'Rolamento de espuma nos quadríceps',
+    name: 'Rolamento de espuma nos quadr├¡ceps',
+    nameEn: 'Rolamento de espuma nos quadr├¡ceps',
     primaryMuscles: ["quads"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -23674,7 +23674,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23707,7 +23707,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23740,7 +23740,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23774,7 +23774,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23807,7 +23807,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23840,7 +23840,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23857,8 +23857,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rolo_de_espuma_para_os_gluteos',
-    name: 'Rolo de Espuma para os Glúteos',
-    nameEn: 'Rolo de Espuma para os Glúteos',
+    name: 'Rolo de Espuma para os Gl├║teos',
+    nameEn: 'Rolo de Espuma para os Gl├║teos',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -23873,7 +23873,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -23905,7 +23905,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -23933,7 +23933,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -23961,7 +23961,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -23995,7 +23995,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24009,7 +24009,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_biceps_alta_com_halteres',
-    name: 'Rosca bíceps alta com halteres',
+    name: 'Rosca b├¡ceps alta com halteres',
     nameEn: 'Dumbbell Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24023,7 +24023,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24037,7 +24037,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_biceps_com_cabo_ajoelhado',
-    name: 'Rosca bíceps com cabo ajoelhado',
+    name: 'Rosca b├¡ceps com cabo ajoelhado',
     nameEn: 'Kneeling Cable Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24051,7 +24051,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24065,7 +24065,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_biceps_com_faixa_elastica',
-    name: 'Rosca bíceps com faixa elástica',
+    name: 'Rosca b├¡ceps com faixa el├ística',
     nameEn: 'Band Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24079,7 +24079,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24093,7 +24093,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_biceps_com_halteres',
-    name: 'Rosca bíceps com halteres',
+    name: 'Rosca b├¡ceps com halteres',
     nameEn: 'Dumbbell Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24107,7 +24107,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24121,7 +24121,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_biceps_com_pegada_fechada_na_barra_w',
-    name: 'Rosca bíceps com pegada fechada na barra W',
+    name: 'Rosca b├¡ceps com pegada fechada na barra W',
     nameEn: 'Barbell Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24135,7 +24135,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24149,7 +24149,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_biceps_inclinada_com_cabos',
-    name: 'Rosca bíceps inclinada com cabos',
+    name: 'Rosca b├¡ceps inclinada com cabos',
     nameEn: 'Cable Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24163,7 +24163,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24177,7 +24177,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_biceps_inclinada_com_halteres_sentado',
-    name: 'Rosca bíceps inclinada com halteres sentado',
+    name: 'Rosca b├¡ceps inclinada com halteres sentado',
     nameEn: 'Seated Dumbbell Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24191,7 +24191,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24205,7 +24205,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_biceps_sentado',
-    name: 'Rosca bíceps sentado',
+    name: 'Rosca b├¡ceps sentado',
     nameEn: 'Seated Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24219,7 +24219,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24239,7 +24239,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_biceps_unilateral_com_pegada_invertida_em_cabo',
-    name: 'Rosca bíceps unilateral com pegada invertida em cabo',
+    name: 'Rosca b├¡ceps unilateral com pegada invertida em cabo',
     nameEn: 'Single Arm/Leg Cable Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24253,7 +24253,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24267,7 +24267,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_biceps_unilateral_no_cabo_alto',
-    name: 'Rosca bíceps unilateral no cabo alto',
+    name: 'Rosca b├¡ceps unilateral no cabo alto',
     nameEn: 'Single Arm/Leg Cable Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24281,7 +24281,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24295,7 +24295,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_biceps_unilateral',
-    name: 'Rosca bíceps unilateral',
+    name: 'Rosca b├¡ceps unilateral',
     nameEn: 'Single Arm/Leg Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24309,7 +24309,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24343,7 +24343,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24357,7 +24357,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_com_cabo_de_um_braco',
-    name: 'Rosca com cabo de um braço',
+    name: 'Rosca com cabo de um bra├ºo',
     nameEn: 'Cable Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24371,7 +24371,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24399,7 +24399,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24427,7 +24427,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24455,7 +24455,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24483,7 +24483,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24511,7 +24511,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24545,7 +24545,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24579,7 +24579,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24607,7 +24607,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24627,7 +24627,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_de_biceps_com_alavanca',
-    name: 'Rosca de bíceps com alavanca',
+    name: 'Rosca de b├¡ceps com alavanca',
     nameEn: 'Machine Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24641,7 +24641,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24655,7 +24655,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_de_biceps_com_halteres_no_banco_scott',
-    name: 'Rosca de Bíceps com Halteres no Banco Scott',
+    name: 'Rosca de B├¡ceps com Halteres no Banco Scott',
     nameEn: 'Scott/Preacher on Bench Dumbbell Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24669,7 +24669,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24683,7 +24683,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_de_biceps_com_puxada_de_cabo',
-    name: 'Rosca de Bíceps com Puxada de Cabo',
+    name: 'Rosca de B├¡ceps com Puxada de Cabo',
     nameEn: 'Cable Pulldown',
     primaryMuscles: ["back"],
     secondaryMuscles: ["biceps"],
@@ -24697,9 +24697,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Peito para cima em direção à barra",
-      "Imagine as mãos como ganchos",
-      "Controle o retorno (fase excêntrica)",
+      "Peito para cima em dire├º├úo ├á barra",
+      "Imagine as m├úos como ganchos",
+      "Controle o retorno (fase exc├¬ntrica)",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -24713,7 +24713,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_de_biceps_unilateral_com_faixa_de_resistencia',
-    name: 'Rosca de bíceps unilateral com faixa de resistência',
+    name: 'Rosca de b├¡ceps unilateral com faixa de resist├¬ncia',
     nameEn: 'Single Arm/Leg Band Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -24727,7 +24727,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24755,7 +24755,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24782,7 +24782,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24795,7 +24795,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_de_punho_com_barra_atras_das_costas',
-    name: 'Rosca de Punho com Barra Atrás das Costas',
+    name: 'Rosca de Punho com Barra Atr├ís das Costas',
     nameEn: 'Barbell Curl',
     primaryMuscles: ["forearms"],
     secondaryMuscles: ["forearms"],
@@ -24809,7 +24809,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24836,7 +24836,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24863,7 +24863,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24896,7 +24896,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24923,7 +24923,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24951,7 +24951,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -24979,7 +24979,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25007,7 +25007,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25035,7 +25035,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25063,7 +25063,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25091,7 +25091,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25119,7 +25119,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25147,7 +25147,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25175,7 +25175,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25195,7 +25195,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_martelo_com_faixa_de_resistencia',
-    name: 'Rosca martelo com faixa de resistência',
+    name: 'Rosca martelo com faixa de resist├¬ncia',
     nameEn: 'Hammer Band Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -25209,7 +25209,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25223,7 +25223,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_martelo_com_garrafa_de_agua',
-    name: 'Rosca martelo com garrafa de água',
+    name: 'Rosca martelo com garrafa de ├ígua',
     nameEn: 'Hammer Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -25237,7 +25237,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25271,7 +25271,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25305,7 +25305,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25333,7 +25333,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25367,7 +25367,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25401,7 +25401,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25429,7 +25429,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25463,7 +25463,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25491,7 +25491,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25519,7 +25519,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25547,7 +25547,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25575,7 +25575,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25603,7 +25603,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25617,7 +25617,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rosca_spider_com_unico_haltere',
-    name: 'Rosca spider com único haltere',
+    name: 'Rosca spider com ├║nico haltere',
     nameEn: 'Dumbbell Curl',
     primaryMuscles: ["biceps"],
     secondaryMuscles: ["forearms"],
@@ -25631,7 +25631,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25659,7 +25659,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25693,7 +25693,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25721,7 +25721,7 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos imóveis ao lado do tronco",
+      "Cotovelos im├│veis ao lado do tronco",
       "Amplitude total de movimento",
       "Controle o peso na descida",
     ],
@@ -25741,8 +25741,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_da_coluna_toracica_de_joelhos',
-    name: 'Rotação da coluna torácica de joelhos',
-    nameEn: 'Rotação da coluna torácica de joelhos',
+    name: 'Rota├º├úo da coluna tor├ícica de joelhos',
+    nameEn: 'Rota├º├úo da coluna tor├ícica de joelhos',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'rotation',
@@ -25757,7 +25757,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -25773,8 +25773,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_de_pe_e_tornozelo',
-    name: 'Rotação de Pé e Tornozelo',
-    nameEn: 'Rotação de Pé e Tornozelo',
+    name: 'Rota├º├úo de P├® e Tornozelo',
+    nameEn: 'Rota├º├úo de P├® e Tornozelo',
     primaryMuscles: ["calves"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -25789,7 +25789,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -25805,8 +25805,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_do_corpo_superior_deitado',
-    name: 'Rotação do corpo superior deitado',
-    nameEn: 'Lying Rotação do corpo superior deitado',
+    name: 'Rota├º├úo do corpo superior deitado',
+    nameEn: 'Lying Rota├º├úo do corpo superior deitado',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'rotation',
@@ -25821,7 +25821,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -25837,8 +25837,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_em_pe',
-    name: 'Rotação em Pé',
-    nameEn: 'Standing Rotação em Pé',
+    name: 'Rota├º├úo em P├®',
+    nameEn: 'Standing Rota├º├úo em P├®',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'rotation',
@@ -25853,7 +25853,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -25869,8 +25869,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_espinhal_deitado',
-    name: 'Rotação espinhal deitado',
-    nameEn: 'Lying Rotação espinhal deitado',
+    name: 'Rota├º├úo espinhal deitado',
+    nameEn: 'Lying Rota├º├úo espinhal deitado',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'rotation',
@@ -25885,7 +25885,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -25901,8 +25901,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_externa_com_cabo_a_90_graus',
-    name: 'Rotação externa com cabo a 90 graus',
-    nameEn: 'Cable Rotação externa com cabo a 90 graus',
+    name: 'Rota├º├úo externa com cabo a 90 graus',
+    nameEn: 'Cable Rota├º├úo externa com cabo a 90 graus',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -25917,7 +25917,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -25929,8 +25929,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_externa_com_cabo_em_posicao_de_joelhos',
-    name: 'Rotação externa com cabo em posição de joelhos',
-    nameEn: 'Cable Rotação externa com cabo em posição de joelhos',
+    name: 'Rota├º├úo externa com cabo em posi├º├úo de joelhos',
+    nameEn: 'Cable Rota├º├úo externa com cabo em posi├º├úo de joelhos',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -25945,7 +25945,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -25957,8 +25957,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_externa_de_halteres_apoiada_no_banco',
-    name: 'Rotação externa de halteres apoiada no banco',
-    nameEn: 'on Bench Dumbbell Rotação externa de halteres apoiada no banco',
+    name: 'Rota├º├úo externa de halteres apoiada no banco',
+    nameEn: 'on Bench Dumbbell Rota├º├úo externa de halteres apoiada no banco',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -25973,7 +25973,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -25985,8 +25985,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_externa_de_ombro_com_cabo',
-    name: 'Rotação Externa de Ombro com Cabo',
-    nameEn: 'Cable Rotação Externa de Ombro com Cabo',
+    name: 'Rota├º├úo Externa de Ombro com Cabo',
+    nameEn: 'Cable Rota├º├úo Externa de Ombro com Cabo',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -26001,7 +26001,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26013,8 +26013,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_externa_de_ombro_com_faixa_elastica',
-    name: 'Rotação externa de ombro com faixa elástica',
-    nameEn: 'Band Rotação externa de ombro com faixa elástica',
+    name: 'Rota├º├úo externa de ombro com faixa el├ística',
+    nameEn: 'Band Rota├º├úo externa de ombro com faixa el├ística',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -26029,7 +26029,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26041,8 +26041,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_externa_de_quadril_com_faixa_elastica',
-    name: 'Rotação Externa De Quadril Com Faixa Elástica',
-    nameEn: 'Band Rotação Externa De Quadril Com Faixa Elástica',
+    name: 'Rota├º├úo Externa De Quadril Com Faixa El├ística',
+    nameEn: 'Band Rota├º├úo Externa De Quadril Com Faixa El├ística',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -26057,7 +26057,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26069,8 +26069,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_externa_de_quadril_sentado_com_faixa_elastica',
-    name: 'Rotação Externa de Quadril Sentado com Faixa Elástica',
-    nameEn: 'Seated Band Rotação Externa de Quadril Sentado com Faixa Elástica',
+    name: 'Rota├º├úo Externa de Quadril Sentado com Faixa El├ística',
+    nameEn: 'Seated Band Rota├º├úo Externa de Quadril Sentado com Faixa El├ística',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -26085,7 +26085,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26097,8 +26097,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_externa_do_ombro_deitado_com_haltere',
-    name: 'Rotação externa do ombro deitado com haltere',
-    nameEn: 'Lying Dumbbell Rotação externa do ombro deitado com haltere',
+    name: 'Rota├º├úo externa do ombro deitado com haltere',
+    nameEn: 'Lying Dumbbell Rota├º├úo externa do ombro deitado com haltere',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -26113,7 +26113,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26125,8 +26125,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_externa_do_ombro',
-    name: 'Rotação externa do ombro',
-    nameEn: 'Rotação externa do ombro',
+    name: 'Rota├º├úo externa do ombro',
+    nameEn: 'Rota├º├úo externa do ombro',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -26141,7 +26141,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26159,8 +26159,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_externa_do_pe_com_faixa_elastica',
-    name: 'Rotação Externa do Pé com Faixa Elástica',
-    nameEn: 'Band Rotação Externa do Pé com Faixa Elástica',
+    name: 'Rota├º├úo Externa do P├® com Faixa El├ística',
+    nameEn: 'Band Rota├º├úo Externa do P├® com Faixa El├ística',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -26175,7 +26175,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26187,8 +26187,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_interna_de_cabo_a_90_graus',
-    name: 'Rotação interna de cabo a 90 graus',
-    nameEn: 'Cable Rotação interna de cabo a 90 graus',
+    name: 'Rota├º├úo interna de cabo a 90 graus',
+    nameEn: 'Cable Rota├º├úo interna de cabo a 90 graus',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -26203,7 +26203,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26215,8 +26215,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_interna_de_ombro_com_cabo',
-    name: 'Rotação interna de ombro com cabo',
-    nameEn: 'Cable Rotação interna de ombro com cabo',
+    name: 'Rota├º├úo interna de ombro com cabo',
+    nameEn: 'Cable Rota├º├úo interna de ombro com cabo',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -26231,7 +26231,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26243,8 +26243,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_interna_do_ombro_sentada_com_cabo',
-    name: 'Rotação interna do ombro sentada com cabo',
-    nameEn: 'Cable Rotação interna do ombro sentada com cabo',
+    name: 'Rota├º├úo interna do ombro sentada com cabo',
+    nameEn: 'Cable Rota├º├úo interna do ombro sentada com cabo',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -26259,7 +26259,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26271,8 +26271,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_interna_do_ombro',
-    name: 'Rotação interna do ombro',
-    nameEn: 'Rotação interna do ombro',
+    name: 'Rota├º├úo interna do ombro',
+    nameEn: 'Rota├º├úo interna do ombro',
     primaryMuscles: ["rear_delt"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -26287,7 +26287,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26305,8 +26305,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_interna_do_quadril_sentado_com_faixa_elastica',
-    name: 'Rotação Interna do Quadril Sentado com Faixa Elástica',
-    nameEn: 'Seated Band Rotação Interna do Quadril Sentado com Faixa Elástica',
+    name: 'Rota├º├úo Interna do Quadril Sentado com Faixa El├ística',
+    nameEn: 'Seated Band Rota├º├úo Interna do Quadril Sentado com Faixa El├ística',
     primaryMuscles: ["glutes"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -26321,7 +26321,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26333,8 +26333,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'rotacao_para_tras_de_joelhos',
-    name: 'Rotação para trás de joelhos',
-    nameEn: 'Rotação para trás de joelhos',
+    name: 'Rota├º├úo para tr├ís de joelhos',
+    nameEn: 'Rota├º├úo para tr├ís de joelhos',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'rotation',
@@ -26349,7 +26349,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26380,7 +26380,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -26409,7 +26409,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -26445,8 +26445,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26482,7 +26482,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: true,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -26503,7 +26503,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'salto_em_distancia',
-    name: 'Salto em Distância',
+    name: 'Salto em Dist├óncia',
     nameEn: 'Jump',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["calves", "glutes"],
@@ -26518,7 +26518,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -26554,7 +26554,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: true,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -26590,8 +26590,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha o peito aberto e as costas retas",
-      "Desça até que as coxas fiquem paralelas ao chão",
-      "Empurre o chão com os calcanhares",
+      "Des├ºa at├® que as coxas fiquem paralelas ao ch├úo",
+      "Empurre o ch├úo com os calcanhares",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26627,7 +26627,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -26663,7 +26663,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -26684,7 +26684,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'salto_para_tras',
-    name: 'Salto para Trás',
+    name: 'Salto para Tr├ís',
     nameEn: 'Jump',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["calves", "glutes"],
@@ -26699,7 +26699,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -26735,7 +26735,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -26769,7 +26769,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -26805,7 +26805,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -26826,7 +26826,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'saltos_pliometricos_em_zigue_zague',
-    name: 'Saltos Pliométricos em Zigue-Zague',
+    name: 'Saltos Pliom├®tricos em Zigue-Zague',
     nameEn: 'Jump',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["calves", "glutes"],
@@ -26841,7 +26841,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -26877,7 +26877,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Aterrisse de forma suave",
-      "Use os braços para impulsão",
+      "Use os bra├ºos para impuls├úo",
       "Mantenha o core firme",
     ],
     substituteIds: [],
@@ -26914,7 +26914,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26946,7 +26946,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -26962,7 +26962,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'step_com_elastico',
-    name: 'Step com elástico',
+    name: 'Step com el├ístico',
     nameEn: 'Step Up',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -26976,9 +26976,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Suba no step com força no calcanhar",
-      "Mantenha o equilíbrio",
-      "Desça com controle",
+      "Suba no step com for├ºa no calcanhar",
+      "Mantenha o equil├¡brio",
+      "Des├ºa com controle",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27009,9 +27009,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Empurre o quadril para trás",
-      "Barra próxima às pernas todo o tempo",
-      "Desça até sentir o alongamento máximo",
+      "Empurre o quadril para tr├ís",
+      "Barra pr├│xima ├ás pernas todo o tempo",
+      "Des├ºa at├® sentir o alongamento m├íximo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27031,7 +27031,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'stiff_com_elastico_de_resistencia',
-    name: 'Stiff com Elástico de Resistência',
+    name: 'Stiff com El├ístico de Resist├¬ncia',
     nameEn: 'Stiff Leg Deadlift',
     primaryMuscles: ["hamstrings"],
     secondaryMuscles: ["glutes"],
@@ -27045,9 +27045,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Empurre o quadril para trás",
-      "Barra próxima às pernas todo o tempo",
-      "Desça até sentir o alongamento máximo",
+      "Empurre o quadril para tr├ís",
+      "Barra pr├│xima ├ás pernas todo o tempo",
+      "Des├ºa at├® sentir o alongamento m├íximo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27082,9 +27082,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Empurre o quadril para trás",
-      "Barra próxima às pernas todo o tempo",
-      "Desça até sentir o alongamento máximo",
+      "Empurre o quadril para tr├ís",
+      "Barra pr├│xima ├ás pernas todo o tempo",
+      "Des├ºa at├® sentir o alongamento m├íximo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27119,9 +27119,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Empurre o quadril para trás",
-      "Barra próxima às pernas todo o tempo",
-      "Desça até sentir o alongamento máximo",
+      "Empurre o quadril para tr├ís",
+      "Barra pr├│xima ├ás pernas todo o tempo",
+      "Des├ºa at├® sentir o alongamento m├íximo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27155,9 +27155,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Empurre o quadril para trás",
-      "Barra próxima às pernas todo o tempo",
-      "Desça até sentir o alongamento máximo",
+      "Empurre o quadril para tr├ís",
+      "Barra pr├│xima ├ás pernas todo o tempo",
+      "Des├ºa at├® sentir o alongamento m├íximo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27193,7 +27193,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27209,7 +27209,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'subida_no_step_com_elevacao_de_joelhos',
-    name: 'Subida no Step com Elevação de Joelhos',
+    name: 'Subida no Step com Eleva├º├úo de Joelhos',
     nameEn: 'Step Up',
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
@@ -27223,9 +27223,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Suba no step com força no calcanhar",
-      "Mantenha o equilíbrio",
-      "Desça com controle",
+      "Suba no step com for├ºa no calcanhar",
+      "Mantenha o equil├¡brio",
+      "Des├ºa com controle",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27258,7 +27258,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27290,9 +27290,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27319,9 +27319,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27348,9 +27348,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27377,9 +27377,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27392,7 +27392,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_com_barra_no_chao',
-    name: 'Supino com barra no chão',
+    name: 'Supino com barra no ch├úo',
     nameEn: 'Barbell Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -27406,9 +27406,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27435,9 +27435,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27464,9 +27464,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27493,9 +27493,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27522,9 +27522,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27551,9 +27551,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27566,7 +27566,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_com_kettlebell_de_um_braco',
-    name: 'Supino com kettlebell de um braço',
+    name: 'Supino com kettlebell de um bra├ºo',
     nameEn: 'Kettlebell Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -27580,9 +27580,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27601,7 +27601,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_com_kettlebell_no_chao',
-    name: 'Supino com kettlebell no chão',
+    name: 'Supino com kettlebell no ch├úo',
     nameEn: 'Kettlebell Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -27615,9 +27615,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27650,9 +27650,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27686,9 +27686,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27715,9 +27715,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27751,9 +27751,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27766,7 +27766,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_declinada_na_maquina',
-    name: 'Supino declinada na máquina',
+    name: 'Supino declinada na m├íquina',
     nameEn: 'Machine Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -27780,9 +27780,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27809,9 +27809,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27824,7 +27824,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_declinado_na_maquina_smith',
-    name: 'Supino declinado na máquina Smith',
+    name: 'Supino declinado na m├íquina Smith',
     nameEn: 'Decline Smith Machine Machine Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -27838,9 +27838,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27867,9 +27867,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27903,9 +27903,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27918,7 +27918,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_em_pe_com_faixa_elastica',
-    name: 'Supino em Pé com Faixa Elástica',
+    name: 'Supino em P├® com Faixa El├ística',
     nameEn: 'Standing Band Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -27932,9 +27932,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27961,9 +27961,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -27997,9 +27997,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28026,9 +28026,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28055,9 +28055,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28084,9 +28084,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28113,9 +28113,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28142,9 +28142,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28171,9 +28171,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28207,9 +28207,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28222,7 +28222,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_inclinado_na_maquina_com_pegada_martelo',
-    name: 'Supino Inclinado na Máquina com Pegada Martelo',
+    name: 'Supino Inclinado na M├íquina com Pegada Martelo',
     nameEn: 'Hammer Incline Machine Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -28236,9 +28236,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28251,7 +28251,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_inclinado_na_maquina',
-    name: 'Supino inclinado na máquina',
+    name: 'Supino inclinado na m├íquina',
     nameEn: 'Incline Machine Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -28265,9 +28265,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28294,9 +28294,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28330,9 +28330,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28352,7 +28352,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_na_maquina_para_miolo_do_peitoral',
-    name: 'Supino na Máquina para Miolo do Peitoral',
+    name: 'Supino na M├íquina para Miolo do Peitoral',
     nameEn: 'Machine Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -28366,9 +28366,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28381,7 +28381,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_na_maquina_smith',
-    name: 'Supino na máquina Smith',
+    name: 'Supino na m├íquina Smith',
     nameEn: 'Smith Machine Machine Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -28395,9 +28395,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28410,7 +28410,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_na_maquina',
-    name: 'Supino na máquina',
+    name: 'Supino na m├íquina',
     nameEn: 'Machine Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -28424,9 +28424,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28453,9 +28453,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28475,7 +28475,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_no_smith_com_o_triangulo',
-    name: 'Supino no smith com o triângulo',
+    name: 'Supino no smith com o tri├óngulo',
     nameEn: 'Smith Machine Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -28489,9 +28489,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28518,9 +28518,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28540,7 +28540,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_reto_em_pe_no_cross_over',
-    name: 'Supino reto em pé no cross over',
+    name: 'Supino reto em p├® no cross over',
     nameEn: 'Standing Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -28554,9 +28554,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28576,7 +28576,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'supino_reto_na_maquina',
-    name: 'Supino Reto na Máquina',
+    name: 'Supino Reto na M├íquina',
     nameEn: 'Machine Bench Press',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -28590,9 +28590,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28619,9 +28619,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28655,9 +28655,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28684,9 +28684,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28713,9 +28713,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: true,
     cues: [
-      "Retraia as escápulas no banco",
-      "Pés firmes no chão para estabilidade",
-      "Desça a carga até o nível do mamilo",
+      "Retraia as esc├ípulas no banco",
+      "P├®s firmes no ch├úo para estabilidade",
+      "Des├ºa a carga at├® o n├¡vel do mamilo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28728,8 +28728,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'suspensao_passiva',
-    name: 'Suspensão Passiva',
-    nameEn: 'Suspensão Passiva',
+    name: 'Suspens├úo Passiva',
+    nameEn: 'Suspens├úo Passiva',
     primaryMuscles: ["back"],
     secondaryMuscles: [],
     movementPattern: 'pull_vertical',
@@ -28744,7 +28744,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28776,7 +28776,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28808,7 +28808,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28824,8 +28824,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'swing_de_kettlebell_de_um_braco',
-    name: 'Swing de kettlebell de um braço',
-    nameEn: 'Swing de kettlebell de um braço',
+    name: 'Swing de kettlebell de um bra├ºo',
+    nameEn: 'Swing de kettlebell de um bra├ºo',
     primaryMuscles: ["glutes"],
     secondaryMuscles: ["hamstrings", "abs"],
     movementPattern: 'hinge',
@@ -28840,7 +28840,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28869,7 +28869,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28882,8 +28882,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'tesoura_de_bracos',
-    name: 'Tesoura de Braços',
-    nameEn: 'Tesoura de Braços',
+    name: 'Tesoura de Bra├ºos',
+    nameEn: 'Tesoura de Bra├ºos',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -28898,7 +28898,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28914,8 +28914,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'toque_lateral_dos_dedos_dos_pes_em_pe',
-    name: 'Toque Lateral dos Dedos dos Pés em Pé',
-    nameEn: 'Standing Toque Lateral dos Dedos dos Pés em Pé',
+    name: 'Toque Lateral dos Dedos dos P├®s em P├®',
+    nameEn: 'Standing Toque Lateral dos Dedos dos P├®s em P├®',
     primaryMuscles: ["forearms"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -28930,7 +28930,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28947,8 +28947,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'toque_nos_dedos_dos_pes_em_pe',
-    name: 'Toque nos Dedos dos Pés em Pé',
-    nameEn: 'Standing Toque nos Dedos dos Pés em Pé',
+    name: 'Toque nos Dedos dos P├®s em P├®',
+    nameEn: 'Standing Toque nos Dedos dos P├®s em P├®',
     primaryMuscles: ["forearms"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -28963,7 +28963,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -28980,8 +28980,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'toque_nos_dedos_dos_pes_sentado',
-    name: 'Toque nos Dedos dos Pés Sentado',
-    nameEn: 'Seated Toque nos Dedos dos Pés Sentado',
+    name: 'Toque nos Dedos dos P├®s Sentado',
+    nameEn: 'Seated Toque nos Dedos dos P├®s Sentado',
     primaryMuscles: ["forearms"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -28996,7 +28996,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -29013,8 +29013,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'toques_de_dedos_em_pe',
-    name: 'Toques de Dedos em Pé',
-    nameEn: 'Standing Toques de Dedos em Pé',
+    name: 'Toques de Dedos em P├®',
+    nameEn: 'Standing Toques de Dedos em P├®',
     primaryMuscles: ["forearms"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -29029,7 +29029,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -29046,7 +29046,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'torcao_obliqua_sentada',
-    name: 'Torção Oblíqua Sentada',
+    name: 'Tor├º├úo Obl├¡qua Sentada',
     nameEn: 'Oblique Twist',
     primaryMuscles: ["abs"],
     secondaryMuscles: ["obliques"],
@@ -29061,8 +29061,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Gire o tronco de forma controlada",
-      "Mantenha o quadril estável",
-      "Sinta a contração lateral do abdômen",
+      "Mantenha o quadril est├ível",
+      "Sinta a contra├º├úo lateral do abd├┤men",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -29079,8 +29079,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'torcoes_do_cotovelo_para_o_joelho',
-    name: 'Torções do Cotovelo para o Joelho',
-    nameEn: 'Torções do Cotovelo para o Joelho',
+    name: 'Tor├º├Áes do Cotovelo para o Joelho',
+    nameEn: 'Tor├º├Áes do Cotovelo para o Joelho',
     primaryMuscles: ["abs"],
     secondaryMuscles: [],
     movementPattern: 'isolation',
@@ -29095,7 +29095,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -29111,8 +29111,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'tracao_lateral_com_elastico',
-    name: 'Tração lateral com elástico',
-    nameEn: 'Tração lateral com elástico',
+    name: 'Tra├º├úo lateral com el├ístico',
+    nameEn: 'Tra├º├úo lateral com el├ístico',
     primaryMuscles: ["back"],
     secondaryMuscles: [],
     movementPattern: 'pull_horizontal',
@@ -29127,7 +29127,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -29143,7 +29143,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_coice_com_cabo',
-    name: 'Tríceps Coice com Cabo',
+    name: 'Tr├¡ceps Coice com Cabo',
     nameEn: 'Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29157,8 +29157,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29171,7 +29171,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_coice_com_halteres',
-    name: 'Tríceps Coice com Halteres',
+    name: 'Tr├¡ceps Coice com Halteres',
     nameEn: 'Dumbbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29185,8 +29185,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29199,7 +29199,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_frances_alternada_com_halteres_no_banco_inclinado',
-    name: 'Tríceps Francês Alternada com Halteres no Banco Inclinado',
+    name: 'Tr├¡ceps Franc├¬s Alternada com Halteres no Banco Inclinado',
     nameEn: 'on Bench Incline Dumbbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29213,8 +29213,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29227,7 +29227,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_frances_com_barra_w_acima_da_cabeca_sentado',
-    name: 'Tríceps francês com barra W acima da cabeça sentado',
+    name: 'Tr├¡ceps franc├¬s com barra W acima da cabe├ºa sentado',
     nameEn: 'Seated Barbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29241,8 +29241,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29255,7 +29255,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_frances_com_faixa_elastica_acima_da_cabeca',
-    name: 'Tríceps Francês com Faixa Elástica Acima da Cabeça',
+    name: 'Tr├¡ceps Franc├¬s com Faixa El├ística Acima da Cabe├ºa',
     nameEn: 'Band Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29269,8 +29269,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29283,7 +29283,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_frances_com_halter_bilateral',
-    name: 'Tríceps Francês com Halter Bilateral',
+    name: 'Tr├¡ceps Franc├¬s com Halter Bilateral',
     nameEn: 'Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29297,8 +29297,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29317,7 +29317,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_frances_com_halteres',
-    name: 'Tríceps Francês com Halteres',
+    name: 'Tr├¡ceps Franc├¬s com Halteres',
     nameEn: 'Dumbbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29331,8 +29331,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29345,7 +29345,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_frances_em_pe_com_gymstick',
-    name: 'Tríceps Francês em Pé com Gymstick',
+    name: 'Tr├¡ceps Franc├¬s em P├® com Gymstick',
     nameEn: 'Standing Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29359,8 +29359,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29379,7 +29379,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_frances_na_polia_com_corda',
-    name: 'Tríceps francês na polia com corda',
+    name: 'Tr├¡ceps franc├¬s na polia com corda',
     nameEn: 'Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29393,8 +29393,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29407,7 +29407,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_frances_no_banco_inclinado_com_halter',
-    name: 'Tríceps francês no banco inclinado com halter',
+    name: 'Tr├¡ceps franc├¬s no banco inclinado com halter',
     nameEn: 'on Bench Incline Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29421,8 +29421,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29441,7 +29441,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_frances_unilateral_no_cabo',
-    name: 'Tríceps francês unilateral no cabo',
+    name: 'Tr├¡ceps franc├¬s unilateral no cabo',
     nameEn: 'Single Arm/Leg Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29455,8 +29455,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: true,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29469,7 +29469,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_no_banco',
-    name: 'Tríceps no Banco',
+    name: 'Tr├¡ceps no Banco',
     nameEn: 'on Bench Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29483,8 +29483,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29503,7 +29503,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_pulley_barra_v',
-    name: 'Tríceps Pulley barra V',
+    name: 'Tr├¡ceps Pulley barra V',
     nameEn: 'Cable Barbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29517,8 +29517,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29531,7 +29531,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_pulley_barra',
-    name: 'Tríceps pulley barra',
+    name: 'Tr├¡ceps pulley barra',
     nameEn: 'Cable Barbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29545,8 +29545,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29559,7 +29559,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_pulley_corda',
-    name: 'Tríceps pulley corda',
+    name: 'Tr├¡ceps pulley corda',
     nameEn: 'Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29573,8 +29573,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29587,7 +29587,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_pulley_pegada_invertida',
-    name: 'Tríceps pulley pegada invertida',
+    name: 'Tr├¡ceps pulley pegada invertida',
     nameEn: 'Cable Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29601,8 +29601,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29615,7 +29615,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_testa_com_banco_declinado_com_halteres',
-    name: 'Tríceps Testa com Banco Declinado com Halteres',
+    name: 'Tr├¡ceps Testa com Banco Declinado com Halteres',
     nameEn: 'Decline Dumbbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29629,8 +29629,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29643,7 +29643,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_testa_com_barra_pegada_invertida',
-    name: 'Tríceps Testa com Barra Pegada Invertida',
+    name: 'Tr├¡ceps Testa com Barra Pegada Invertida',
     nameEn: 'Barbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29657,8 +29657,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29671,7 +29671,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_testa_com_barra',
-    name: 'Tríceps testa com barra',
+    name: 'Tr├¡ceps testa com barra',
     nameEn: 'Barbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29685,8 +29685,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29699,7 +29699,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_testa_com_faixa_elastica',
-    name: 'Tríceps Testa com Faixa Elástica',
+    name: 'Tr├¡ceps Testa com Faixa El├ística',
     nameEn: 'Band Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29713,8 +29713,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29727,7 +29727,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'triceps_testa_pegada_neutra_com_halteres',
-    name: 'Tríceps testa pegada neutra com halteres',
+    name: 'Tr├¡ceps testa pegada neutra com halteres',
     nameEn: 'Dumbbell Triceps Extension',
     primaryMuscles: ["triceps"],
     secondaryMuscles: [],
@@ -29741,8 +29741,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Cotovelos fixos na mesma posição",
-      "Foque na extensão total do braço",
+      "Cotovelos fixos na mesma posi├º├úo",
+      "Foque na extens├úo total do bra├ºo",
       "Controle o peso para evitar impacto",
     ],
     substituteIds: [],
@@ -29771,7 +29771,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -29803,7 +29803,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -29834,7 +29834,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha os cotovelos na linha dos ombros",
-      "Não deixe os pesos baterem no centro",
+      "N├úo deixe os pesos baterem no centro",
       "Postura ereta",
     ],
     substituteIds: [],
@@ -29869,7 +29869,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha os cotovelos na linha dos ombros",
-      "Não deixe os pesos baterem no centro",
+      "N├úo deixe os pesos baterem no centro",
       "Postura ereta",
     ],
     substituteIds: [],
@@ -29898,7 +29898,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha os cotovelos na linha dos ombros",
-      "Não deixe os pesos baterem no centro",
+      "N├úo deixe os pesos baterem no centro",
       "Postura ereta",
     ],
     substituteIds: [],
@@ -29919,7 +29919,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'voador_na_maquina_para_deltoides_posteriores',
-    name: 'Voador na Máquina para Deltoides Posteriores',
+    name: 'Voador na M├íquina para Deltoides Posteriores',
     nameEn: 'Machine Butterfly',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -29934,7 +29934,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha os cotovelos na linha dos ombros",
-      "Não deixe os pesos baterem no centro",
+      "N├úo deixe os pesos baterem no centro",
       "Postura ereta",
     ],
     substituteIds: [],
@@ -29948,7 +29948,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'voador_na_maquina',
-    name: 'Voador na Máquina',
+    name: 'Voador na M├íquina',
     nameEn: 'Machine Butterfly',
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
@@ -29963,7 +29963,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha os cotovelos na linha dos ombros",
-      "Não deixe os pesos baterem no centro",
+      "N├úo deixe os pesos baterem no centro",
       "Postura ereta",
     ],
     substituteIds: [],
@@ -29992,7 +29992,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha os cotovelos na linha dos ombros",
-      "Não deixe os pesos baterem no centro",
+      "N├úo deixe os pesos baterem no centro",
       "Postura ereta",
     ],
     substituteIds: [],
@@ -30028,7 +30028,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Mantenha os cotovelos na linha dos ombros",
-      "Não deixe os pesos baterem no centro",
+      "N├úo deixe os pesos baterem no centro",
       "Postura ereta",
     ],
     substituteIds: [],
@@ -30057,7 +30057,7 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: true,
     cues: [
       "Mantenha os cotovelos na linha dos ombros",
-      "Não deixe os pesos baterem no centro",
+      "N├úo deixe os pesos baterem no centro",
       "Postura ereta",
     ],
     substituteIds: [],
@@ -30071,8 +30071,8 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'wall_sit_com_inclinacao_de_tronco',
-    name: 'Wall Sit com Inclinação de Tronco',
-    nameEn: 'Wall Sit com Inclinação de Tronco',
+    name: 'Wall Sit com Inclina├º├úo de Tronco',
+    nameEn: 'Wall Sit com Inclina├º├úo de Tronco',
     primaryMuscles: ["quads"],
     secondaryMuscles: [],
     movementPattern: 'squat',
@@ -30087,7 +30087,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -30119,7 +30119,7 @@ final List<ExerciseModel> exerciseLibrary = [
     cues: [
       "Mantenha a postura correta",
       "Controle o movimento",
-      "Respire durante cada repetição",
+      "Respire durante cada repeti├º├úo",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -30133,9 +30133,9 @@ final List<ExerciseModel> exerciseLibrary = [
     ],
   ),
 
-  // ═══════════════════════════════════════════════════════════
-  // EXERCÍCIOS SCAPULARES BODYWEIGHT (para usuários sem equipamento)
-  // ═══════════════════════════════════════════════════════════
+  // ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+  // EXERC├ìCIOS SCAPULARES BODYWEIGHT (para usu├írios sem equipamento)
+  // ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
 
   ExerciseModel(
     id: 'scapular_push_up',
@@ -30153,9 +30153,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Em posição de flexão, mova apenas as escápulas",
-      "Protraia e retraia as escápulas",
-      "Mantenha os braços retos",
+      "Em posi├º├úo de flex├úo, mova apenas as esc├ípulas",
+      "Protraia e retraia as esc├ípulas",
+      "Mantenha os bra├ºos retos",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -30174,7 +30174,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'prone_scapular_retraction',
-    name: 'Retração Escapular Deitado',
+    name: 'Retra├º├úo Escapular Deitado',
     nameEn: 'Prone Scapular Retraction',
     primaryMuscles: ["mid_back"],
     secondaryMuscles: ["rear_delt"],
@@ -30188,8 +30188,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Deite de bruços com os braços ao lado do corpo",
-      "Aperte as escápulas juntas",
+      "Deite de bru├ºos com os bra├ºos ao lado do corpo",
+      "Aperte as esc├ípulas juntas",
       "Segure por 2-3 segundos no topo",
     ],
     substituteIds: [],
@@ -30224,8 +30224,8 @@ final List<ExerciseModel> exerciseLibrary = [
     isUnilateral: false,
     cues: [
       "Encoste as costas na parede",
-      "Deslize os braços para cima mantendo contato com a parede",
-      "Protraia e retraia as escápulas",
+      "Deslize os bra├ºos para cima mantendo contato com a parede",
+      "Protraia e retraia as esc├ípulas",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -30258,9 +30258,9 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 12,
     isUnilateral: false,
     cues: [
-      "Pendurado na barra, decaia apenas com as escápulas",
-      "Mantenha os braços retos",
-      "Foque na retração escapular",
+      "Pendurado na barra, decaia apenas com as esc├ípulas",
+      "Mantenha os bra├ºos retos",
+      "Foque na retra├º├úo escapular",
     ],
     substituteIds: [],
     progressionIds: [],
@@ -30276,13 +30276,13 @@ final List<ExerciseModel> exerciseLibrary = [
     shoulderStress: 0.2,
   ),
 
-  // ═══════════════════════════════════════════════════════════
-  // EXERCÍCIOS DE REABILITAÇÃO BODYWEIGHT (alternativas sem equipamento)
-  // ═══════════════════════════════════════════════════════════
+  // ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+  // EXERC├ìCIOS DE REABILITA├ç├âO BODYWEIGHT (alternativas sem equipamento)
+  // ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
 
   ExerciseModel(
     id: 'rotacao_externa_de_ombro_bodyweight',
-    name: 'Rotação Externa de Ombro Bodyweight',
+    name: 'Rota├º├úo Externa de Ombro Bodyweight',
     nameEn: 'Bodyweight External Rotation',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -30296,8 +30296,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Deite de lado com o braço apoiado no chão",
-      "Gire o braço para cima mantendo o cotovelo apoiado",
+      "Deite de lado com o bra├ºo apoiado no ch├úo",
+      "Gire o bra├ºo para cima mantendo o cotovelo apoiado",
       "Controle o movimento",
     ],
     substituteIds: [],
@@ -30317,7 +30317,7 @@ final List<ExerciseModel> exerciseLibrary = [
 
   ExerciseModel(
     id: 'elevacao_lateral_bodyweight',
-    name: 'Elevação Lateral Bodyweight',
+    name: 'Eleva├º├úo Lateral Bodyweight',
     nameEn: 'Bodyweight Lateral Raise',
     primaryMuscles: ["shoulders"],
     secondaryMuscles: [],
@@ -30331,8 +30331,8 @@ final List<ExerciseModel> exerciseLibrary = [
     repRangeMax: 15,
     isUnilateral: false,
     cues: [
-      "Deite de lado com o braço estendido",
-      "Eleve o braço lateralmente",
+      "Deite de lado com o bra├ºo estendido",
+      "Eleve o bra├ºo lateralmente",
       "Controle a descida",
     ],
     substituteIds: [],

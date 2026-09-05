@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/services/auth_service.dart';
+import '../../core/services/api_service.dart';
 import '../../shared/theme/app_theme.dart';
 import '../exercises/exercise_provider.dart';
 import 'workout_routine_model.dart';
-import 'routine_service.dart';
-
-// ─────────────────────────────────────────────
-// Tela de Detalhes da Rotina (Adicionar Ex.)
-// ─────────────────────────────────────────────
 
 class RoutineDetailScreen extends StatefulWidget {
   final WorkoutRoutine routine;
@@ -30,13 +25,22 @@ class _RoutineDetailScreenState extends State<RoutineDetailScreen> {
   }
 
   Future<void> _save() async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid != null) {
-      await RoutineService(db: FirebaseFirestore.instance, uid: uid)
-          .save(_current);
+    try {
+      final api = ApiService();
+      if (_current.id.isEmpty || _current.id == 'new') {
+        await api.post('/routines', body: _current.toMap());
+      } else {
+        await api.put('/routines/${_current.id}', body: _current.toMap());
+      }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Treino salvo com sucesso!')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao salvar: $e')),
         );
       }
     }
@@ -101,7 +105,6 @@ class _RoutineDetailScreenState extends State<RoutineDetailScreen> {
   }
 
   void _addExercise(BuildContext context) {
-    // Busca os exercícios do provider
     final ep = context.read<ExerciseProvider>();
     showModalBottomSheet(
       context: context,

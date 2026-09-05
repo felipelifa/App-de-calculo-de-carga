@@ -1,7 +1,7 @@
+import 'dart:convert';
 import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'workout_models.dart';
 
 // ═══════════════════════════════════════════════════════════════
@@ -33,6 +33,7 @@ enum ProgressionDecisionType {
   deload,             // Temporal ou por fadiga
   continueBodyweight, // Bodyweight: RIR ok, manter progressão
   advanceBodyweight,  // Bodyweight: RIR >= 3 por 2 sessões → próximo na cadeia
+  regressExercise,    // Exercício muito difícil: regressar para variante mais fácil
 }
 
 class ProgressionDecision {
@@ -43,6 +44,7 @@ class ProgressionDecision {
   final double? suggestedWeightKg;
   final String? suggestedSubstituteId; // para substituteExercise
   final String? suggestedProgressionId; // para advanceBodyweight
+  final String? suggestedRegressionId; // para regressExercise
   final int sessionsAnalyzed;
 
   const ProgressionDecision({
@@ -53,6 +55,7 @@ class ProgressionDecision {
     this.suggestedWeightKg,
     this.suggestedSubstituteId,
     this.suggestedProgressionId,
+    this.suggestedRegressionId,
     required this.sessionsAnalyzed,
   });
 }
@@ -224,23 +227,18 @@ class ProgressionState {
 // ─────────────────────────────────────────────
 
 class ProgressionEngine {
-  final FirebaseFirestore _db;
-  final FirebaseAuth _auth;
+  static const _stateKey = 'progression_state';
 
-  ProgressionEngine({FirebaseFirestore? db, FirebaseAuth? auth})
-      : _db = db ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
-
-  String get _uid => _auth.currentUser?.uid ?? '';
-  String get _stateDoc => 'users/$_uid/progression_state/current';
+  ProgressionEngine();
 
   // ── Carregar estado ───────────────────────────────────────────
 
   Future<ProgressionState?> loadState() async {
     try {
-      final doc = await _db.doc(_stateDoc).get();
-      final data = doc.data();
-      if (doc.exists && data != null) {
+      final prefs = await SharedPreferences.getInstance();
+      final json = prefs.getString(_stateKey);
+      if (json != null) {
+        final data = jsonDecode(json) as Map<String, dynamic>;
         return ProgressionState.fromMap(data);
       }
       return null;
@@ -254,7 +252,8 @@ class ProgressionEngine {
 
   Future<void> saveState(ProgressionState state) async {
     try {
-      await _db.doc(_stateDoc).set(state.toMap());
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_stateKey, jsonEncode(state.toMap()));
     } catch (e) {
       debugPrint('ProgressionEngine.saveState error: $e');
     }
@@ -340,6 +339,7 @@ class ProgressionEngine {
       final isBodyweight = meta['isBodyweight'] as bool? ?? false;
       final progressionIds = List<String>.from(meta['progressionIds'] ?? []);
       final substituteIds = List<String>.from(meta['substituteIds'] ?? []);
+      final regressionIds = List<String>.from(meta['regressionIds'] ?? []);
 
       // Calcula métricas da sessão
       final workingSets = entry.sets.where((set) => !set.isWarmup).toList();
@@ -393,6 +393,7 @@ class ProgressionEngine {
         isBodyweight: isBodyweight,
         progressionIds: progressionIds,
         substituteIds: substituteIds,
+        regressionIds: regressionIds,
         consecutiveSuccessfulSessions: successfulHighRirSessions,
       );
 
@@ -451,8 +452,40 @@ class ProgressionEngine {
     required bool isBodyweight,
     required List<String> progressionIds,
     required List<String> substituteIds,
+    required List<String> regressionIds,
     required int consecutiveSuccessfulSessions,
+    List<String> primaryMuscles = const [],
   }) {
+    // ── Regra 0: Regressão — exercício muito difícil
+    // Se RIR 0 por 2+ sessões OU 3+ falhas consecutivas, regredir
+    if ((rir <= 0 && consecutiveSuccessfulSessions == 0 && sessionsWithoutProgress >= 2) ||
+        (consecutiveFailures >= 3)) {
+      if (regressionIds.isNotEmpty) {
+        return ProgressionDecision(
+          exerciseId: exerciseId,
+          type: ProgressionDecisionType.regressExercise,
+          title: 'Exercício muito difícil',
+          reason: consecutiveFailures >= 3
+              ? 'Você não completou as reps em $consecutiveFailures sessões seguidas. Vamos para uma versão mais acessível.'
+              : 'RIR muito baixo por $sessionsWithoutProgress sessões. Vamos reduzir a dificuldade.',
+          suggestedRegressionId: regressionIds.first,
+          sessionsAnalyzed: max(sessionsWithoutProgress, consecutiveFailures),
+        );
+      }
+      // Se não tem regressão, reduzir carga
+      if (!isBodyweight && consecutiveFailures >= 3) {
+        final reducedWeight = (currentWeight * 0.85 / 2.5).round() * 2.5;
+        return ProgressionDecision(
+          exerciseId: exerciseId,
+          type: ProgressionDecisionType.decreaseLoad,
+          title: 'Reduza significativamente',
+          reason: 'Exercício muito difícil. Reduza 15% e reconstrua a confiança.',
+          suggestedWeightKg: reducedWeight.toDouble(),
+          sessionsAnalyzed: consecutiveFailures,
+        );
+      }
+    }
+
     // ── Regra 1: Substituição por plateau (3 sessões sem progressão)
     if (sessionsWithoutProgress >= 3 && substituteIds.isNotEmpty) {
       return ProgressionDecision(
@@ -507,11 +540,9 @@ class ProgressionEngine {
 
     // ── Regra 4: RIR >= 3 → aumentar carga (progressão linear)
     if (rir >= 3 && completedAllSets && !isBodyweight) {
-      final isLower = exerciseId.contains('quad') ||
-          exerciseId.contains('ham') ||
-          exerciseId.contains('glute') ||
-          exerciseId.contains('leg') ||
-          exerciseId.contains('calf');
+      // Detecção de lower body baseada em músculos primários (não substring)
+      final lowerBodyMuscles = {'quads', 'hamstrings', 'glutes', 'calves', 'adductors'};
+      final isLower = primaryMuscles.any((m) => lowerBodyMuscles.contains(m));
       final increment = isLower ? 5.0 : 2.5;
       final newWeight = ((currentWeight + increment) / 2.5).ceil() * 2.5;
       return ProgressionDecision(

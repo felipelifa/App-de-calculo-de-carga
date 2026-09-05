@@ -1,11 +1,11 @@
 import { Global, Module } from '@nestjs/common';
-import { FirebaseAuthGuard } from './guards/firebase-auth.guard';
-import { FirebaseService } from './services/firebase.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtAuthService } from './services/jwt.service';
 import { PrismaService } from './services/prisma.service';
 
 @Global()
 @Module({
-  providers: [PrismaService, FirebaseService, FirebaseAuthGuard],
-  exports: [PrismaService, FirebaseService, FirebaseAuthGuard],
+  providers: [PrismaService, JwtAuthService, JwtAuthGuard],
+  exports: [PrismaService, JwtAuthService, JwtAuthGuard],
 })
 export class CommonModule {}

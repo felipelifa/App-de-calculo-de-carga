@@ -14,18 +14,51 @@ class SessionFatigueAccumulator {
   double shoulderStressAccumulated = 0;
   double kneeStressAccumulated = 0;
   double cnsLoadAccumulated = 0;
+  
+  // Rastrear exercícios por músculo para cálculo de posição
+  final Map<String, int> _exerciseCountByMuscle = {};
+  
+  // Fadiga residual de sessões anteriores (com decaimento temporal)
+  double _residualSpinalLoad = 0;
+  double _residualShoulderStress = 0;
+  double _residualKneeStress = 0;
+  double _residualCnsLoad = 0;
 
   // Limites por sessão (considerando séries como multiplicador)
   static const maxSpinalLoad = 3.0;      // Terra pesado (1.0 x 3) = 3.0, limite
   static const maxShoulderStress = 3.5;  // shoulder press (0.7 x 5) = 3.5
   static const maxKneeStress = 4.0;      // squat pesado (0.8 x 5) = 4.0
   static const maxCnsLoad = 3.0;         // soma de CNS por exercício (direto, não por série)
+  
+  // Fator de decaimento da fadiga (50% após 48h)
+  static const _fatigueDecayFactor = 0.5;
+
+  /// Carrega fadiga residual das últimas sessões.
+  /// A fadiga decai exponencialmente com o tempo.
+  void loadResidualFatigue(List<PrescribedSession> recentSessions) {
+    if (recentSessions.isEmpty) return;
+    
+    for (int i = 0; i < recentSessions.length && i < 3; i++) {
+      final session = recentSessions[i];
+      final decay = _fatigueDecayFactor * (i + 1); // Mais recente = mais fadiga
+      
+      _residualSpinalLoad += session.fatigue.spinalLoad * decay;
+      _residualShoulderStress += session.fatigue.shoulderStress * decay;
+      _residualKneeStress += session.fatigue.kneeStress * decay;
+      _residualCnsLoad += session.fatigue.cnsLoad * decay;
+    }
+  }
 
   bool canAdd(ExerciseModel ex, int sets) {
-    return (spinalLoadAccumulated + ex.spinalLoad * sets) <= maxSpinalLoad &&
-        (shoulderStressAccumulated + ex.shoulderStress * sets) <= maxShoulderStress &&
-        (kneeStressAccumulated + ex.kneeStress * sets) <= maxKneeStress &&
-        (cnsLoadAccumulated + (ex.cnsLoad * sets)) <= maxCnsLoad;
+    final totalSpinal = spinalLoadAccumulated + _residualSpinalLoad + ex.spinalLoad * sets;
+    final totalShoulder = shoulderStressAccumulated + _residualShoulderStress + ex.shoulderStress * sets;
+    final totalKnee = kneeStressAccumulated + _residualKneeStress + ex.kneeStress * sets;
+    final totalCns = cnsLoadAccumulated + _residualCnsLoad + ex.cnsLoad * sets;
+    
+    return totalSpinal <= maxSpinalLoad &&
+        totalShoulder <= maxShoulderStress &&
+        totalKnee <= maxKneeStress &&
+        totalCns <= maxCnsLoad;
   }
 
   void add(ExerciseModel ex, int sets) {
@@ -33,12 +66,22 @@ class SessionFatigueAccumulator {
     shoulderStressAccumulated += ex.shoulderStress * sets;
     kneeStressAccumulated += ex.kneeStress * sets;
     cnsLoadAccumulated += ex.cnsLoad * sets;
+    
+    // Rastrear contagem por músculo
+    for (final muscle in ex.primaryMuscles) {
+      _exerciseCountByMuscle[muscle] = (_exerciseCountByMuscle[muscle] ?? 0) + 1;
+    }
   }
 
-  double get fatigueRatio => spinalLoadAccumulated / maxSpinalLoad;
-  bool get isSpinalLoadCritical => spinalLoadAccumulated > maxSpinalLoad * 0.8;
-  bool get isShoulderStressCritical => shoulderStressAccumulated > maxShoulderStress * 0.8;
-  bool get isKneeStressCritical => kneeStressAccumulated > maxKneeStress * 0.8;
+  /// Retorna quantos exercícios já foram adicionados para um músculo.
+  int getExerciseCountForMuscle(String muscle) {
+    return _exerciseCountByMuscle[muscle] ?? 0;
+  }
+
+  double get fatigueRatio => (spinalLoadAccumulated + _residualSpinalLoad) / maxSpinalLoad;
+  bool get isSpinalLoadCritical => (spinalLoadAccumulated + _residualSpinalLoad) > maxSpinalLoad * 0.8;
+  bool get isShoulderStressCritical => (shoulderStressAccumulated + _residualShoulderStress) > maxShoulderStress * 0.8;
+  bool get isKneeStressCritical => (kneeStressAccumulated + _residualKneeStress) > maxKneeStress * 0.8;
 }
 
 // ═══════════════════════════════════════════════════════════════

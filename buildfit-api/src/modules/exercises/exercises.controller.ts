@@ -3,7 +3,7 @@ import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from '@nestjs/swagger'
 import { ExercisesService } from './exercises.service';
 import { ExerciseFilterDto } from './dto/exercise-filter.dto';
 import { CreateExerciseDto } from './dto/create-exercise.dto';
-import { FirebaseAuthGuard } from '../../common/guards/firebase-auth.guard';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @ApiTags('exercises')
 @Controller('exercises')
@@ -48,7 +48,7 @@ export class ExercisesController {
   }
 
   @Post()
-  @UseGuards(FirebaseAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Criar exercício personalizado' })
   async create(@Body() dto: CreateExerciseDto) {

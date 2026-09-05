@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../core/services/auth_service.dart';
 import '../../shared/theme/app_theme.dart';
 import 'analytics_service.dart';
-
-// ─────────────────────────────────────────────
-// Tela principal de Analytics — Redesenhada (Premium Neon)
-// ─────────────────────────────────────────────
 
 class AnalyticsScreen extends StatefulWidget {
   const AnalyticsScreen({super.key});
@@ -24,7 +20,6 @@ class _AnalyticsScreenState extends State<AnalyticsScreen>
   Future<AnalyticsData>? _future;
   late TabController _tabController;
 
-  // Para o gráfico de carga por exercício
   String? _selectedExerciseId;
 
   @override
@@ -41,13 +36,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen>
   }
 
   void _load() {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = context.read<AuthService>().currentUser?.id;
     if (uid == null) return;
     setState(() {
-      _future = AnalyticsService(
-        db: FirebaseFirestore.instance,
-        uid: uid,
-      ).load();
+      _future = AnalyticsService(uid: uid).load();
       _selectedExerciseId = null;
     });
   }
@@ -154,10 +146,6 @@ class _AnalyticsScreenState extends State<AnalyticsScreen>
   }
 }
 
-// ─────────────────────────────────────────────
-// Tab 1 — Volume Semanal
-// ─────────────────────────────────────────────
-
 class _VolumeTab extends StatelessWidget {
   final AnalyticsData data;
   const _VolumeTab({required this.data});
@@ -167,11 +155,9 @@ class _VolumeTab extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       children: [
-        // Stats rápidos
         _QuickStatsRow(data: data).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1),
         const SizedBox(height: 32),
 
-        // Gráfico de linha — volume semanal
         _ChartCard(
           title: 'HISTÓRICO DE TREINOS',
           subtitle: 'Volume total semanal (toneladas)',
@@ -250,17 +236,12 @@ class _VolumeTab extends StatelessWidget {
 
         const SizedBox(height: 32),
 
-        // Tabela de semanas
         _WeeklyTable(data: data).animate().fadeIn(duration: 500.ms, delay: 200.ms).slideY(begin: 0.1),
         const SizedBox(height: 48),
       ],
     );
   }
 }
-
-// ─────────────────────────────────────────────
-// Tab 2 — Evolução de Carga
-// ─────────────────────────────────────────────
 
 class _LoadTab extends StatelessWidget {
   final AnalyticsData data;
@@ -318,7 +299,6 @@ class _LoadTab extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       children: [
-        // Seletor de exercício
         Text(
           'SELECIONE O EXERCÍCIO',
           style: GoogleFonts.outfit(
@@ -337,7 +317,6 @@ class _LoadTab extends StatelessWidget {
 
         const SizedBox(height: 32),
 
-        // Gráfico de carga
         _ChartCard(
           title: activeExercise.name.toUpperCase(),
           subtitle: '${_translateMuscle(activeExercise.muscleGroup)} • Evolução do Peso (kg)',
@@ -433,7 +412,6 @@ class _LoadTab extends StatelessWidget {
 
         const SizedBox(height: 24),
 
-        // PR destacado
         if (points.isNotEmpty) 
           _PrCard(points: points, name: activeExercise.name)
             .animate().fadeIn(duration: 500.ms, delay: 200.ms).slideY(begin: 0.1),
@@ -443,10 +421,6 @@ class _LoadTab extends StatelessWidget {
     );
   }
 }
-
-// ─────────────────────────────────────────────
-// Tab 3 — Volume por Músculo
-// ─────────────────────────────────────────────
 
 class _MuscleTab extends StatelessWidget {
   final AnalyticsData data;
@@ -474,7 +448,6 @@ class _MuscleTab extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       children: [
-        // Legenda temporal
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -494,7 +467,6 @@ class _MuscleTab extends StatelessWidget {
 
         const SizedBox(height: 32),
 
-        // Gráfico de barras agrupadas
         _ChartCard(
           title: 'FOCO POR MÚSCULO',
           subtitle: 'Distribuição de volume (kg)',
@@ -568,7 +540,6 @@ class _MuscleTab extends StatelessWidget {
 
         const SizedBox(height: 32),
 
-        // Lista com barras horizontais + delta
         Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
@@ -719,10 +690,6 @@ class _MuscleTab extends StatelessWidget {
     );
   }
 }
-
-// ─────────────────────────────────────────────
-// Componentes auxiliares
-// ─────────────────────────────────────────────
 
 class _QuickStatsRow extends StatelessWidget {
   final AnalyticsData data;

@@ -2,11 +2,11 @@ import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards } from '@nes
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { PrescriptionService } from './prescription.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { FirebaseAuthGuard } from '../../common/guards/firebase-auth.guard';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @ApiTags('prescription')
 @Controller('prescription')
-@UseGuards(FirebaseAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class PrescriptionController {
   constructor(private prescriptionService: PrescriptionService) {}

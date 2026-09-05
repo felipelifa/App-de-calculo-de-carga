@@ -15,6 +15,7 @@ import '../../features/workout/routine_list_screen.dart';
 import '../../features/workout/routine_detail_screen.dart';
 import '../../features/workout/workout_routine_model.dart';
 import '../../features/workout/onboarding_screen.dart';
+import '../../features/workout/smart_anamnese_screen.dart';
 import '../../features/workout/prescribed_workout_screen.dart';
 import '../../features/workout/training_mode_screen.dart';
 import '../../features/auth/splash_screen.dart';
@@ -147,7 +148,7 @@ class AppRouter {
         ),
         GoRoute(
           path: '/anamnese',
-          builder: (context, state) => const OnboardingScreen(),
+          builder: (context, state) => const SmartAnamneseScreen(),
         ),
         GoRoute(
           path: '/training-mode',
@@ -176,6 +177,7 @@ class AppRouter {
               prescribedExercises: List<Map<String, dynamic>>.from(
                 extra['prescribedExercises'] as List? ?? [],
               ),
+              dupPhase: extra['dupPhase'] as String?,
             );
           },
         ),

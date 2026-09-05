@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import '../../core/services/auth_service.dart';
+import '../../core/services/api_service.dart';
 import '../../shared/theme/app_theme.dart';
 import '../workout/pr_model.dart';
-import '../workout/pr_service.dart';
 import 'exercise_model.dart';
 import 'exercise_provider.dart';
 import 'exercise_card.dart';
@@ -70,7 +69,6 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
     });
 
     try {
-      // Biblioteca global, edição local desabilitada na nova arquitetura
       await Future.delayed(const Duration(milliseconds: 500));
       
       if (mounted) {
@@ -108,16 +106,13 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
     final provider = context.watch<ExerciseProvider>();
     final exercises = provider.filteredExercises;
 
-    // Find exercise in provider's list (live data)
     ExerciseModel? ex;
     try {
       ex = provider.filteredExercises.firstWhere((e) => e.id == widget.exerciseId);
     } catch (_) {
-      // May not be in filtered list — search all
       ex = null;
     }
 
-    // Also check unfiltered list via a direct call approach
     final allExercises = exercises;
     if (ex == null) {
       for (final e in allExercises) {
@@ -150,7 +145,6 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
       backgroundColor: AppTheme.background,
       body: CustomScrollView(
         slivers: [
-          // ── SliverAppBar with GIF ─────────────
           SliverAppBar(
             expandedHeight: 320,
             pinned: true,
@@ -166,7 +160,6 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
             ),
           ),
 
-          // ── Content ──────────────────────────
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -253,7 +246,6 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // ── Title & badges ─────────────────────
         Text(
           ex.name,
           style: Theme.of(context)
@@ -284,7 +276,6 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
         _sectionTitle('Configurações'),
         const SizedBox(height: 14),
 
-        // ── Editable fields ────────────────────
         _EditRow(
           label: 'Séries padrão',
           controller: _seriesCtrl,
@@ -321,7 +312,6 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
 
         const SizedBox(height: 20),
 
-        // ── Save button ────────────────────────
         SizedBox(
           width: double.infinity,
           child: ElevatedButton.icon(
@@ -339,12 +329,10 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
 
         const SizedBox(height: 12),
 
-        // ── Add to workout button ───────────────
         SizedBox(
           width: double.infinity,
           child: OutlinedButton.icon(
             onPressed: () {
-              // TODO: navigate to workout session when that feature is built
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Em breve: adicionar ao treino!'),
@@ -365,14 +353,12 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
 
         const SizedBox(height: 32),
 
-        // ── PR do exercício ─────────────────────
         _sectionTitle('Recorde pessoal (PR)'),
         const SizedBox(height: 14),
         _PrSection(exerciseId: ex.id),
 
         const SizedBox(height: 32),
 
-        // ── Volume history ─────────────────────
         _sectionTitle('Histórico de volume'),
         const SizedBox(height: 14),
         _VolumeHistorySection(exerciseId: ex.id, provider: provider),
@@ -527,10 +513,20 @@ class _PrSectionState extends State<_PrSection> {
   @override
   void initState() {
     super.initState();
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = context.read<AuthService>().currentUser?.id;
     if (uid != null) {
-      _future = PrService(db: FirebaseFirestore.instance, uid: uid)
-          .loadForExercise(widget.exerciseId);
+      _future = _loadPrFromApi(uid);
+    }
+  }
+
+  Future<PersonalRecord?> _loadPrFromApi(String uid) async {
+    try {
+      final api = ApiService();
+      final response = await api.get('/exercises/${widget.exerciseId}/pr');
+      if (response == null) return null;
+      return PersonalRecord.fromMap(response as Map<String, dynamic>);
+    } catch (_) {
+      return null;
     }
   }
 

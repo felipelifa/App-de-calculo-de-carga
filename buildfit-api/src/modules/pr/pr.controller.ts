@@ -2,11 +2,11 @@ import { Controller, Get, Post, Param, Body, Query, UseGuards } from '@nestjs/co
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { PrService } from './pr.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { FirebaseAuthGuard } from '../../common/guards/firebase-auth.guard';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @ApiTags('pr')
 @Controller('pr')
-@UseGuards(FirebaseAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class PrController {
   constructor(private prService: PrService) {}

@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class DailyNutritionalGoal {
   final int calories;
   final double protein;
@@ -105,6 +103,13 @@ class NutritionProfile {
     this.lastWorkoutDate,
   });
 
+  static DateTime? _readDate(dynamic value) {
+    if (value == null) return null;
+    if (value is DateTime) return value;
+    if (value is String) return DateTime.tryParse(value);
+    return null;
+  }
+
   factory NutritionProfile.fromMap(Map<String, dynamic> map, String id) {
     final goalsRaw = map['weeklyGoals'] as Map<String, dynamic>? ?? {};
     final goals = goalsRaw.map((key, value) => MapEntry(int.parse(key), DailyNutritionalGoal.fromMap(value as Map<String, dynamic>)));
@@ -136,7 +141,7 @@ class NutritionProfile {
       adherenceScore: (map['adherenceScore'] as num?)?.toDouble() ?? 1.0,
       nutritionalFatigueLevel: map['nutritionalFatigueLevel'] as int? ?? 0,
       lastWorkoutName: map['lastWorkoutName'] as String?,
-      lastWorkoutDate: map['lastWorkoutDate'] != null ? (map['lastWorkoutDate'] as Timestamp).toDate() : null,
+      lastWorkoutDate: _readDate(map['lastWorkoutDate']),
     );
   }
 
@@ -161,7 +166,7 @@ class NutritionProfile {
       'adherenceScore': adherenceScore,
       'nutritionalFatigueLevel': nutritionalFatigueLevel,
       'lastWorkoutName': lastWorkoutName,
-      'lastWorkoutDate': lastWorkoutDate,
+      'lastWorkoutDate': lastWorkoutDate?.toIso8601String(),
     };
   }
 
@@ -212,4 +217,3 @@ class NutritionProfile {
     );
   }
 }
-

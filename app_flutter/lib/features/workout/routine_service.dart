@@ -1,40 +1,40 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../core/services/api_service.dart';
 import 'workout_routine_model.dart';
 
 // ─────────────────────────────────────────────
-// Serviço de Rotinas (Templates)
+// Serviço de Rotinas (Templates) — via API
 // ─────────────────────────────────────────────
 
 class RoutineService {
-  final FirebaseFirestore _db;
-  final String _uid;
+  final ApiService _api = ApiService();
 
-  RoutineService({required FirebaseFirestore db, required String uid})
-      : _db = db,
-        _uid = uid;
-
-  String get _col => 'users/$_uid/routines';
+  RoutineService();
 
   /// Carrega todas as rotinas do usuário
   Future<List<WorkoutRoutine>> loadAll() async {
-    final snap = await _db.collection(_col).orderBy('createdAt').get();
-    return snap.docs
-        .map((doc) => WorkoutRoutine.fromMap(doc.id, doc.data()))
-        .toList();
+    try {
+      final response = await _api.get('/routines');
+      final list = (response as List<dynamic>?) ?? [];
+      return list.map((item) {
+        final map = item as Map<String, dynamic>;
+        return WorkoutRoutine.fromMap(map['id'] as String? ?? '', map);
+      }).toList();
+    } catch (_) {
+      return [];
+    }
   }
 
   /// Salva ou cria uma nova rotina
   Future<void> save(WorkoutRoutine routine) async {
-    final map = routine.toMap();
     if (routine.id.isEmpty || routine.id == 'new') {
-      await _db.collection(_col).add(map);
+      await _api.post('/routines', body: routine.toMap());
     } else {
-      await _db.collection(_col).doc(routine.id).set(map);
+      await _api.put('/routines/${routine.id}', body: routine.toMap());
     }
   }
 
   /// Deleta uma rotina
   Future<void> delete(String routineId) async {
-    await _db.collection(_col).doc(routineId).delete();
+    await _api.delete('/routines/$routineId');
   }
 }

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../exercises/exercise_model.dart';
 import 'exercise_dna.dart';
 
@@ -260,7 +259,6 @@ class GeneratedWorkout {
   }
 
   static DateTime _readDate(dynamic value) {
-    if (value is Timestamp) return value.toDate();
     if (value is DateTime) return value;
     if (value is String) return DateTime.tryParse(value) ?? DateTime.now();
     return DateTime.now();

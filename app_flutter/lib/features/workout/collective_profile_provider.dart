@@ -1,22 +1,13 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'collective_training.dart';
 import 'collective_engine.dart';
 import 'workout_profile_model.dart';
 import 'training_readiness.dart';
 
-/// Provider para treinamento coletivo (dupla/grupo).
-/// Salva perfis coletivos e gera sessões usando o CollectiveTrainingEngine.
 class CollectiveProfileProvider extends ChangeNotifier {
-  final FirebaseFirestore _db;
-  final FirebaseAuth _auth;
-
-  CollectiveProfileProvider({FirebaseFirestore? db, FirebaseAuth? auth})
-      : _db = db ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
-
   DuoProfile? _currentDuo;
   GroupProfile? _currentGroup;
   List<CollectiveSessionBlock>? _currentBlocks;
@@ -29,22 +20,19 @@ class CollectiveProfileProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
-  // ── Dupla ──────────────────────────────────────────────
-
   Future<void> saveDuoProfile(DuoProfile duo) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      await _db.collection('users/$uid/collective_profiles').doc('current_duo').set({
+      final prefs = await SharedPreferences.getInstance();
+      final data = {
         'type': 'duo',
         ...duo.toMap(),
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+        'createdAt': DateTime.now().toIso8601String(),
+      };
+      await prefs.setString('collective_duo', jsonEncode(data));
       _currentDuo = duo;
     } catch (e) {
       _error = 'Erro ao salvar perfil da dupla: $e';
@@ -67,16 +55,14 @@ class CollectiveProfileProvider extends ChangeNotifier {
       );
       _currentDuo = duo;
 
-      // Salvar no Firestore
-      final uid = _auth.currentUser?.uid;
-      if (uid != null) {
-        await _db.collection('users/$uid/collective_profiles').doc('current_duo').set({
-          'type': 'duo',
-          ...duo.toMap(),
-          'blocks': _currentBlocks!.map((b) => b.toMap()).toList(),
-          'generatedAt': FieldValue.serverTimestamp(),
-        });
-      }
+      final prefs = await SharedPreferences.getInstance();
+      final data = {
+        'type': 'duo',
+        ...duo.toMap(),
+        'blocks': _currentBlocks!.map((b) => b.toMap()).toList(),
+        'generatedAt': DateTime.now().toIso8601String(),
+      };
+      await prefs.setString('collective_duo', jsonEncode(data));
     } catch (e) {
       _error = 'Erro ao gerar sessão da dupla: $e';
     } finally {
@@ -85,22 +71,19 @@ class CollectiveProfileProvider extends ChangeNotifier {
     }
   }
 
-  // ── Grupo ──────────────────────────────────────────────
-
   Future<void> saveGroupProfile(GroupProfile group) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      await _db.collection('users/$uid/collective_profiles').doc('current_group').set({
+      final prefs = await SharedPreferences.getInstance();
+      final data = {
         'type': 'group',
         ...group.toMap(),
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+        'createdAt': DateTime.now().toIso8601String(),
+      };
+      await prefs.setString('collective_group', jsonEncode(data));
       _currentGroup = group;
     } catch (e) {
       _error = 'Erro ao salvar perfil do grupo: $e';
@@ -120,16 +103,14 @@ class CollectiveProfileProvider extends ChangeNotifier {
       _currentBlocks = engine.buildGroupSession(group: group);
       _currentGroup = group;
 
-      // Salvar no Firestore
-      final uid = _auth.currentUser?.uid;
-      if (uid != null) {
-        await _db.collection('users/$uid/collective_profiles').doc('current_group').set({
-          'type': 'group',
-          ...group.toMap(),
-          'blocks': _currentBlocks!.map((b) => b.toMap()).toList(),
-          'generatedAt': FieldValue.serverTimestamp(),
-        });
-      }
+      final prefs = await SharedPreferences.getInstance();
+      final data = {
+        'type': 'group',
+        ...group.toMap(),
+        'blocks': _currentBlocks!.map((b) => b.toMap()).toList(),
+        'generatedAt': DateTime.now().toIso8601String(),
+      };
+      await prefs.setString('collective_group', jsonEncode(data));
     } catch (e) {
       _error = 'Erro ao gerar sessão do grupo: $e';
     } finally {
@@ -138,16 +119,13 @@ class CollectiveProfileProvider extends ChangeNotifier {
     }
   }
 
-  // ── Carregar perfis salvos ─────────────────────────────
-
   Future<void> loadSavedProfiles() async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-
     try {
-      final duoDoc = await _db.collection('users/$uid/collective_profiles').doc('current_duo').get();
-      if (duoDoc.exists && duoDoc.data() != null) {
-        final data = duoDoc.data()!;
+      final prefs = await SharedPreferences.getInstance();
+
+      final duoJson = prefs.getString('collective_duo');
+      if (duoJson != null) {
+        final data = jsonDecode(duoJson) as Map<String, dynamic>;
         if (data['type'] == 'duo') {
           _currentDuo = DuoProfile.fromMap(data);
           if (data['blocks'] != null) {
@@ -158,9 +136,9 @@ class CollectiveProfileProvider extends ChangeNotifier {
         }
       }
 
-      final groupDoc = await _db.collection('users/$uid/collective_profiles').doc('current_group').get();
-      if (groupDoc.exists && groupDoc.data() != null) {
-        final data = groupDoc.data()!;
+      final groupJson = prefs.getString('collective_group');
+      if (groupJson != null) {
+        final data = jsonDecode(groupJson) as Map<String, dynamic>;
         if (data['type'] == 'group') {
           _currentGroup = GroupProfile.fromMap(data);
         }
@@ -172,9 +150,6 @@ class CollectiveProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ── Converter para WorkoutProfile compatível ───────────
-
-  /// Converte ParticipantProfile para WorkoutProfile que o motor existente entende.
   static WorkoutProfile participantToWorkoutProfile(
     ParticipantProfile participant, {
     required String uid,

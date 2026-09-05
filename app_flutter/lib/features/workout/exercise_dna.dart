@@ -83,12 +83,35 @@ class ExerciseDna {
     }
 
     final compound = exercise.category == 'compound';
+    
+    // Technical demand: baseado em skillLevel do exercício
     final technical = ((exercise.skillLevel / 5) + (compound ? 0.25 : 0.0))
         .clamp(0.0, 1.0)
         .toDouble();
-    final mobility = pattern == 'push_vertical' || pattern == 'squat' ? 0.6 : 0.3;
-    final stability = compound ? 0.6 : 0.25;
-    final cardiovascular = pattern == 'carry' || exercise.isUnilateral ? 0.4 : 0.15;
+    
+    // Mobility demand: dinâmico baseado nos músculos primários e pattern
+    double mobility = 0.3; // base
+    if (pattern == 'push_vertical' || pattern == 'squat') mobility = 0.6;
+    if (exercise.primaryMuscles.contains('shoulders') && pattern == 'push_vertical') mobility = 0.7;
+    if (exercise.primaryMuscles.contains('hip_flexors')) mobility = 0.5;
+    if (exercise.isUnilateral) mobility += 0.1;
+    
+    // Stability demand: dinâmico baseado em equipamento e category
+    double stability = compound ? 0.6 : 0.25;
+    if (exercise.equipment.contains('barbell')) stability += 0.1;
+    if (exercise.equipment.contains('dumbbell')) stability += 0.05;
+    if (exercise.equipment.contains('machine')) stability -= 0.2;
+    if (exercise.equipment.contains('cable')) stability -= 0.1;
+    if (exercise.isUnilateral) stability += 0.15;
+    
+    // Cardiovascular demand: dinâmico baseado em pattern e unilateralidade
+    double cardiovascular = 0.15;
+    if (pattern == 'carry') cardiovascular = 0.5;
+    if (exercise.isUnilateral) cardiovascular = 0.35;
+    if (pattern == 'squat' && compound) cardiovascular = 0.25;
+    if (pattern == 'hinge' && compound) cardiovascular = 0.2;
+    
+    // Recovery cost: dinâmico baseado nos metadados do exercício
     final recovery = ((exercise.spinalLoad +
                 exercise.shoulderStress +
                 exercise.kneeStress +
@@ -102,15 +125,16 @@ class ExerciseDna {
       capabilities: capabilities,
       joints: joints,
       technicalDemand: technical,
-      mobilityDemand: mobility,
-      stabilityDemand: stability,
-      cardiovascularDemand: cardiovascular,
+      mobilityDemand: mobility.clamp(0.0, 1.0).toDouble(),
+      stabilityDemand: stability.clamp(0.0, 1.0).toDouble(),
+      cardiovascularDemand: cardiovascular.clamp(0.0, 1.0).toDouble(),
       recoveryCost: recovery,
       cautionContexts: [
         if (exercise.shoulderStress >= 0.7) 'shoulder_load',
         if (exercise.kneeStress >= 0.7) 'knee_load',
         if (exercise.spinalLoad >= 0.7) 'spinal_load',
         if (exercise.skillLevel >= 4) 'high_technical_demand',
+        if (exercise.isUnilateral) 'unilateral_balance_demand',
       ],
     );
   }

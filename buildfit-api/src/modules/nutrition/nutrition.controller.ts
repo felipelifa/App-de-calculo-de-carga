@@ -2,11 +2,11 @@ import { Controller, Get, Post, Put, Delete, Param, Query, Body, UseGuards } fro
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { NutritionService } from './nutrition.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { FirebaseAuthGuard } from '../../common/guards/firebase-auth.guard';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @ApiTags('nutrition')
 @Controller('nutrition')
-@UseGuards(FirebaseAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class NutritionController {
   constructor(private nutritionService: NutritionService) {}

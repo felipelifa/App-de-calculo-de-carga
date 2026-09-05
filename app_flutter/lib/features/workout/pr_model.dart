@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 // ─────────────────────────────────────────────
 // Modelo de Personal Record (PR)
 // ─────────────────────────────────────────────
@@ -30,26 +28,32 @@ class PersonalRecord {
     required this.updatedAt,
   });
 
-  factory PersonalRecord.fromDoc(DocumentSnapshot doc) {
-    final d = doc.data() as Map<String, dynamic>;
+  static DateTime _readDate(dynamic value) {
+    if (value is DateTime) return value;
+    if (value is String) return DateTime.tryParse(value) ?? DateTime.now();
+    return DateTime.now();
+  }
+
+  factory PersonalRecord.fromMap(Map<String, dynamic> d) {
     return PersonalRecord(
-      exerciseId: doc.id,
+      exerciseId: d['exerciseId'] as String? ?? '',
       exerciseName: d['exerciseName'] as String? ?? '',
       muscleGroup: d['muscleGroup'] as String? ?? '',
       maxWeight: (d['maxWeight'] as num?)?.toDouble() ?? 0,
       maxReps: (d['maxReps'] as num?)?.toInt() ?? 0,
       maxVolume: (d['maxVolume'] as num?)?.toDouble() ?? 0,
-      updatedAt: (d['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      updatedAt: _readDate(d['updatedAt']),
     );
   }
 
   Map<String, dynamic> toMap() => {
+        'exerciseId': exerciseId,
         'exerciseName': exerciseName,
         'muscleGroup': muscleGroup,
         'maxWeight': maxWeight,
         'maxReps': maxReps,
         'maxVolume': maxVolume,
-        'updatedAt': FieldValue.serverTimestamp(),
+        'updatedAt': DateTime.now().toIso8601String(),
       };
 
   /// Cria uma versão atualizada se os novos valores forem PRs

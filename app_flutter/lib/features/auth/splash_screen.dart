@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import '../../core/services/auth_service.dart';
 import '../../shared/theme/app_theme.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,10 +20,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _navigateWhenReady() async {
-    // Aguarda no máximo 1s para o Firebase Auth resolver o estado inicial
-    // Se resolver antes, navega imediatamente
+    final authService = context.read<AuthService>();
+
+    // Aguarda no máximo 1s para o AuthService resolver o estado inicial
     final completer = Future.any([
-      FirebaseAuth.instance.authStateChanges().first,
+      authService.authStateChanges.first,
       Future.delayed(const Duration(milliseconds: 800)),
     ]);
 
@@ -34,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (!mounted) return;
 
-    final user = FirebaseAuth.instance.currentUser;
+    final user = authService.currentUser;
     if (user != null) {
       context.go('/dashboard');
     } else {

@@ -19,12 +19,14 @@ class WarmupScreen extends StatefulWidget {
   final String sessionId;
   final String sessionName;
   final List<Map<String, dynamic>> prescribedExercises;
+  final String? dupPhase;
 
   const WarmupScreen({
     super.key,
     required this.sessionId,
     required this.sessionName,
     required this.prescribedExercises,
+    this.dupPhase,
   });
 
   @override
@@ -203,6 +205,7 @@ class _WarmupScreenState extends State<WarmupScreen>
       sessionId: widget.sessionId,
       sessionName: widget.sessionName,
       prescribedExercises: widget.prescribedExercises,
+      dupPhase: widget.dupPhase,
     );
     context.go('/workout');
   }

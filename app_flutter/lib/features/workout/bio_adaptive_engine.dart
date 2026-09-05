@@ -1,7 +1,9 @@
 import 'prescribed_workout_model.dart';
+import 'training_readiness.dart';
 
-/// 🧬 BIO-ADAPTIVE ENGINE v6.0
+/// 🧬 BIO-ADAPTIVE ENGINE v7.0
 /// O "Organismo Digital" que simula fadiga e adaptação.
+/// Integrado com DailyReadiness para unificar fonte de verdade.
 class BioAdaptiveEngine {
   
   // Limites de fadiga para intervenção (0.0 a 1.0)
@@ -9,11 +11,10 @@ class BioAdaptiveEngine {
   static const double maxJointStressThreshold = 0.75;
 
   /// Calcula o "Índice de Prontidão" (Readiness Score) do usuário.
-  /// Baseado no acúmulo de fadiga das últimas sessões e aderência.
+  /// Combina fadiga acumulada das sessões com DailyReadiness.
   static BioReadiness calculateReadiness({
     required List<PrescribedSession> recentHistory,
-    required double sleepQualityScore, // 1.0 (Ótimo) a 0.0 (Péssimo)
-    required double stressLevelScore,  // 1.0 (Baixo) a 0.0 (Alto)
+    required DailyReadiness dailyReadiness,
   }) {
     double accumulatedCns = 0;
     double accumulatedSpinal = 0;
@@ -22,7 +23,17 @@ class BioAdaptiveEngine {
 
     // Analisa as últimas 3 sessões (janela de fadiga aguda)
     final sessionsToAnalyze = recentHistory.take(3).toList();
-    if (sessionsToAnalyze.isEmpty) return const BioReadiness();
+    
+    // Se não há histórico, usar apenas DailyReadiness
+    if (sessionsToAnalyze.isEmpty) {
+      return BioReadiness(
+        score: dailyReadiness.volumeMultiplier,
+        status: _statusFromReadiness(dailyReadiness),
+        recommendation: _recommendationFromReadiness(dailyReadiness),
+        cnsFatigue: 0.0,
+        jointStress: 0.0,
+      );
+    }
 
     for (var session in sessionsToAnalyze) {
       accumulatedCns += session.fatigue.cnsLoad;
@@ -33,28 +44,54 @@ class BioAdaptiveEngine {
 
     // Médias normalizadas (dividir pelo número real de sessões analisadas)
     final count = sessionsToAnalyze.length;
-    final avgCns = (accumulatedCns / count) * (1.2 - sleepQualityScore);
+    // Multiplicador de fadiga baseado no sono e estresse (DailyReadiness)
+    final sleepMultiplier = 1.0 + (1.0 - dailyReadiness.sleepScore) * 0.4;
+    final stressMultiplier = 1.0 + (1.0 - dailyReadiness.stressScore) * 0.3;
+    final avgCns = (accumulatedCns / count) * sleepMultiplier * stressMultiplier;
     final avgJoint = (accumulatedSpinal + accumulatedShoulder + accumulatedKnee) / (count * 3);
 
-    // Determina o estado
+    // Determina o estado combinando fadiga acumulada e DailyReadiness
     BioStatus status = BioStatus.optimal;
     String recommendation = "Plano ideal mantido.";
 
     if (avgCns > maxCnsLoadThreshold || avgJoint > maxJointStressThreshold) {
       status = BioStatus.recovering;
       recommendation = "Sistema detectou fadiga acumulada. Reduzindo volume acessório.";
-    } else if (sleepQualityScore < 0.4 || stressLevelScore < 0.4) {
+    } else if (dailyReadiness.status == 'recover') {
       status = BioStatus.fragile;
       recommendation = "Fatores externos de stress detectados. Priorizando intensidade controlada.";
+    } else if (dailyReadiness.status == 'adapt') {
+      status = BioStatus.recovering;
+      recommendation = "Readiness moderada. Ajustando volume conforme necessário.";
     }
 
+    // Score combinado: 60% DailyReadiness + 40% fadiga acumulada
+    final fatigueScore = (1.0 - ((avgCns + avgJoint) / 2)).clamp(0.0, 1.0);
+    final combinedScore = (dailyReadiness.volumeMultiplier * 0.6 + fatigueScore * 0.4).clamp(0.0, 1.0);
+
     return BioReadiness(
-      score: (1.0 - ((avgCns + avgJoint) / 2)).clamp(0.0, 1.0),
+      score: combinedScore,
       status: status,
       recommendation: recommendation,
       cnsFatigue: avgCns.clamp(0.0, 1.0),
       jointStress: avgJoint.clamp(0.0, 1.0),
     );
+  }
+
+  static BioStatus _statusFromReadiness(DailyReadiness readiness) {
+    if (readiness.status == 'recover') return BioStatus.fragile;
+    if (readiness.status == 'adapt') return BioStatus.recovering;
+    return BioStatus.optimal;
+  }
+
+  static String _recommendationFromReadiness(DailyReadiness readiness) {
+    if (readiness.status == 'recover') {
+      return "Readiness baixa. Considere reduzir volume ou intensidade.";
+    }
+    if (readiness.status == 'adapt') {
+      return "Readiness moderada. Ajustando conforme necessário.";
+    }
+    return "Pronto para o estímulo ideal.";
   }
 
   /// Intervém na prescrição de forma "silenciosa" se as tendências indicarem risco.

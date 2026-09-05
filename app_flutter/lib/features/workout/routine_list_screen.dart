@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/services/auth_service.dart';
+import '../../core/services/api_service.dart';
 import '../../shared/theme/app_theme.dart';
 import 'workout_routine_model.dart';
-import 'routine_service.dart';
 import 'workout_provider.dart';
-
-// ─────────────────────────────────────────────
-// Tela de Listagem de Rotinas (Templates)
-// ─────────────────────────────────────────────
 
 class RoutineListScreen extends StatefulWidget {
   const RoutineListScreen({super.key});
@@ -29,9 +24,45 @@ class _RoutineListScreenState extends State<RoutineListScreen> {
   }
 
   void _load() {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = context.read<AuthService>().currentUser?.id;
     if (uid != null) {
-      _future = RoutineService(db: FirebaseFirestore.instance, uid: uid).loadAll();
+      _future = _loadRoutinesFromApi();
+    }
+  }
+
+  Future<List<WorkoutRoutine>> _loadRoutinesFromApi() async {
+    try {
+      final api = ApiService();
+      final response = await api.get('/routines');
+      final list = (response as List<dynamic>?) ?? [];
+      return list.map((item) {
+        final map = item as Map<String, dynamic>;
+        return WorkoutRoutine.fromMap(map['id'] as String? ?? '', map);
+      }).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<void> _saveRoutine(WorkoutRoutine routine) async {
+    try {
+      final api = ApiService();
+      if (routine.id.isEmpty || routine.id == 'new') {
+        await api.post('/routines', body: routine.toMap());
+      } else {
+        await api.put('/routines/${routine.id}', body: routine.toMap());
+      }
+    } catch (e) {
+      // Handle error
+    }
+  }
+
+  Future<void> _deleteRoutine(String routineId) async {
+    try {
+      final api = ApiService();
+      await api.delete('/routines/$routineId');
+    } catch (e) {
+      // Handle error
     }
   }
 
@@ -70,7 +101,11 @@ class _RoutineListScreenState extends State<RoutineListScreen> {
             itemCount: routines.length,
             itemBuilder: (context, index) {
               final r = routines[index];
-              return _RoutineCard(routine: r, onRefresh: () => setState(_load));
+              return _RoutineCard(
+                routine: r,
+                onRefresh: () => setState(_load),
+                onDelete: _deleteRoutine,
+              );
             },
           );
         },
@@ -86,7 +121,6 @@ class _RoutineListScreenState extends State<RoutineListScreen> {
   }
 
   void _createNewRoutine(BuildContext context) {
-    // Para simplificar, vamos usar um dialog rápido para o nome e depois abrir edição
     final ctrl = TextEditingController();
     showDialog(
       context: context,
@@ -107,20 +141,16 @@ class _RoutineListScreenState extends State<RoutineListScreen> {
           ElevatedButton(
             onPressed: () async {
               if (ctrl.text.isEmpty) return;
-              final uid = FirebaseAuth.instance.currentUser?.uid;
-              if (uid != null) {
-                final routine = WorkoutRoutine(
-                  id: '',
-                  name: ctrl.text.trim(),
-                  exercises: [],
-                  createdAt: DateTime.now(),
-                );
-                await RoutineService(db: FirebaseFirestore.instance, uid: uid)
-                    .save(routine);
-                if (mounted) {
-                  Navigator.pop(ctx);
-                  setState(_load);
-                }
+              final routine = WorkoutRoutine(
+                id: '',
+                name: ctrl.text.trim(),
+                exercises: [],
+                createdAt: DateTime.now(),
+              );
+              await _saveRoutine(routine);
+              if (mounted) {
+                Navigator.pop(ctx);
+                setState(_load);
               }
             },
             child: const Text('Criar'),
@@ -134,8 +164,13 @@ class _RoutineListScreenState extends State<RoutineListScreen> {
 class _RoutineCard extends StatelessWidget {
   final WorkoutRoutine routine;
   final VoidCallback onRefresh;
+  final Future<void> Function(String) onDelete;
 
-  const _RoutineCard({required this.routine, required this.onRefresh});
+  const _RoutineCard({
+    required this.routine,
+    required this.onRefresh,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -233,13 +268,9 @@ class _RoutineCard extends StatelessWidget {
               child: const Text('Não')),
           TextButton(
             onPressed: () async {
-              final uid = FirebaseAuth.instance.currentUser?.uid;
-              if (uid != null) {
-                Navigator.pop(ctx);
-                await RoutineService(db: FirebaseFirestore.instance, uid: uid)
-                    .delete(routine.id);
-                onRefresh();
-              }
+              Navigator.pop(ctx);
+              await onDelete(routine.id);
+              onRefresh();
             },
             child: const Text('Excluir', style: TextStyle(color: AppTheme.danger)),
           ),

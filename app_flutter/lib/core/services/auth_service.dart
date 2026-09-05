@@ -1,104 +1,123 @@
 import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'api_service.dart';
+import 'supabase_service.dart';
 
-class AuthService extends ChangeNotifier {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final ApiService _api = ApiService();
+class AuthUser {
+  final String id;
+  final String email;
+  final String name;
+  final bool isPro;
 
-  StreamSubscription<User?>? _authSub;
+  AuthUser({
+    required this.id,
+    required this.email,
+    required this.name,
+    this.isPro = false,
+  });
 
-  AuthService() {
-    _authSub = _auth.authStateChanges().listen((_) {
-      notifyListeners();
-    });
+  factory AuthUser.fromJson(Map<String, dynamic> json) {
+    return AuthUser(
+      id: json['id'] ?? '',
+      email: json['email'] ?? '',
+      name: json['name'] ?? '',
+      isPro: json['isPro'] ?? false,
+    );
   }
 
-  User? get currentUser => _auth.currentUser;
+  factory AuthUser.fromSupabase(String id, String email, String? name) {
+    return AuthUser(
+      id: id,
+      email: email,
+      name: name ?? email.split('@').first,
+      isPro: false,
+    );
+  }
+}
 
-  Stream<User?> get authStateChanges => _auth.authStateChanges();
+class AuthService extends ChangeNotifier {
+  final SupabaseService _supabase = SupabaseService();
+  final StreamController<AuthUser?> _authController = StreamController<AuthUser?>.broadcast();
 
-  Future<void> login(String email, String password) async {
+  AuthUser? _currentUser;
+  bool _initialized = false;
+
+  AuthService() {
+    _tryAutoLogin();
+  }
+
+  AuthUser? get currentUser => _currentUser;
+  bool get isAuthenticated => _currentUser != null;
+  Stream<AuthUser?> get authStateChanges => _authController.stream;
+
+  Future<void> _tryAutoLogin() async {
+    if (_initialized) return;
+    _initialized = true;
+
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-
-      // Sincronizar com backend próprio
-      final token = await _auth.currentUser?.getIdToken();
-      if (token != null) {
-        try {
-          await _api.post('/auth/validate', body: {'token': token});
-        } catch (_) {
-          // Backend pode não estar disponível, login local funciona
-        }
+      final user = _supabase.currentUser;
+      if (user != null) {
+        _currentUser = AuthUser.fromSupabase(
+          user.id,
+          user.email ?? '',
+          user.userMetadata?['name'],
+        );
+        _authController.add(_currentUser);
+        notifyListeners();
       }
-    } catch (e) {
-      throw Exception(_handleAuthError(e));
+    } catch (_) {
+      _currentUser = null;
+      _authController.add(null);
+      notifyListeners();
     }
   }
 
-  Future<void> register(String name, String email, String password) async {
+  Future<void> login(String email, String password) async {
     try {
-      final cred = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      await cred.user?.updateDisplayName(name);
-
-      if (cred.user != null) {
-        // Criar no Firestore (legado) E no backend próprio
-        await _db.collection('users').doc(cred.user!.uid).set({
-          'name': name,
-          'email': email,
-          'createdAt': FieldValue.serverTimestamp(),
-        });
-
-        // Registrar no backend próprio
-        try {
-          await _api.post('/auth/register', body: {
-            'name': name,
-            'email': email,
-            'password': password,
-          });
-        } catch (_) {
-          // Backend pode não estar disponível
-        }
+      final response = await _supabase.signIn(email, password);
+      if (response.user != null) {
+        _currentUser = AuthUser.fromSupabase(
+          response.user!.id,
+          response.user!.email ?? '',
+          response.user!.userMetadata?['name'],
+        );
+        _authController.add(_currentUser);
+        notifyListeners();
+      } else {
+        throw Exception('Login failed');
       }
     } catch (e) {
-      throw Exception(_handleAuthError(e));
+      rethrow;
+    }
+  }
+
+  Future<void> register(String email, String password, String name) async {
+    try {
+      final response = await _supabase.signUp(email, password, name);
+      if (response.user != null) {
+        _currentUser = AuthUser.fromSupabase(
+          response.user!.id,
+          response.user!.email ?? '',
+          name,
+        );
+        _authController.add(_currentUser);
+        notifyListeners();
+      } else {
+        throw Exception('Registration failed');
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 
   Future<void> logout() async {
-    await _auth.signOut();
+    await _supabase.signOut();
+    _currentUser = null;
+    _authController.add(null);
+    notifyListeners();
   }
 
-  @override
   void dispose() {
-    _authSub?.cancel();
+    _authController.close();
     super.dispose();
-  }
-
-  String _handleAuthError(dynamic error) {
-    if (error is FirebaseAuthException) {
-      switch (error.code) {
-        case 'user-not-found':
-        case 'wrong-password':
-        case 'invalid-credential':
-          return 'E-mail ou senha inválidos.';
-        case 'email-already-in-use':
-          return 'Este e-mail já está em uso.';
-        case 'weak-password':
-          return 'A senha é muito fraca.';
-        case 'invalid-email':
-          return 'E-mail com formato inválido.';
-        default:
-          return 'Erro de autenticação: ${error.message}';
-      }
-    }
-    return 'Erro desconhecido. Tente novamente.';
   }
 }

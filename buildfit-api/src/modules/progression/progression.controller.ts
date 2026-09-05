@@ -2,11 +2,11 @@ import { Controller, Get, Post, Put, Body, Param, Query, UseGuards } from '@nest
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { ProgressionService } from './progression.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { FirebaseAuthGuard } from '../../common/guards/firebase-auth.guard';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @ApiTags('progression')
 @Controller('progression')
-@UseGuards(FirebaseAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class ProgressionController {
   constructor(private progressionService: ProgressionService) {}

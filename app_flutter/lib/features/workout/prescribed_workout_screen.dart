@@ -523,15 +523,24 @@ class _WorkoutSessionsSheet extends StatelessWidget {
                          height: 54,
                          child: ElevatedButton(
                            onPressed: () {
-                             // Passa pelo aquecimento antes de iniciar
-                             final router = GoRouter.of(context);
-                             Navigator.of(context).pop();
-                             router.go('/warmup', extra: {
-                               'sessionId': session.id,
-                               'sessionName': session.name,
-                               'prescribedExercises': session.exercises.map((e) => e.toMap()).toList(),
-                             });
-                           },
+                              // Passa pelo aquecimento antes de iniciar
+                              final router = GoRouter.of(context);
+                              Navigator.of(context).pop();
+                              
+                              // Determina a fase DUP baseada no objetivo
+                              final obj = session.objective.toLowerCase();
+                              String? dupPhase;
+                              if (obj.contains('força')) dupPhase = 'Força';
+                              else if (obj.contains('hipertrofia')) dupPhase = 'Hipertrofia';
+                              else if (obj.contains('resistência')) dupPhase = 'Resistência';
+                              
+                              router.go('/warmup', extra: {
+                                'sessionId': session.id,
+                                'sessionName': session.name,
+                                'prescribedExercises': session.exercises.map((e) => e.toMap()).toList(),
+                                'dupPhase': dupPhase,
+                              });
+                            },
                            style: ElevatedButton.styleFrom(
                              backgroundColor: neon,
                              foregroundColor: Colors.black,

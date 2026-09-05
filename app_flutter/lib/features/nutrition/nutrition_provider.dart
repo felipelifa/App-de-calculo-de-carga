@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
+import '../../core/services/api_service.dart';
 import '../workout/workout_profile_model.dart';
 import 'nutrition_profile_model.dart';
 import 'meal_model.dart';
@@ -12,12 +11,10 @@ import 'nutrition_engine.dart';
 import 'bio_intelligence.dart';
 
 class NutritionProvider extends ChangeNotifier {
-  final FirebaseFirestore _db;
-  final FirebaseAuth _auth;
+  final ApiService _api;
 
-  NutritionProvider({FirebaseFirestore? db, FirebaseAuth? auth})
-      : _db = db ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
+  NutritionProvider({ApiService? api})
+      : _api = api ?? ApiService();
 
   NutritionProfile? _profile;
   List<MealEntry> _todayMeals = [];
@@ -26,6 +23,7 @@ class NutritionProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _lastError;
   bool _isDisposed = false;
+  Timer? _pollTimer;
 
   NutritionProfile? get profile => _profile;
   List<MealEntry> get todayMeals => _todayMeals;
@@ -34,57 +32,45 @@ class NutritionProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get lastError => _lastError;
 
-  // Macro Totals for the selected day
   double get consumedCalories => selectedDayMeals.fold(0, (sum, m) => sum + m.calories);
   double get remainingCalories => targetCalories - consumedCalories;
   double get consumedProtein => selectedDayMeals.fold(0, (sum, m) => sum + m.protein);
   double get consumedCarb => selectedDayMeals.fold(0, (sum, m) => sum + m.carb);
   double get consumedFat => selectedDayMeals.fold(0, (sum, m) => sum + m.fat);
 
-  // --- Atributos de Gamificação / Microbiota ---
   int _weeklyPlantScore = 0;
   int get weeklyPlantScore => _weeklyPlantScore;
   Set<String> _weeklyPlantSpecies = {};
   Set<String> get weeklyPlantSpecies => _weeklyPlantSpecies;
 
   Future<void> _fetchWeeklyPlants() async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
     try {
       final now = DateTime.now();
       final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
       final startStr = DateFormat('yyyy-MM-dd').format(startOfWeek);
-      // Busca a pasta de logs onde a data no nome id (yyyy-MM-dd) é >= startStr
-      // O firestore snapshot que você usa salva os meals dentro dos docs de logs.
-      // Ops, estruturalmente a collection 'logs' possui os docs yyyy-MM-dd com a source 'meals' em uma subcollection. 
-      // Não temos collectionGroup query aqui configurado, então vou iterar os 7 dias passados/até hoje
+
+      final result = await _api.get('/nutrition/weekly-plants', queryParams: {
+        'startDate': startStr,
+      });
+
       _weeklyPlantSpecies.clear();
-      for (int i = 0; i < now.weekday; i++) {
-        final dKey = _todayFormat(startOfWeek.add(Duration(days: i)));
-        final snap = await _db.collection('users/$uid/nutrition/logs/$dKey/meals').get();
-        for (var doc in snap.docs) {
-          final m = MealEntry.fromMap(doc.data(), doc.id);
-          if (BioIntelligence.isPlantSpecies(m.foodName, '')) {
-            _weeklyPlantSpecies.add(BioIntelligence.extractPlantSpeciesRoot(m.foodName));
-          }
-        }
+      final species = result['species'] as List<dynamic>? ?? [];
+      for (var s in species) {
+        _weeklyPlantSpecies.add(s as String);
       }
       _weeklyPlantScore = _weeklyPlantSpecies.length;
     } catch (_) {}
   }
 
-  // --- Atributos de Monitoramento ---
   double get adherenceScore => _profile?.adherenceScore ?? 1.0;
   int get fatigueLevel => _profile?.nutritionalFatigueLevel ?? 0;
 
-  // --- Hidratação Inteligente ---
   int get waterTarget => 2500;
   int get waterConsumed => _profile?.dailyWater[_selectedWeekday] ?? 0;
 
   String get smartInsight {
     if (_profile == null) return "Configure seu perfil.";
     
-    // Check if workout happened today
     final now = DateTime.now();
     final isWorkoutToday = _profile!.lastWorkoutDate != null &&
         _profile!.lastWorkoutDate!.year == now.year &&
@@ -106,7 +92,6 @@ class NutritionProvider extends ChangeNotifier {
     return "Mantenha a meta para atingir seu objetivo.";
   }
 
-  // --- Getters de Meta baseados no estado (Daily Selector ou Bio-Gestão) ---
   int get targetCalories {
     if (_profile == null) return 2000;
     if (_profile!.useDailyGoals) return _profile!.dailySpecificGoals[_selectedWeekday]?.calories ?? 2000;
@@ -131,7 +116,6 @@ class NutritionProvider extends ChangeNotifier {
     return _profile!.weeklyGoals[_selectedWeekday]?.fat ?? _profile!.targetFat;
   }
 
-  // Aliases for dashboard compatibility
   double get activeTargetProtein => targetProtein;
   double get activeTargetCarb => targetCarb;
   double get activeTargetFat => targetFat;
@@ -142,18 +126,14 @@ class NutritionProvider extends ChangeNotifier {
   bool get isCarbAdjusted => targetCarb != (_profile?.targetCarb ?? 200);
   bool get isFatAdjusted => targetFat != (_profile?.targetFat ?? 66);
 
-  // --- Actions ---
-
   Future<void> loadExistingProfile() async {
     if (_isLoading) return;
     _isLoading = true;
     notifyListeners();
     try {
-      final uid = _auth.currentUser?.uid;
-      if (uid == null) return;
-      final doc = await _db.doc('users/$uid/nutrition/settings').get();
-      if (doc.exists) {
-        _profile = NutritionProfile.fromMap(doc.data()!, doc.id);
+      final result = await _api.get('/nutrition/settings');
+      if (result != null && result is Map<String, dynamic>) {
+        _profile = NutritionProfile.fromMap(result, result['id'] as String? ?? 'current');
         await loadToday();
         await loadFavorites();
         await loadSelectedDay();
@@ -168,16 +148,12 @@ class NutritionProvider extends ChangeNotifier {
   }
 
   Future<void> initFromProfile(WorkoutProfile wp) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-    
-    // Se já temos perfil, não fazer nada
     if (_profile != null) return;
     
     _isLoading = true;
     notifyListeners();
     try {
-      _profile = NutritionEngine.generateInitialProfile(wp, id: uid);
+      _profile = NutritionEngine.generateInitialProfile(wp, id: 'current');
       await saveSettings();
       await loadToday();
       await loadFavorites();
@@ -192,9 +168,8 @@ class NutritionProvider extends ChangeNotifier {
   }
 
   Future<void> saveSettings() async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null || _profile == null) return;
-    await _db.doc('users/$uid/nutrition/settings').set(_profile!.toMap(), SetOptions(merge: true));
+    if (_profile == null) return;
+    await _api.put('/nutrition/settings', body: _profile!.toMap());
   }
 
   Future<void> selectWeekday(int weekday) async {
@@ -204,48 +179,19 @@ class NutritionProvider extends ChangeNotifier {
   }
 
   Future<void> addMeal(MealEntry entry) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
     final dateKey = _todayFormat(entry.loggedAt);
     
-    // 1. Save meal to logs
-    await _db.collection('users/$uid/nutrition/logs/$dateKey/meals').add(entry.toMap());
-    
-    // 2. Learning Loop: Update popularity and ensure existence in global library
-    final globalRef = _db.collection('foods').doc(entry.foodId);
-    
-    // We use set with merge and increment to handle both new and existing global foods
-    await globalRef.set({
-      'name': entry.foodName,
-      'caloriesPer100g': entry.calories / (entry.portionG / 100),
-      'proteinPer100g': entry.protein / (entry.portionG / 100),
-      'carbPer100g': entry.carb / (entry.portionG / 100),
-      'fatPer100g': entry.fat / (entry.portionG / 100),
-      'timesConsumed': FieldValue.increment(1),
-      'lastConsumedAt': FieldValue.serverTimestamp(),
-    }, SetOptions(merge: true));
-
-    // 3. Update User-Specific Metrics for immediate "Recents" access
-    await _db.collection('users/$uid/nutrition/recent_foods').doc(entry.foodId).set({
-      'name': entry.foodName,
-      'caloriesPer100g': entry.calories / (entry.portionG / 100),
-      'proteinPer100g': entry.protein / (entry.portionG / 100),
-      'carbPer100g': entry.carb / (entry.portionG / 100),
-      'fatPer100g': entry.fat / (entry.portionG / 100),
-      'lastConsumedAt': FieldValue.serverTimestamp(),
-      'timesConsumedUser': FieldValue.increment(1),
-    }, SetOptions(merge: true));
+    await _api.post('/nutrition/meals', body: {
+      ...entry.toMap(),
+      'dateKey': dateKey,
+    });
 
     _triggerRecalibration();
     await loadSelectedDay();
   }
 
   Future<void> removeMeal(String mealId) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-    final dateKey = _todayFormat(DateTime.now()); // Assuming removal from today for simplicity or need selected date?
-    // In a real app we'd use the selected date key
-    await _db.doc('users/$uid/nutrition/logs/$dateKey/meals/$mealId').delete();
+    await _api.delete('/nutrition/meals/$mealId');
     _triggerRecalibration();
     await loadSelectedDay();
     await _fetchWeeklyPlants();
@@ -254,7 +200,6 @@ class NutritionProvider extends ChangeNotifier {
   void _triggerRecalibration() {
     if (_profile == null) return;
     
-    // Calcula calorias de besteira contabilizadas hoje
     final cheatMealCalories = _todayMeals.where((m) => m.isCheatMeal).fold(0.0, (sum, m) => sum + m.calories);
 
     final updated = NutritionEngine.recalibrateRemainingBudget(
@@ -291,7 +236,6 @@ class NutritionProvider extends ChangeNotifier {
   }) {
     if (_profile == null || !_profile!.dynamicAdaptationEnabled) return;
     
-    // Register the workout first
     syncWorkout(name: sessionName, date: DateTime.now());
 
     int bonusCals = (durationMinutes * 5) + (totalVolume / 1000 * 50).round();
@@ -320,7 +264,6 @@ class NutritionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   void resetDailyGoal(int weekday) {
     if (_profile == null) return;
     final goals = Map<int, DailyNutritionalGoal>.from(_profile!.weeklyGoals);
@@ -328,29 +271,25 @@ class NutritionProvider extends ChangeNotifier {
     if (existing != null) {
       goals[weekday] = existing.copyWith(isManual: false, label: 'Automático');
       _profile = _profile!.copyWith(weeklyGoals: goals);
-      _triggerRecalibration(); // Re-calcula baseado no status atual
+      _triggerRecalibration();
       saveSettings();
       notifyListeners();
     }
   }
 
   Future<void> copyMealFromPreviousDay(String mealType) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null || _profile == null) return;
+    if (_profile == null) return;
     final now = DateTime.now();
     final firstDayOfWeek = now.subtract(Duration(days: now.weekday - 1));
     final prevDateKey = _todayFormat(firstDayOfWeek.add(Duration(days: _selectedWeekday - 2)));
     final targetDateKey = _todayFormat(firstDayOfWeek.add(Duration(days: _selectedWeekday - 1)));
-    final snap = await _db.collection('users/$uid/nutrition/logs/$prevDateKey/meals').where('mealType', isEqualTo: mealType).get();
-    if (snap.docs.isEmpty) return;
-    final batch = _db.batch();
-    for (var doc in snap.docs) {
-      final newRef = _db.collection('users/$uid/nutrition/logs/$targetDateKey/meals').doc();
-      var data = doc.data();
-      data['loggedAt'] = Timestamp.now();
-      batch.set(newRef, data);
-    }
-    await batch.commit();
+
+    await _api.post('/nutrition/meals/copy', body: {
+      'fromDate': prevDateKey,
+      'toDate': targetDateKey,
+      'mealType': mealType,
+    });
+
     await loadSelectedDay();
   }
 
@@ -358,24 +297,24 @@ class NutritionProvider extends ChangeNotifier {
   bool isFoodFavorite(String id) => _favoriteFoodsIds.contains(id);
 
   Future<void> loadFavorites() async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-    final snap = await _db.collection('users/$uid/nutrition/favorite_foods').get();
-    _favoriteFoodsIds.clear();
-    for (var d in snap.docs) _favoriteFoodsIds.add(d.id);
-    notifyListeners();
+    try {
+      final result = await _api.get('/nutrition/favorite-foods');
+      final data = result['data'] as List<dynamic>? ?? [];
+      _favoriteFoodsIds.clear();
+      for (var d in data) {
+        final m = d as Map<String, dynamic>;
+        _favoriteFoodsIds.add(m['id'] as String? ?? '');
+      }
+      notifyListeners();
+    } catch (_) {}
   }
 
   Future<void> toggleFavoriteFood(FoodModel food) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-    final docRef = _db.collection('users/$uid/nutrition/favorite_foods').doc(food.id);
-    final doc = await docRef.get();
-    if (doc.exists) {
-      await docRef.delete();
+    if (_favoriteFoodsIds.contains(food.id)) {
+      await _api.delete('/nutrition/favorite-foods/${food.id}');
       _favoriteFoodsIds.remove(food.id);
     } else {
-      await docRef.set(food.toMap());
+      await _api.post('/nutrition/favorite-foods', body: food.toMap());
       _favoriteFoodsIds.add(food.id);
     }
     notifyListeners();
@@ -401,25 +340,56 @@ class NutritionProvider extends ChangeNotifier {
   }
 
   Future<void> loadSelectedDay() async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
     final now = DateTime.now();
     final firstDayOfWeek = now.subtract(Duration(days: now.weekday - 1));
     final dateKey = _todayFormat(firstDayOfWeek.add(Duration(days: _selectedWeekday - 1)));
-    final snap = await _db.collection('users/$uid/nutrition/logs/$dateKey/meals').get();
-    _selectedDayMeals = snap.docs.map((d) => MealEntry.fromMap(d.data(), d.id)).toList();
-    notifyListeners();
+
+    try {
+      final result = await _api.get('/nutrition/meals', queryParams: {
+        'date': dateKey,
+      });
+      final data = result['data'] as List<dynamic>? ?? [];
+      _selectedDayMeals = data.map((d) {
+        final m = d as Map<String, dynamic>;
+        return MealEntry.fromMap(m, m['id'] as String? ?? '');
+      }).toList();
+      notifyListeners();
+    } catch (_) {}
   }
 
-  StreamSubscription? _mealsSub;
   Future<void> loadToday() async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-    _mealsSub?.cancel();
-    _mealsSub = _db.collection('users/$uid/nutrition/logs/${_todayFormat(DateTime.now())}/meals').snapshots().listen((snap) {
-      _todayMeals = snap.docs.map((d) => MealEntry.fromMap(d.data(), d.id)).toList();
+    final dateKey = _todayFormat(DateTime.now());
+    try {
+      final result = await _api.get('/nutrition/meals', queryParams: {
+        'date': dateKey,
+      });
+      final data = result['data'] as List<dynamic>? ?? [];
+      _todayMeals = data.map((d) {
+        final m = d as Map<String, dynamic>;
+        return MealEntry.fromMap(m, m['id'] as String? ?? '');
+      }).toList();
       notifyListeners();
+    } catch (_) {}
+
+    _pollTimer?.cancel();
+    _pollTimer = Timer.periodic(const Duration(seconds: 30), (_) {
+      _refreshToday();
     });
+  }
+
+  Future<void> _refreshToday() async {
+    final dateKey = _todayFormat(DateTime.now());
+    try {
+      final result = await _api.get('/nutrition/meals', queryParams: {
+        'date': dateKey,
+      });
+      final data = result['data'] as List<dynamic>? ?? [];
+      _todayMeals = data.map((d) {
+        final m = d as Map<String, dynamic>;
+        return MealEntry.fromMap(m, m['id'] as String? ?? '');
+      }).toList();
+      notifyListeners();
+    } catch (_) {}
   }
 
   String _todayFormat(DateTime d) => DateFormat('yyyy-MM-dd').format(d);
@@ -427,7 +397,7 @@ class NutritionProvider extends ChangeNotifier {
   @override
   void dispose() {
     _isDisposed = true;
-    _mealsSub?.cancel();
+    _pollTimer?.cancel();
     super.dispose();
   }
 }

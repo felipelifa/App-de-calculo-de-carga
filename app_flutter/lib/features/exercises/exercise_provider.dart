@@ -1,32 +1,25 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'exercise_model.dart';
 import '../../core/data/exercise_library.dart';
 import '../../core/services/api_service.dart';
 
 class ExerciseProvider extends ChangeNotifier {
-  final FirebaseFirestore _db;
-  final FirebaseAuth _auth;
   final ApiService _api;
 
-  ExerciseProvider({FirebaseFirestore? db, FirebaseAuth? auth, ApiService? api})
-    : _db = db ?? FirebaseFirestore.instance,
-      _auth = auth ?? FirebaseAuth.instance,
-      _api = api ?? ApiService() {
+  ExerciseProvider({ApiService? api})
+    : _api = api ?? ApiService() {
     _init();
   }
 
   List<ExerciseModel> _allExercises = [];
   List<ExerciseModel> _apiExercises = [];
-  List<ExerciseModel> _firestoreExercises = [];
   final Map<String, ExerciseModel> _customExercises = {};
   String? _selectedMuscle;
   String _searchQuery = '';
   bool _isLoading = true;
   String? _error;
-  StreamSubscription<QuerySnapshot>? _sub;
+  Timer? _pollTimer;
 
   static const String baseGifUrl =
       'https://app-calculo-carga.vercel.app/api/gif?ts=2';
@@ -56,33 +49,15 @@ class ExerciseProvider extends ChangeNotifier {
   }
 
   void _init() {
-    // Carrega da biblioteca local primeiro
     _allExercises = List.from(exerciseLibrary);
     _isLoading = false;
     notifyListeners();
 
-    // Buscar do backend próprio
     _loadFromApi();
 
-    // Escutar Firestore como fallback
-    _sub = _db
-        .collection('exercises')
-        .orderBy('name')
-        .snapshots()
-        .listen(
-          (snap) {
-            _firestoreExercises = snap.docs.map(ExerciseModel.fromDoc).toList();
-            _rebuildExerciseList();
-            _isLoading = false;
-            _error = null;
-            notifyListeners();
-          },
-          onError: (e) {
-            _error = 'Não foi possível carregar a biblioteca remota.';
-            _isLoading = false;
-            notifyListeners();
-          },
-        );
+    _pollTimer = Timer.periodic(const Duration(minutes: 5), (_) {
+      _loadFromApi();
+    });
   }
 
   Future<void> _loadFromApi() async {
@@ -100,7 +75,6 @@ class ExerciseProvider extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      // Manter dados locais se API falhar
       debugPrint('API não disponível, usando dados locais: $e');
     }
   }
@@ -108,9 +82,6 @@ class ExerciseProvider extends ChangeNotifier {
   void _rebuildExerciseList() {
     final byId = <String, ExerciseModel>{};
     for (final exercise in exerciseLibrary) {
-      byId[exercise.id] = exercise;
-    }
-    for (final exercise in _firestoreExercises) {
       byId[exercise.id] = exercise;
     }
     for (final exercise in _apiExercises) {
@@ -134,9 +105,6 @@ class ExerciseProvider extends ChangeNotifier {
     required int repMax,
     String? gifUrl,
   }) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) throw Exception('Usuário não autenticado');
-
     final exercise = ExerciseModel(
       id: 'user_${DateTime.now().millisecondsSinceEpoch}',
       name: name,
@@ -147,30 +115,19 @@ class ExerciseProvider extends ChangeNotifier {
       gifUrl: gifUrl,
     );
 
-    // Salvar no backend próprio
-    try {
-      await _api.post('/exercises', body: {
-        'id': exercise.id,
-        'name': exercise.name,
-        'primaryMuscles': exercise.primaryMuscles,
-        'secondaryMuscles': exercise.secondaryMuscles,
-        'movementPattern': 'isolation',
-        'equipment': exercise.equipment,
-        'environment': ['gym'],
-        'category': 'isolation',
-        'difficulty': 'beginner',
-        'repRangeMin': exercise.repRangeMin,
-        'repRangeMax': exercise.repRangeMax,
-      });
-    } catch (_) {
-      // Fallback para Firestore
-    }
-
-    // Salvar no Firestore (legado)
-    await _db
-        .collection('users/$uid/exercises')
-        .doc(exercise.id)
-        .set(exercise.toMap());
+    await _api.post('/exercises', body: {
+      'id': exercise.id,
+      'name': exercise.name,
+      'primaryMuscles': exercise.primaryMuscles,
+      'secondaryMuscles': exercise.secondaryMuscles,
+      'movementPattern': 'isolation',
+      'equipment': exercise.equipment,
+      'environment': ['gym'],
+      'category': 'isolation',
+      'difficulty': 'beginner',
+      'repRangeMin': exercise.repRangeMin,
+      'repRangeMax': exercise.repRangeMax,
+    });
 
     _customExercises[exercise.id] = exercise;
     _rebuildExerciseList();
@@ -200,7 +157,6 @@ class ExerciseProvider extends ChangeNotifier {
     }
   }
 
-  // URL do proxy GIF no Vercel (funciona em mobile e web)
   static const String _vercelGifProxy = 'https://apptreino-cyan.vercel.app/api/gif';
 
   String? getEffectiveGifUrl(ExerciseModel ex) {
@@ -247,40 +203,27 @@ class ExerciseProvider extends ChangeNotifier {
   }
 
   Future<List<VolumeHistoryEntry>> getExerciseHistory(String exerciseId) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return [];
-
-    // Tentar backend próprio
     try {
       final result = await _api.get('/progression/volume-history', queryParams: {
         'exerciseId': exerciseId,
       });
 
-      return (result as List<dynamic>)
-          .map((e) => VolumeHistoryEntry.fromMap(e))
+      final data = result['data'] as List<dynamic>? ?? result as List<dynamic>? ?? [];
+      return data
+          .map((e) => VolumeHistoryEntry.fromMap(e as Map<String, dynamic>))
           .toList();
     } catch (_) {
-      // Fallback para Firestore
-    }
-
-    try {
-      final snap = await _db
-          .collection('users/$uid/exercises/$exerciseId/history')
-          .orderBy('weekNumber', descending: true)
-          .limit(10)
-          .get();
-      return snap.docs
-          .map((d) => VolumeHistoryEntry.fromMap(d.data()))
-          .toList();
-    } catch (e) {
-      debugPrint('Erro ao obter histórico: $e');
       return [];
     }
   }
 
+  Future<void> refresh() async {
+    await _loadFromApi();
+  }
+
   @override
   void dispose() {
-    _sub?.cancel();
+    _pollTimer?.cancel();
     super.dispose();
   }
 }

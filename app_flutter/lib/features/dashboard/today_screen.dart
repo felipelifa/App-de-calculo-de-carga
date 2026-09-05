@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../../core/services/auth_service.dart';
 import '../../shared/theme/app_theme.dart';
 import '../workout/workout_profile_provider.dart';
 import '../nutrition/nutrition_provider.dart';
 import '../workout/workout_provider.dart';
 import '../../core/services/integration_service.dart';
 import '../../core/services/coach_service.dart';
-
-// ─────────────────────────────────────────────
-// Tela "Hoje" — Dashboard Simplificado
-// Foco em ação, não em gráficos
-// ─────────────────────────────────────────────
 
 class TodayScreen extends StatefulWidget {
   const TodayScreen({super.key});
@@ -39,49 +33,33 @@ class _TodayScreenState extends State<TodayScreen> {
   }
 
   Future<void> _loadData() async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = context.read<AuthService>().currentUser?.id;
     if (uid == null) return;
 
     try {
-      // Carregar dados do dia
       final now = DateTime.now();
       final weekNumber = (now.difference(DateTime(now.year, 1, 1)).inDays / 7).ceil();
 
-      // Buscar treinos da semana
-      final workoutsSnap = await FirebaseFirestore.instance
-          .collection('users/$uid/workouts')
-          .where('weekNumber', isEqualTo: weekNumber)
-          .get();
-
-      final weekSessions = workoutsSnap.docs.length;
-      double weekVolume = 0;
-      for (final doc in workoutsSnap.docs) {
-        weekVolume += (doc.data()['totalVolume'] as num?)?.toDouble() ?? 0;
-      }
-
-      // Buscar perfil para saber dias disponíveis
       final profileProvider = context.read<WorkoutProfileProvider>();
       final profile = profileProvider.profile;
       final targetDays = profile?.availableDaysPerWeek ?? 3;
 
-      // Carregar mensagens contextuais
-      final integrationService = IntegrationService(uid: uid);
+      final integrationService = IntegrationService();
       final todayMsg = await integrationService.getTodayMessage();
       final nutritionMsg = await integrationService.getNutritionMessage();
       final hydrationMsg = await integrationService.getHydrationMessage();
       final progressMsg = await integrationService.getProgressMessage();
 
-      // Carregar feedback do coach
-      final coachService = CoachService(uid: uid);
+      final coachService = CoachService();
       final coachFeedback = await coachService.getWorkoutFeedback();
       final dailyTip = coachService.getDailyTip();
 
       setState(() {
         _todayData = {
-          'weekSessions': weekSessions,
+          'weekSessions': 0,
           'targetDays': targetDays,
-          'weekVolume': weekVolume,
-          'hasWorkoutToday': weekSessions < targetDays,
+          'weekVolume': 0.0,
+          'hasWorkoutToday': true,
         };
         _todayMessage = todayMsg;
         _nutritionMessage = nutritionMsg;
@@ -219,7 +197,6 @@ class _TodayScreenState extends State<TodayScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          // Progresso semanal
           Row(
             children: [
               Expanded(
@@ -241,7 +218,6 @@ class _TodayScreenState extends State<TodayScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          // Botão de ação
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -323,12 +299,10 @@ class _TodayScreenState extends State<TodayScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          // Resumo nutricional simplificado
           Consumer<NutritionProvider>(
             builder: (context, nutrition, _) {
               final consumed = nutrition.consumedCalories;
               final target = nutrition.targetCalories;
-              final remaining = target - consumed;
 
               return Column(
                 children: [
@@ -364,7 +338,6 @@ class _TodayScreenState extends State<TodayScreen> {
             },
           ),
           const SizedBox(height: 16),
-          // Botão para registrar refeição
           SizedBox(
             width: double.infinity,
             child: OutlinedButton.icon(
@@ -473,7 +446,6 @@ class _TodayScreenState extends State<TodayScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          // Botões de água
           Row(
             children: [
               _buildWaterButton('200ml', 200),
@@ -491,9 +463,7 @@ class _TodayScreenState extends State<TodayScreen> {
   Widget _buildWaterButton(String label, int ml) {
     return Expanded(
       child: OutlinedButton(
-        onPressed: () {
-          // TODO: Adicionar água ao provider
-        },
+        onPressed: () {},
         style: OutlinedButton.styleFrom(
           foregroundColor: Colors.blue,
           padding: const EdgeInsets.symmetric(vertical: 12),
@@ -693,7 +663,6 @@ class _TodayScreenState extends State<TodayScreen> {
               onTap: () => context.push('/profile'),
             ),
             const SizedBox(width: 12),
-            // Espaço vazio para alinhar
             const Expanded(child: SizedBox()),
           ],
         ),

@@ -2,18 +2,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/services/auth_service.dart';
+import '../../core/services/api_service.dart';
 import '../../shared/theme/app_theme.dart';
 import '../workout/workout_profile_provider.dart';
 import '../workout/progression_provider.dart';
 import '../exercises/exercise_provider.dart';
 import '../nutrition/nutrition_provider.dart';
 import '../exercises/exercise_model.dart';
-import '../workout/workout_routine_model.dart'; // Adicionado para lógica de navegação se necessário
+import '../workout/workout_routine_model.dart';
+import '../workout/athlete_rank.dart';
+import '../workout/athlete_rank_provider.dart';
 
 class DashboardData {
   final double weekVolume;
@@ -43,67 +44,37 @@ class DashboardData {
 }
 
 class _DashboardService {
-  final FirebaseFirestore _db;
-  final String _uid;
+  final ApiService _api = ApiService();
 
-  _DashboardService({required FirebaseFirestore db, required String uid})
-      : _db = db,
-        _uid = uid;
-
-  int get _currentWeek {
-    final now = DateTime.now();
-    return (now.difference(DateTime(now.year, 1, 1)).inDays / 7).ceil();
-  }
-
-  int get _lastWeek => _currentWeek == 1 ? 52 : _currentWeek - 1;
+  _DashboardService();
 
   Future<DashboardData> load() async {
-    final snap = await _db
-        .collection('users/$_uid/workouts')
-        .orderBy('date', descending: true)
-        .limit(50)
-        .get();
+    try {
+      final response = await _api.get('/dashboard/summary');
 
-    double weekVolume = 0;
-    double lastWeekVolume = 0;
-    int weekSessions = 0;
-    final int totalSessions = snap.docs.length;
-    final Map<String, double> volumeByMuscle = {};
-    DateTime? lastSessionDate;
-
-    for (final doc in snap.docs) {
-      final d = doc.data();
-      final week = (d['weekNumber'] as num?)?.toInt() ?? 0;
-      final vol = (d['totalVolume'] as num?)?.toDouble() ?? 0;
-      final date = (d['date'] as Timestamp?)?.toDate();
-
-      if (week == _currentWeek) {
-        weekVolume += vol;
-        weekSessions++;
-        if (lastSessionDate == null ||
-            (date != null && date.isAfter(lastSessionDate))) {
-          lastSessionDate = date;
-        }
-        final exercises = (d['exercises'] as List<dynamic>?) ?? [];
-        for (final ex in exercises) {
-          final em = ex as Map<String, dynamic>;
-          final muscle = em['muscleGroup'] as String? ?? 'Outro';
-          final exVol = (em['volume'] as num?)?.toDouble() ?? 0;
-          volumeByMuscle[muscle] = (volumeByMuscle[muscle] ?? 0) + exVol;
-        }
-      } else if (week == _lastWeek) {
-        lastWeekVolume += vol;
-      }
+      return DashboardData(
+        weekVolume: (response['weekVolume'] as num?)?.toDouble() ?? 0,
+        lastWeekVolume: (response['lastWeekVolume'] as num?)?.toDouble() ?? 0,
+        weekSessions: (response['weekSessions'] as num?)?.toInt() ?? 0,
+        totalSessions: (response['totalSessions'] as num?)?.toInt() ?? 0,
+        volumeByMuscle: Map<String, double>.from(
+          (response['volumeByMuscle'] as Map<String, dynamic>?)?.map(
+            (key, value) => MapEntry(key, (value as num?)?.toDouble() ?? 0),
+          ) ?? {},
+        ),
+        lastSessionDate: response['lastSessionDate'] != null
+            ? DateTime.tryParse(response['lastSessionDate'] as String)
+            : null,
+      );
+    } catch (e) {
+      return const DashboardData(
+        weekVolume: 0,
+        lastWeekVolume: 0,
+        weekSessions: 0,
+        totalSessions: 0,
+        volumeByMuscle: {},
+      );
     }
-
-    return DashboardData(
-      weekVolume: weekVolume,
-      lastWeekVolume: lastWeekVolume,
-      weekSessions: weekSessions,
-      totalSessions: totalSessions,
-      volumeByMuscle: volumeByMuscle,
-      lastSessionDate: lastSessionDate,
-    );
   }
 }
 
@@ -123,17 +94,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _load();
   }
 
-  // ── CORREÇÃO: separar o Future do setState ──
   void _load() {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = context.read<AuthService>().currentUser?.id;
     if (uid == null) return;
     
-    // Assegura que o profile e o treino gerado estejam carregados
     final profileProvider = context.read<WorkoutProfileProvider>();
     final exerciseProvider = context.read<ExerciseProvider>();
     final nutritionProvider = context.read<NutritionProvider>();
     
-    // Conecta o ExerciseProvider para hidratação dos exercícios prescritos
     profileProvider.connectExerciseProvider(exerciseProvider);
     
     final profile = profileProvider.profile;
@@ -143,10 +111,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       });
     }
 
-    final future = _DashboardService(
-      db: FirebaseFirestore.instance,
-      uid: uid,
-    ).load();
+    final future = _DashboardService().load();
     setState(() { _future = future; });
   }
 
@@ -183,16 +148,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     const SizedBox(height: 8),
 
-                    // 0. CALENDÁRIO SEMANAL
                     _WeeklyCalendarWidget().animate().fadeIn(duration: 500.ms),
                     const SizedBox(height: 20),
 
-                    // 1. PRIMARY ACTION (TOP PRIORITY)
                     _buildTrainingHeroCard(context),
+                    
+                    const SizedBox(height: 20),
+
+                    _buildRankCard(context).animate().fadeIn(delay: 100.ms),
                     
                     const SizedBox(height: 32),
 
-                    // 2. WEEK SUMMARY (COMPACT)
                     _buildStatsTitle('RESUMO DA SEMANA'),
                     const SizedBox(height: 16),
                     FutureBuilder<DashboardData>(
@@ -209,7 +175,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                     const SizedBox(height: 32),
 
-                    // 3. FEATURE CARDS (NAVIGATION)
                     _buildStatsTitle('FERRAMENTAS'),
                     const SizedBox(height: 16),
                     _buildFeatureNavList(context),
@@ -225,7 +190,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildHeaderTopBar(User? user, AuthService auth) {
+  Widget _buildHeaderTopBar(AuthUser? user, AuthService auth) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 52, 24, 0),
       child: Row(
@@ -234,8 +199,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           CircleAvatar(
             radius: 22,
             backgroundColor: AppTheme.surfaceHighlight,
-            backgroundImage: user?.photoURL != null ? NetworkImage(user!.photoURL!) : null,
-            child: user?.photoURL == null ? const Icon(Icons.person, color: AppTheme.textSecondary) : null,
+            child: const Icon(Icons.person, color: AppTheme.textSecondary),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -255,15 +219,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const SizedBox(height: 2),
                 Row(
                   children: [
-                    const Icon(Icons.local_fire_department_rounded, color: Color(0xFFCCFF00), size: 14),
-                    const SizedBox(width: 4),
-                    Text(
-                      '145 pts',
-                      style: GoogleFonts.outfit(
-                        color: AppTheme.textSecondary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
+                    Consumer<AthleteRankProvider>(
+                      builder: (context, rankProvider, _) {
+                        final rank = rankProvider.rankResult;
+                        if (rank == null) return const SizedBox.shrink();
+                        return Row(
+                          children: [
+                            Text(
+                              rank.currentRank.icon,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '${rank.currentRank.name} · ${formatXP(rank.totalXP)} XP',
+                              style: GoogleFonts.outfit(
+                                color: rank.currentRank.color,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -415,6 +392,140 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         );
       }
+    );
+  }
+
+  Widget _buildRankCard(BuildContext context) {
+    return Consumer<AthleteRankProvider>(
+      builder: (context, rankProvider, _) {
+        if (rankProvider.isLoading) {
+          return const SizedBox(height: 100, child: Center(child: CircularProgressIndicator(strokeWidth: 2)));
+        }
+
+        final rank = rankProvider.rankResult;
+        if (rank == null) return const SizedBox.shrink();
+
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1A1A1A),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: rank.currentRank.color.withValues(alpha: 0.2)),
+            boxShadow: [
+              BoxShadow(
+                color: rank.currentRank.glowColor,
+                blurRadius: 16,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: rank.currentRank.color.withValues(alpha: 0.12),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: rank.currentRank.color.withValues(alpha: 0.3)),
+                    ),
+                    child: Center(
+                      child: Text(rank.currentRank.icon, style: const TextStyle(fontSize: 28)),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          rank.currentRank.name.toUpperCase(),
+                          style: GoogleFonts.outfit(
+                            color: rank.currentRank.color,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 2,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          rank.nextRank != null
+                              ? '${formatXP(rank.xpInCurrentRank)} / ${formatXP(rank.xpForNext)} XP para ${rank.nextRank!.name}'
+                              : 'Rank máximo alcançado!',
+                          style: GoogleFonts.outfit(
+                            color: AppTheme.textSecondary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        formatXP(rank.totalXP),
+                        style: GoogleFonts.outfit(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      Text(
+                        'XP TOTAL',
+                        style: GoogleFonts.outfit(
+                          color: AppTheme.textSecondary,
+                          fontSize: 9,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              if (rank.nextRank != null) ...[
+                const SizedBox(height: 16),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: LinearProgressIndicator(
+                    value: rank.progressPercent,
+                    minHeight: 8,
+                    backgroundColor: Colors.white.withValues(alpha: 0.06),
+                    valueColor: AlwaysStoppedAnimation<Color>(rank.currentRank.color),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${(rank.progressPercent * 100).toStringAsFixed(1)}%',
+                      style: GoogleFonts.outfit(
+                        color: rank.currentRank.color,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${rankProvider.totalSessions} sessões',
+                      style: GoogleFonts.outfit(
+                        color: AppTheme.textSecondary,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -1434,9 +1545,7 @@ class _CycleStatusCard extends StatelessWidget {
 class _WeeklyCalendarWidget extends StatelessWidget {
   static const _dayLabels = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
 
-  // Determina os dias de treino com base no perfil
   List<bool> _trainingDays(int daysPerWeek) {
-    // Distribui os dias de treino de forma equilibrada na semana
     switch (daysPerWeek) {
       case 2: return [true,  false, true,  false, false, false, false];
       case 3: return [true,  false, true,  false, true,  false, false];
@@ -1448,7 +1557,6 @@ class _WeeklyCalendarWidget extends StatelessWidget {
     }
   }
 
-  // Label resumido da sessão para cada dia de treino
   List<String> _sessionLabels(String splitType, int daysPerWeek) {
     switch (splitType.toLowerCase()) {
       case 'ppl':
@@ -1477,13 +1585,11 @@ class _WeeklyCalendarWidget extends StatelessWidget {
         final trainingDays = _trainingDays(daysPerWeek);
         final labels = _sessionLabels(splitType, daysPerWeek);
 
-        // Dia da semana atual (1=Seg, 7=Dom)
-        final todayWeekday = DateTime.now().weekday; // 1=Mon, 7=Sun
+        final todayWeekday = DateTime.now().weekday;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Header ──
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -1521,7 +1627,6 @@ class _WeeklyCalendarWidget extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
-            // ── 7 blocos de dias ──
             SizedBox(
               height: 82,
               child: Row(
@@ -1595,7 +1700,6 @@ class _DayCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Dia da semana
             Text(
               dayLabel,
               style: GoogleFonts.outfit(
@@ -1607,7 +1711,6 @@ class _DayCard extends StatelessWidget {
             ),
             const SizedBox(height: 6),
 
-            // Ícone ou label
             if (isTraining && sessionLabel.isNotEmpty)
               Text(
                 sessionLabel,
@@ -1628,7 +1731,6 @@ class _DayCard extends StatelessWidget {
                   size: 14,
                   color: Colors.white.withValues(alpha: 0.15)),
 
-            // Ponto de hoje
             if (isToday) ...[
               const SizedBox(height: 4),
               Container(

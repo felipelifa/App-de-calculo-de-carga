@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 /// Memória de decisões do motor de prescrição.
 ///
 /// Registra o que foi escolhido, por que, e o que quase foi escolhido
@@ -87,4 +91,109 @@ class PrescriptionRecord {
       timestamp: DateTime.tryParse(map['timestamp'] as String? ?? '') ??
           DateTime.now(),
     );
+}
+
+/// Gerenciador de memória de decisões com persistência.
+class DecisionMemory {
+  static const _recordsKey = 'decision_memory_records';
+  static const _maxRecords = 50; // Manter últimas 50 sessões
+
+  List<PrescriptionRecord> _records = [];
+
+  DecisionMemory();
+
+  /// Carrega registros do SharedPreferences.
+  Future<void> load() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final json = prefs.getString(_recordsKey);
+      if (json != null) {
+        final data = jsonDecode(json) as List;
+        _records = data
+            .map((r) => PrescriptionRecord.fromMap(r as Map<String, dynamic>))
+            .toList();
+      }
+    } catch (e) {
+      debugPrint('DecisionMemory.load error: $e');
+    }
+  }
+
+  /// Salva registros no SharedPreferences.
+  Future<void> save() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final json = jsonEncode(_records.map((r) => r.toMap()).toList());
+      await prefs.setString(_recordsKey, json);
+    } catch (e) {
+      debugPrint('DecisionMemory.save error: $e');
+    }
+  }
+
+  /// Adiciona um novo registro e persiste.
+  Future<void> addRecord(PrescriptionRecord record) async {
+    _records.add(record);
+    
+    // Limitar número de registros
+    if (_records.length > _maxRecords) {
+      _records = _records.sublist(_records.length - _maxRecords);
+    }
+    
+    await save();
+  }
+
+  /// Retorna todos os registros.
+  List<PrescriptionRecord> get records => List.unmodifiable(_records);
+
+  /// Retorna registros recentes (últimas N sessões).
+  List<PrescriptionRecord> getRecentRecords({int count = 5}) {
+    final start = _records.length > count ? _records.length - count : 0;
+    return _records.sublist(start);
+  }
+
+  /// Verifica se um exercício foi usado recentemente.
+  bool wasExerciseUsedRecently(String exerciseId, {int sessionsBack = 3}) {
+    final recent = getRecentRecords(count: sessionsBack);
+    for (final record in recent) {
+      for (final decision in record.decisions) {
+        if (decision.exerciseId == exerciseId) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /// Retorna quantas vezes um exercício foi usado nas últimas N sessões.
+  int getExerciseUsageCount(String exerciseId, {int sessionsBack = 5}) {
+    int count = 0;
+    final recent = getRecentRecords(count: sessionsBack);
+    for (final record in recent) {
+      for (final decision in record.decisions) {
+        if (decision.exerciseId == exerciseId) {
+          count++;
+        }
+      }
+    }
+    return count;
+  }
+
+  /// Retorna exercícios evitados recentemente (decisões com score baixo).
+  List<String> getRecentlyAvoidedExercises({int sessionsBack = 3}) {
+    final avoided = <String>[];
+    final recent = getRecentRecords(count: sessionsBack);
+    for (final record in recent) {
+      for (final decision in record.decisions) {
+        if (decision.alternativeConsidered != null && decision.score < 50) {
+          avoided.add(decision.exerciseId);
+        }
+      }
+    }
+    return avoided;
+  }
+
+  /// Limpa todos os registros.
+  Future<void> clear() async {
+    _records.clear();
+    await save();
+  }
 }

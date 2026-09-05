@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getApkVersion = exports.calculatePeriodizationPlan = exports.generateProgressionSuggestions = exports.onWorkoutExerciseSave = exports.redeemProToken = exports.notifyInactiveUsers = exports.onDeloadActivated = exports.onPersonalRecordCreated = void 0;
+exports.getApkVersion = exports.calculatePeriodizationPlan = exports.generateProgressionSuggestions = exports.onWorkoutExerciseSave = exports.notifyInactiveUsers = exports.onDeloadActivated = exports.onPersonalRecordCreated = void 0;
 const admin = __importStar(require("firebase-admin"));
 const functions = __importStar(require("firebase-functions"));
 const volumeEngine_1 = require("./volumeEngine");
@@ -42,8 +42,6 @@ var pushNotifications_1 = require("./pushNotifications");
 Object.defineProperty(exports, "onPersonalRecordCreated", { enumerable: true, get: function () { return pushNotifications_1.onPersonalRecordCreated; } });
 Object.defineProperty(exports, "onDeloadActivated", { enumerable: true, get: function () { return pushNotifications_1.onDeloadActivated; } });
 Object.defineProperty(exports, "notifyInactiveUsers", { enumerable: true, get: function () { return pushNotifications_1.notifyInactiveUsers; } });
-var proToken_1 = require("./proToken");
-Object.defineProperty(exports, "redeemProToken", { enumerable: true, get: function () { return proToken_1.redeemProToken; } });
 // ════════════════════════════════════════════════════════════
 // Firebase Admin Init (only once per cold start)
 // ════════════════════════════════════════════════════════════

@@ -1,130 +1,104 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-// ─────────────────────────────────────────────
-// Serviço de Histórico de Alterações
-// Registra mudanças feitas pelo usuário
-// ─────────────────────────────────────────────
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'api_service.dart';
 
 class ChangeHistoryService {
-  final FirebaseFirestore _db;
-  final String _uid;
+  final ApiService _api;
+  static const String _storageKey = 'change_history';
 
-  ChangeHistoryService({FirebaseFirestore? db, String? uid})
-      : _db = db ?? FirebaseFirestore.instance,
-        _uid = uid ?? FirebaseAuth.instance.currentUser?.uid ?? '';
+  ChangeHistoryService({ApiService? api})
+      : _api = api ?? ApiService();
 
-  /// Registra uma alteração no histórico
   Future<void> recordChange({
-    required String type, // 'goal', 'modality', 'level', 'days', 'duration', 'environment', 'restrictions', 'nutrition'
+    required String type,
     required String oldValue,
     required String newValue,
     String? reason,
-    String? duration, // 'today', 'this_week', 'permanent'
+    String? duration,
   }) async {
-    await _db.collection('users/$_uid/change_history').add({
+    final entry = {
+      'id': DateTime.now().millisecondsSinceEpoch.toString(),
       'type': type,
       'oldValue': oldValue,
       'newValue': newValue,
       'reason': reason,
       'duration': duration ?? 'permanent',
-      'timestamp': FieldValue.serverTimestamp(),
       'date': DateTime.now().toIso8601String(),
-    });
+    };
+
+    try {
+      await _api.post('/users/history', body: entry);
+    } catch (_) {
+      // Fallback to local storage
+    }
+
+    await _saveLocal(entry);
   }
 
-  /// Retorna o histórico de alterações
   Future<List<Map<String, dynamic>>> getHistory({int limit = 50}) async {
-    final snap = await _db
-        .collection('users/$_uid/change_history')
-        .orderBy('timestamp', descending: true)
-        .limit(limit)
-        .get();
-
-    return snap.docs.map((doc) {
-      final data = doc.data();
-      return {
-        'id': doc.id,
-        'type': data['type'],
-        'oldValue': data['oldValue'],
-        'newValue': data['newValue'],
-        'reason': data['reason'],
-        'duration': data['duration'],
-        'date': data['date'],
-        'timestamp': data['timestamp'],
-      };
-    }).toList();
+    try {
+      final result = await _api.get<List<dynamic>>('/users/history', queryParams: {
+        'limit': limit.toString(),
+      });
+      return result.map((e) => Map<String, dynamic>.from(e)).toList();
+    } catch (_) {
+      return _getLocalHistory(limit: limit);
+    }
   }
 
-  /// Retorna alterações por tipo
   Future<List<Map<String, dynamic>>> getHistoryByType(String type) async {
-    final snap = await _db
-        .collection('users/$_uid/change_history')
-        .where('type', isEqualTo: type)
-        .orderBy('timestamp', descending: true)
-        .get();
-
-    return snap.docs.map((doc) {
-      final data = doc.data();
-      return {
-        'id': doc.id,
-        'type': data['type'],
-        'oldValue': data['oldValue'],
-        'newValue': data['newValue'],
-        'reason': data['reason'],
-        'duration': data['duration'],
-        'date': data['date'],
-        'timestamp': data['timestamp'],
-      };
-    }).toList();
+    try {
+      final result = await _api.get<List<dynamic>>('/users/history', queryParams: {
+        'type': type,
+      });
+      return result.map((e) => Map<String, dynamic>.from(e)).toList();
+    } catch (_) {
+      final all = await _getLocalHistory();
+      return all.where((e) => e['type'] == type).toList();
+    }
   }
 
-  /// Retorna a última alteração de um tipo
   Future<Map<String, dynamic>?> getLastChange(String type) async {
-    final snap = await _db
-        .collection('users/$_uid/change_history')
-        .where('type', isEqualTo: type)
-        .orderBy('timestamp', descending: true)
-        .limit(1)
-        .get();
-
-    if (snap.docs.isEmpty) return null;
-
-    final data = snap.docs.first.data();
-    return {
-      'id': snap.docs.first.id,
-      'type': data['type'],
-      'oldValue': data['oldValue'],
-      'newValue': data['newValue'],
-      'reason': data['reason'],
-      'duration': data['duration'],
-      'date': data['date'],
-      'timestamp': data['timestamp'],
-    };
+    try {
+      final result = await _api.get<List<dynamic>>('/users/history', queryParams: {
+        'type': type,
+        'limit': '1',
+      });
+      if (result.isNotEmpty) {
+        return Map<String, dynamic>.from(result.first);
+      }
+      return null;
+    } catch (_) {
+      final all = await _getLocalHistory();
+      final filtered = all.where((e) => e['type'] == type).toList();
+      return filtered.isNotEmpty ? filtered.first : null;
+    }
   }
 
-  /// Retorna resumo das alterações da semana
   Future<Map<String, dynamic>> getWeeklySummary() async {
-    final now = DateTime.now();
-    final weekStart = now.subtract(Duration(days: now.weekday - 1));
-    final weekStartDate = DateTime(weekStart.year, weekStart.month, weekStart.day);
+    try {
+      final result = await _api.get<Map<String, dynamic>>('/users/history/weekly-summary');
+      return result;
+    } catch (_) {
+      final all = await _getLocalHistory();
+      final now = DateTime.now();
+      final weekStart = now.subtract(Duration(days: now.weekday - 1));
+      final weekStartDate = DateTime(weekStart.year, weekStart.month, weekStart.day);
 
-    final snap = await _db
-        .collection('users/$_uid/change_history')
-        .where('timestamp', isGreaterThanOrEqualTo: weekStartDate)
-        .get();
+      final changes = all.where((c) {
+        final date = DateTime.tryParse(c['date'] ?? '');
+        return date != null && date.isAfter(weekStartDate);
+      }).toList();
 
-    final changes = snap.docs.map((doc) => doc.data()).toList();
-
-    return {
-      'totalChanges': changes.length,
-      'goalChanges': changes.where((c) => c['type'] == 'goal').length,
-      'workoutChanges': changes.where((c) => c['type'] == 'days' || c['type'] == 'duration').length,
-      'nutritionChanges': changes.where((c) => c['type'] == 'nutrition').length,
-    };
+      return {
+        'totalChanges': changes.length,
+        'goalChanges': changes.where((c) => c['type'] == 'goal').length,
+        'workoutChanges': changes.where((c) => c['type'] == 'days' || c['type'] == 'duration').length,
+        'nutritionChanges': changes.where((c) => c['type'] == 'nutrition').length,
+      };
+    }
   }
 
-  /// Traduz tipo de alteração para português
   String translateType(String type) {
     switch (type) {
       case 'goal': return 'Objetivo';
@@ -141,7 +115,6 @@ class ChangeHistoryService {
     }
   }
 
-  /// Traduz duração para português
   String translateDuration(String duration) {
     switch (duration) {
       case 'today': return 'Só hoje';
@@ -149,5 +122,23 @@ class ChangeHistoryService {
       case 'permanent': return 'Permanentemente';
       default: return duration;
     }
+  }
+
+  Future<void> _saveLocal(Map<String, dynamic> entry) async {
+    final prefs = await SharedPreferences.getInstance();
+    final existing = prefs.getStringList(_storageKey) ?? [];
+    existing.add(jsonEncode(entry));
+    if (existing.length > 200) {
+      existing.removeRange(0, existing.length - 200);
+    }
+    await prefs.setStringList(_storageKey, existing);
+  }
+
+  Future<List<Map<String, dynamic>>> _getLocalHistory({int limit = 50}) async {
+    final prefs = await SharedPreferences.getInstance();
+    final existing = prefs.getStringList(_storageKey) ?? [];
+    final decoded = existing.map((e) => Map<String, dynamic>.from(jsonDecode(e))).toList();
+    decoded.sort((a, b) => (b['date'] ?? '').compareTo(a['date'] ?? ''));
+    return decoded.take(limit).toList();
   }
 }

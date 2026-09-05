@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 // ─────────────────────────────────────────────
 // Modelos da sessão de treino
 // ─────────────────────────────────────────────
@@ -100,37 +98,17 @@ class WorkoutSession {
   double get totalVolume =>
       exercises.fold(0, (acc, e) => acc + e.totalVolume);
 
-  factory WorkoutSession.fromDoc(DocumentSnapshot doc) {
-    final d = doc.data() as Map<String, dynamic>? ?? {};
-    final rawExercises = (d['exercises'] as List<dynamic>?) ?? [];
-    return WorkoutSession(
-      id: doc.id,
-      date: (d['date'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      weekNumber: (d['weekNumber'] as num?)?.toInt() ?? 1,
-      notes: d['notes'] as String?,
-      exercises: rawExercises.map((e) {
-        final em = e as Map<String, dynamic>;
-        final rawSets = (em['sets'] as List<dynamic>?) ?? [];
-        return WorkoutExerciseEntry(
-          exerciseId: em['exerciseId'] as String? ?? '',
-          exerciseName: em['exerciseName'] as String? ?? '',
-          muscleGroup: em['muscleGroup'] as String? ?? '',
-          sets: rawSets
-              .map((s) => WorkoutSet.fromMap(s as Map<String, dynamic>))
-              .toList(),
-          injuryNote: em['injuryNote'] as String?,
-        );
-      }).toList(),
-    );
+  static DateTime _readDate(dynamic value) {
+    if (value is DateTime) return value;
+    if (value is String) return DateTime.tryParse(value) ?? DateTime.now();
+    return DateTime.now();
   }
 
   factory WorkoutSession.fromMap(Map<String, dynamic> d) {
     final rawExercises = (d['exercises'] as List<dynamic>?) ?? [];
     return WorkoutSession(
       id: d['id'] as String? ?? '',
-      date: d['date'] != null
-          ? DateTime.tryParse(d['date']) ?? DateTime.now()
-          : DateTime.now(),
+      date: _readDate(d['date']),
       weekNumber: (d['weekNumber'] as num?)?.toInt() ?? 1,
       notes: d['notes'] as String?,
       exercises: rawExercises.map((e) {

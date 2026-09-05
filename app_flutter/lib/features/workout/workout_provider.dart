@@ -1,39 +1,43 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'workout_models.dart';
 import 'pr_model.dart';
-import 'pr_service.dart';
 import 'workout_routine_model.dart';
 import 'progression_engine.dart';
+import 'progression_provider.dart';
+import 'decision_memory.dart';
 import '../exercises/exercise_model.dart';
 import '../../core/services/api_service.dart';
+import '../../core/services/supabase_service.dart';
 import '../../core/services/workouts_api_service.dart';
 
 class WorkoutProvider extends ChangeNotifier {
-  final FirebaseFirestore _db;
-  final FirebaseAuth _auth;
+  final ApiService _api;
+  final SupabaseService _supabase;
+  final WorkoutsApiService _workoutsApi;
   final ProgressionEngine _progressionEngine;
-  final WorkoutsApiService _api;
+  final DecisionMemory _decisionMemory;
+  ProgressionProvider? _progressionProvider;
 
-  WorkoutProvider({FirebaseFirestore? db, FirebaseAuth? auth, WorkoutsApiService? api})
-      : _db = db ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance,
-        _api = api ?? WorkoutsApiService(),
-        _progressionEngine = ProgressionEngine(
-          db: db ?? FirebaseFirestore.instance,
-          auth: auth ?? FirebaseAuth.instance,
-        ) {
+  WorkoutProvider({ApiService? api, WorkoutsApiService? workoutsApi})
+      : _api = api ?? ApiService(),
+        _supabase = SupabaseService(),
+        _workoutsApi = workoutsApi ?? WorkoutsApiService(),
+        _progressionEngine = ProgressionEngine(),
+        _decisionMemory = DecisionMemory() {
     _loadSessionFromLocal();
+    _decisionMemory.load();
+  }
+
+  void connectProgressionProvider(ProgressionProvider provider) {
+    _progressionProvider = provider;
   }
 
   bool _isSessionActive = false;
   DateTime? _sessionStart;
 
-  // ── Rest Timer State ──
   int _activeRestSeconds = 0;
   Timer? _restTimer;
   int get activeRestSeconds => _activeRestSeconds;
@@ -59,20 +63,16 @@ class WorkoutProvider extends ChangeNotifier {
     _activeRestSeconds = 0;
     notifyListeners();
   }
+
   String? _activeSessionName;
+  String? _activeDupPhase;
   final List<WorkoutExerciseEntry> _currentExercises = [];
-
-  // RIR reportado por exercício (exerciseId → RIR 0-5)
   final Map<String, int> _rirByExercise = {};
-
-  // Metadados dos exercícios para o motor de progressão
   final Map<String, Map<String, dynamic>> _exerciseMetadata = {};
 
-  // PRs conquistados na sessão mais recente
   List<PrAchievement> _newPrs = [];
   List<PrAchievement> get newPrs => List.unmodifiable(_newPrs);
 
-  // Decisões de progressão pós-sessão
   List<ProgressionDecision> _progressionDecisions = [];
   List<ProgressionDecision> get progressionDecisions =>
       List.unmodifiable(_progressionDecisions);
@@ -90,6 +90,7 @@ class WorkoutProvider extends ChangeNotifier {
   bool get isSessionActive => _isSessionActive;
   DateTime? get sessionStart => _sessionStart;
   String? get activeSessionName => _activeSessionName;
+  String? get activeDupPhase => _activeDupPhase;
   List<WorkoutExerciseEntry> get currentExercises =>
       List.unmodifiable(_currentExercises);
 
@@ -97,10 +98,8 @@ class WorkoutProvider extends ChangeNotifier {
       _currentExercises.fold(0, (acc, e) => acc + e.totalVolume);
 
   List<WorkoutSession> _history = [];
-  List<WorkoutSession> _apiHistory = [];
-  List<WorkoutSession> _firestoreHistory = [];
   bool _isLoadingHistory = false;
-  StreamSubscription<QuerySnapshot>? _historySub;
+  Timer? _historyPollTimer;
 
   List<WorkoutSession> get history => List.unmodifiable(_history);
   bool get isLoadingHistory => _isLoadingHistory;
@@ -112,7 +111,6 @@ class WorkoutProvider extends ChangeNotifier {
     return (dayOfYear / 7).ceil();
   }
 
-  // ── Gerenciar RIR por exercício ──
   void setRirForExercise(String exerciseId, int rir) {
     _rirByExercise[exerciseId] = rir.clamp(0, 5);
     notifyListeners();
@@ -122,7 +120,6 @@ class WorkoutProvider extends ChangeNotifier {
     return _rirByExercise[exerciseId] ?? 3;
   }
 
-  // ── Iniciar sessão ──
   void startSession() {
     _isSessionActive = true;
     _sessionStart = DateTime.now();
@@ -159,10 +156,12 @@ class WorkoutProvider extends ChangeNotifier {
     required String sessionId,
     required String sessionName,
     required List<Map<String, dynamic>> prescribedExercises,
+    String? dupPhase,
   }) {
     _isSessionActive = true;
     _sessionStart = DateTime.now();
     _activeSessionName = sessionName;
+    _activeDupPhase = dupPhase;
     _currentExercises.clear();
     _rirByExercise.clear();
     _exerciseMetadata.clear();
@@ -195,7 +194,6 @@ class WorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ── Adicionar/remover exercícios ──
   void addExerciseToSession({
     required String exerciseId,
     required String exerciseName,
@@ -314,15 +312,12 @@ class WorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ── Finalizar sessão ──────────────────────────────────────────
-
   Future<void> finishSession({
     String? notes,
     String experienceLevel = 'beginner',
     int sessionsPerWeek = 3,
   }) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) throw Exception('Usuário não autenticado');
+    if (!_api.isAuthenticated) throw Exception('Usuário não autenticado');
     if (_currentExercises.isEmpty) throw Exception('Nenhum exercício registrado');
     if (!_currentExercises.any((exercise) => exercise.hasCompletedWork)) {
       throw Exception('Marque pelo menos uma série concluída antes de salvar');
@@ -332,46 +327,20 @@ class WorkoutProvider extends ChangeNotifier {
     final rirCopy = Map<String, int>.from(_rirByExercise);
     final metaCopy = Map<String, Map<String, dynamic>>.from(_exerciseMetadata);
 
-    // Tentar salvar via API própria
-    bool savedViaApi = false;
-    try {
-      await _api.createWorkout(
-        exercises: exercisesCopy,
-        durationMinutes: _sessionStart != null
-            ? DateTime.now().difference(_sessionStart!).inMinutes
-            : null,
-        notes: notes,
-      );
-      savedViaApi = true;
-    } catch (e) {
-      debugPrint('API não disponível, salvando no Firestore: $e');
-    }
+    await _workoutsApi.createWorkout(
+      exercises: exercisesCopy,
+      durationMinutes: _sessionStart != null
+          ? DateTime.now().difference(_sessionStart!).inMinutes
+          : null,
+      notes: notes,
+    );
 
-    // Fallback: salvar no Firestore
-    if (!savedViaApi) {
-      final session = {
-        'date': FieldValue.serverTimestamp(),
-        'weekNumber': currentWeekNumber,
-        'totalVolume': currentTotalVolume,
-        'exerciseCount': _currentExercises.length,
-        'exercises': _currentExercises.map((e) => e.toMap()).toList(),
-        'rirByExercise': rirCopy,
-        if (notes != null && notes.isNotEmpty) 'notes': notes,
-      };
-
-      await _db.collection('users/$uid/workouts').add(session);
-    }
-
-    // Detecta PRs em background
     _newPrs = [];
-    PrService(db: _db, uid: uid)
-        .processSession(exercisesCopy)
-        .then((achievements) {
+    _detectPrsLocally(exercisesCopy).then((achievements) {
       _newPrs = achievements;
       notifyListeners();
     });
 
-    // Motor de progressão em background
     _progressionDecisions = [];
     _progressionEngine
         .processSession(
@@ -384,11 +353,19 @@ class WorkoutProvider extends ChangeNotifier {
         .then((decisions) {
       _progressionDecisions = decisions;
       notifyListeners();
+
+      _progressionProvider?.processCompletedSession(
+        exercises: exercisesCopy,
+        rirByExercise: rirCopy,
+        exerciseMetadata: metaCopy,
+        experienceLevel: experienceLevel,
+      );
     });
 
     _isSessionActive = false;
     _sessionStart = null;
     _activeSessionName = null;
+    _activeDupPhase = null;
     _currentExercises.clear();
     _rirByExercise.clear();
     _exerciseMetadata.clear();
@@ -396,10 +373,87 @@ class WorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<List<PrAchievement>> _detectPrsLocally(
+    List<WorkoutExerciseEntry> exercises,
+  ) async {
+    final achievements = <PrAchievement>[];
+    try {
+      final result = await _workoutsApi.getWorkouts(limit: 100);
+      final sessions = result.map((w) => WorkoutSession.fromMap(w as Map<String, dynamic>)).toList();
+
+      final bestByExercise = <String, _ExerciseBest>{};
+      for (final session in sessions) {
+        for (final ex in session.exercises) {
+          final existing = bestByExercise[ex.exerciseId];
+          double maxW = 0;
+          int maxR = 0;
+          double maxV = 0;
+          for (final s in ex.sets) {
+            if (s.weight > maxW) maxW = s.weight;
+            if (s.reps > maxR) maxR = s.reps;
+            if (s.volume > maxV) maxV = s.volume;
+          }
+          if (existing == null || maxW > existing.maxWeight || maxR > existing.maxReps || maxV > existing.maxVolume) {
+            bestByExercise[ex.exerciseId] = _ExerciseBest(
+              maxWeight: existing != null ? (maxW > existing.maxWeight ? maxW : existing.maxWeight) : maxW,
+              maxReps: existing != null ? (maxR > existing.maxReps ? maxR : existing.maxReps) : maxR,
+              maxVolume: existing != null ? (maxV > existing.maxVolume ? maxV : existing.maxVolume) : maxV,
+            );
+          }
+        }
+      }
+
+      for (final entry in exercises) {
+        if (entry.exerciseId.isEmpty || entry.sets.isEmpty) continue;
+        double sessionMaxWeight = 0;
+        int sessionMaxReps = 0;
+        double sessionMaxVolume = 0;
+        for (final s in entry.sets) {
+          if (s.weight > sessionMaxWeight) sessionMaxWeight = s.weight;
+          if (s.reps > sessionMaxReps) sessionMaxReps = s.reps;
+          if (s.volume > sessionMaxVolume) sessionMaxVolume = s.volume;
+        }
+
+        final prev = bestByExercise[entry.exerciseId];
+        if (prev == null) {
+          achievements.add(PrAchievement(
+            exerciseId: entry.exerciseId,
+            exerciseName: entry.exerciseName,
+            muscleGroup: entry.muscleGroup,
+            newMaxWeight: sessionMaxWeight,
+            newMaxReps: sessionMaxReps,
+            newMaxVolume: sessionMaxVolume,
+          ));
+        } else {
+          final newW = sessionMaxWeight > prev.maxWeight ? sessionMaxWeight : null;
+          final newR = sessionMaxReps > prev.maxReps ? sessionMaxReps : null;
+          final newV = sessionMaxVolume > prev.maxVolume ? sessionMaxVolume : null;
+          if (newW != null || newR != null || newV != null) {
+            achievements.add(PrAchievement(
+              exerciseId: entry.exerciseId,
+              exerciseName: entry.exerciseName,
+              muscleGroup: entry.muscleGroup,
+              newMaxWeight: newW,
+              prevMaxWeight: newW != null ? prev.maxWeight : null,
+              newMaxReps: newR,
+              prevMaxReps: newR != null ? prev.maxReps : null,
+              newMaxVolume: newV,
+              prevMaxVolume: newV != null ? prev.maxVolume : null,
+            ));
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Erro ao detectar PRs localmente: $e');
+    }
+    return achievements;
+  }
+
   void cancelSession() {
     _isSessionActive = false;
     _sessionStart = null;
     _activeSessionName = null;
+    _activeDupPhase = null;
     _currentExercises.clear();
     _rirByExercise.clear();
     _exerciseMetadata.clear();
@@ -408,91 +462,43 @@ class WorkoutProvider extends ChangeNotifier {
   }
 
   void loadHistory() {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-
     _isLoadingHistory = true;
     notifyListeners();
 
-    // Tentar carregar da API primeiro
-    _loadHistoryFromApi();
+    _fetchHistory();
 
-    // Também escutar Firestore como fallback
-    _historySub?.cancel();
-    _historySub = _db
-        .collection('users/$uid/workouts')
-        .orderBy('date', descending: true)
-        .limit(20)
-        .snapshots()
-        .listen(
-      (snap) {
-        _firestoreHistory = snap.docs.map(WorkoutSession.fromDoc).toList();
-        _publishHistory();
-        _isLoadingHistory = false;
-        notifyListeners();
-      },
-      onError: (e) {
-        _isLoadingHistory = false;
-        notifyListeners();
-      },
-    );
+    _historyPollTimer?.cancel();
+    _historyPollTimer = Timer.periodic(const Duration(seconds: 30), (_) {
+      _fetchHistory();
+    });
   }
 
-  Future<void> _loadHistoryFromApi() async {
+  Future<void> _fetchHistory() async {
     try {
-      final result = await _api.getWorkouts(limit: 20);
-      if (result.isNotEmpty) {
-        // API retornou dados — usar eles
-        final sessions = result.map((w) => WorkoutSession.fromMap(w)).toList();
-        _apiHistory = sessions;
-        _publishHistory();
-        _isLoadingHistory = false;
-        notifyListeners();
-      }
+      final result = await _workoutsApi.getWorkouts(limit: 20);
+      _history = result
+          .map((w) => WorkoutSession.fromMap(w as Map<String, dynamic>))
+          .toList()
+        ..sort((a, b) => b.date.compareTo(a.date));
     } catch (e) {
-      debugPrint('API não disponível para histórico, usando Firestore: $e');
+      debugPrint('Erro ao carregar histórico: $e');
+    } finally {
+      _isLoadingHistory = false;
+      notifyListeners();
     }
-  }
-
-  void _publishHistory() {
-    final byId = <String, WorkoutSession>{};
-    for (final session in _apiHistory) {
-      byId[session.id] = session;
-    }
-    for (final session in _firestoreHistory) {
-      byId[session.id] = session;
-    }
-    _history = byId.values.toList()
-      ..sort((a, b) => b.date.compareTo(a.date));
   }
 
   Future<void> deleteSession(String sessionId) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-
-    // Tentar deletar via API
     try {
-      await _api.deleteWorkout(sessionId);
-    } catch (_) {
-      // Fallback para Firestore
-    }
-
-    try {
-      await _db.collection('users/$uid/workouts').doc(sessionId).delete();
+      await _workoutsApi.deleteWorkout(sessionId);
     } catch (e) {
       debugPrint('Erro ao excluir sessão: $e');
       rethrow;
     }
 
-    // Atualizar lista local e notificar UI
     _history.removeWhere((s) => s.id == sessionId);
-    _apiHistory.removeWhere((s) => s.id == sessionId);
-    _firestoreHistory.removeWhere((s) => s.id == sessionId);
-    _publishHistory();
     notifyListeners();
   }
-
-  // ── Persistência Local (F5 proof) ──────────────────────────
 
   Future<void> _saveSessionToLocal() async {
     try {
@@ -558,7 +564,20 @@ class WorkoutProvider extends ChangeNotifier {
 
   @override
   void dispose() {
-    _historySub?.cancel();
+    _historyPollTimer?.cancel();
+    _restTimer?.cancel();
     super.dispose();
   }
+}
+
+class _ExerciseBest {
+  final double maxWeight;
+  final int maxReps;
+  final double maxVolume;
+
+  const _ExerciseBest({
+    required this.maxWeight,
+    required this.maxReps,
+    required this.maxVolume,
+  });
 }

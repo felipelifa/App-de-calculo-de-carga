@@ -3,6 +3,7 @@ import '../exercises/exercise_model.dart';
 import 'workout_profile_model.dart';
 import 'prescribed_workout_model.dart';
 import 'session_fatigue_accumulator.dart';
+import 'exercise_compatibility.dart';
 import '../../core/data/exercise_library.dart';
 
 // ═══════════════════════════════════════════════════════════════
@@ -1070,33 +1071,8 @@ class SportPlanBuilders {
       }
 
       // ── MODO 'EM CASA' / RESTRIÇÃO DE EQUIPAMENTO ──
-      if (profile.environment.startsWith('home') || profile.environment == 'outdoor') {
-        if (!ex.environment.contains('home')) return false;
-      }
-
-      if (profile.availableEquipment.isNotEmpty) {
-        // Se usuário listou equipamentos na anamnese, o exercício deve ser bodyweight ou usar algo disponível
-        if (!ex.equipment.any((e) => profile.availableEquipment.contains(e) || e == 'bodyweight' || e == 'none')) {
-          return false;
-        }
-      } else {
-        // Fallback se lista vazia mas escolheu 'home_bodyweight'/'home_dumbbell'
-        if (profile.environment == 'home_bodyweight') {
-          if (!ex.equipment.contains('bodyweight') && !ex.equipment.contains('none')) return false;
-        } else if (profile.environment == 'home_dumbbell') {
-          final allowed = ['bodyweight', 'dumbbell', 'band'];
-          if (!ex.equipment.any((e) => allowed.contains(e))) return false;
-        }
-      }
-
-      // Restrictions
-      if (ex.restrictions.any((r) => profile.healthRestrictions.contains(r))) return false;
-
-      // Level filter
-      if (profile.experienceLevel == 'beginner' && ex.difficulty == 'advanced') return false;
-
-      // Disliked
-      if (profile.dislikedExercises.contains(ex.id)) return false;
+      // Usar ExerciseCompatibility como fonte única de verdade
+      if (!ExerciseCompatibility.isCompatible(profile, ex)) return false;
 
       return true;
     }).toList();

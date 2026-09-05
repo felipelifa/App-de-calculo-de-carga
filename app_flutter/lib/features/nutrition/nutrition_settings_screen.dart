@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/services/auth_service.dart';
+import '../../core/services/api_service.dart';
 import '../../shared/theme/app_theme.dart';
 import 'nutrition_provider.dart';
 import 'nutrition_profile_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class NutritionSettingsScreen extends StatefulWidget {
   const NutritionSettingsScreen({super.key});
@@ -94,10 +94,12 @@ class _NutritionSettingsScreenState extends State<NutritionSettingsScreen> {
       dailySpecificGoals: _dailySpecificGoals,
     );
 
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid != null) {
-      await FirebaseFirestore.instance.doc('users/$uid/nutrition/settings').set(updated.toMap(), SetOptions(merge: true));
+    try {
+      final api = ApiService();
+      await api.put('/nutrition/settings', body: updated.toMap());
       await provider.updateProfile(updated);
+    } catch (e) {
+      // Handle error
     }
 
     if (mounted) {

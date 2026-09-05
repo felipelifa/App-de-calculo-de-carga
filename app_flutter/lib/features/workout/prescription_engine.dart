@@ -6,11 +6,15 @@ import 'prescribed_workout_model.dart';
 import 'session_fatigue_accumulator.dart';
 import 'exercise_rotation_manager.dart';
 import 'sport_plan_builders.dart';
-import '../../core/data/exercise_library.dart';
+import '../../core/data/exercise_library.dart' show exerciseLibrary, injuryRehabExercises;
 import 'exercise_compatibility.dart';
 import 'exercise_dna.dart';
 import 'training_readiness.dart';
 import 'age_modifier.dart';
+import 'bio_adaptive_engine.dart';
+import 'decision_memory.dart';
+import 'progression_engine.dart';
+import 'home_workout/home_workout_integrator.dart';
 
 // ═══════════════════════════════════════════════════════════════
 // MOTOR DE PRESCRIÇÃO v4.0
@@ -42,27 +46,50 @@ class WorkoutPrescriptionEngine {
   final ExerciseRotationManager _rotation;
   final SportPlanBuilders _sportBuilders;
   final int _weekNumber;
+  final ProgressionState? _progressionState;
+  final DecisionMemory? _decisionMemory;
+  final List<PrescribedSession> _recentSessions;
 
   WorkoutPrescriptionEngine(WorkoutProfile profile,
-      {List<ExerciseModel>? library, PatternHistoryTracker? patternHistory, int? weekNumber})
+      {List<ExerciseModel>? library, PatternHistoryTracker? patternHistory, int? weekNumber, ProgressionState? progressionState, DecisionMemory? decisionMemory, List<PrescribedSession>? recentSessions})
       : _library = library ?? exerciseLibrary,
         _seed = _computeSeed(profile),
         _patternHistory = patternHistory ?? PatternHistoryTracker(),
         _rotation = ExerciseRotationManager(library ?? exerciseLibrary),
         _sportBuilders = SportPlanBuilders(library ?? exerciseLibrary, _computeSeed(profile)),
-        _weekNumber = weekNumber ?? profile.currentWeek;
+        _weekNumber = weekNumber ?? profile.currentWeek,
+        _progressionState = progressionState,
+        _decisionMemory = decisionMemory,
+        _recentSessions = recentSessions ?? [];
 
   static int _computeSeed(WorkoutProfile profile) {
-    int sum = 0;
-    for (final code in profile.uid.codeUnits) {
-      sum += code;
+    // Usar hashCode em vez de soma de codeUnits para melhor distribuição
+    return profile.uid.hashCode;
+  }
+
+  /// Cria um SessionFatigueAccumulator com fadiga residual das sessões recentes
+  SessionFatigueAccumulator _createFatigueAccumulator() {
+    final fatigue = _createFatigueAccumulator();
+    if (_recentSessions.isNotEmpty) {
+      fatigue.loadResidualFatigue(_recentSessions);
     }
-    return sum;
+    return fatigue;
   }
 
   // ── API Pública ───────────────────────────────────────────────
 
   GeneratedWorkout generate(WorkoutProfile profile) {
+    // ── Carregar fadiga residual das sessões recentes ──
+    if (_recentSessions.isNotEmpty) {
+      // A fadiga residual é considerada pelo SessionFatigueAccumulator
+      // quando loadResidualFatigue é chamado antes de montar cada sessão
+    }
+
+    // ── Dimensão 0: Verificar se é treino em casa sem equipamento ──
+    if (_isHomeBodyweight(profile)) {
+      return _generateHomeBodyweightWorkout(profile);
+    }
+
     // ── Dimensão 1+2: Roteamento por modalidade/esporte ──
     final goal = profile.primaryGoal;
     List<PrescribedSession> sessions;
@@ -87,6 +114,12 @@ class WorkoutPrescriptionEngine {
     sessions = _applyClinicalAdjustments(profile, sessions);
     sessions = _auditAndSanitizeSessions(profile, sessions);
     sessions = _fitRequestedSessionCount(profile, sessions);
+
+    // Aplicar Bio-Adaptação: ajustar sets/RIR com base em fadiga e readiness
+    sessions = _applyBioAdaptation(profile, sessions);
+
+    // Registrar decisões no DecisionMemory para auditoria
+    _recordDecisions(profile, sessions, splitType, periodization);
 
     // Registra padrões usados
     for (int i = 0; i < sessions.length; i++) {
@@ -124,6 +157,24 @@ class WorkoutPrescriptionEngine {
 
   bool _isModalityGoal(String goal) =>
       ['calisthenics', 'functional_hiit', 'mobility_rehab'].contains(goal);
+
+  // Verifica se o perfil é para treino em casa sem equipamento
+  bool _isHomeBodyweight(WorkoutProfile profile) {
+    final env = profile.environment.toLowerCase();
+    final modality = profile.trainingModality.toLowerCase();
+    
+    return env == 'home_bodyweight' || 
+           env == 'outdoor' ||
+           modality == 'home_no_equip' ||
+           (ExerciseCompatibility.isHome(env) && 
+            profile.availableEquipment.isEmpty);
+  }
+
+  // Gera treino usando o novo motor de casa sem equipamento
+  GeneratedWorkout _generateHomeBodyweightWorkout(WorkoutProfile profile) {
+    final integrator = HomeWorkoutIntegrator(userId: profile.uid);
+    return integrator.generateHomeWorkout(profile);
+  }
 
   List<PrescribedSession> _buildSportOrModalitySessions(WorkoutProfile profile) {
     final goal = profile.primaryGoal;
@@ -209,7 +260,7 @@ class WorkoutPrescriptionEngine {
     final originalCount = sessions.fold(0, (sum, s) => sum + s.exercises.length);
 
     final result = sessions.map((session) {
-      final sessionFatigue = SessionFatigueAccumulator();
+      final sessionFatigue = _createFatigueAccumulator();
       final safeExercises = <PrescribedExercise>[];
       for (final prescribed in session.exercises) {
         if (!ExerciseCompatibility.isCompatible(profile, prescribed.exercise)) {
@@ -625,6 +676,29 @@ class WorkoutPrescriptionEngine {
     }
   }
 
+  // ── Prescrição com modificadores de idade ──
+
+  ({int sets, int repsMin, int repsMax, int rir, int restSeconds, String tempo})
+      _prescriptionWithAgeModifiers(WorkoutProfile profile, ExerciseModel ex, _DupPhase phase) {
+    final base = _prescription(profile, ex, phase);
+
+    // Aplicar modificador de descanso para idade >= 55
+    final adjustedRest = AgeModifier.restSecondsModifier(
+      age: profile.age,
+      experienceLevel: profile.experienceLevel,
+      baseRestSeconds: base.restSeconds,
+    );
+
+    return (
+      sets: base.sets,
+      repsMin: base.repsMin,
+      repsMax: base.repsMax,
+      rir: base.rir,
+      restSeconds: adjustedRest,
+      tempo: base.tempo,
+    );
+  }
+
   // ── Step 4: Construção de Sessões ─────────────────────────────
 
   List<PrescribedSession> _buildSessions(
@@ -668,7 +742,7 @@ class WorkoutPrescriptionEngine {
       final isA = i.isEven;
       final phase = _dupPhase(periodization, i, days);
 
-      final fatigue = SessionFatigueAccumulator();
+      final fatigue = _createFatigueAccumulator();
       final exercises = <PrescribedExercise?>[];
 
       // Compostos: push horizontal + pull vertical (equilíbrio 1:1)
@@ -748,7 +822,7 @@ class WorkoutPrescriptionEngine {
   }) {
     final isA = slot.isEven;
     final exercises = <PrescribedExercise?>[];
-    final fatigue = SessionFatigueAccumulator();
+    final fatigue = _createFatigueAccumulator();
     final dupLabel = _dupLabel(phase, periodization);
 
     // Push composto
@@ -805,7 +879,7 @@ class WorkoutPrescriptionEngine {
     required String periodization,
   }) {
     final exercises = <PrescribedExercise?>[];
-    final fatigue = SessionFatigueAccumulator();
+    final fatigue = _createFatigueAccumulator();
     final dupLabel = _dupLabel(phase, periodization);
 
     exercises.add(_pick('quads', 'squat', profile, vols, 2,
@@ -888,7 +962,7 @@ class WorkoutPrescriptionEngine {
   }) {
     final isA = slot.isEven;
     final exercises = <PrescribedExercise?>[];
-    final fatigue = SessionFatigueAccumulator();
+    final fatigue = _createFatigueAccumulator();
     final dupLabel = _dupLabel(phase, periodization);
 
     exercises.add(_pick('chest', isA ? 'push_horizontal' : 'push_incline',
@@ -934,12 +1008,12 @@ class WorkoutPrescriptionEngine {
   }) {
     final isA = slot.isEven;
     final exercises = <PrescribedExercise?>[];
-    final fatigue = SessionFatigueAccumulator();
+    final fatigue = _createFatigueAccumulator();
     final dupLabel = _dupLabel(phase, periodization);
 
-    exercises.add(_pick('back', isA ? 'pull_vertical' : 'pull_vertical',
+    exercises.add(_pick('back', isA ? 'pull_vertical' : 'pull_horizontal',
         profile, vols, 3, slot: slot, phase: phase, setsModifier: 2, fatigue: fatigue));
-    exercises.add(_pick('back', 'pull_horizontal', profile, vols, 3,
+    exercises.add(_pick('back', isA ? 'pull_horizontal' : 'pull_vertical', profile, vols, 3,
         slot: slot, phase: phase, setsModifier: 2, fatigue: fatigue));
     exercises.add(_pick('back', 'pull_horizontal', profile, vols, 3,
         slot: slot + 5, phase: phase, setsModifier: 1, fatigue: fatigue));
@@ -973,7 +1047,7 @@ class WorkoutPrescriptionEngine {
     required _DupPhase phase,
   }) {
     final exercises = <PrescribedExercise?>[];
-    final fatigue = SessionFatigueAccumulator();
+    final fatigue = _createFatigueAccumulator();
     final dupLabel = _dupLabel(phase, periodization);
     final hasKneeInjury = profile.healthRestrictions.contains('knee');
 
@@ -1029,7 +1103,7 @@ class WorkoutPrescriptionEngine {
     final sessions = <PrescribedSession>[];
 
     // A: Chest + Back (agonista-antagonista, Arnold 1980)
-    final fatigueA = SessionFatigueAccumulator();
+    final fatigueA = _createFatigueAccumulator();
     final phaseA = _dupPhase(periodization, 0, 6);
     final exercisesA = <PrescribedExercise?>[];
 
@@ -1062,7 +1136,7 @@ class WorkoutPrescriptionEngine {
     ));
 
     // B: Shoulders + Arms
-    final fatigueB = SessionFatigueAccumulator();
+    final fatigueB = _createFatigueAccumulator();
     final phaseB = _dupPhase(periodization, 1, 6);
     final exercisesB = <PrescribedExercise?>[];
 
@@ -1099,7 +1173,7 @@ class WorkoutPrescriptionEngine {
     // Para 5 dias: só A, B, C + variações de A e B
     if (profile.availableDaysPerWeek >= 5) {
       // D: Chest + Back variante B
-      final fatigueD = SessionFatigueAccumulator();
+      final fatigueD = _createFatigueAccumulator();
       final phaseD = _dupPhase(periodization, 3, 6);
       final exercisesD = <PrescribedExercise?>[];
       exercisesD.add(_pick('chest', 'push_incline', profile, vols, 3,
@@ -1125,7 +1199,7 @@ class WorkoutPrescriptionEngine {
       ));
 
       // E: Shoulders + Arms variante B
-      final fatigueE = SessionFatigueAccumulator();
+      final fatigueE = _createFatigueAccumulator();
       final phaseE = _dupPhase(periodization, 4, 6);
       final exercisesE = <PrescribedExercise?>[];
       exercisesE.add(_pick('shoulders', 'push_vertical', profile, vols, 3,
@@ -1164,6 +1238,13 @@ class WorkoutPrescriptionEngine {
   // SELEÇÃO INTELIGENTE DE EXERCÍCIO
   // ═══════════════════════════════════════════════════════════════
 
+  /// Calcula a posição do exercício para um músculo baseado no acumulador de fadiga.
+  int _getExercisePositionForMuscle(String muscle, SessionFatigueAccumulator? fatigue) {
+    if (fatigue == null) return 0;
+    // Contar quantos exercícios já foram adicionados para este músculo
+    return fatigue.getExerciseCountForMuscle(muscle);
+  }
+
   PrescribedExercise? _pick(
     String muscle,
     String pattern,
@@ -1185,6 +1266,12 @@ class WorkoutPrescriptionEngine {
     );
 
     if (candidates.isEmpty) return null;
+
+    // Calcular exercisePosition automaticamente baseado no volume do músculo
+    // Se já há exercícios para este músculo na sessão, incrementar posição
+    final effectivePosition = exercisePosition == 0 
+        ? _getExercisePositionForMuscle(muscle, fatigue)
+        : exercisePosition;
 
     // Algoritmo de score: seleciona o melhor exercício por contexto
     // Em vez de seed aleatório, calcula pontuação baseada em:
@@ -1225,6 +1312,17 @@ class WorkoutPrescriptionEngine {
         score -= dna.technicalDemand * 1.0;
       }
 
+      // Modificador de complexidade por idade (AgeModifier)
+      final complexityMod = AgeModifier.complexityModifier(
+        age: profile.age,
+        experienceLevel: profile.experienceLevel,
+        fitnessCapacity: profile.adaptive.volumeTolerance,
+      );
+      // Penalizar exercícios complexos para usuários com menor capacidade
+      if (complexityMod < 1.0) {
+        score -= dna.technicalDemand * (1.0 - complexityMod) * 2.0;
+      }
+
       // Penalidade de fadiga
       if (fatigue != null) {
         score -= fatigue.spinalLoadAccumulated * candidate.spinalLoad * 1.5;
@@ -1245,10 +1343,10 @@ class WorkoutPrescriptionEngine {
       // Length bias balancing (Schoenfeld 2021)
       // Primeiro exercício do músculo: favorece posição alongada
       // Exercícios seguintes: favorece mid_range ou posição encurtada
-      if (exercisePosition == 0) {
+      if (effectivePosition == 0) {
         if (candidate.lengthBias == 'lengthened') score += 1.0;
         if (candidate.lengthBias == 'shortened') score -= 0.5;
-      } else if (exercisePosition == 1) {
+      } else if (effectivePosition == 1) {
         if (candidate.lengthBias == 'mid_range' || candidate.lengthBias == 'shortened') {
           score += 0.8;
         }
@@ -1352,7 +1450,7 @@ class WorkoutPrescriptionEngine {
       finalEx = ex;
     }
     if (fatigue != null) fatigue.add(finalEx, sets);
-    final rx = _prescription(profile, finalEx, phase);
+    final rx = _prescriptionWithAgeModifiers(profile, finalEx, phase);
     final sessionCues = [
       ...finalEx.cues.take(2),
       'ROM completa — amplitude máxima segura em cada repetição.',
@@ -1360,8 +1458,8 @@ class WorkoutPrescriptionEngine {
 
     final wasRotated = rotatedId != ex.id;
     final decisionReason = wasRotated
-        ? 'Exercício rotacionado de ${ex.name} para ${finalEx.name} (variação semanal)'
-        : 'Selecionado para $muscle com padrão $pattern (compatível com seu ambiente)';
+        ? 'Exercício rotacionado de ${ex.name} para ${finalEx.name} (variação semanal) [score: ${bestScore.toStringAsFixed(1)}]'
+        : 'Selecionado para $muscle com padrão $pattern (compatível com seu ambiente) [score: ${bestScore.toStringAsFixed(1)}]';
 
     return PrescribedExercise(
       exercise: finalEx,
@@ -1697,5 +1795,97 @@ class WorkoutPrescriptionEngine {
       return 'Bodyweight: complete com RIR >= 3 por 2 sessões para avançar para o próximo nível da cadeia.';
     }
     return 'Complete ${ex.repRangeMax} reps em todas as séries com boa técnica antes de aumentar a carga em 2,5 kg.';
+  }
+
+  // ── Bio-Adaptação: ajustar prescrição com base em readiness ──
+
+  List<PrescribedSession> _applyBioAdaptation(
+      WorkoutProfile profile, List<PrescribedSession> sessions) {
+    // Calcular readiness baseado em sono, estresse e lifeLoad
+    final readiness = DailyReadiness.fromProfile(
+      sleepQuality: profile.sleepQuality,
+      stressLevel: profile.stressLevel,
+      lifeLoad: profile.lifeLoad,
+    );
+
+    // Se readiness está ótimo, não adaptar
+    if (readiness.status == 'ready') return sessions;
+
+    // Converter readiness para BioReadiness
+    final bioReadiness = BioReadiness(
+      score: readiness.volumeMultiplier,
+      status: readiness.status == 'recover'
+          ? BioStatus.fragile
+          : readiness.status == 'adapt'
+              ? BioStatus.recovering
+              : BioStatus.optimal,
+      recommendation: readiness.status == 'recover'
+          ? 'Fadiga acumulada detectada. Reduzindo volume e aumentando RIR.'
+          : readiness.status == 'adapt'
+              ? 'Adaptação em andamento. Mantendo volume moderado.'
+              : 'Plano ideal mantido.',
+      cnsFatigue: (1.0 - readiness.volumeMultiplier).clamp(0.0, 1.0),
+      jointStress: (1.0 - readiness.volumeMultiplier).clamp(0.0, 1.0),
+    );
+
+    // Aplicar adaptação em cada exercício de cada sessão
+    return sessions.map((session) {
+      final adaptedExercises = session.exercises.map((ex) {
+        return BioAdaptiveEngine.applyBioAdaptation(ex, bioReadiness);
+      }).toList();
+
+      return PrescribedSession(
+        id: session.id,
+        name: session.name,
+        objective: session.objective,
+        estimatedDurationMinutes: session.estimatedDurationMinutes,
+        warmupInstructions: session.warmupInstructions,
+        exercises: adaptedExercises,
+        progressionNote: session.progressionNote,
+        fatigue: session.fatigue,
+        userExplanation: session.userExplanation,
+      );
+    }).toList();
+  }
+
+  // ── Decision Memory: registrar decisões para auditoria ──
+
+  void _recordDecisions(WorkoutProfile profile, List<PrescribedSession> sessions,
+      String splitType, String periodization) {
+    if (_decisionMemory == null) return;
+
+    final decisions = <PrescriptionDecision>[];
+
+    for (final session in sessions) {
+      for (final ex in session.exercises) {
+        decisions.add(PrescriptionDecision(
+          exerciseId: ex.exercise.id,
+          exerciseName: ex.exercise.name,
+          muscle: ex.exercise.primaryMuscles.isNotEmpty
+              ? ex.exercise.primaryMuscles.first
+              : 'unknown',
+          pattern: ex.exercise.movementPattern,
+          reason: ex.decisionReason ?? 'Selecionado pelo motor de prescrição',
+          score: 0,
+          timestamp: DateTime.now(),
+        ));
+      }
+    }
+
+    if (decisions.isNotEmpty) {
+      final record = PrescriptionRecord(
+        workoutId: 'gen_${DateTime.now().millisecondsSinceEpoch}',
+        splitType: splitType,
+        periodization: periodization,
+        decisions: decisions,
+        inputSnapshot: {
+          'goal': profile.primaryGoal,
+          'experience': profile.experienceLevel,
+          'days': profile.availableDaysPerWeek,
+        },
+        timestamp: DateTime.now(),
+      );
+      _decisionMemory!.addRecord(record);
+    }
   }
 }

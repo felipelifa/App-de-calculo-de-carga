@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'training_readiness.dart';
 
 // ─────────────────────────────────────────────
@@ -119,16 +118,14 @@ class WorkoutProfile {
     required this.updatedAt,
   });
 
-  factory WorkoutProfile.fromDoc(DocumentSnapshot doc) {
-    final d = doc.data() as Map<String, dynamic>? ?? {};
-    final userId = d['uid'] as String? ?? doc.reference.parent.parent?.id ?? doc.id;
+  static DateTime _readDate(dynamic value) {
+    if (value is DateTime) return value;
+    if (value is String) return DateTime.tryParse(value) ?? DateTime.now();
+    return DateTime.now();
+  }
 
-    DateTime readDate(dynamic value) {
-      if (value is Timestamp) return value.toDate();
-      if (value is DateTime) return value;
-      if (value is String) return DateTime.tryParse(value) ?? DateTime.now();
-      return DateTime.now();
-    }
+  factory WorkoutProfile.fromMap(Map<String, dynamic> d) {
+    final userId = d['uid'] as String? ?? '';
 
     String normalizeEquipment(String value) {
       switch (value.trim().toLowerCase()) {
@@ -178,8 +175,8 @@ class WorkoutProfile {
       calibrationActive: d['calibrationActive'] as bool? ?? true,
       calibrationSessionsRemaining:
           (d['calibrationSessionsRemaining'] as num?)?.toInt() ?? 6,
-      createdAt: readDate(d['createdAt']),
-      updatedAt: readDate(d['updatedAt']),
+      createdAt: _readDate(d['createdAt']),
+      updatedAt: _readDate(d['updatedAt']),
     );
   }
 
@@ -215,8 +212,8 @@ class WorkoutProfile {
         ),
         'calibrationActive': calibrationActive,
         'calibrationSessionsRemaining': calibrationSessionsRemaining,
-        'createdAt': Timestamp.fromDate(createdAt),
-        'updatedAt': Timestamp.fromDate(updatedAt),
+        'createdAt': createdAt.toIso8601String(),
+        'updatedAt': updatedAt.toIso8601String(),
       };
 
   static Map<String, ConfidenceLevel> _confidenceFromMap(dynamic value) {

@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../../core/services/auth_service.dart';
 import '../../shared/theme/app_theme.dart';
 import 'workout_profile_model.dart';
 import 'workout_profile_provider.dart';
 import 'training_readiness.dart';
-
-// ─────────────────────────────────────────────
-// Onboarding Simplificado — 9 etapas
-// Linguagem simples, sem termos técnicos
-// ─────────────────────────────────────────────
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -24,39 +19,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _currentPage = 0;
   bool _isLoading = false;
 
-  // Etapa 1: Objetivo
   String? _goal;
-
-  // Etapa 2: Modalidade
   String? _modality;
   String? _sportSubtype;
   String _rehabTarget = 'rehab_general';
-
-  // Etapa 3: Nível
   String? _level;
   int _trainingAge = 0;
   String _bodyFatCategory = 'medium';
-
-  // Etapa 4: Disponibilidade
   int _days = 3;
-
-  // Etapa 5: Tempo
   int _duration = 60;
-
-  // Etapa 6: Local/Equipamentos
   String? _environment;
   final List<String> _equipment = [];
-
-  // Etapa 7: Restrições
   final List<String> _restrictions = [];
-
-  // Etapa 8: Recuperação
   String _sleepQuality = 'regular';
   String _stressLevel = 'medium';
   final List<String> _priorityMuscles = [];
   String _preferredStyle = 'compound_focus';
-
-  // Dados pessoais mínimos para personalização e cálculo nutricional.
   int? _age;
   String? _sex;
   double? _weight;
@@ -119,13 +97,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> _finish() async {
     setState(() => _isLoading = true);
 
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = context.read<AuthService>().currentUser?.id;
     if (uid == null) {
       setState(() => _isLoading = false);
       return;
     }
 
-    // Mapear objetivo simples para objetivo técnico
     final technicalModality = _mapModalityToTechnical(_modality);
     final technicalGoal = _mapGoalForModality(_modality) ?? _mapGoalToTechnical(_goal);
     String technicalLevel = _mapLevelToTechnical(_level);
@@ -287,10 +264,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Header com progresso
             _buildHeader(),
-
-            // Conteúdo
             Expanded(
               child: PageView(
                 controller: _pageController,
@@ -309,8 +283,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ],
               ),
             ),
-
-            // Footer com botões
             _buildFooter(),
           ],
         ),
@@ -393,7 +365,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       padding: const EdgeInsets.all(24),
       child: Column(
         children: [
-          // Barra de progresso
           Row(
             children: List.generate(9, (index) {
               return Expanded(
@@ -411,7 +382,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             }),
           ),
           const SizedBox(height: 16),
-          // Texto do passo
           Text(
             'Passo ${_currentPage + 1} de 9',
             style: const TextStyle(
@@ -424,179 +394,47 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // ── ETAPA 1: OBJETIVO ──
   Widget _buildGoalStep() {
     return _buildStepContainer(
       title: 'O que você quer alcançar?',
       subtitle: 'Escolha o que mais importante para você',
       child: Column(
         children: [
-          _buildOptionCard(
-            icon: '💪',
-            title: 'Ganhar músculo',
-            value: 'muscle',
-            groupValue: _goal,
-            onChanged: (v) => setState(() => _goal = v),
-          ),
-          _buildOptionCard(
-            icon: '🔥',
-            title: 'Perder gordura',
-            value: 'fat_loss',
-            groupValue: _goal,
-            onChanged: (v) => setState(() => _goal = v),
-          ),
-          _buildOptionCard(
-            icon: '⚡',
-            title: 'Ficar mais forte',
-            value: 'strength',
-            groupValue: _goal,
-            onChanged: (v) => setState(() => _goal = v),
-          ),
-          _buildOptionCard(
-            icon: '❤️',
-            title: 'Melhorar minha saúde',
-            value: 'health',
-            groupValue: _goal,
-            onChanged: (v) => setState(() => _goal = v),
-          ),
-          _buildOptionCard(
-            icon: '🏃',
-            title: 'Melhorar meu condicionamento',
-            value: 'conditioning',
-            groupValue: _goal,
-            onChanged: (v) => setState(() => _goal = v),
-          ),
-          _buildOptionCard(
-            icon: '🏅',
-            title: 'Performance esportiva',
-            subtitle: 'Treino complementar para seu esporte',
-            value: 'sport_specific',
-            groupValue: _goal,
-            onChanged: (v) => setState(() => _goal = v),
-          ),
-          _buildOptionCard(
-            icon: '⚡',
-            title: 'Potência e explosão',
-            value: 'power_explosive',
-            groupValue: _goal,
-            onChanged: (v) => setState(() => _goal = v),
-          ),
-          _buildOptionCard(
-            icon: '🤸',
-            title: 'Calistenia',
-            value: 'calisthenics',
-            groupValue: _goal,
-            onChanged: (v) => setState(() => _goal = v),
-          ),
-          _buildOptionCard(
-            icon: '🔄',
-            title: 'Funcional / HIIT',
-            value: 'functional_hiit',
-            groupValue: _goal,
-            onChanged: (v) => setState(() => _goal = v),
-          ),
-          _buildOptionCard(
-            icon: '🧘',
-            title: 'Mobilidade e reabilitação',
-            value: 'mobility_rehab',
-            groupValue: _goal,
-            onChanged: (v) => setState(() => _goal = v),
-          ),
-          _buildOptionCard(
-            icon: '❓',
-            title: 'Não sei',
-            value: 'unknown',
-            groupValue: _goal,
-            onChanged: (v) => setState(() => _goal = v),
-          ),
+          _buildOptionCard(icon: '💪', title: 'Ganhar músculo', value: 'muscle', groupValue: _goal, onChanged: (v) => setState(() => _goal = v)),
+          _buildOptionCard(icon: '🔥', title: 'Perder gordura', value: 'fat_loss', groupValue: _goal, onChanged: (v) => setState(() => _goal = v)),
+          _buildOptionCard(icon: '⚡', title: 'Ficar mais forte', value: 'strength', groupValue: _goal, onChanged: (v) => setState(() => _goal = v)),
+          _buildOptionCard(icon: '❤️', title: 'Melhorar minha saúde', value: 'health', groupValue: _goal, onChanged: (v) => setState(() => _goal = v)),
+          _buildOptionCard(icon: '🏃', title: 'Melhorar meu condicionamento', value: 'conditioning', groupValue: _goal, onChanged: (v) => setState(() => _goal = v)),
+          _buildOptionCard(icon: '🏅', title: 'Performance esportiva', subtitle: 'Treino complementar para seu esporte', value: 'sport_specific', groupValue: _goal, onChanged: (v) => setState(() => _goal = v)),
+          _buildOptionCard(icon: '⚡', title: 'Potência e explosão', value: 'power_explosive', groupValue: _goal, onChanged: (v) => setState(() => _goal = v)),
+          _buildOptionCard(icon: '🤸', title: 'Calistenia', value: 'calisthenics', groupValue: _goal, onChanged: (v) => setState(() => _goal = v)),
+          _buildOptionCard(icon: '🔄', title: 'Funcional / HIIT', value: 'functional_hiit', groupValue: _goal, onChanged: (v) => setState(() => _goal = v)),
+          _buildOptionCard(icon: '🧘', title: 'Mobilidade e reabilitação', value: 'mobility_rehab', groupValue: _goal, onChanged: (v) => setState(() => _goal = v)),
+          _buildOptionCard(icon: '❓', title: 'Não sei', value: 'unknown', groupValue: _goal, onChanged: (v) => setState(() => _goal = v)),
         ],
       ),
     );
   }
 
-  // ── ETAPA 2: MODALIDADE ──
   Widget _buildModalityStep() {
     return _buildStepContainer(
       title: 'Qual atividade você pratica?',
       subtitle: 'Escolha o tipo de exercício',
       child: Column(
         children: [
-          _buildOptionCard(
-            icon: '🏋️',
-            title: 'Musculação',
-            value: 'gym',
-            groupValue: _modality,
-            onChanged: (v) => _setModality(v),
-          ),
-          _buildOptionCard(
-            icon: '🏃',
-            title: 'Corrida',
-            value: 'running',
-            groupValue: _modality,
-            onChanged: (v) => _setModality(v),
-          ),
-          _buildOptionCard(
-            icon: '🧘',
-            title: 'Mobilidade',
-            value: 'mobility',
-            groupValue: _modality,
-            onChanged: (v) => _setModality(v),
-          ),
-          _buildOptionCard(
-            icon: '🩹',
-            title: 'Reabilitação',
-            value: 'rehab',
-            groupValue: _modality,
-            onChanged: (v) => _setModality(v),
-          ),
-          _buildOptionCard(
-            icon: '⚡',
-            title: 'Funcional',
-            value: 'functional',
-            groupValue: _modality,
-            onChanged: (v) => _setModality(v),
-          ),
-          _buildOptionCard(
-            icon: '🤸',
-            title: 'Calistenia',
-            value: 'calisthenics',
-            groupValue: _modality,
-            onChanged: (v) => _setModality(v),
-          ),
-          _buildOptionCard(
-            icon: '🥊',
-            title: 'Lutas',
-            value: 'combat',
-            groupValue: _modality,
-            onChanged: (v) => _setModality(v),
-          ),
-          _buildOptionCard(
-            icon: '🚴',
-            title: 'Ciclismo',
-            value: 'cycling',
-            groupValue: _modality,
-            onChanged: (v) => _setModality(v),
-          ),
-          _buildOptionCard(
-            icon: '🏊',
-            title: 'Natação',
-            value: 'swimming',
-            groupValue: _modality,
-            onChanged: (v) => _setModality(v),
-          ),
-          _buildOptionCard(
-            icon: '🏅',
-            title: 'Esportes de campo',
-            value: 'field_sports',
-            groupValue: _modality,
-            onChanged: (v) => _setModality(v),
-          ),
+          _buildOptionCard(icon: '🏋️', title: 'Musculação', value: 'gym', groupValue: _modality, onChanged: (v) => _setModality(v)),
+          _buildOptionCard(icon: '🏃', title: 'Corrida', value: 'running', groupValue: _modality, onChanged: (v) => _setModality(v)),
+          _buildOptionCard(icon: '🧘', title: 'Mobilidade', value: 'mobility', groupValue: _modality, onChanged: (v) => _setModality(v)),
+          _buildOptionCard(icon: '🩹', title: 'Reabilitação', value: 'rehab', groupValue: _modality, onChanged: (v) => _setModality(v)),
+          _buildOptionCard(icon: '⚡', title: 'Funcional', value: 'functional', groupValue: _modality, onChanged: (v) => _setModality(v)),
+          _buildOptionCard(icon: '🤸', title: 'Calistenia', value: 'calisthenics', groupValue: _modality, onChanged: (v) => _setModality(v)),
+          _buildOptionCard(icon: '🥊', title: 'Lutas', value: 'combat', groupValue: _modality, onChanged: (v) => _setModality(v)),
+          _buildOptionCard(icon: '🚴', title: 'Ciclismo', value: 'cycling', groupValue: _modality, onChanged: (v) => _setModality(v)),
+          _buildOptionCard(icon: '🏊', title: 'Natação', value: 'swimming', groupValue: _modality, onChanged: (v) => _setModality(v)),
+          _buildOptionCard(icon: '🏅', title: 'Esportes de campo', value: 'field_sports', groupValue: _modality, onChanged: (v) => _setModality(v)),
           if (_modality == 'running') ...[
             const SizedBox(height: 16),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Distância principal', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
-            ),
+            const Align(alignment: Alignment.centerLeft, child: Text('Distância principal', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600))),
             _detailChoice('5 km', 'run_5k'),
             _detailChoice('10 km', 'run_10k'),
             _detailChoice('Meia maratona', 'run_half'),
@@ -604,30 +442,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ],
           if (_modality == 'combat') ...[
             const SizedBox(height: 16),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Modalidade de luta', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
-            ),
+            const Align(alignment: Alignment.centerLeft, child: Text('Modalidade de luta', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600))),
             _detailChoice('MMA', 'mma'),
             _detailChoice('Jiu-jitsu', 'bjj'),
             _detailChoice('Boxe / Muay Thai', 'boxing'),
           ],
           if (_modality == 'field_sports') ...[
             const SizedBox(height: 16),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Esporte de campo', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
-            ),
+            const Align(alignment: Alignment.centerLeft, child: Text('Esporte de campo', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600))),
             _detailChoice('Futebol', 'soccer'),
             _detailChoice('Basquete', 'basketball'),
             _detailChoice('Agilidade / campo', 'agility'),
           ],
           if (_modality == 'rehab') ...[
             const SizedBox(height: 16),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Região de atenção', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
-            ),
+            const Align(alignment: Alignment.centerLeft, child: Text('Região de atenção', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600))),
             _detailChoice('Ombro', 'rehab_shoulder'),
             _detailChoice('Joelho', 'rehab_knee'),
             _detailChoice('Lombar', 'rehab_lower_back'),
@@ -653,230 +482,75 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // ── ETAPA 3: NÍVEL ──
   Widget _buildLevelStep() {
     return _buildStepContainer(
       title: 'Como você se considera?',
       subtitle: 'Seja honesto, isso ajuda a montar seu treino',
       child: Column(
         children: [
-          _buildOptionCard(
-            icon: '🌱',
-            title: 'Estou começando',
-            subtitle: 'Nunca treinei ou treinei pouco',
-            value: 'beginner',
-            groupValue: _level,
-            onChanged: (v) => setState(() => _level = v),
-          ),
-          _buildOptionCard(
-            icon: '🌿',
-            title: 'Já tenho alguma experiência',
-            subtitle: 'Treino há alguns meses',
-            value: 'some_experience',
-            groupValue: _level,
-            onChanged: (v) => setState(() => _level = v),
-          ),
-          _buildOptionCard(
-            icon: '🌳',
-            title: 'Tenho bastante experiência',
-            subtitle: 'Treino há mais de 2 anos',
-            value: 'experienced',
-            groupValue: _level,
-            onChanged: (v) => setState(() => _level = v),
-          ),
-          _buildOptionCard(
-            icon: '❓',
-            title: 'Não sei',
-            value: 'unknown',
-            groupValue: _level,
-            onChanged: (v) => setState(() => _level = v),
-          ),
+          _buildOptionCard(icon: '🌱', title: 'Estou começando', subtitle: 'Nunca treinei ou treinei pouco', value: 'beginner', groupValue: _level, onChanged: (v) => setState(() => _level = v)),
+          _buildOptionCard(icon: '🌿', title: 'Já tenho alguma experiência', subtitle: 'Treino há alguns meses', value: 'some_experience', groupValue: _level, onChanged: (v) => setState(() => _level = v)),
+          _buildOptionCard(icon: '🌳', title: 'Tenho bastante experiência', subtitle: 'Treino há mais de 2 anos', value: 'experienced', groupValue: _level, onChanged: (v) => setState(() => _level = v)),
+          _buildOptionCard(icon: '❓', title: 'Não sei', value: 'unknown', groupValue: _level, onChanged: (v) => setState(() => _level = v)),
           const SizedBox(height: 16),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text('Tempo total de treino', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
-          ),
-          _buildNumberSelector(
-            value: _trainingAge,
-            min: 0,
-            max: 120,
-            unit: 'meses',
-            onChanged: (value) => setState(() => _trainingAge = value),
-          ),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text('Percentual de gordura estimado', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
-          ),
-          _buildOptionCard(
-            icon: '•',
-            title: 'Baixo (menos de 15%)',
-            value: 'low',
-            groupValue: _bodyFatCategory,
-            onChanged: (v) => setState(() => _bodyFatCategory = v),
-          ),
-          _buildOptionCard(
-            icon: '•',
-            title: 'Médio (15% a 25%)',
-            value: 'medium',
-            groupValue: _bodyFatCategory,
-            onChanged: (v) => setState(() => _bodyFatCategory = v),
-          ),
-          _buildOptionCard(
-            icon: '•',
-            title: 'Alto (mais de 25%)',
-            value: 'high',
-            groupValue: _bodyFatCategory,
-            onChanged: (v) => setState(() => _bodyFatCategory = v),
-          ),
+          const Align(alignment: Alignment.centerLeft, child: Text('Tempo total de treino', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600))),
+          _buildNumberSelector(value: _trainingAge, min: 0, max: 120, unit: 'meses', onChanged: (value) => setState(() => _trainingAge = value)),
+          const Align(alignment: Alignment.centerLeft, child: Text('Percentual de gordura estimado', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600))),
+          _buildOptionCard(icon: '•', title: 'Baixo (menos de 15%)', value: 'low', groupValue: _bodyFatCategory, onChanged: (v) => setState(() => _bodyFatCategory = v)),
+          _buildOptionCard(icon: '•', title: 'Médio (15% a 25%)', value: 'medium', groupValue: _bodyFatCategory, onChanged: (v) => setState(() => _bodyFatCategory = v)),
+          _buildOptionCard(icon: '•', title: 'Alto (mais de 25%)', value: 'high', groupValue: _bodyFatCategory, onChanged: (v) => setState(() => _bodyFatCategory = v)),
         ],
       ),
     );
   }
 
-  // ── ETAPA 4: DIAS ──
   Widget _buildDaysStep() {
     return _buildStepContainer(
       title: 'Quantos dias por semana você consegue treinar?',
       subtitle: 'Escolha o que você realmente consegue manter',
       child: Column(
         children: [
-          _buildNumberSelector(
-            value: _days,
-            min: 2,
-            max: 6,
-            onChanged: (v) => setState(() => _days = v),
-          ),
+          _buildNumberSelector(value: _days, min: 2, max: 6, onChanged: (v) => setState(() => _days = v)),
           const SizedBox(height: 16),
-          const Text(
-            'Não se preocupe em ser perfeito. O importante é começar!',
-            style: TextStyle(
-              color: AppTheme.textSecondary,
-              fontSize: 14,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          const Text('Não se preocupe em ser perfeito. O importante é começar!', style: TextStyle(color: AppTheme.textSecondary, fontSize: 14), textAlign: TextAlign.center),
         ],
       ),
     );
   }
 
-  // ── ETAPA 5: DURAÇÃO ──
   Widget _buildDurationStep() {
     return _buildStepContainer(
       title: 'Quanto tempo você tem para treinar?',
       subtitle: 'Tempo normal de cada sessão',
       child: Column(
         children: [
-          _buildOptionCard(
-            icon: '⏱️',
-            title: 'Até 30 minutos',
-            value: 30,
-            groupValue: _duration,
-            onChanged: (v) => setState(() => _duration = v),
-          ),
-          _buildOptionCard(
-            icon: '⏱️',
-            title: '30–45 minutos',
-            value: 45,
-            groupValue: _duration,
-            onChanged: (v) => setState(() => _duration = v),
-          ),
-          _buildOptionCard(
-            icon: '⏱️',
-            title: '45–60 minutos',
-            value: 60,
-            groupValue: _duration,
-            onChanged: (v) => setState(() => _duration = v),
-          ),
-          _buildOptionCard(
-            icon: '⏱️',
-            title: '60–90 minutos',
-            value: 75,
-            groupValue: _duration,
-            onChanged: (v) => setState(() => _duration = v),
-          ),
-          _buildOptionCard(
-            icon: '⏱️',
-            title: 'Mais de 90 minutos',
-            value: 90,
-            groupValue: _duration,
-            onChanged: (v) => setState(() => _duration = v),
-          ),
+          _buildOptionCard(icon: '⏱️', title: 'Até 30 minutos', value: 30, groupValue: _duration, onChanged: (v) => setState(() => _duration = v)),
+          _buildOptionCard(icon: '⏱️', title: '30–45 minutos', value: 45, groupValue: _duration, onChanged: (v) => setState(() => _duration = v)),
+          _buildOptionCard(icon: '⏱️', title: '45–60 minutos', value: 60, groupValue: _duration, onChanged: (v) => setState(() => _duration = v)),
+          _buildOptionCard(icon: '⏱️', title: '60–90 minutos', value: 75, groupValue: _duration, onChanged: (v) => setState(() => _duration = v)),
+          _buildOptionCard(icon: '⏱️', title: 'Mais de 90 minutos', value: 90, groupValue: _duration, onChanged: (v) => setState(() => _duration = v)),
           const SizedBox(height: 16),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text('Estilo de treino preferido', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
-          ),
-          _buildOptionCard(
-            icon: '🏋️',
-            title: 'Multiarticulares (base)',
-            value: 'compound_focus',
-            groupValue: _preferredStyle,
-            onChanged: (v) => setState(() => _preferredStyle = v),
-          ),
-          _buildOptionCard(
-            icon: '🎯',
-            title: 'Mais isoladores (detalhe)',
-            value: 'isolation_focus',
-            groupValue: _preferredStyle,
-            onChanged: (v) => setState(() => _preferredStyle = v),
-          ),
-          _buildOptionCard(
-            icon: '🔄',
-            title: 'Circuito / intenso',
-            value: 'circuit',
-            groupValue: _preferredStyle,
-            onChanged: (v) => setState(() => _preferredStyle = v),
-          ),
+          const Align(alignment: Alignment.centerLeft, child: Text('Estilo de treino preferido', style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600))),
+          _buildOptionCard(icon: '🏋️', title: 'Multiarticulares (base)', value: 'compound_focus', groupValue: _preferredStyle, onChanged: (v) => setState(() => _preferredStyle = v)),
+          _buildOptionCard(icon: '🎯', title: 'Mais isoladores (detalhe)', value: 'isolation_focus', groupValue: _preferredStyle, onChanged: (v) => setState(() => _preferredStyle = v)),
+          _buildOptionCard(icon: '🔄', title: 'Circuito / intenso', value: 'circuit', groupValue: _preferredStyle, onChanged: (v) => setState(() => _preferredStyle = v)),
         ],
       ),
     );
   }
 
-  // ── ETAPA 6: AMBIENTE ──
   Widget _buildEnvironmentStep() {
     return _buildStepContainer(
       title: 'Onde você treina?',
       subtitle: 'Isso ajuda a escolher os exercícios certos',
       child: Column(
         children: [
-          _buildOptionCard(
-            icon: '🏢',
-            title: 'Academia',
-            value: 'full_gym',
-            groupValue: _environment,
-            onChanged: (v) => setState(() => _environment = v),
-          ),
-          _buildOptionCard(
-            icon: '🏠',
-            title: 'Em casa',
-            value: 'home',
-            groupValue: _environment,
-            onChanged: (v) => setState(() {
-              _environment = v;
-              _equipment.clear();
-            }),
-          ),
-          _buildOptionCard(
-            icon: '🌳',
-            title: 'Ao ar livre',
-            value: 'outdoor',
-            groupValue: _environment,
-            onChanged: (v) => setState(() {
-              _environment = v;
-              _equipment.clear();
-            }),
-          ),
+          _buildOptionCard(icon: '🏢', title: 'Academia', value: 'full_gym', groupValue: _environment, onChanged: (v) => setState(() => _environment = v)),
+          _buildOptionCard(icon: '🏠', title: 'Em casa', value: 'home', groupValue: _environment, onChanged: (v) => setState(() { _environment = v; _equipment.clear(); })),
+          _buildOptionCard(icon: '🌳', title: 'Ao ar livre', value: 'outdoor', groupValue: _environment, onChanged: (v) => setState(() { _environment = v; _equipment.clear(); })),
           if (_environment == 'home') ...[
             const SizedBox(height: 16),
-            const Text(
-              'O que você tem em casa?',
-              style: TextStyle(
-                color: AppTheme.textPrimary,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            const Text('O que você tem em casa?', style: TextStyle(color: AppTheme.textPrimary, fontSize: 16, fontWeight: FontWeight.w600)),
             const SizedBox(height: 12),
             _buildEquipmentChips(),
           ],
@@ -915,19 +589,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           },
           selectedColor: AppTheme.accent.withValues(alpha: 0.2),
           checkmarkColor: AppTheme.accent,
-          labelStyle: TextStyle(
-            color: isSelected ? AppTheme.accent : AppTheme.textPrimary,
-          ),
+          labelStyle: TextStyle(color: isSelected ? AppTheme.accent : AppTheme.textPrimary),
           backgroundColor: AppTheme.surfaceHighlight,
-          side: BorderSide(
-            color: isSelected ? AppTheme.accent : Colors.transparent,
-          ),
+          side: BorderSide(color: isSelected ? AppTheme.accent : Colors.transparent),
         );
       }).toList(),
     );
   }
 
-  // ── ETAPA 8: RECUPERAÇÃO ──
   Widget _buildRecoveryStep() {
     return _buildStepContainer(
       title: 'Como está sua recuperação?',
@@ -935,84 +604,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Qualidade do sono',
-            style: TextStyle(
-              color: AppTheme.textPrimary,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          const Text('Qualidade do sono', style: TextStyle(color: AppTheme.textPrimary, fontSize: 16, fontWeight: FontWeight.w600)),
           const SizedBox(height: 12),
-          _buildOptionCard(
-            icon: '😴',
-            title: 'Dormo mal (até 5h ou acordo muito)',
-            value: 'poor',
-            groupValue: _sleepQuality,
-            onChanged: (v) => setState(() => _sleepQuality = v),
-          ),
-          _buildOptionCard(
-            icon: '🌙',
-            title: 'Dormo mais ou menos (5-7h)',
-            value: 'regular',
-            groupValue: _sleepQuality,
-            onChanged: (v) => setState(() => _sleepQuality = v),
-          ),
-          _buildOptionCard(
-            icon: '💤',
-            title: 'Dormo bem (7-9h e descansado)',
-            value: 'good',
-            groupValue: _sleepQuality,
-            onChanged: (v) => setState(() => _sleepQuality = v),
-          ),
+          _buildOptionCard(icon: '😴', title: 'Dormo mal (até 5h ou acordo muito)', value: 'poor', groupValue: _sleepQuality, onChanged: (v) => setState(() => _sleepQuality = v)),
+          _buildOptionCard(icon: '🌙', title: 'Dormo mais ou menos (5-7h)', value: 'regular', groupValue: _sleepQuality, onChanged: (v) => setState(() => _sleepQuality = v)),
+          _buildOptionCard(icon: '💤', title: 'Dormo bem (7-9h e descansado)', value: 'good', groupValue: _sleepQuality, onChanged: (v) => setState(() => _sleepQuality = v)),
           const SizedBox(height: 24),
-          const Text(
-            'Nível de estresse',
-            style: TextStyle(
-              color: AppTheme.textPrimary,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          const Text('Nível de estresse', style: TextStyle(color: AppTheme.textPrimary, fontSize: 16, fontWeight: FontWeight.w600)),
           const SizedBox(height: 12),
-          _buildOptionCard(
-            icon: '😰',
-            title: 'Muito estressado (trabalho, vida, etc.)',
-            value: 'high',
-            groupValue: _stressLevel,
-            onChanged: (v) => setState(() => _stressLevel = v),
-          ),
-          _buildOptionCard(
-            icon: '😐',
-            title: 'Moderado (algum estresse normal)',
-            value: 'medium',
-            groupValue: _stressLevel,
-            onChanged: (v) => setState(() => _stressLevel = v),
-          ),
-          _buildOptionCard(
-            icon: '😌',
-            title: 'Tranquilo (pouco ou nenhum estresse)',
-            value: 'low',
-            groupValue: _stressLevel,
-            onChanged: (v) => setState(() => _stressLevel = v),
-          ),
+          _buildOptionCard(icon: '😰', title: 'Muito estressado (trabalho, vida, etc.)', value: 'high', groupValue: _stressLevel, onChanged: (v) => setState(() => _stressLevel = v)),
+          _buildOptionCard(icon: '😐', title: 'Moderado (algum estresse normal)', value: 'medium', groupValue: _stressLevel, onChanged: (v) => setState(() => _stressLevel = v)),
+          _buildOptionCard(icon: '😌', title: 'Tranquilo (pouco ou nenhum estresse)', value: 'low', groupValue: _stressLevel, onChanged: (v) => setState(() => _stressLevel = v)),
           const SizedBox(height: 24),
-          const Text(
-            'Músculos que quer priorizar',
-            style: TextStyle(
-              color: AppTheme.textPrimary,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          const Text('Músculos que quer priorizar', style: TextStyle(color: AppTheme.textPrimary, fontSize: 16, fontWeight: FontWeight.w600)),
           const SizedBox(height: 4),
-          const Text(
-            'Opcional — o treino vai focar mais nessas áreas',
-            style: TextStyle(
-              color: AppTheme.textSecondary,
-              fontSize: 13,
-            ),
-          ),
+          const Text('Opcional — o treino vai focar mais nessas áreas', style: TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
@@ -1060,17 +666,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       },
       selectedColor: AppTheme.accent.withValues(alpha: 0.2),
       checkmarkColor: AppTheme.accent,
-      labelStyle: TextStyle(
-        color: isSelected ? AppTheme.accent : AppTheme.textPrimary,
-      ),
+      labelStyle: TextStyle(color: isSelected ? AppTheme.accent : AppTheme.textPrimary),
       backgroundColor: AppTheme.surfaceHighlight,
-      side: BorderSide(
-        color: isSelected ? AppTheme.accent : Colors.transparent,
-      ),
+      side: BorderSide(color: isSelected ? AppTheme.accent : Colors.transparent),
     );
   }
 
-  // ── ETAPA 9: RESTRIÇÕES ──
   Widget _buildRestrictionsStep() {
     return _buildStepContainer(
       title: 'Existe alguma coisa que devemos levar em consideração?',
@@ -1089,14 +690,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           _buildRestrictionChip('Hérnia', 'hernia'),
           _buildRestrictionChip('Pós-cirurgia', 'post_surgery'),
           const SizedBox(height: 16),
-          const Text(
-            'Se tiver alguma limitação, o BuildFit vai adaptar seus exercícios automaticamente.',
-            style: TextStyle(
-              color: AppTheme.textSecondary,
-              fontSize: 14,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          const Text('Se tiver alguma limitação, o BuildFit vai adaptar seus exercícios automaticamente.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 14), textAlign: TextAlign.center),
         ],
       ),
     );
@@ -1125,18 +719,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         },
         selectedColor: AppTheme.danger.withValues(alpha: 0.2),
         checkmarkColor: AppTheme.danger,
-        labelStyle: TextStyle(
-          color: isSelected ? AppTheme.danger : AppTheme.textPrimary,
-        ),
+        labelStyle: TextStyle(color: isSelected ? AppTheme.danger : AppTheme.textPrimary),
         backgroundColor: AppTheme.surfaceHighlight,
-        side: BorderSide(
-          color: isSelected ? AppTheme.danger : Colors.transparent,
-        ),
+        side: BorderSide(color: isSelected ? AppTheme.danger : Colors.transparent),
       ),
     );
   }
-
-  // ── COMPONENTES REUTILIZÁVEIS ──
 
   Widget _buildStepContainer({
     required String title,
@@ -1148,23 +736,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: AppTheme.textPrimary,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              height: 1.2,
-            ),
-          ),
+          Text(title, style: const TextStyle(color: AppTheme.textPrimary, fontSize: 28, fontWeight: FontWeight.bold, height: 1.2)),
           const SizedBox(height: 8),
-          Text(
-            subtitle,
-            style: const TextStyle(
-              color: AppTheme.textSecondary,
-              fontSize: 16,
-            ),
-          ),
+          Text(subtitle, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 16)),
           const SizedBox(height: 32),
           child,
         ],
@@ -1189,14 +763,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: isSelected
-                ? AppTheme.accent.withValues(alpha: 0.1)
-                : AppTheme.surfaceHighlight,
+            color: isSelected ? AppTheme.accent.withValues(alpha: 0.1) : AppTheme.surfaceHighlight,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: isSelected ? AppTheme.accent : Colors.transparent,
-              width: 2,
-            ),
+            border: Border.all(color: isSelected ? AppTheme.accent : Colors.transparent, width: 2),
           ),
           child: Row(
             children: [
@@ -1206,33 +775,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        color: isSelected ? AppTheme.accent : AppTheme.textPrimary,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Text(title, style: TextStyle(color: isSelected ? AppTheme.accent : AppTheme.textPrimary, fontSize: 16, fontWeight: FontWeight.w600)),
                     if (subtitle != null) ...[
                       const SizedBox(height: 4),
-                      Text(
-                        subtitle,
-                        style: const TextStyle(
-                          color: AppTheme.textSecondary,
-                          fontSize: 14,
-                        ),
-                      ),
+                      Text(subtitle, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 14)),
                     ],
                   ],
                 ),
               ),
-              if (isSelected)
-                Icon(
-                  Icons.check_circle,
-                  color: AppTheme.accent,
-                  size: 24,
-                ),
+              if (isSelected) Icon(Icons.check_circle, color: AppTheme.accent, size: 24),
             ],
           ),
         ),
@@ -1259,21 +810,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         const SizedBox(width: 24),
         Column(
           children: [
-            Text(
-              '$value',
-              style: const TextStyle(
-                color: AppTheme.accent,
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              unit,
-              style: const TextStyle(
-                color: AppTheme.textSecondary,
-                fontSize: 16,
-              ),
-            ),
+            Text('$value', style: const TextStyle(color: AppTheme.accent, fontSize: 48, fontWeight: FontWeight.bold)),
+            Text(unit, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 16)),
           ],
         ),
         const SizedBox(width: 24),
@@ -1299,14 +837,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   side: const BorderSide(color: AppTheme.textSecondary),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 ),
-                child: const Text(
-                  'Voltar',
-                  style: TextStyle(color: AppTheme.textSecondary),
-                ),
+                child: const Text('Voltar', style: TextStyle(color: AppTheme.textSecondary)),
               ),
             ),
           if (_currentPage > 0) const SizedBox(width: 16),
@@ -1318,27 +851,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 backgroundColor: AppTheme.accent,
                 foregroundColor: AppTheme.background,
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 elevation: 0,
               ),
               child: _isLoading
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: AppTheme.background,
-                      ),
-                    )
-                  : Text(
-                      _currentPage == 8 ? 'Começar!' : 'Próximo',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.background))
+                  : Text(_currentPage == 8 ? 'Começar!' : 'Próximo', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ),
           ),
         ],

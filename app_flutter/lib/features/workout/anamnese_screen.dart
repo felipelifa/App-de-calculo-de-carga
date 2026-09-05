@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../../core/services/auth_service.dart';
 import '../../shared/theme/app_theme.dart';
+import '../../core/data/exercise_library.dart';
 import 'workout_profile_model.dart';
 import 'workout_profile_provider.dart';
+import 'training_readiness.dart';
 import '../exercises/exercise_provider.dart';
-
-// ─────────────────────────────────────────────
-// Tela de Anamnese — 5 passos
-// ─────────────────────────────────────────────
 
 class AnamneseScreen extends StatefulWidget {
   const AnamneseScreen({super.key});
@@ -22,18 +20,15 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  // Passo 1: Pessoal
   int age = 25;
   String sex = 'male';
   double weight = 70.0;
   double height = 175.0;
 
-  // Passo 2: Experiência
   String level = 'beginner';
   int trainingAge = 0;
   String bodyFat = 'medium';
 
-  // Passo 3: Metas + Estilo
   String goal = 'hypertrophy';
   String sportSubType = 'none';
   String trainingModality = 'none';
@@ -41,12 +36,13 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
   int days = 3;
   int duration = 60;
 
-  // Passo 4: Recuperação + Prioridades
   String sleepQuality = 'regular';
   String stressLevel = 'medium';
+  String physicalWork = 'moderate';
+  String parallelSport = 'low';
+  String dailyRoutine = 'moderate';
   final List<String> priorityMuscles = [];
 
-  // Passo 5: Preferências + Restrições
   String env = 'full_gym';
   final List<String> availableEquipment = [];
   final List<String> dislikedExercises = [];
@@ -74,7 +70,7 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
   }
 
   Future<void> _finish() async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = context.read<AuthService>().currentUser?.id;
     if (uid == null) return;
 
     final profile = WorkoutProfile(
@@ -100,6 +96,11 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
       dislikedExercises: List.from(dislikedExercises),
       favoriteExercises: List.from(favoriteExercises),
       healthRestrictions: List.from(restrictions),
+      lifeLoad: LifeLoad(
+        physicalWork: physicalWork,
+        parallelSport: parallelSport,
+        dailyRoutine: dailyRoutine,
+      ),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
@@ -114,7 +115,6 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
 
       if (mounted) {
         Navigator.pop(context);
-        // Redireciona para a tela de Perfil de Atleta com diagnóstico visual
         context.go('/athlete-profile', extra: profile);
       }
     } catch (e) {
@@ -178,7 +178,14 @@ class _AnamneseScreenState extends State<AnamneseScreen> {
                     onDays: (v) => days = v,
                     onDuration: (v) => duration = v,
                   ),
-                  _StepRecovery(onSleep: (v) => sleepQuality = v, onStress: (v) => stressLevel = v, onPriorities: (v) { priorityMuscles.clear(); priorityMuscles.addAll(v); }),
+                  _StepRecovery(
+                    onSleep: (v) => sleepQuality = v,
+                    onStress: (v) => stressLevel = v,
+                    onPhysicalWork: (v) => physicalWork = v,
+                    onParallelSport: (v) => parallelSport = v,
+                    onDailyRoutine: (v) => dailyRoutine = v,
+                    onPriorities: (v) { priorityMuscles.clear(); priorityMuscles.addAll(v); },
+                  ),
                   _StepPreferences(
                     onEnv: (v) => env = v,
                     onEquipment: (v) { availableEquipment.clear(); availableEquipment.addAll(v); },
@@ -351,7 +358,7 @@ class _StepGoals extends StatefulWidget {
 class _StepGoalsState extends State<_StepGoals> {
   String _goal = 'hypertrophy';
   bool get _showSportSub => _goal == 'sport_specific';
-  bool get _showModality => _goal == 'calisthenics' || _goal == 'functional_hiit' || _goal == 'mobility_rehab';
+  bool get _showModality => _goal == 'calisthenics' || _goal == 'functional_hiit' || _goal == 'mobility_rehab' || _goal == 'hypertrophy' || _goal == 'strength' || _goal == 'fat_loss';
 
   @override
   Widget build(BuildContext context) {
@@ -407,30 +414,51 @@ class _StepGoalsState extends State<_StepGoals> {
           const SizedBox(height: 24),
           _InputLabel('Modalidade específica'),
           _ChoiceGroup(
-            choices: _goal == 'calisthenics' ? {
-              'calisthenics_beginner': '🔰 Calistenia Iniciante',
-              'calisthenics_intermediate': '💪 Calistenia Intermediária',
-              'calisthenics_advanced': '🤸 Calistenia Avançada (Planche, Lever)',
-              'street_workout': '🏋️ Street Workout',
+          choices: _goal == 'calisthenics' ? {
+              'calisthenics_beginner': 'Calistenia Iniciante',
+              'calisthenics_intermediate': 'Calistenia Intermediária',
+              'calisthenics_advanced': 'Calistenia Avançada (Planche, Lever)',
+              'street_workout': 'Street Workout',
             } : _goal == 'functional_hiit' ? {
-              'hiit_tabata': '⏱️ Tabata (20s/10s)',
-              'hiit_emom': '⏱️ EMOM (Every Minute)',
-              'hiit_amrap': '⏱️ AMRAP (Max Rounds)',
-              'functional_kettlebell': '🏋️ Funcional Kettlebell',
-              'functional_trx': '🔗 Funcional TRX',
-              'circuit': '🔄 Circuito Metabólico',
+              'hiit_tabata': 'Tabata (20s/10s)',
+              'hiit_emom': 'EMOM (Every Minute)',
+              'hiit_amrap': 'AMRAP (Max Rounds)',
+              'functional_kettlebell': 'Funcional Kettlebell',
+              'functional_trx': 'Funcional TRX',
+              'circuit': 'Circuito Metabólico',
+            } : _goal == 'mobility_rehab' ? {
+              'mobility_full': 'Mobilidade Articular Completa',
+              'yoga_fitness': 'Yoga Fitness',
+              'myofascial': 'Liberação Miofascial',
+              'rehab_shoulder': 'Reabilitação Ombro',
+              'rehab_knee': 'Reabilitação Joelho',
+              'rehab_lower_back': 'Reabilitação Lombar',
+              'rehab_return': 'Retorno Pós-Lesão',
+            } : _goal == 'hypertrophy' ? {
+              'template_gvt': 'GVT (German Volume Training)',
+              'template_phat': 'PHAT (Power Hypertrophy)',
+              'template_phul': 'PHUL (Power Upper Lower)',
+              'traditional': 'Treino Tradicional',
+              'moderate_volume': 'Volume Moderado',
+            } : _goal == 'strength' ? {
+              'template_5x5': '5x5 (Força)',
+              'template_531': '5/3/1 (Wendler)',
+              'template_phat': 'PHAT (Power Hypertrophy)',
+              'template_phul': 'PHUL (Power Upper Lower)',
+              'traditional': 'Treino Tradicional',
             } : {
-              'mobility_full': '🧘 Mobilidade Articular Completa',
-              'yoga_fitness': '🧘 Yoga Fitness',
-              'myofascial': '🧽 Liberação Miofascial',
-              'rehab_shoulder': '🩹 Reabilitação Ombro',
-              'rehab_knee': '🩹 Reabilitação Joelho',
-              'rehab_lower_back': '🩹 Reabilitação Lombar',
-              'rehab_return': '🩹 Retorno Pós-Lesão',
+              'hiit_tabata': 'Tabata (20s/10s)',
+              'hiit_emom': 'EMOM (Every Minute)',
+              'circuit': 'Circuito Metabólico',
+              'traditional': 'Treino Tradicional',
+              'moderate_volume': 'Volume Moderado',
             },
             initial: _goal == 'calisthenics' ? 'calisthenics_beginner'
                 : _goal == 'functional_hiit' ? 'circuit'
-                : 'mobility_full',
+                : _goal == 'mobility_rehab' ? 'mobility_full'
+                : _goal == 'hypertrophy' ? 'traditional'
+                : _goal == 'strength' ? 'template_5x5'
+                : 'traditional',
             onChanged: widget.onModality,
           ),
         ],
@@ -468,9 +496,12 @@ class _StepGoalsState extends State<_StepGoals> {
 class _StepRecovery extends StatelessWidget {
   final ValueChanged<String> onSleep;
   final ValueChanged<String> onStress;
+  final ValueChanged<String> onPhysicalWork;
+  final ValueChanged<String> onParallelSport;
+  final ValueChanged<String> onDailyRoutine;
   final ValueChanged<List<String>> onPriorities;
 
-  const _StepRecovery({required this.onSleep, required this.onStress, required this.onPriorities});
+  const _StepRecovery({required this.onSleep, required this.onStress, required this.onPhysicalWork, required this.onParallelSport, required this.onDailyRoutine, required this.onPriorities});
 
   @override
   Widget build(BuildContext context) {
@@ -498,6 +529,39 @@ class _StepRecovery extends StatelessWidget {
           },
           initial: 'medium',
           onChanged: onStress,
+        ),
+        const SizedBox(height: 24),
+        _InputLabel('Seu trabalho exige esforço físico?'),
+        _ChoiceGroup(
+          choices: {
+            'low': 'Sedentário (escritório)',
+            'moderate': 'Moderado (em pé, caminhada)',
+            'high': 'Pesado (construção, carga)',
+          },
+          initial: 'moderate',
+          onChanged: onPhysicalWork,
+        ),
+        const SizedBox(height: 24),
+        _InputLabel('Pratica outro esporte em paralelo?'),
+        _ChoiceGroup(
+          choices: {
+            'low': 'Não',
+            'moderate': '1-2x por semana',
+            'high': '3x ou mais por semana',
+          },
+          initial: 'low',
+          onChanged: onParallelSport,
+        ),
+        const SizedBox(height: 24),
+        _InputLabel('Rotina diária (caminhar, subir escadas, etc.)'),
+        _ChoiceGroup(
+          choices: {
+            'low': 'Pouca atividade',
+            'moderate': 'Atividade moderada',
+            'high': 'Muito ativo no dia a dia',
+          },
+          initial: 'moderate',
+          onChanged: onDailyRoutine,
         ),
         const SizedBox(height: 24),
         _InputLabel('Grupos musculares que quer priorizar?'),
@@ -643,7 +707,7 @@ class _StepPreferencesState extends State<_StepPreferences> {
 }
 
 // ─────────────────────────────────────────────
-// Exercício Picker (lista expandida com busca)
+// Exercício Picker
 // ─────────────────────────────────────────────
 
 class _ExercisePicker extends StatefulWidget {
@@ -661,50 +725,8 @@ class _ExercisePickerState extends State<_ExercisePicker> {
   final TextEditingController _search = TextEditingController();
   bool _open = false;
 
-  // Lista consolidada de exercícios comuns
-  static const Map<String, String> _exercises = {
-    'supino_reto_barra': 'Supino Reto Barra',
-    'supino_inclinado_halteres': 'Supino Inclinado Halteres',
-    'supino_declinado': 'Supino Declinado',
-    'crucifixo_halteres': 'Crucifixo Halteres',
-    'crossover': 'Crossover Cabos',
-    'peck_deck': 'Peck Deck / Voador',
-    'flexao_aps': 'Flexão de Braços',
-    'terra_convensonal': 'Levantamento Terra',
-    'remada_curvada': 'Remada Curvada',
-    'remada_cavaleiro': 'Remada Cavaleiro',
-    'puxada_frente': 'Puxada Frente',
-    'remada_baixa': 'Remada Baixa',
-    'barra_fixa': 'Barra Fixa',
-    'pullover': 'Pullover',
-    'desenvolvimento_halteres': 'Desenvolvimento Halteres',
-    'desenvolvimento_barra': 'Desenvolvimento Barra',
-    'elevacao_lateral': 'Elevação Lateral',
-    'face_pull': 'Face Pull',
-    'y_raise_trap3': 'Y-Raise (Trap 3)',
-    'rotacao_externa_elastico': 'Rotação Externa Elástico',
-    'band_pull_apart': 'Band Pull Apart',
-    'agachamento_livre': 'Agachamento Livre',
-    'agachamento_smith': 'Agachamento Smith',
-    'agachamento_bulgaro': 'Agachamento Búlgaro',
-    'leg_press': 'Leg Press',
-    'extensora': 'Extensão de Pernas',
-    'flexora': 'Flexão de Pernas',
-    'stiff': 'Stiff',
-    'elevacao_pelvica': 'Elevação Pélvica',
-    'panturrilha_em_pe': 'Panturrilha em Pé',
-    'panturrilha_sentado': 'Panturrilha Sentado',
-    'rosca_direta': 'Rosca Direta',
-    'rosca_martelo': 'Rosca Martelo',
-    'rosca_scott': 'Rosca Scott',
-    'rosca_polia': 'Rosca na Polia',
-    'triceps_corda': 'Tríceps Corda',
-    'triceps_testa': 'Tríceps Testa',
-    'triceps_frances': 'Tríceps Francês',
-    'mergulho': 'Mergulho (Paralelas)',
-    'abd_sup': 'Abdominal Supra',
-    'prancha': 'Prancha Isométrica',
-    'paloff_press': 'Pallof Press',
+  static final Map<String, String> _exercises = {
+    for (final exercise in exerciseLibrary) exercise.id: exercise.name,
   };
 
   List<String> get _filtered {

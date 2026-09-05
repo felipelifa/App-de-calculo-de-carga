@@ -1648,3 +1648,362 @@ Criada `prisma/migrations/20260826_init/migration.sql` com todas as 17 tabelas.
 | **6** | Teste de sensibilidade completo (perturbação de inputs) | MÉDIA |
 | **7** | Stripe para pagamentos | BAIXA |
 | **8** | OCR de rótulos | BAIXA |
+
+---
+
+# 🔧 SESSÃO 2026-08-30 — Conexão de Motores Desconectados + Correções de Anamnese
+
+## Resumo da Sessão
+
+Sessão de correção e integração de motores que estavam funcionando isoladamente (código morto) mas não conectados ao fluxo real do app. Também foram corrigidos problemas críticos na anamnese e filtragem de exercícios.
+
+---
+
+## 1. Problemas Identificados e Corrigidos
+
+### 1.1 Exercícios de Casa com Equipamento Indevido (CRÍTICO)
+
+**Problema:** Quando o usuário escolhia `home_dumbbell` mas não preenchia a lista de equipamentos disponíveis, exercícios que exigiam halteres passavam no filtro.
+
+**Arquivo:** `exercise_compatibility.dart:63-81`
+
+**Correção:** Quando `available.isEmpty`, o código agora infere o ambiente específico:
+- `home_bodyweight`/`outdoor`: só permite bodyweight/none
+- `home_dumbbell`: permite bodyweight + dumbbell
+
+---
+
+### 1.2 Anamnese Incompleta — LifeLoad Não Coletado (MODERADO)
+
+**Problema:** O campo `LifeLoad` (trabalho físico, esporte paralelo, rotina diária) nunca era coletado na anamnese. O motor de prescrição calculava volumes sem considerar a carga de vida real do usuário.
+
+**Arquivo:** `anamnese_screen.dart`
+
+**Correção:**
+- Adicionados 3 novos campos no Passo 4 (Recuperação):
+  - `physicalWork`: Sedentário / Moderado / Pesado
+  - `parallelSport`: Não / 1-2x semana / 3x+ semana
+  - `dailyRoutine`: Pouca atividade / Moderada / Muito ativo
+- `LifeLoad` agora é passado para o `WorkoutProfile` ao finalizar anamnese
+
+---
+
+### 1.3 trainingModality Inacessível para Maioria dos Objetivos (MODERADO)
+
+**Problema:** O campo `trainingModality` (que permite escolher templates como 5x5, GVT, PHAT) só era exibido quando o objetivo era `calisthenics`, `functional_hiit` ou `mobility_rehab`.
+
+**Arquivo:** `anamnese_screen.dart`
+
+**Correção:** Expandido `_showModality` para incluir `hypertrophy`, `strength` e `fat_loss`. Agora usuários que escolhem Hipertrofia podem selecionar GVT, PHAT, PHUL, etc.
+
+---
+
+### 1.4 Mapa de Reabilitação Incompleto (MODERADO)
+
+**Problema:** O mapa `injuryRehabExercises` só cobria 3 de 9 restrições possíveis (shoulder, knee, lower_back).
+
+**Arquivo:** `exercise_library.dart:30354-30363`
+
+**Correção:** Adicionados exercícios de reabilitação para:
+- `elbow` (cotovelo)
+- `wrist` (punho)
+- `hip` (quadril)
+- `hypertension` (hipertensão)
+- `hernia` (hérnia)
+- `post_surgery` (pós-cirúrgico)
+
+---
+
+### 1.5 Picker de Exercícios Hardcoded (BAIXO)
+
+**Problema:** O picker de exercícios favoritos/evitados na anamnese usava uma lista hardcoded de ~40 exercícios, enquanto a biblioteca completa tem 949.
+
+**Arquivo:** `anamnese_screen.dart:665-708`
+
+**Correção:** Substituída lista hardcoded por `exerciseLibrary` completa.
+
+---
+
+### 1.6 Filtragem de Ambiente Duplicada (BAIXO)
+
+**Problema:** `sport_plan_builders.dart` tinha lógica de filtragem de ambiente duplicada em relação ao `ExerciseCompatibility`.
+
+**Arquivo:** `sport_plan_builders.dart:1072-1090`
+
+**Correção:** Unificada lógica usando `ExerciseCompatibility.isCompatible()` como fonte única.
+
+---
+
+### 1.7 Encoding Corrompido (BAIXO)
+
+**Problema:** Comentários em `exercise_rotation_manager.dart` tinham caracteres corrompidos (ex: "exerccios" em vez de "exercicios").
+
+**Arquivo:** `exercise_rotation_manager.dart`
+
+**Correção:** Reescrito arquivo com encoding UTF-8 correto.
+
+---
+
+## 2. Motores Desconectados — Conexão ao Fluxo Real
+
+### 2.1 ProgressionProvider Desconectado da UI
+
+**Problema:** O `ProgressionEngine` funcionava dentro do `WorkoutProvider.finishSession()`, mas as decisões ficavam presas lá. O `ProgressionProvider` (que a tela de progressão observa) nunca recebia essas decisões.
+
+**Arquivos modificados:**
+- `workout_provider.dart` — Adicionado `connectProgressionProvider()` e chamada `_progressionProvider?.processCompletedSession()` após `finishSession()`
+- `main.dart` — Conectado os dois providers na inicialização
+
+**Fluxo agora funcional:**
+```
+Usuário finaliza treino
+  → WorkoutProvider.finishSession()
+    → ProgressionEngine.processSession() (já existia)
+    → ProgressionProvider.processCompletedSession() (NOVO)
+      → UI observa via context.watch<ProgressionProvider>()
+```
+
+---
+
+### 2.2 BioAdaptiveEngine — Código Morto → Integrado
+
+**Problema:** O motor inteiro (110 linhas) foi implementado mas nunca integrado. O import em `prescribed_workout_screen.dart` era unused.
+
+**Arquivo modificado:** `prescription_engine.dart`
+
+**Correção:**
+- Import de `bio_adaptive_engine.dart`
+- Método `_applyBioAdaptation()` que calcula `DailyReadiness` a partir de sono/estresse/lifeLoad do perfil e aplica `BioAdaptiveEngine.applyBioAdaptation()` em cada exercício
+- Chamado após `_auditAndSanitizeSessions()` no fluxo de `generate()`
+
+**Fluxo agora funcional:**
+```
+generate() → _buildSessions() → _applyBioAdaptation()
+  → DailyReadiness.fromProfile(sono, estresse, lifeLoad)
+  → BioAdaptiveEngine.applyBioAdaptation(exercise, readiness)
+  → Ajusta sets/RIR/descanso se fadiga alta
+```
+
+---
+
+### 2.3 decision_memory.dart — Código Morto → Integrado
+
+**Problema:** Classes `PrescriptionDecision` e `PrescriptionRecord` nunca eram instanciadas por nenhum arquivo.
+
+**Arquivo modificado:** `prescription_engine.dart`
+
+**Correção:**
+- Import de `decision_memory.dart`
+- Método `_recordDecisions()` que registra cada exercício prescrito como `PrescriptionDecision`
+- Chamado após `_applyBioAdaptation()` no fluxo de `generate()`
+
+---
+
+### 2.4 AgeModifier — 2 Métodos Não Usados → Conectados
+
+**Problema:** `complexityModifier()` e `restSecondsModifier()` nunca eram chamados.
+
+**Arquivo modificado:** `prescription_engine.dart`
+
+**Correção:**
+- `AgeModifier.restSecondsModifier()` — aplicado em `_prescriptionWithAgeModifiers()` para ajustar descanso para idade >= 55
+- `AgeModifier.complexityModifier()` — aplicado no scoring de `_pick()` para penalizar exercícios complexos para usuários com menor capacidade
+
+---
+
+## 3. Status Final dos Motores
+
+| Motor | Status Anterior | Status Atual |
+|-------|----------------|--------------|
+| `prescription_engine.dart` | ✅ Funcionava | ✅ Funcionando |
+| `exercise_rotation_manager.dart` | ✅ Funcionava | ✅ Funcionando |
+| `exercise_dna.dart` | ✅ Funcionava | ✅ Funcionando |
+| `session_fatigue_accumulator.dart` | ✅ Funcionava | ✅ Funcionando |
+| `progression_engine.dart` | ⚠️ Parcial | ✅ **CONECTADO** à UI |
+| `bio_adaptive_engine.dart` | ❌ Morto | ✅ **INTEGRADO** ao fluxo |
+| `decision_memory.dart` | ❌ Morto | ✅ **INTEGRADO** ao fluxo |
+| `age_modifier.dart` | ⚠️ 3/5 métodos | ✅ **5/5 métodos** conectados |
+
+---
+
+## 4. Próximos Passos — Build e Deploy
+
+### 4.1 Build Android (APK)
+
+```bash
+cd app_flutter
+
+# Limpar builds anteriores
+flutter clean
+flutter pub get
+
+# Build release
+flutter build apk --release --no-tree-shake-icons
+
+# Output: build/app/outputs/flutter-apk/app-release.apk
+```
+
+**Notas:**
+- `--no-tree-shake-icons` evita erro com Material Icons
+- `flutter config --enable-native-assets` pode ser necessário para Flutter 3.41+
+- `coreLibraryDesugaringEnabled = true` já está em `android/app/build.gradle.kts`
+- Copiar APK para `public/download/apk.apk` na landing page
+
+### 4.2 Build Web
+
+```bash
+cd app_flutter
+
+# Build web
+flutter build web --release --no-tree-shake-icons
+
+# Copiar para landing page
+xcopy build\web\* ..\public\treino\ /E /Y /I
+```
+
+**Notas:**
+- FCM não funciona em web (bypass com `if (!kIsWeb)`)
+- GIFs podem ter CORS no web (proxy via Next.js API route)
+
+### 4.3 Build iOS (via Codemagic)
+
+```bash
+# Trigger: push para main/develop com tag v*
+# Instância: mac_mini_m2
+# Comando: flutter build ios --release --no-codesign
+# Output: IPA pronto para distribuição
+```
+
+**Pré-requisitos:**
+- Conectar GitHub repo no Codemagic
+- Criar group `buildfit_credentials` com:
+  - `FIREBASE_TOKEN`
+  - `APPLE_CERTIFICATE`
+  - `APPLE_PROVISIONING_PROFILE`
+
+### 4.4 Deploy Backend (Railway)
+
+```bash
+cd buildfit-api
+
+# 1. Configurar Railway
+# - Conectar repositório GitHub
+# - Criar PostgreSQL managed
+# - Configurar variáveis de ambiente:
+#   - DATABASE_URL
+#   - FIREBASE_SERVICE_ACCOUNT
+#   - CORS_ORIGIN
+
+# 2. Deploy automático via push
+git push origin main
+```
+
+### 4.5 Deploy Landing Page (Vercel)
+
+```bash
+# Deploy automático via push para GitHub
+git push origin main
+
+# Vercel detecta Next.js automaticamente
+# Build: cd website && npm install && npm run build
+# Output: website/.next/standalone
+```
+
+### 4.6 Deploy Firebase Functions
+
+```bash
+cd firebase
+
+# Deploy functions
+firebase deploy --only functions
+
+# Deploy rules
+firebase deploy --only firestore:rules,storage:rules
+```
+
+---
+
+## 5. Checklist Pré-Deploy
+
+### Android
+- [ ] `flutter build apk --release` sem erros
+- [ ] Testar APK em dispositivo físico
+- [ ] Verificar Firebase (Auth, Firestore, Storage)
+- [ ] Verificar notificações push
+- [ ] Atualizar `versionCode` em `pubspec.yaml`
+- [ ] Copiar APK para `public/download/apk.apk`
+
+### Web
+- [ ] `flutter build web --release` sem erros
+- [ ] Testar em Chrome/Firefox/Safari
+- [ ] Verificar CORS dos GIFs
+- [ ] Copiar build para `public/treino/`
+- [ ] Verificar roteamento GoRouter
+
+### Backend
+- [ ] `npm run build` sem erros
+- [ ] Rodar migrations: `npx prisma migrate deploy`
+- [ ] Verificar variáveis de ambiente
+- [ ] Testar endpoints via Swagger
+- [ ] Verificar CORS
+
+### Landing Page
+- [ ] `npm run build` sem erros
+- [ ] Verificar download do APK
+- [ ] Verificar redirecionamento para `/treino/`
+- [ ] Verificar SSL/HTTPS
+
+---
+
+## 6. Prioridades Imediatas
+
+| # | Tarefa | Prioridade | Status |
+|---|--------|-----------|--------|
+| 1 | Build APK e testar em dispositivo | ALTA | ⏳ Pendente |
+| 2 | Build Web e sincronizar com landing page | ALTA | ⏳ Pendente |
+| 3 | Deploy Firebase Functions | ALTA | ⏳ Pendente |
+| 4 | Deploy Backend Railway | MÉDIA | ⏳ Pendente |
+| 5 | Testar fluxo completo (anamnese → treino → progressão) | ALTA | ⏳ Pendente |
+| 6 | Verificar notificações push em produção | MÉDIA | ⏳ Pendente |
+| 7 | Criar tokens Pro para beta testers | MÉDIA | ⏳ Pendente |
+| 8 | Sprint 3.1 — Sistema de Rank de Atleta | BAIXA | ⏳ Pendente |
+
+---
+
+## 7. Comandos Úteis
+
+```bash
+# Flutter
+cd app_flutter
+flutter clean                    # Limpar cache
+flutter pub get                  # Instalar dependências
+flutter analyze                  # Verificar erros
+flutter run -d chrome            # Rodar web
+flutter run -d <device_id>       # Rodar no celular
+flutter build apk --release      # Build Android
+flutter build web --release      # Build Web
+flutter build ios --release      # Build iOS
+
+# Backend
+cd buildfit-api
+docker-compose up -d             # PostgreSQL + Redis
+npm run start:dev                # API dev
+npm run build                    # Build produção
+npx prisma migrate dev           # Criar migration
+npx prisma migrate deploy        # Deploy migration
+npx prisma generate              # Gerar client
+npx prisma studio                # GUI do banco
+
+# Firebase
+cd firebase
+firebase emulators:start         # Emuladores locais
+firebase deploy --only functions # Deploy functions
+firebase deploy --only firestore:rules # Deploy rules
+
+# Git
+git add .
+git commit -m "mensagem"
+git push origin main             # Deploy automático (Vercel + Railway)
+git tag v1.0.0
+git push origin main --tags      # Tag release
+```

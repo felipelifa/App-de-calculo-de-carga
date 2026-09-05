@@ -4,11 +4,11 @@ import { WorkoutsService } from './workouts.service';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { UpdateWorkoutDto } from './dto/update-workout.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { FirebaseAuthGuard } from '../../common/guards/firebase-auth.guard';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @ApiTags('workouts')
 @Controller('workouts')
-@UseGuards(FirebaseAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class WorkoutsController {
   constructor(private workoutsService: WorkoutsService) {}
@@ -23,7 +23,7 @@ export class WorkoutsController {
   }
 
   @Get()
-  @UseGuards(FirebaseAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Listar treinos do usuário' })
   async findAll(
     @CurrentUser('id') userId: string,
@@ -34,7 +34,7 @@ export class WorkoutsController {
   }
 
   @Get('weekly-volume')
-  @UseGuards(FirebaseAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Volume semanal total' })
   async getWeeklyVolume(
     @CurrentUser('id') userId: string,
@@ -44,7 +44,7 @@ export class WorkoutsController {
   }
 
   @Get('muscle-volume')
-  @UseGuards(FirebaseAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Volume por grupo muscular na semana' })
   async getMuscleVolume(
     @CurrentUser('id') userId: string,
@@ -54,7 +54,7 @@ export class WorkoutsController {
   }
 
   @Get(':id')
-  @UseGuards(FirebaseAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Obter treino por ID' })
   async findOne(
     @Param('id') id: string,

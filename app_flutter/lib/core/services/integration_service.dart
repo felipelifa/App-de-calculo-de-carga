@@ -1,135 +1,134 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-// ─────────────────────────────────────────────
-// Serviço de Integração Treino + Nutrição
-// Fornece mensagens contextuais em linguagem simples
-// ─────────────────────────────────────────────
+import 'api_service.dart';
 
 class IntegrationService {
-  final FirebaseFirestore _db;
-  final String _uid;
+  final ApiService _api;
 
-  IntegrationService({FirebaseFirestore? db, String? uid})
-      : _db = db ?? FirebaseFirestore.instance,
-        _uid = uid ?? FirebaseAuth.instance.currentUser?.uid ?? '';
+  IntegrationService({ApiService? api})
+      : _api = api ?? ApiService();
 
-  /// Retorna mensagem contextual sobre o dia
   Future<String> getTodayMessage() async {
     final now = DateTime.now();
     final weekNumber = (now.difference(DateTime(now.year, 1, 1)).inDays / 7).ceil();
-    final weekday = now.weekday; // 1=Segunda, 7=Domingo
+    final weekday = now.weekday;
 
-    // Buscar treinos da semana
-    final workoutsSnap = await _db
-        .collection('users/$_uid/workouts')
-        .where('weekNumber', isEqualTo: weekNumber)
-        .get();
+    try {
+      final workouts = await _api.get<List<dynamic>>('/workouts', queryParams: {
+        'weekNumber': weekNumber.toString(),
+      });
 
-    final weekSessions = workoutsSnap.docs.length;
-    final todayWorkout = workoutsSnap.docs.where((doc) {
-      final date = (doc.data()['date'] as Timestamp?)?.toDate();
-      return date != null && _isSameDay(date, now);
-    }).toList();
+      final weekSessions = workouts.length;
+      final todayWorkout = workouts.where((w) {
+        final dateStr = w['date'] as String?;
+        if (dateStr == null) return false;
+        final date = DateTime.tryParse(dateStr);
+        return date != null && _isSameDay(date, now);
+      }).toList();
 
-    // Verificar se treinou hoje
-    if (todayWorkout.isNotEmpty) {
-      return _getPostWorkoutMessage();
-    }
+      if (todayWorkout.isNotEmpty) {
+        return _getPostWorkoutMessage();
+      }
 
-    // Verificar se é dia de treino
-    final profile = await _getProfile();
-    final targetDays = profile?['availableDaysPerWeek'] ?? 3;
+      final profile = await _getProfile();
+      final targetDays = profile?['availableDaysPerWeek'] ?? 3;
 
-    if (weekSessions < targetDays) {
-      return _getPreWorkoutMessage(weekSessions, targetDays);
-    } else {
-      return _getRestDayMessage();
+      if (weekSessions < targetDays) {
+        return _getPreWorkoutMessage(weekSessions, targetDays);
+      } else {
+        return _getRestDayMessage();
+      }
+    } catch (_) {
+      return 'Bem-vindo! Comece seu primeiro treino hoje!';
     }
   }
 
-  /// Retorna mensagem sobre nutrição baseada no treino
   Future<String> getNutritionMessage() async {
     final now = DateTime.now();
     final weekNumber = (now.difference(DateTime(now.year, 1, 1)).inDays / 7).ceil();
 
-    // Buscar treinos da semana
-    final workoutsSnap = await _db
-        .collection('users/$_uid/workouts')
-        .where('weekNumber', isEqualTo: weekNumber)
-        .get();
+    try {
+      final workouts = await _api.get<List<dynamic>>('/workouts', queryParams: {
+        'weekNumber': weekNumber.toString(),
+      });
 
-    final weekSessions = workoutsSnap.docs.length;
-    final todayWorkout = workoutsSnap.docs.where((doc) {
-      final date = (doc.data()['date'] as Timestamp?)?.toDate();
-      return date != null && _isSameDay(date, now);
-    }).toList();
+      final todayWorkout = workouts.where((w) {
+        final dateStr = w['date'] as String?;
+        if (dateStr == null) return false;
+        final date = DateTime.tryParse(dateStr);
+        return date != null && _isSameDay(date, now);
+      }).toList();
 
-    if (todayWorkout.isNotEmpty) {
-      return 'Hoje é um dia de treino. Sua meta de carboidratos está um pouco maior para acompanhar a demanda.';
-    } else {
-      return 'Hoje é dia de descanso. Sua meta de calorias está um pouco menor para recuperar.';
+      if (todayWorkout.isNotEmpty) {
+        return 'Hoje é um dia de treino. Sua meta de carboidratos está um pouco maior para acompanhar a demanda.';
+      } else {
+        return 'Hoje é dia de descanso. Sua meta de calorias está um pouco menor para recuperar.';
+      }
+    } catch (_) {
+      return 'Mantenha uma alimentação equilibrada para atingir seus objetivos!';
     }
   }
 
-  /// Retorna mensagem sobre hidratação
   Future<String> getHydrationMessage() async {
     final now = DateTime.now();
     final weekNumber = (now.difference(DateTime(now.year, 1, 1)).inDays / 7).ceil();
 
-    final workoutsSnap = await _db
-        .collection('users/$_uid/workouts')
-        .where('weekNumber', isEqualTo: weekNumber)
-        .get();
+    try {
+      final workouts = await _api.get<List<dynamic>>('/workouts', queryParams: {
+        'weekNumber': weekNumber.toString(),
+      });
 
-    final todayWorkout = workoutsSnap.docs.where((doc) {
-      final date = (doc.data()['date'] as Timestamp?)?.toDate();
-      return date != null && _isSameDay(date, now);
-    }).toList();
+      final todayWorkout = workouts.where((w) {
+        final dateStr = w['date'] as String?;
+        if (dateStr == null) return false;
+        final date = DateTime.tryParse(dateStr);
+        return date != null && _isSameDay(date, now);
+      }).toList();
 
-    if (todayWorkout.isNotEmpty) {
-      return 'Você treinou hoje! Beba pelo menos 500ml de água a mais para repor o que perdeu no treino.';
-    } else {
+      if (todayWorkout.isNotEmpty) {
+        return 'Você treinou hoje! Beba pelo menos 500ml de água a mais para repor o que perdeu no treino.';
+      } else {
+        return 'Mantenha-se hidratado! Beba água ao longo do dia.';
+      }
+    } catch (_) {
       return 'Mantenha-se hidratado! Beba água ao longo do dia.';
     }
   }
 
-  /// Retorna mensagem sobre progresso
   Future<String> getProgressMessage() async {
     final now = DateTime.now();
     final weekNumber = (now.difference(DateTime(now.year, 1, 1)).inDays / 7).ceil();
 
-    // Buscar treinos da semana atual e anterior
-    final currentWeekSnap = await _db
-        .collection('users/$_uid/workouts')
-        .where('weekNumber', isEqualTo: weekNumber)
-        .get();
+    try {
+      final currentWeek = await _api.get<List<dynamic>>('/workouts', queryParams: {
+        'weekNumber': weekNumber.toString(),
+      });
 
-    final lastWeekSnap = await _db
-        .collection('users/$_uid/workouts')
-        .where('weekNumber', isEqualTo: weekNumber - 1)
-        .get();
+      final lastWeek = await _api.get<List<dynamic>>('/workouts', queryParams: {
+        'weekNumber': (weekNumber - 1).toString(),
+      });
 
-    final currentVolume = currentWeekSnap.docs.fold<double>(0, (sum, doc) {
-      return sum + ((doc.data()['totalVolume'] as num?)?.toDouble() ?? 0);
-    });
+      final currentVolume = currentWeek.fold<double>(0, (sum, w) {
+        return sum + ((w['totalVolume'] as num?)?.toDouble() ?? 0);
+      });
 
-    final lastVolume = lastWeekSnap.docs.fold<double>(0, (sum, doc) {
-      return sum + ((doc.data()['totalVolume'] as num?)?.toDouble() ?? 0);
-    });
+      final lastVolume = lastWeek.fold<double>(0, (sum, w) {
+        return sum + ((w['totalVolume'] as num?)?.toDouble() ?? 0);
+      });
 
-    if (lastVolume == 0) {
+      if (lastVolume == 0) {
+        return 'Comece a treinar para ver seu progresso aqui!';
+      }
+
+      final change = ((currentVolume - lastVolume) / lastVolume * 100).round();
+
+      if (change > 0) {
+        return 'Você aumentou seu volume em $change% esta semana! Continue assim!';
+      } else if (change < 0) {
+        return 'Seu volume diminuiu $change% esta semana. Não desanime, volte com tudo!';
+      } else {
+        return 'Seu volume está estável esta semana. Que tal tentar aumentar um pouco?';
+      }
+    } catch (_) {
       return 'Comece a treinar para ver seu progresso aqui!';
-    }
-
-    final change = ((currentVolume - lastVolume) / lastVolume * 100).round();
-
-    if (change > 0) {
-      return 'Você aumentou seu volume em $change% esta semana! Continue assim!';
-    } else if (change < 0) {
-      return 'Seu volume diminuiu $change% esta semana. Não desanime, volte com tudo!';
-    } else {
-      return 'Seu volume está estável esta semana. Que tal tentar aumentar um pouco?';
     }
   }
 
@@ -156,8 +155,11 @@ class IntegrationService {
   }
 
   Future<Map<String, dynamic>?> _getProfile() async {
-    final doc = await _db.collection('users/$_uid/profile/current').doc('current').get();
-    return doc.data();
+    try {
+      return await _api.get<Map<String, dynamic>>('/users/profile');
+    } catch (_) {
+      return null;
+    }
   }
 
   bool _isSameDay(DateTime a, DateTime b) {

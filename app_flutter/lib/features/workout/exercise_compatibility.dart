@@ -62,14 +62,31 @@ class ExerciseCompatibility {
 
     if (home) {
       if (available.isEmpty) {
-        final requiresExternalEquipment = exerciseEquipment.any(
-          (equipment) => equipment != 'bodyweight' && equipment != 'none',
-        );
-        if (requiresExternalEquipment) {
-          return const CompatibilityResult(
-            false,
-            'Exige equipamento externo, mas o perfil não possui equipamento.',
+        // Quando não há lista de equipamentos, inferir pelo ambiente escolhido
+        final isBodyweightOnly = environment == 'home_bodyweight' || environment == 'outdoor';
+        if (isBodyweightOnly) {
+          // Só permite bodyweight/none
+          final requiresEquipment = exerciseEquipment.any(
+            (equipment) => equipment != 'bodyweight' && equipment != 'none',
           );
+          if (requiresEquipment) {
+            return const CompatibilityResult(
+              false,
+              'Exige equipamento, mas o ambiente é apenas peso corporal.',
+            );
+          }
+        } else {
+          // home_dumbbell sem lista: permite bodyweight + dumbbell
+          final allowedInferred = {'bodyweight', 'none', 'dumbbell'};
+          final requiresUnavailable = exerciseEquipment.any(
+            (equipment) => !allowedInferred.contains(equipment),
+          );
+          if (requiresUnavailable) {
+            return const CompatibilityResult(
+              false,
+              'Exige equipamento não disponível no ambiente de casa.',
+            );
+          }
         }
       } else {
         final hasMatchingEquipment = exerciseEquipment.isEmpty ||

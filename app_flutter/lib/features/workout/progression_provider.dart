@@ -1,29 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../../core/services/notification_service.dart';
 import 'workout_models.dart';
 import 'progression_engine.dart';
 
-// ═══════════════════════════════════════════════════════════════
-// Provider do Motor de Progressão
-//
-// Expõe o estado de progressão para a UI e coordena as
-// chamadas ao ProgressionEngine após cada sessão concluída.
-// ═══════════════════════════════════════════════════════════════
-
 class ProgressionProvider extends ChangeNotifier {
-  final FirebaseFirestore _db;
-  final FirebaseAuth _auth;
   final ProgressionEngine _engine;
 
-  ProgressionProvider({FirebaseFirestore? db, FirebaseAuth? auth})
-      : _db = db ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance,
-        _engine = ProgressionEngine(
-          db: db ?? FirebaseFirestore.instance,
-          auth: auth ?? FirebaseAuth.instance,
-        ) {
+  ProgressionProvider() : _engine = ProgressionEngine() {
     _load();
   }
 
@@ -55,7 +38,6 @@ class ProgressionProvider extends ChangeNotifier {
     }
   }
 
-  // Inicializa estado quando um novo treino é gerado
   Future<void> initForNewWorkout({
     required String periodizationModel,
     required String experienceLevel,
@@ -76,7 +58,6 @@ class ProgressionProvider extends ChangeNotifier {
     }
   }
 
-  // Chamado pelo WorkoutProvider após finishSession()
   Future<void> processCompletedSession({
     required List<WorkoutExerciseEntry> exercises,
     required Map<String, int> rirByExercise,
@@ -92,9 +73,8 @@ class ProgressionProvider extends ChangeNotifier {
         exerciseMetadata: exerciseMetadata,
         experienceLevel: experienceLevel,
       );
-      _state = await _engine.loadState(); // recarrega estado atualizado
+      _state = await _engine.loadState();
 
-      // Se a semana resultante é deload, notificar imediatamente
       if (_state?.isDeloadWeek == true) {
         await NotificationService.scheduleDeloadAlert();
       }
@@ -107,7 +87,6 @@ class ProgressionProvider extends ChangeNotifier {
     }
   }
 
-  // Retorna sugestão para um exercício específico
   ProgressionDecision? decisionForExercise(String exerciseId) {
     try {
       return _lastDecisions.firstWhere((d) => d.exerciseId == exerciseId);
@@ -116,7 +95,6 @@ class ProgressionProvider extends ChangeNotifier {
     }
   }
 
-  // Retorna a carga sugerida para um exercício
   double? suggestedWeightFor(String exerciseId) {
     return decisionForExercise(exerciseId)?.suggestedWeightKg;
   }

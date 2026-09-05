@@ -1,17 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../../core/services/api_service.dart';
 import 'food_model.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class NutritionService {
-  final FirebaseFirestore _db;
-  final FirebaseAuth _auth;
+  final ApiService _api;
 
-  NutritionService({FirebaseFirestore? db, FirebaseAuth? auth})
-      : _db = db ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
+  NutritionService({ApiService? api}) : _api = api ?? ApiService();
 
   final String _fatSecretClientId = const String.fromEnvironment('FATSECRET_CLIENT_ID', defaultValue: '');
   final String _fatSecretClientSecret = const String.fromEnvironment('FATSECRET_CLIENT_SECRET', defaultValue: '');
@@ -43,7 +39,6 @@ class NutritionService {
     }
   }
 
-  // --- 1. NORMALIZAÇÃO ROBUSTA ---
   String _normalize(String s) {
     if (s.isEmpty) return '';
     String normalized = s.toLowerCase()
@@ -53,11 +48,10 @@ class NutritionService {
       .replaceAll(RegExp(r'[óòôõö]'), 'o')
       .replaceAll(RegExp(r'[úùûü]'), 'u')
       .replaceAll('ç', 'c')
-      .replaceAll(RegExp(r'[^a-z0-9\s]'), ' '); // Keep spaces, remove noise
+      .replaceAll(RegExp(r'[^a-z0-9\s]'), ' ');
 
     final stopWords = {'de', 'com', 'da', 'do', 'em', 'para', 'um', 'uma', 'o', 'a', 'com', 'sem', 'ao', 'aos', 'em'};
     
-    // Synonyms to expand reach in PT-BR
     final synonyms = {
       'bolacha': 'biscoito',
       'bolachas': 'biscoitos',
@@ -72,7 +66,6 @@ class NutritionService {
         .where((w) => w.length > 1 && !stopWords.contains(w))
         .toList();
 
-    // Mapping synonyms
     for (int i = 0; i < words.length; i++) {
         if (synonyms.containsKey(words[i])) {
             words[i] = synonyms[words[i]]!;
@@ -82,7 +75,6 @@ class NutritionService {
     return words.join(' ').trim();
   }
 
-  // --- 2. MOTOR DE BUSCA EM CAMADAS ---
   Future<List<FoodModel>> searchFoods(String originalQuery) async {
     final query = originalQuery.trim();
     if (query.isEmpty) return [];
@@ -90,14 +82,12 @@ class NutritionService {
     final normalized = _normalize(query);
     if (normalized.isEmpty) return await _getEmergencyStaples(query);
 
-    final uid = _auth.currentUser?.uid;
     List<FoodModel> results = [];
 
-    // CAMADA 1: BUSCA INTERNA (CACHE & FIRESTORE)
-    // Buscamos simultaneamente nos recentes do usuário e na biblioteca global já indexada
+    // CAMADA 1: BUSCA INTERNA (API + CACHE LOCAL)
     final internalTasks = <Future<List<FoodModel>>>[
-      _searchInternalLibrary(normalized),
-      if (uid != null) _searchUserRecents(uid, normalized),
+      _searchApiLibrary(normalized),
+      _searchApiRecents(normalized),
       _getEmergencyStaples(normalized),
     ];
 
@@ -106,65 +96,53 @@ class NutritionService {
       results.addAll(batch);
     }
 
-    // Se encontramos algo muito relevante (Exato ou Início), podemos retornar logo?
-    // Não, melhor buscar externos se tivermos poucos resultados para enriquecer a base.
-    
-    // CAMADA 2: BUSCA EXTERNA PARALELA (FALLBACK & ENRIQUECIMENTO)
+    // CAMADA 2: BUSCA EXTERNA PARALELA
     if (results.length < 15) {
       final externalTasks = <Future<List<FoodModel>>>[
-        _searchOpenFoodFacts(query), // Para industrializados
-        _searchFatSecret(query),      // Para base BR variada
-        _searchUSDA(query),           // Para genéricos (Nutrição científica)
+        _searchOpenFoodFacts(query),
+        _searchFatSecret(query),
+        _searchUSDA(query),
       ];
 
       final externalBatches = await Future.wait(externalTasks);
       for (var batch in externalBatches) {
         for (var food in batch) {
-          // Remover duplicatas antes de adicionar
           final isDuplicate = results.any((r) => 
             _normalize(r.name) == _normalize(food.name) && 
             _normalize(r.brand) == _normalize(food.brand)
           );
           if (!isDuplicate) {
             results.add(food);
-            // APRENDIZADO CONTÍNUO: Salva o que veio de fora na base interna
             _persistExternalFood(food);
           }
         }
       }
     }
 
-    // CAMADA 3: RANQUEAMENTO INTELIGENTE
     return _rankResults(results, normalized);
   }
 
-  // --- 3. IMPLEMENTAÇÕES DE BUSCA ---
-
-  Future<List<FoodModel>> _searchInternalLibrary(String normalizedQuery) async {
+  Future<List<FoodModel>> _searchApiLibrary(String normalizedQuery) async {
     try {
-      // No Firestore real, usaríamos um Search Index (Algolia). 
-      // Como estamos usando Firebase nativo, fazemos uma busca por prefixo ou 
-      // fetch de candidatos e filtro local se a base for pequena (<500).
-      final snap = await _db.collection('foods')
-          .orderBy('name')
-          .startAt([normalizedQuery])
-          .endAt([normalizedQuery + '\uf8ff'])
-          .limit(20)
-          .get();
-          
-      return snap.docs.map((d) => FoodModel.fromMap(d.data(), d.id)).toList();
+      final result = await _api.get('/nutrition/foods/search', queryParams: {
+        'q': normalizedQuery,
+        'limit': '20',
+      });
+      final data = result['data'] as List<dynamic>? ?? [];
+      return data.map((d) => FoodModel.fromMap(d as Map<String, dynamic>, d['id'] as String? ?? '')).toList();
     } catch (_) {
       return [];
     }
   }
 
-  Future<List<FoodModel>> _searchUserRecents(String uid, String normalizedQuery) async {
+  Future<List<FoodModel>> _searchApiRecents(String normalizedQuery) async {
     try {
-      final snap = await _db.collection('users/$uid/nutrition/recent_foods').limit(20).get();
-      return snap.docs
-          .map((d) => FoodModel.fromMap(d.data(), d.id))
-          .where((f) => _normalize(f.name).contains(normalizedQuery))
-          .toList();
+      final result = await _api.get('/nutrition/recent-foods', queryParams: {
+        'q': normalizedQuery,
+        'limit': '20',
+      });
+      final data = result['data'] as List<dynamic>? ?? [];
+      return data.map((d) => FoodModel.fromMap(d as Map<String, dynamic>, d['id'] as String? ?? '')).toList();
     } catch (_) {
       return [];
     }
@@ -221,10 +199,10 @@ class NutritionService {
              id: 'usda_${f['fdcId']}',
              name: f['description'] ?? '',
              brand: f['brandOwner'] ?? '',
-             caloriesPer100g: findNutrient(1008), // Energy
-             proteinPer100g: findNutrient(1003),  // Protein
-             carbPer100g: findNutrient(1005),     // Carb
-             fatPer100g: findNutrient(1004),      // Fat
+             caloriesPer100g: findNutrient(1008),
+             proteinPer100g: findNutrient(1003),
+             carbPer100g: findNutrient(1005),
+             fatPer100g: findNutrient(1004),
              category: 'Genérico',
              source: 'usda',
            );
@@ -273,11 +251,9 @@ class NutritionService {
     return match != null ? double.tryParse(match.group(1)!) ?? 0.0 : 0.0;
   }
 
-  // --- 4. ORGANIZAÇÃO E PERSISTÊNCIA ---
-
   void _persistExternalFood(FoodModel food) {
     if (food.source == 'local' || food.source == 'tbca') return;
-    _db.collection('foods').doc(food.id).set(food.toMap(), SetOptions(merge: true)).catchError((_) => null);
+    _api.post('/nutrition/foods', body: food.toMap()).catchError((_) => null);
   }
 
   List<FoodModel> _rankResults(List<FoodModel> results, String normalizedQuery) {
@@ -292,14 +268,11 @@ class NutritionService {
       else if (combined.startsWith(normalizedQuery)) score += 300;
       else if (combined.contains(normalizedQuery)) score += 200;
 
-      // Bonus por confiabilidade
       if (f.source == 'tbca' || f.isVerified) score += 100;
       if (f.source == 'local') score += 50;
       
-      // Bonus por popularidade
       score += (f.timesConsumed * 5);
 
-      // Penalidade por falta de dados básicos
       if (f.caloriesPer100g == 0) score -= 100;
 
       return {'food': f, 'score': score};
@@ -307,7 +280,6 @@ class NutritionService {
 
     scored.sort((a, b) => (b['score'] as int).compareTo(a['score'] as int));
     
-    // De-duplicação final por nome e marca
     final Map<String, FoodModel> unique = {};
     for (var item in scored) {
       final f = item['food'] as FoodModel;
@@ -321,13 +293,13 @@ class NutritionService {
   }
 
   Future<FoodModel?> searchByBarcode(String code) async {
-    // 1. Check local
-    final localDoc = await _db.collection('foods').where('barcode', isEqualTo: code).limit(1).get();
-    if (localDoc.docs.isNotEmpty) {
-      return FoodModel.fromMap(localDoc.docs.first.data(), localDoc.docs.first.id);
-    }
+    try {
+      final result = await _api.get('/nutrition/foods/barcode/$code');
+      if (result != null && result is Map<String, dynamic>) {
+        return FoodModel.fromMap(result, result['id'] as String? ?? '');
+      }
+    } catch (_) {}
     
-    // 2. Check External
     try {
       final uri = Uri.parse('https://world.openfoodfacts.org/api/v0/product/$code.json');
       final response = await http.get(uri);
@@ -350,7 +322,6 @@ class NutritionService {
               source: 'off',
               barcode: code,
             );
-            // Salva na base local para o próximo que escanear
             _persistExternalFood(food);
             return food;
           }
@@ -360,7 +331,6 @@ class NutritionService {
     return null;
   }
 
-  // Auth redundante (FatSecret)
   Future<void> _authenticateFatSecret() async {
     if (_fatSecretToken != null && _fatSecretTokenExpiry != null && DateTime.now().isBefore(_fatSecretTokenExpiry!)) return;
     if (_fatSecretClientId.isEmpty || _fatSecretClientSecret.isEmpty) return;
@@ -378,17 +348,23 @@ class NutritionService {
   }
 
   Future<List<FoodModel>> getRecentFoods() async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return [];
-    final snap = await _db.collection('users/$uid/nutrition/recent_foods').orderBy('lastConsumedAt', descending: true).limit(15).get();
-    return snap.docs.map((d) => FoodModel.fromMap(d.data(), d.id)).toList();
+    try {
+      final result = await _api.get('/nutrition/recent-foods', queryParams: {'limit': '15'});
+      final data = result['data'] as List<dynamic>? ?? [];
+      return data.map((d) => FoodModel.fromMap(d as Map<String, dynamic>, d['id'] as String? ?? '')).toList();
+    } catch (_) {
+      return [];
+    }
   }
 
   Future<List<FoodModel>> getFavoriteFoods() async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return [];
-    final snap = await _db.collection('users/$uid/nutrition/favorite_foods').get();
-    return snap.docs.map((d) => FoodModel.fromMap(d.data(), d.id)).toList();
+    try {
+      final result = await _api.get('/nutrition/favorite-foods');
+      final data = result['data'] as List<dynamic>? ?? [];
+      return data.map((d) => FoodModel.fromMap(d as Map<String, dynamic>, d['id'] as String? ?? '')).toList();
+    } catch (_) {
+      return [];
+    }
   }
 
   Future<List<FoodModel>> _getEmergencyStaples(String query) async {
