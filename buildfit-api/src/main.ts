@@ -1,7 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as helmet from 'helmet';
 import { AppModule } from './app.module';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 
 const defaultCorsOrigins = [
   'http://localhost:3000',
@@ -9,14 +12,15 @@ const defaultCorsOrigins = [
   'https://buildfit-nine.vercel.app',
   'https://app-calculo-carga.vercel.app',
   'https://apptreino-cyan.vercel.app',
-  'https://appcalculotreino-51f23.web.app',
-  'https://appcalculotreino-51f23.firebaseapp.com',
+  'https://buildfit-woad.vercel.app',
 ];
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api');
+
+  app.use(helmet.default());
 
   app.enableCors({
     origin: (process.env.CORS_ORIGIN || defaultCorsOrigins.join(','))
@@ -37,6 +41,9 @@ async function bootstrap() {
       },
     }),
   );
+
+  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalInterceptors(new LoggingInterceptor());
 
   const config = new DocumentBuilder()
     .setTitle('BuildFit API')
