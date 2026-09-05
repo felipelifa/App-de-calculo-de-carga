@@ -16,11 +16,10 @@ class PrService {
   Future<Map<String, PersonalRecord>> loadAll() async {
     try {
       final response = await _api.get('/prs');
-      final list = (response as List<dynamic>?) ?? {};
+      final list = (response as List<dynamic>?) ?? [];
       return {
         for (final item in list)
           (item['exerciseId'] as String? ?? ''): PersonalRecord.fromMap(
-            item['exerciseId'] as String? ?? '',
             item as Map<String, dynamic>,
           ),
       };
@@ -34,7 +33,7 @@ class PrService {
     try {
       final response = await _api.get('/exercises/$exerciseId/pr');
       if (response == null) return null;
-      return PersonalRecord.fromMap(exerciseId, response as Map<String, dynamic>);
+      return PersonalRecord.fromMap(response as Map<String, dynamic>);
     } catch (_) {
       return null;
     }

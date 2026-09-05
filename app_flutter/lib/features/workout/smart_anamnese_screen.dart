@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../../core/services/supabase_service.dart';
 import '../../shared/theme/app_theme.dart';
 import 'workout_profile_model.dart';
 import 'workout_profile_provider.dart';
+import 'training_readiness.dart';
 
 class SmartAnamneseScreen extends StatefulWidget {
   const SmartAnamneseScreen({super.key});
@@ -117,7 +118,7 @@ class _SmartAnamneseScreenState extends State<SmartAnamneseScreen> {
   void _finish() async {
     if (_isSaving) return; setState(() => _isSaving = true);
     try {
-      final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+      final uid = SupabaseService().currentUser?.id ?? '';
       if (uid.isEmpty) { ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erro: n�o autenticado.'))); setState(() => _isSaving = false); return; }
       final profile = WorkoutProfile(
         uid: uid, age: _age ?? 25, biologicalSex: _sex, weightKg: _weight ?? 70, heightCm: _height ?? 170,
@@ -184,7 +185,7 @@ class _SmartAnamneseScreenState extends State<SmartAnamneseScreen> {
     _chips('Objetivo principal', [_C('hypertrophy', 'Ganhar massa'), _C('fat_loss', 'Perder gordura'), _C('strength', 'For�a'), _C('conditioning', 'Condi��o'), _C('power', 'Pot�ncia'), _C('sport', 'Esporte'), _C('health', 'Sa�de'), _C('functional', 'Funcional'), _C('return', 'Voltar'), _C('recomposition', 'Recomposi��o')], _primaryGoal, (v) => setState(() => _primaryGoal = v), wrap: true),
     if (_primaryGoal == 'hypertrophy' || _primaryGoal == 'recomposition') ...[
       const SizedBox(height: 24), const Text('Priorizar regi�o?', style: TextStyle(color: AppTheme.textSecondary)),
-      const SizedBox(height: 8), _multi(['chest', 'back', 'shoulders', 'arms', 'quads', 'hamstrings', 'glutes', 'calves', 'abs'], _musclePriorities, (v) => setState(() => _musclePriorities.contains(v) ? _musclePriorities.remove(v) : _musclePriorities.add(v)), {'chest': 'Peito', 'back': 'Costas', 'shoulders': 'Ombros', 'arms': 'Bra�os', 'quads': 'Quadr�ceps', 'hamstrings': 'Posteriores', 'glutes': 'Gl�teos', 'calves': 'Panturrilhas', 'abs': 'Abd�men'}),
+      const SizedBox(height: 8), _multi(['chest', 'back', 'shoulders', 'arms', 'quads', 'hamstrings', 'glutes', 'calves', 'abs'], _musclePriorities, (v) => setState(() => _musclePriorities.contains(v) ? _musclePriorities.remove(v) : _musclePriorities.add(v)), labels: {'chest': 'Peito', 'back': 'Costas', 'shoulders': 'Ombros', 'arms': 'Bra�os', 'quads': 'Quadr�ceps', 'hamstrings': 'Posteriores', 'glutes': 'Gl�teos', 'calves': 'Panturrilhas', 'abs': 'Abd�men'}),
     ],
     if (_primaryGoal == 'strength') ...[const SizedBox(height: 24), _txtField('Movimento espec�fico? (opcional)', _strengthController, 'Ex: agachamento')],
     if (_primaryGoal == 'sport') ...[
@@ -193,7 +194,7 @@ class _SmartAnamneseScreenState extends State<SmartAnamneseScreen> {
     ],
     if (_primaryGoal.isNotEmpty && _primaryGoal != 'sport') ...[
       const SizedBox(height: 24), const Text('Objetivos secund�rios?', style: TextStyle(color: AppTheme.textSecondary)),
-      const SizedBox(height: 8), _multi(['hypertrophy', 'fat_loss', 'strength', 'conditioning', 'health'], _secondaryGoals, (v) => setState(() => _secondaryGoals.contains(v) ? _secondaryGoals.remove(v) : _secondaryGoals.add(v)), {'hypertrophy': 'Massa', 'fat_loss': 'Gordura', 'strength': 'For�a', 'conditioning': 'Condi��o', 'health': 'Sa�de'}),
+      const SizedBox(height: 8), _multi(['hypertrophy', 'fat_loss', 'strength', 'conditioning', 'health'], _secondaryGoals, (v) => setState(() => _secondaryGoals.contains(v) ? _secondaryGoals.remove(v) : _secondaryGoals.add(v)), labels: {'hypertrophy': 'Massa', 'fat_loss': 'Gordura', 'strength': 'For�a', 'conditioning': 'Condi��o', 'health': 'Sa�de'}),
     ],
   ]);
 
@@ -210,7 +211,7 @@ class _SmartAnamneseScreenState extends State<SmartAnamneseScreen> {
     const Text('Onde vai treinar?', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textPrimary)),
     const SizedBox(height: 24), _chips('Local', [_C('gym', 'Academia'), _C('home', 'Casa'), _C('outdoor', 'Ar livre')], _location, (v) => setState(() => _location = v)),
     if (_location == 'home') ...[const SizedBox(height: 24), const Text('Equipamentos?', style: TextStyle(color: AppTheme.textSecondary)), const SizedBox(height: 8),
-      _multi(['bodyweight', 'dumbbell', 'barbell', 'band', 'kettlebell', 'bench', 'pull_up_bar'], _availableEquipment, (v) => setState(() => _availableEquipment.contains(v) ? _availableEquipment.remove(v) : _availableEquipment.add(v)), {'bodyweight': 'Peso corporal', 'dumbbell': 'Halteres', 'barbell': 'Barra', 'band': 'El�sticos', 'kettlebell': 'KB', 'bench': 'Banco', 'pull_up_bar': 'Barra fixa'}),
+      _multi(['bodyweight', 'dumbbell', 'barbell', 'band', 'kettlebell', 'bench', 'pull_up_bar'], _availableEquipment, (v) => setState(() => _availableEquipment.contains(v) ? _availableEquipment.remove(v) : _availableEquipment.add(v)), labels: {'bodyweight': 'Peso corporal', 'dumbbell': 'Halteres', 'barbell': 'Barra', 'band': 'El�sticos', 'kettlebell': 'KB', 'bench': 'Banco', 'pull_up_bar': 'Barra fixa'}),
     ],
   ]);
 
@@ -242,7 +243,7 @@ class _SmartAnamneseScreenState extends State<SmartAnamneseScreen> {
     const Text('Sua capacidade', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textPrimary)),
     const SizedBox(height: 24), _chips('Capacidade f�sica', [_C('very_low', 'Muito baixa'), _C('low', 'Baixa'), _C('regular', 'Regular'), _C('good', 'Boa'), _C('very_good', 'Muito boa')], _selfReportedCapacity, (v) => setState(() => _selfReportedCapacity = v), wrap: true),
     const SizedBox(height: 24), const Text('Movimentos com seguran�a?', style: TextStyle(color: AppTheme.textSecondary)),
-    const SizedBox(height: 8), _multi(['squat', 'hinge', 'push', 'pull', 'carry', 'lunge'], _movementConfidence, (v) => setState(() => _movementConfidence.contains(v) ? _movementConfidence.remove(v) : _movementConfidence.add(v)), {'squat': 'Agachar', 'hinge': 'Levantar', 'push': 'Empurrar', 'pull': 'Puxar', 'carry': 'Carregar', 'lunge': 'Afundo'}),
+    const SizedBox(height: 8), _multi(['squat', 'hinge', 'push', 'pull', 'carry', 'lunge'], _movementConfidence, (v) => setState(() => _movementConfidence.contains(v) ? _movementConfidence.remove(v) : _movementConfidence.add(v)), labels: {'squat': 'Agachar', 'hinge': 'Levantar', 'push': 'Empurrar', 'pull': 'Puxar', 'carry': 'Carregar', 'lunge': 'Afundo'}),
   ]);
 
   Widget _step7() => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -272,7 +273,7 @@ class _SmartAnamneseScreenState extends State<SmartAnamneseScreen> {
 
   Widget _step9() => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
     const Text('Necessidades espec�ficas', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textPrimary)),
-    const SizedBox(height: 24), _multi(['posture', 'mobility', 'short_time', 'none'], _specificNeeds, (v) => setState(() { if (v == 'none') { _specificNeeds = ['none']; return; } _specificNeeds.remove('none'); _specificNeeds.contains(v) ? _specificNeeds.remove(v) : _specificNeeds.add(v); }), {'posture': 'Postura', 'mobility': 'Mobilidade', 'short_time': 'Pouco tempo', 'none': 'Nenhuma'}),
+    const SizedBox(height: 24), _multi(['posture', 'mobility', 'short_time', 'none'], _specificNeeds, (v) => setState(() { if (v == 'none') { _specificNeeds = ['none']; return; } _specificNeeds.remove('none'); _specificNeeds.contains(v) ? _specificNeeds.remove(v) : _specificNeeds.add(v); }), labels: {'posture': 'Postura', 'mobility': 'Mobilidade', 'short_time': 'Pouco tempo', 'none': 'Nenhuma'}),
     const SizedBox(height: 24), TextField(controller: _additionalController, maxLines: 3, decoration: InputDecoration(hintText: 'Algo mais? (opcional)', filled: true, fillColor: AppTheme.surface, border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none))),
   ]);
 

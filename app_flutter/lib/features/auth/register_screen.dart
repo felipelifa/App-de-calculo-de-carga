@@ -35,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     try {
       final auth = context.read<AuthService>();
-      await auth.register(_nameCtrl.text.trim(), _emailCtrl.text.trim(), _passCtrl.text);
+      await auth.register(_emailCtrl.text.trim(), _passCtrl.text, _nameCtrl.text.trim());
     } catch (e) {
       if (mounted) {
         setState(() {
