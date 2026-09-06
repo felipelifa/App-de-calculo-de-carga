@@ -51,7 +51,7 @@ android {
         if (!splitPerAbi) {
             ndk {
                 abiFilters.clear()
-                abiFilters.addAll(listOf("arm64-v8a", "armeabi-v7a"))
+                abiFilters.addAll(listOf("arm64-v8a"))
             }
         }
     }
