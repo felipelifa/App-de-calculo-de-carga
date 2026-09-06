@@ -66,8 +66,8 @@ class ExerciseProvider extends ChangeNotifier {
         'limit': '1000',
       });
 
-      final data = result['data'] as List<dynamic>;
-      if (data.isNotEmpty) {
+      final data = result['data'] as List<dynamic>?;
+      if (data != null && data.isNotEmpty) {
         _apiExercises = data.map((e) => ExerciseModel.fromMap(e)).toList();
         _rebuildExerciseList();
         _isLoading = false;

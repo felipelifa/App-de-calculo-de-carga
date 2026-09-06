@@ -130,6 +130,12 @@ class ApiService {
       return await _supabase.getWorkouts();
     }
 
+    // Exercises
+    if (path == '/exercises') {
+      final exercises = await _supabase.getExercises();
+      return {'data': exercises};
+    }
+
     // Nutrition
     if (path == '/nutrition/profile') {
       return await _supabase.getNutritionProfile();

@@ -56,16 +56,21 @@ class SupabaseService {
   Future<void> saveProfile(Map<String, dynamic> profile) async {
     if (!isAuthenticated) return;
     
-    final existing = await getProfile();
-    if (existing != null) {
-      await client
-          .from('UserProfile')
-          .update({...profile, 'updatedAt': DateTime.now().toIso8601String()})
-          .eq('userId', currentUser!.id);
-    } else {
-      await client
-          .from('UserProfile')
-          .insert({...profile, 'userId': currentUser!.id, 'createdAt': DateTime.now().toIso8601String()});
+    try {
+      final existing = await getProfile();
+      if (existing != null) {
+        await client
+            .from('UserProfile')
+            .update({...profile, 'updatedAt': DateTime.now().toIso8601String()})
+            .eq('userId', currentUser!.id);
+      } else {
+        await client
+            .from('UserProfile')
+            .insert({...profile, 'userId': currentUser!.id, 'createdAt': DateTime.now().toIso8601String()});
+      }
+    } catch (e) {
+      debugPrint('Erro ao salvar perfil: $e');
+      rethrow;
     }
   }
 
