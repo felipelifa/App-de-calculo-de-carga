@@ -10,12 +10,10 @@ import 'progression_provider.dart';
 import 'decision_memory.dart';
 import '../exercises/exercise_model.dart';
 import '../../core/services/api_service.dart';
-import '../../core/services/supabase_service.dart';
 import '../../core/services/workouts_api_service.dart';
 
 class WorkoutProvider extends ChangeNotifier {
   final ApiService _api;
-  final SupabaseService _supabase;
   final WorkoutsApiService _workoutsApi;
   final ProgressionEngine _progressionEngine;
   final DecisionMemory _decisionMemory;
@@ -23,7 +21,6 @@ class WorkoutProvider extends ChangeNotifier {
 
   WorkoutProvider({ApiService? api, WorkoutsApiService? workoutsApi})
       : _api = api ?? ApiService(),
-        _supabase = SupabaseService(),
         _workoutsApi = workoutsApi ?? WorkoutsApiService(),
         _progressionEngine = ProgressionEngine(),
         _decisionMemory = DecisionMemory() {

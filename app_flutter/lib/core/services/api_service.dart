@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'supabase_service.dart';
 
@@ -17,19 +15,15 @@ class ApiService {
   static final ApiService _instance = ApiService._();
   factory ApiService() => _instance;
 
-  static const _requestTimeout = Duration(seconds: 30);
   static const _tokenKey = 'auth_token';
 
   final SupabaseService _supabase = SupabaseService();
-  late final http.Client _client;
   String? _cachedToken;
 
   ApiService._() {
-    _client = http.Client();
     _loadToken();
   }
 
-  String get baseUrl => 'supabase';
   bool get isAuthenticated => _supabase.isAuthenticated;
 
   Future<void> _loadToken() async {
@@ -47,16 +41,6 @@ class ApiService {
     _cachedToken = null;
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_tokenKey);
-  }
-
-  Future<Map<String, String>> _headers() async {
-    if (_cachedToken == null) {
-      await _loadToken();
-    }
-    return {
-      'Content-Type': 'application/json',
-      if (_cachedToken != null) 'Authorization': 'Bearer $_cachedToken',
-    };
   }
 
   Future<T> get<T>(String path, {Map<String, String>? queryParams}) async {
@@ -232,13 +216,11 @@ class ApiService {
 
     // Prescription
     if (path.startsWith('/prescription/') && path.endsWith('/activate')) {
-      final id = path.split('/')[2];
       await _supabase.saveGeneratedWorkout({...body, 'isActive': true});
       return {'success': true};
     }
 
     if (path.startsWith('/prescription/')) {
-      final id = path.split('/')[2];
       await _supabase.saveGeneratedWorkout(body);
       return {'success': true};
     }
@@ -269,7 +251,4 @@ class ApiService {
     // Implement as needed
   }
 
-  void dispose() {
-    _client.close();
-  }
 }
