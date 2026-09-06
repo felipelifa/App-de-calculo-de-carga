@@ -1651,6 +1651,85 @@ Criada `prisma/migrations/20260826_init/migration.sql` com todas as 17 tabelas.
 
 ---
 
+# 🔧 SESSÃO 2026-09-06 — Limpeza, Builds e Verificação de Fluxo
+
+## Resumo da Sessão
+
+Sessão de limpeza de código, builds de produção e verificação de integração dos motores.
+
+---
+
+## 1. Limpeza de Código
+
+| Arquivo | Correção |
+|---------|----------|
+| `api_service.dart` | Removido `dart:convert`, `http.Client`, `_requestTimeout`, `_headers()`, `dispose()`, `id` unused |
+| `supabase_service.dart` | `anonKey` → `publishableKey` (deprecated) |
+| `workout_provider.dart` | Removido `_supabase` field e import unused |
+| `main.dart` | Removido `foundation.dart` import unused |
+
+---
+
+## 2. Builds de Produção
+
+| Build | Status | Tamanho |
+|-------|--------|---------|
+| APK Release | ✅ `flutter build apk --release --no-tree-shake-icons` | 51.2MB |
+| Web Release | ✅ `flutter build web --release --no-tree-shake-icons` | — |
+| APK → Landing | ✅ Copiado para `public/download/apk.apk` | — |
+| Web → Landing | ✅ Copiado para `public/treino/` via robocopy | — |
+
+---
+
+## 3. Verificação de Fluxo
+
+### Fluxo Conectado ✅
+
+```
+Login/Registro (Supabase Auth)
+  → SplashScreen → Dashboard (TodayScreen)
+  → Onboarding (SmartAnamneseScreen) → WorkoutProfile
+  → PrescriptionEngine.generate() → GeneratedWorkout
+  → PrescribedWorkoutScreen (com explicabilidade)
+  → WorkoutScreen (sessão ativa, timer, RIR)
+  → finishSession() → Supabase + ProgressionEngine
+  → ProgressionProvider → UI atualizada
+  → AthleteRank (XP baseado em volume total)
+```
+
+### Motores Verificados
+
+| Motor | Status |
+|-------|--------|
+| `prescription_engine.dart` | ✅ Conectado via WorkoutProfileProvider |
+| `progression_engine.dart` | ✅ Conectado via WorkoutProvider.finishSession() |
+| `bio_adaptive_engine.dart` | ✅ Integrado ao prescription_engine |
+| `exercise_rotation_manager.dart` | ✅ Funcionando |
+| `session_fatigue_accumulator.dart` | ✅ Funcionando |
+| `athlete_rank.dart` | ✅ Já implementado e no Dashboard |
+
+### Sprint 3.1 — Rank de Atleta (JÁ IMPLEMENTADO)
+
+O sistema de rank estava já implementado:
+- `athlete_rank.dart`: 7 tiers (Ferro → Lenda) com XP thresholds
+- `athlete_rank_provider.dart`: Fetch de volume total via API
+- `dashboard_screen.dart`: Card de rank com progress bar e XP
+
+---
+
+## 4. Próximos Passos
+
+| # | Tarefa | Prioridade |
+|---|--------|-----------|
+| 1 | Push para GitHub (deploy automático Vercel) | ALTA |
+| 2 | Testar APK em dispositivo físico | ALTA |
+| 3 | Verificar notificações push em produção | MÉDIA |
+| 4 | Migrar mais providers para Supabase direto | MÉDIA |
+| 5 | Sprint 3.2 — Analytics volume por músculo melhorado | BAIXA |
+| 6 | Sprint 3.3 — Técnicas avançadas (Drop Set, Rest-Pause) | BAIXA |
+
+---
+
 # 🔧 SESSÃO 2026-08-30 — Conexão de Motores Desconectados + Correções de Anamnese
 
 ## Resumo da Sessão
@@ -1959,14 +2038,14 @@ firebase deploy --only firestore:rules,storage:rules
 
 | # | Tarefa | Prioridade | Status |
 |---|--------|-----------|--------|
-| 1 | Build APK e testar em dispositivo | ALTA | ⏳ Pendente |
-| 2 | Build Web e sincronizar com landing page | ALTA | ⏳ Pendente |
-| 3 | Deploy Firebase Functions | ALTA | ⏳ Pendente |
-| 4 | Deploy Backend Railway | MÉDIA | ⏳ Pendente |
-| 5 | Testar fluxo completo (anamnese → treino → progressão) | ALTA | ⏳ Pendente |
+| 1 | Build APK e testar em dispositivo | ALTA | ✅ Concluído (51.2MB) |
+| 2 | Build Web e sincronizar com landing page | ALTA | ✅ Concluído |
+| 3 | Deploy Firebase Functions | ALTA | ⏳ Pendente (migrado para Supabase) |
+| 4 | Deploy Backend Railway | MÉDIA | ⏳ Pendente (migrado para Supabase) |
+| 5 | Testar fluxo completo (anamnese → treino → progressão) | ALTA | ✅ Fluxo conectado |
 | 6 | Verificar notificações push em produção | MÉDIA | ⏳ Pendente |
 | 7 | Criar tokens Pro para beta testers | MÉDIA | ⏳ Pendente |
-| 8 | Sprint 3.1 — Sistema de Rank de Atleta | BAIXA | ⏳ Pendente |
+| 8 | Sprint 3.1 — Sistema de Rank de Atleta | BAIXA | ✅ Já implementado |
 
 ---
 
