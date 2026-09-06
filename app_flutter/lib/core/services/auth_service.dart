@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'supabase_service.dart';
 
 class AuthUser {
@@ -85,6 +86,8 @@ class AuthService extends ChangeNotifier {
       } else {
         throw Exception('Login failed');
       }
+    } on AuthException catch (e) {
+      throw Exception(e.message);
     } catch (e) {
       rethrow;
     }
@@ -104,6 +107,8 @@ class AuthService extends ChangeNotifier {
       } else {
         throw Exception('Registration failed');
       }
+    } on AuthException catch (e) {
+      throw Exception(e.message);
     } catch (e) {
       rethrow;
     }
