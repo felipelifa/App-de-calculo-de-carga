@@ -8,22 +8,22 @@ import '../../exercises/exercise_model.dart';
 import 'home_workout_engine.dart';
 import 'home_exercise_model.dart';
 import 'limitation_analyzer.dart';
+import '../exercise_compatibility.dart';
 
 class HomeWorkoutIntegrator {
   final HomeWorkoutEngine _engine;
 
-  HomeWorkoutIntegrator({
-    String? userId,
-  }) : _engine = HomeWorkoutEngine(userId: userId);
+  HomeWorkoutIntegrator({String? userId})
+    : _engine = HomeWorkoutEngine(userId: userId);
 
   // Gera um treino para casa sem equipamento
   GeneratedWorkout generateHomeWorkout(WorkoutProfile profile) {
     // Converte limitações do perfil para o formato do motor de casa
     final limitations = _convertLimitations(profile);
-    
+
     // Calcula capacidades baseadas no perfil
     final capabilities = _calculateCapabilities(profile);
-    
+
     // Gera o treino
     final homeWorkout = _engine.generateWorkout(
       userId: profile.uid,
@@ -33,11 +33,33 @@ class HomeWorkoutIntegrator {
       balanceCapability: capabilities['balance']!,
       strengthCapability: capabilities['strength']!,
       mobilityCapability: capabilities['mobility']!,
+      availableEquipment: profile.availableEquipment,
       dayOfWeek: DateTime.now().weekday,
     );
-    
+
+    if (homeWorkout.exercises.isEmpty) {
+      throw StateError(
+        'NO_COMPATIBLE_EXERCISES: nenhum exercício de casa atende ao ambiente, '
+        'equipamentos e restrições informados.',
+      );
+    }
+
     // Converte para o formato do sistema principal
-    return _convertToGeneratedWorkout(homeWorkout, profile);
+    final workout = _convertToGeneratedWorkout(homeWorkout, profile);
+    final incompatible = workout.sessions
+        .expand((session) => session.exercises)
+        .where(
+          (prescribed) =>
+              !ExerciseCompatibility.isCompatible(profile, prescribed.exercise),
+        )
+        .toList();
+    if (incompatible.isNotEmpty) {
+      throw StateError(
+        'NO_COMPATIBLE_EXERCISES: a validação final rejeitou exercícios '
+        'incompatíveis com o perfil.',
+      );
+    }
+    return workout;
   }
 
   // Analisa um exercício específico
@@ -49,10 +71,10 @@ class HomeWorkoutIntegrator {
     if (exercise == null) {
       throw ArgumentError('Exercício não encontrado: $exerciseId');
     }
-    
+
     final limitations = _convertLimitations(profile);
     final capabilities = _calculateCapabilities(profile);
-    
+
     return _engine.analyzeExercise(
       exercise: exercise,
       limitations: limitations,
@@ -72,21 +94,30 @@ class HomeWorkoutIntegrator {
     if (exercise == null) {
       throw ArgumentError('Exercício não encontrado: $exerciseId');
     }
-    
-    return _engine.processFeedback(
-      feedback: feedback,
-      exercise: exercise,
-    );
+
+    return _engine.processFeedback(feedback: feedback, exercise: exercise);
   }
 
   // Busca exercícios por padrão
-  List<HomeExercise> getExercisesByPattern(HomeMovementPattern pattern) {
-    return _engine.getExercisesByPattern(pattern);
+  List<HomeExercise> getExercisesByPattern(
+    HomeMovementPattern pattern, {
+    List<String> availableEquipment = const [],
+  }) {
+    return _engine.getExercisesByPattern(
+      pattern,
+      availableEquipment: availableEquipment,
+    );
   }
 
   // Busca exercício por ID
   HomeExercise? getExerciseById(String id) {
     return _engine.getExerciseById(id);
+  }
+
+  // Resolve exercícios de casa no mesmo formato usado pelos treinos salvos.
+  ExerciseModel? getExerciseModelById(String id) {
+    final exercise = _engine.getExerciseById(id);
+    return exercise == null ? null : _convertToExerciseModel(exercise);
   }
 
   // Busca regressão de um exercício
@@ -115,56 +146,68 @@ class HomeWorkoutIntegrator {
   // Converte restrições de saúde para limitações do motor de casa
   List<HomeUserLimitation> _convertLimitations(WorkoutProfile profile) {
     final limitations = <HomeUserLimitation>[];
-    
+
     for (final restriction in profile.healthRestrictions) {
       final region = _mapRestrictionToRegion(restriction);
       if (region != null) {
-        limitations.add(HomeUserLimitation(
-          region: region,
-          description: restriction,
-          severity: HomeLimitationSeverity.moderate,
-        ));
+        limitations.add(
+          HomeUserLimitation(
+            region: region,
+            description: restriction,
+            severity: HomeLimitationSeverity.moderate,
+          ),
+        );
       }
     }
-    
+
     return limitations;
   }
 
   // Mapeia restrição de saúde para região do corpo
   HomeBodyRegion? _mapRestrictionToRegion(String restriction) {
     final restrictionLower = restriction.toLowerCase();
-    
-    if (restrictionLower.contains('knee') || restrictionLower.contains('joelho')) {
+
+    if (restrictionLower.contains('knee') ||
+        restrictionLower.contains('joelho')) {
       return HomeBodyRegion.knee;
     }
-    if (restrictionLower.contains('hip') || restrictionLower.contains('quadril')) {
+    if (restrictionLower.contains('hip') ||
+        restrictionLower.contains('quadril')) {
       return HomeBodyRegion.hip;
     }
-    if (restrictionLower.contains('ankle') || restrictionLower.contains('tornozelo')) {
+    if (restrictionLower.contains('ankle') ||
+        restrictionLower.contains('tornozelo')) {
       return HomeBodyRegion.ankle;
     }
-    if (restrictionLower.contains('lower_back') || restrictionLower.contains('lombar')) {
+    if (restrictionLower.contains('lower_back') ||
+        restrictionLower.contains('lombar')) {
       return HomeBodyRegion.lowerBack;
     }
-    if (restrictionLower.contains('shoulder') || restrictionLower.contains('ombro')) {
+    if (restrictionLower.contains('shoulder') ||
+        restrictionLower.contains('ombro')) {
       return HomeBodyRegion.shoulder;
     }
-    if (restrictionLower.contains('elbow') || restrictionLower.contains('cotovelo')) {
+    if (restrictionLower.contains('elbow') ||
+        restrictionLower.contains('cotovelo')) {
       return HomeBodyRegion.elbow;
     }
-    if (restrictionLower.contains('wrist') || restrictionLower.contains('punho')) {
+    if (restrictionLower.contains('wrist') ||
+        restrictionLower.contains('punho')) {
       return HomeBodyRegion.wrist;
     }
-    if (restrictionLower.contains('neck') || restrictionLower.contains('cervical')) {
+    if (restrictionLower.contains('neck') ||
+        restrictionLower.contains('cervical')) {
       return HomeBodyRegion.neck;
     }
-    if (restrictionLower.contains('hamstring') || restrictionLower.contains('posterior')) {
+    if (restrictionLower.contains('hamstring') ||
+        restrictionLower.contains('posterior')) {
       return HomeBodyRegion.hamstring;
     }
-    if (restrictionLower.contains('groin') || restrictionLower.contains('virilha')) {
+    if (restrictionLower.contains('groin') ||
+        restrictionLower.contains('virilha')) {
       return HomeBodyRegion.groin;
     }
-    
+
     return null;
   }
 
@@ -174,7 +217,7 @@ class HomeWorkoutIntegrator {
     double baseStrength;
     double baseBalance;
     double baseMobility;
-    
+
     switch (profile.experienceLevel) {
       case 'beginner':
         baseStrength = 0.3;
@@ -196,19 +239,19 @@ class HomeWorkoutIntegrator {
         baseBalance = 0.5;
         baseMobility = 0.5;
     }
-    
+
     // Ajusta baseado na idade
     final ageFactor = _ageFactor(profile.age);
     baseStrength *= ageFactor;
     baseBalance *= ageFactor;
     baseMobility *= ageFactor;
-    
+
     // Ajusta baseado em restrições de saúde
     final restrictionFactor = _restrictionFactor(profile.healthRestrictions);
     baseStrength *= restrictionFactor;
     baseBalance *= restrictionFactor;
     baseMobility *= restrictionFactor;
-    
+
     return {
       'strength': baseStrength.clamp(0.0, 1.0),
       'balance': baseBalance.clamp(0.0, 1.0),
@@ -239,8 +282,6 @@ class HomeWorkoutIntegrator {
     HomeWorkout homeWorkout,
     WorkoutProfile profile,
   ) {
-    final sessions = <PrescribedSession>[];
-    
     // Cria uma sessão principal
     final mainSession = PrescribedSession(
       id: 'home_session_main',
@@ -264,12 +305,27 @@ class HomeWorkoutIntegrator {
           progressionNote: _generateProgressionNote(e),
         );
       }).toList(),
-      progressionNote: 'Treino baseado em padrões de movimento. '
+      progressionNote:
+          'Treino baseado em padrões de movimento. '
           'Progrida conforme dominar cada exercício.',
     );
-    
-    sessions.add(mainSession);
-    
+
+    final sessionCount = profile.availableDaysPerWeek.clamp(2, 7);
+    final sessions = List<PrescribedSession>.generate(
+      sessionCount,
+      (index) => index == 0
+          ? mainSession
+          : PrescribedSession(
+              id: 'home_session_${index + 1}',
+              name: 'Treino em Casa — Sessão ${index + 1}',
+              objective: mainSession.objective,
+              estimatedDurationMinutes: mainSession.estimatedDurationMinutes,
+              warmupInstructions: mainSession.warmupInstructions,
+              exercises: List<PrescribedExercise>.from(mainSession.exercises),
+              progressionNote: mainSession.progressionNote,
+            ),
+    );
+
     return GeneratedWorkout(
       id: homeWorkout.id,
       userId: homeWorkout.userId,
@@ -278,7 +334,8 @@ class HomeWorkoutIntegrator {
       sessions: sessions,
       mesocycleDurationWeeks: 4,
       generatedAt: homeWorkout.generatedAt,
-      planExplanation: 'Plano de treino em casa sem equipamento, '
+      planExplanation:
+          'Plano de treino em casa sem equipamento, '
           'baseado em ${homeWorkout.patterns.length} padrões de movimento. '
           'Duração estimada: ${homeWorkout.estimatedDurationMinutes} minutos.',
     );
@@ -304,24 +361,25 @@ class HomeWorkoutIntegrator {
       cues: homeExercise.cues,
       instructions: const [],
       substituteIds: homeExercise.alternativeIds,
-      progressionIds: homeExercise.progressionId != null 
-        ? [homeExercise.progressionId!] 
-        : const [],
-      regressionIds: homeExercise.regressionId != null 
-        ? [homeExercise.regressionId!] 
-        : const [],
+      progressionIds: homeExercise.progressionId != null
+          ? [homeExercise.progressionId!]
+          : const [],
+      regressionIds: homeExercise.regressionId != null
+          ? [homeExercise.regressionId!]
+          : const [],
       tags: [homeExercise.pattern.name, 'home', 'bodyweight'],
       spinalLoad: homeExercise.stabilityDemand,
-      shoulderStress: homeExercise.demandRegions.contains(HomeBodyRegion.shoulder) 
-        ? 0.5 
-        : 0.0,
-      kneeStress: homeExercise.demandRegions.contains(HomeBodyRegion.knee) 
-        ? 0.5 
-        : 0.0,
+      shoulderStress:
+          homeExercise.demandRegions.contains(HomeBodyRegion.shoulder)
+          ? 0.5
+          : 0.0,
+      kneeStress: homeExercise.demandRegions.contains(HomeBodyRegion.knee)
+          ? 0.5
+          : 0.0,
       cnsLoad: homeExercise.strengthDemand,
-      stabilityType: homeExercise.stabilityDemand > 0.5 
-        ? 'anti_extension' 
-        : 'none',
+      stabilityType: homeExercise.stabilityDemand > 0.5
+          ? 'anti_extension'
+          : 'none',
       lengthBias: 'mid_range',
       skillLevel: homeExercise.difficulty.index + 1,
     );
@@ -358,16 +416,18 @@ class HomeWorkoutIntegrator {
   // Gera nota de progressão para o exercício
   String _generateProgressionNote(HomeWorkoutExercise workoutExercise) {
     final analysis = workoutExercise.analysis;
-    
+
     if (analysis.compatibility == HomeCompatibility.compatible) {
       return 'Exercício compatível. Progrida conforme dominar.';
     }
-    
+
     if (analysis.compatibility == HomeCompatibility.adaptable) {
-      final adaptations = analysis.adaptations.map((a) => a.description).join('; ');
+      final adaptations = analysis.adaptations
+          .map((a) => a.description)
+          .join('; ');
       return 'Adaptações sugeridas: $adaptations';
     }
-    
+
     return 'Exercício pode precisar de substituição.';
   }
 }

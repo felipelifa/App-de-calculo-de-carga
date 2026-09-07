@@ -5,7 +5,7 @@ import '../../features/exercises/exercise_model.dart';
 // Gerada automaticamente com mapeamento biomec├ónico avan├ºado
 // ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
 
-final List<ExerciseModel> exerciseLibrary = [
+final List<ExerciseModel> exerciseLibrary = _applyEquipmentMetadataAudit([
   ExerciseModel(
     id: 'abducao_de_quadril_com_cabo',
     name: 'Abdu├º├úo de quadril com cabo',
@@ -2415,7 +2415,7 @@ final List<ExerciseModel> exerciseLibrary = [
     primaryMuscles: ["quads"],
     secondaryMuscles: ["glutes"],
     movementPattern: 'squat',
-    equipment: ["bodyweight"],
+    equipment: ["trx"],
     environment: ["gym", "home"],
     category: 'compound',
     difficulty: 'intermediate',
@@ -2434,10 +2434,9 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: [
       "compound",
       "quads",
-      "bodyweight",
+      "trx",
       "squat",
       "home_friendly",
-      "no_equipment",
     ],
     lengthBias: 'lengthened',
     spinalLoad: 0.5,
@@ -8325,7 +8324,7 @@ final List<ExerciseModel> exerciseLibrary = [
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
     movementPattern: 'push_horizontal',
-    equipment: ["bodyweight"],
+    equipment: ["trx"],
     environment: ["gym", "home"],
     category: 'isolation',
     difficulty: 'beginner',
@@ -8344,10 +8343,9 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: [
       "isolation",
       "chest",
-      "bodyweight",
+      "trx",
       "push_horizontal",
       "home_friendly",
-      "no_equipment",
     ],
     lengthBias: 'lengthened',
     spinalLoad: 0.2,
@@ -15370,7 +15368,7 @@ final List<ExerciseModel> exerciseLibrary = [
     primaryMuscles: ["chest"],
     secondaryMuscles: ["triceps", "shoulders"],
     movementPattern: 'push_horizontal',
-    equipment: ["bodyweight"],
+    equipment: ["trx"],
     environment: ["gym", "home"],
     category: 'compound',
     difficulty: 'intermediate',
@@ -15389,10 +15387,9 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: [
       "compound",
       "chest",
-      "bodyweight",
+      "trx",
       "push_horizontal",
       "home_friendly",
-      "no_equipment",
     ],
     lengthBias: 'mid_range',
     spinalLoad: 0.2,
@@ -28733,7 +28730,7 @@ final List<ExerciseModel> exerciseLibrary = [
     primaryMuscles: ["back"],
     secondaryMuscles: [],
     movementPattern: 'pull_vertical',
-    equipment: ["bodyweight"],
+    equipment: ["pull_up_bar"],
     environment: ["gym", "home"],
     category: 'isolation',
     difficulty: 'beginner',
@@ -28752,9 +28749,8 @@ final List<ExerciseModel> exerciseLibrary = [
     tags: [
       "isolation",
       "full_body",
-      "bodyweight",
+      "pull_up_bar",
       "home_friendly",
-      "no_equipment",
     ],
   ),
 
@@ -30349,7 +30345,129 @@ final List<ExerciseModel> exerciseLibrary = [
     lengthBias: 'mid_range',
     shoulderStress: 0.1,
   ),
-];
+]);
+
+// Correções de dados legados. A elegibilidade nunca consulta nome ou tag:
+// estes IDs corrigem registros cuja coluna `equipment` foi gerada incorretamente.
+const _equipmentMetadataOverrides = <String, List<String>>{
+  'afundo_no_banco_com_halteres': ['dumbbell', 'bench'],
+  'afundo_no_banco': ['bodyweight', 'bench'],
+  'agachamento_com_halteres_no_banco': ['dumbbell', 'bench'],
+  'agachamento_no_banco_com_peso_corporal': ['bodyweight', 'bench'],
+  'chutes_alternados_de_gluteos_no_banco': ['bodyweight', 'bench'],
+  'desenvolvimento_de_ombro_no_banco_com_halteres': [
+    'dumbbell',
+    'bench',
+  ],
+  'desenvolvimento_de_ombro_unilateral_com_halter': ['dumbbell'],
+  'dumbbell_devil_press': ['dumbbell'],
+  'dumbbell_power_clean': ['dumbbell'],
+  'dumbbell_raise': ['dumbbell'],
+  'elevacao_frontal_lateral_com_elastico': ['band'],
+  'elevacoes_de_ombros_na_paralela': ['dip_station'],
+  'extensao_de_quadril_no_banco': ['bodyweight', 'bench'],
+  'extensao_de_triceps_com_elastico_na_posicao_horizontal': ['band'],
+  'flexao_de_braco_com_as_maos_entre_bancos': ['bodyweight', 'bench'],
+  'flexao_de_pivo_com_banco': ['bodyweight', 'bench'],
+  'flexao_de_punho_reversa_com_barra_sobre_um_banco': [
+    'barbell',
+    'bench',
+  ],
+  'hiperextensao_de_lombar_no_banco_plano': ['bodyweight', 'bench'],
+  'levantamento_de_panturrilha_com_apoio_de_banco': ['bodyweight', 'bench'],
+  'paralela': ['dip_station'],
+  'paralelas_entre_cadeiras': ['dip_station'],
+  'paralelas_na_argola': ['trx'],
+  'paralelas': ['dip_station'],
+  'ponte_unilateral_no_banco': ['bodyweight', 'bench'],
+  'pullover_com_barra_no_banco_declinado': ['barbell', 'bench'],
+  'remada_inclinada_no_banco_com_cabo': ['cable', 'bench'],
+  'remada_alta_com_halter': ['dumbbell'],
+  'rosca_banco_inclinado': ['dumbbell', 'bench'],
+  'rosca_bilateral_com_cabo_em_banco_inclinado': ['cable', 'bench'],
+  'rosca_de_biceps_com_halteres_no_banco_scott': ['dumbbell', 'bench'],
+  'rosca_direta_com_barra_deitado_em_banco_alto': ['barbell', 'bench'],
+  'rosca_martelo_com_halteres_no_banco_scott': ['dumbbell', 'bench'],
+  'rosca_martelo_com_halter_no_colete_scott': ['dumbbell', 'bench'],
+  'rosca_pronada_no_banco_inclinado': ['dumbbell', 'bench'],
+  'rosca_scott_com_halteres_martelo_no_banco': ['dumbbell', 'bench'],
+  'rotacao_externa_de_halteres_apoiada_no_banco': ['dumbbell', 'bench'],
+  'step_com_elastico': ['band'],
+  'stiff_com_elastico_de_resistencia': ['band'],
+  'stiff_com_halter': ['dumbbell'],
+  'supino_no_banco_inclinado_30_graus_com_pegada_invertida': [
+    'barbell',
+    'bench',
+  ],
+  'tracao_lateral_com_elastico': ['band'],
+  'triceps_frances_com_halter_bilateral': ['dumbbell'],
+  'triceps_frances_alternada_com_halteres_no_banco_inclinado': [
+    'dumbbell',
+    'bench',
+  ],
+  'triceps_frances_no_banco_inclinado_com_halter': ['dumbbell', 'bench'],
+  'triceps_no_banco': ['bodyweight', 'bench'],
+  'triceps_testa_com_banco_declinado_com_halteres': [
+    'dumbbell',
+    'bench',
+  ],
+  'cadeira_extensora': ['machine'],
+  'cadeira_flexora': ['machine'],
+  'mesa_flexora_unilateral': ['machine'],
+  'mesa_flexora': ['machine'],
+  'remada_invertida_com_argolas': ['trx'],
+  'barra_fixa_assistida_com_faixa_elastica': ['pull_up_bar', 'band'],
+  'barra_fixa_assistida': ['pull_up_bar'],
+  'barra_fixa_com_arco': ['pull_up_bar'],
+  'barra_fixa_com_bracos_alternados': ['pull_up_bar'],
+  'barra_fixa_com_giro': ['pull_up_bar'],
+  'barra_fixa_com_l_sit': ['pull_up_bar'],
+  'barra_fixa_com_pegada_fechada': ['pull_up_bar'],
+  'barra_fixa_com_pegada_invertida_assistido': ['pull_up_bar'],
+  'barra_fixa_com_pegada_neutra': ['pull_up_bar'],
+  'barra_fixa_com_pegada_por_tras_do_pescoco': ['pull_up_bar'],
+  'barra_fixa_com_pegada_supinada': ['pull_up_bar'],
+  'barra_fixa_com_peso': ['pull_up_bar'],
+  'barra_fixa_com_salto': ['pull_up_bar'],
+  'barra_fixa_de_cabeca_para_baixo': ['pull_up_bar'],
+  'barra_fixa_para_o_braquial': ['pull_up_bar'],
+  'barra_fixa_pegada_invertida': ['pull_up_bar'],
+  'barra_fixa': ['pull_up_bar'],
+  'paralelas_na_barra': ['dip_station'],
+  'puxada_escapular_na_barra_fixa': ['pull_up_bar'],
+  'afundo_na_maquina_smith': ['smith'],
+  'agachamento_frontal_com_barra_no_banco': ['barbell', 'bench'],
+  'agachamento_frontal_com_barra_no_smith': ['barbell', 'smith'],
+  'agachamento_no_smith': ['smith'],
+  'bom_dia_na_maquina_smith': ['smith'],
+  'desenvolvimento_de_ombros_atras_da_cabeca_na_maquina_smith': ['smith'],
+  'desenvolvimento_de_ombros_na_maquina_smith': ['smith'],
+  'desenvolvimento_militar_em_pe_na_maquina_smith': ['smith'],
+  'elevacao_de_panturrilha_no_smith': ['smith'],
+  'elevacao_pelvica_na_maquina_smith': ['smith'],
+  'encolhimento_de_ombros_na_maquina_smith': ['smith'],
+  'extensao_de_perna_na_maquina_smith_reversa': ['smith'],
+  'gluteo_coice_no_smith': ['smith'],
+  'leg_press_90_no_smith': ['smith'],
+  'panturrilha_em_pe_no_smith': ['smith'],
+  'remada_curvada_no_smith': ['smith'],
+  'supino_com_banco_inclinado_no_smith': ['smith', 'bench'],
+  'supino_declinado_na_maquina_smith': ['smith', 'bench'],
+  'supino_na_maquina_smith': ['smith'],
+  'supino_no_smith_com_o_triangulo': ['smith'],
+};
+
+List<ExerciseModel> _applyEquipmentMetadataAudit(
+  List<ExerciseModel> exercises,
+) => exercises
+    .map(
+      (exercise) => _equipmentMetadataOverrides[exercise.id] == null
+          ? exercise
+          : exercise.copyWith(
+              equipment: _equipmentMetadataOverrides[exercise.id],
+            ),
+    )
+    .toList();
 
 final Map<String, List<String>> injuryRehabExercises = {
   'shoulder': [

@@ -63,10 +63,11 @@ class HomeExercise {
   final List<String> primaryMuscles;
   final List<String> secondaryMuscles;
   final List<String> equipment; // Sempre vazio para casa sem equipamento
+  /// External records must explicitly confirm their equipment metadata.
+  final bool equipmentMetadataVerified;
   final List<HomeBodyRegion> demandRegions; // Regiões que o exercício demanda
   final List<String> cues;
   final String? videoUrl;
-  final String? gifUrl;
 
   // Progressão e regressão
   final String? regressionId; // Exercício mais fácil
@@ -100,10 +101,10 @@ class HomeExercise {
     required this.primaryMuscles,
     this.secondaryMuscles = const [],
     this.equipment = const [],
+    this.equipmentMetadataVerified = true,
     required this.demandRegions,
     this.cues = const [],
     this.videoUrl,
-    this.gifUrl,
     this.regressionId,
     this.progressionId,
     this.alternativeIds = const [],
@@ -135,6 +136,7 @@ class HomeExercise {
       primaryMuscles: List<String>.from(d['primaryMuscles'] ?? []),
       secondaryMuscles: List<String>.from(d['secondaryMuscles'] ?? []),
       equipment: List<String>.from(d['equipment'] ?? []),
+      equipmentMetadataVerified: d['equipmentMetadataVerified'] as bool? ?? false,
       demandRegions: (d['demandRegions'] as List?)
           ?.map((e) => HomeBodyRegion.values.firstWhere(
                 (r) => r.name == e,
@@ -143,7 +145,6 @@ class HomeExercise {
           .toList() ?? [],
       cues: List<String>.from(d['cues'] ?? []),
       videoUrl: d['videoUrl'] as String?,
-      gifUrl: d['gifUrl'] as String?,
       regressionId: d['regressionId'] as String?,
       progressionId: d['progressionId'] as String?,
       alternativeIds: List<String>.from(d['alternativeIds'] ?? []),
@@ -168,10 +169,10 @@ class HomeExercise {
     'primaryMuscles': primaryMuscles,
     'secondaryMuscles': secondaryMuscles,
     'equipment': equipment,
+    'equipmentMetadataVerified': equipmentMetadataVerified,
     'demandRegions': demandRegions.map((e) => e.name).toList(),
     'cues': cues,
     'videoUrl': videoUrl,
-    'gifUrl': gifUrl,
     'regressionId': regressionId,
     'progressionId': progressionId,
     'alternativeIds': alternativeIds,

@@ -3,19 +3,19 @@
 // ─────────────────────────────────────────────
 
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'home_exercise_model.dart';
 import 'home_exercise_library.dart';
 import 'limitation_analyzer.dart';
+import '../exercise_compatibility.dart';
 
 class HomeWorkoutEngine {
   final List<HomeExercise> _library;
   final int _seed;
 
-  HomeWorkoutEngine({
-    List<HomeExercise>? library,
-    String? userId,
-  }) : _library = library ?? homeExerciseLibrary,
-       _seed = _computeSeed(userId ?? '');
+  HomeWorkoutEngine({List<HomeExercise>? library, String? userId})
+    : _library = library ?? homeExerciseLibrary,
+      _seed = _computeSeed(userId ?? '');
 
   static int _computeSeed(String userId) {
     int sum = 0;
@@ -36,19 +36,20 @@ class HomeWorkoutEngine {
     required double balanceCapability,
     required double strengthCapability,
     required double mobilityCapability,
+    List<String> availableEquipment = const [],
     int? dayOfWeek,
   }) {
     final random = Random(_seed + (dayOfWeek ?? 0));
-    
+
     // Determina quais padrões incluir baseado no tempo disponível
     final patterns = _selectPatterns(
       availableMinutes: availableMinutes,
       limitations: limitations,
     );
-    
+
     // Seleciona exercícios para cada padrão
     final exercises = <HomeWorkoutExercise>[];
-    
+
     for (final pattern in patterns) {
       final exercise = _selectExerciseForPattern(
         pattern: pattern,
@@ -57,17 +58,18 @@ class HomeWorkoutEngine {
         balanceCapability: balanceCapability,
         strengthCapability: strengthCapability,
         mobilityCapability: mobilityCapability,
+        availableEquipment: availableEquipment,
         random: random,
       );
-      
+
       if (exercise != null) {
         exercises.add(exercise);
       }
     }
-    
+
     // Calcula duração estimada
     final estimatedDuration = _estimateDuration(exercises);
-    
+
     return HomeWorkout(
       id: 'home_${DateTime.now().millisecondsSinceEpoch}',
       userId: userId,
@@ -110,8 +112,17 @@ class HomeWorkoutEngine {
   }
 
   // Busca exercícios por padrão de movimento
-  List<HomeExercise> getExercisesByPattern(HomeMovementPattern pattern) {
-    return _library.where((e) => e.pattern == pattern).toList();
+  List<HomeExercise> getExercisesByPattern(
+    HomeMovementPattern pattern, {
+    List<String> availableEquipment = const [],
+  }) {
+    return _library
+        .where(
+          (e) =>
+              e.pattern == pattern &&
+              _areEquipmentRequirementsMet(e, availableEquipment),
+        )
+        .toList();
   }
 
   // Busca exercício por ID
@@ -157,7 +168,7 @@ class HomeWorkoutEngine {
       HomeMovementPattern.pushHorizontal,
       HomeMovementPattern.coreAntiExtension,
     ];
-    
+
     // Padrões importantes (incluir se houver tempo)
     final importantPatterns = [
       HomeMovementPattern.hipHinge,
@@ -165,7 +176,7 @@ class HomeWorkoutEngine {
       HomeMovementPattern.calf,
       HomeMovementPattern.hipExtension,
     ];
-    
+
     // Padrões complementares (incluir se houver muito tempo)
     final complementaryPatterns = [
       HomeMovementPattern.coreLateral,
@@ -183,12 +194,12 @@ class HomeWorkoutEngine {
       HomeMovementPattern.balance,
       HomeMovementPattern.mobility,
     ];
-    
+
     final selectedPatterns = <HomeMovementPattern>[];
-    
+
     // Adiciona padrões essenciais
     selectedPatterns.addAll(essentialPatterns);
-    
+
     // Adiciona padrões importantes baseado no tempo
     if (availableMinutes >= 30) {
       selectedPatterns.addAll(importantPatterns.take(2));
@@ -196,7 +207,7 @@ class HomeWorkoutEngine {
     if (availableMinutes >= 45) {
       selectedPatterns.addAll(importantPatterns.skip(2));
     }
-    
+
     // Adiciona padrões complementares baseado no tempo
     if (availableMinutes >= 60) {
       selectedPatterns.addAll(complementaryPatterns.take(3));
@@ -204,7 +215,7 @@ class HomeWorkoutEngine {
     if (availableMinutes >= 75) {
       selectedPatterns.addAll(complementaryPatterns.skip(3).take(3));
     }
-    
+
     // Filtra padrões que podem ser inadequados pelas limitações
     return selectedPatterns.where((pattern) {
       return !_isPatternContraindicated(pattern, limitations);
@@ -221,7 +232,7 @@ class HomeWorkoutEngine {
         pattern == HomeMovementPattern.pullVertical) {
       return true; // Será verificado separadamente
     }
-    
+
     // Potência exige capacidade básica
     if (pattern == HomeMovementPattern.power) {
       final hasSevereLimitation = limitations.any(
@@ -229,7 +240,7 @@ class HomeWorkoutEngine {
       );
       return hasSevereLimitation;
     }
-    
+
     return false;
   }
 
@@ -241,18 +252,25 @@ class HomeWorkoutEngine {
     required double balanceCapability,
     required double strengthCapability,
     required double mobilityCapability,
+    required List<String> availableEquipment,
     required Random random,
   }) {
     // Busca exercícios do padrão
-    var exercises = _library.where((e) => e.pattern == pattern).toList();
-    
+    var exercises = _library
+        .where(
+          (e) =>
+              e.pattern == pattern &&
+              _areEquipmentRequirementsMet(e, availableEquipment),
+        )
+        .toList();
+
     if (exercises.isEmpty) return null;
-    
+
     // Filtra exercícios condicionais
     exercises = exercises.where((e) => !e.isConditional).toList();
-    
+
     if (exercises.isEmpty) return null;
-    
+
     // Analisa cada exercício
     final analyzedExercises = exercises.map((exercise) {
       final analysis = HomeLimitationAnalyzer.analyze(
@@ -265,12 +283,12 @@ class HomeWorkoutEngine {
       );
       return _AnalyzedExercise(exercise: exercise, analysis: analysis);
     }).toList();
-    
+
     // Prioriza exercícios compatíveis
     final compatible = analyzedExercises
         .where((a) => a.analysis.compatibility == HomeCompatibility.compatible)
         .toList();
-    
+
     if (compatible.isNotEmpty) {
       final selected = compatible[random.nextInt(compatible.length)];
       return HomeWorkoutExercise(
@@ -281,12 +299,12 @@ class HomeWorkoutEngine {
         restSeconds: _calculateRest(selected.exercise, experienceLevel),
       );
     }
-    
+
     // Se não houver compatíveis, tenta adaptáveis
     final adaptable = analyzedExercises
         .where((a) => a.analysis.compatibility == HomeCompatibility.adaptable)
         .toList();
-    
+
     if (adaptable.isNotEmpty) {
       final selected = adaptable[random.nextInt(adaptable.length)];
       return HomeWorkoutExercise(
@@ -297,27 +315,44 @@ class HomeWorkoutEngine {
         restSeconds: _calculateRest(selected.exercise, experienceLevel),
       );
     }
-    
-    // Se não houver adaptáveis, usa o mais fácil do padrão
-    exercises.sort((a, b) => a.difficulty.index.compareTo(b.difficulty.index));
-    final easiest = exercises.first;
-    
-    final analysis = HomeLimitationAnalyzer.analyze(
-      exercise: easiest,
-      limitations: limitations,
-      experienceLevel: experienceLevel,
-      balanceCapability: balanceCapability,
-      strengthCapability: strengthCapability,
-      mobilityCapability: mobilityCapability,
+
+    // Never turn an inadequate exercise into a successful selection. The
+    // caller can then apply a higher-level fallback or report the failure.
+    return null;
+  }
+
+  bool _areEquipmentRequirementsMet(
+    HomeExercise exercise,
+    List<String> availableEquipment,
+  ) {
+    if (!exercise.equipmentMetadataVerified) {
+      debugPrint(
+        'REJECTED Exercise: ${exercise.name} | Environment: HOME | '
+        'Reason: EQUIPMENT_METADATA_UNVERIFIED',
+      );
+      return false;
+    }
+    final declaredRequirements = <String>[
+      ...exercise.equipment,
+      if (exercise.isConditional && exercise.conditionalRequirement != null)
+        exercise.conditionalRequirement!,
+    ];
+    final required = ExerciseCompatibility.requiredEquipment(
+      declaredRequirements,
     );
-    
-    return HomeWorkoutExercise(
-      exercise: easiest,
-      analysis: analysis,
-      sets: _calculateSets(easiest, experienceLevel),
-      reps: _calculateReps(easiest, experienceLevel),
-      restSeconds: _calculateRest(easiest, experienceLevel),
+    final allowed = ExerciseCompatibility.areEquipmentRequirementsMet(
+      required: required,
+      available: availableEquipment,
     );
+    if (!allowed) {
+      debugPrint(
+        'REJECTED Exercise: ${exercise.name} | Environment: HOME | '
+        'Available equipment: ${availableEquipment.isEmpty ? '[]' : availableEquipment} | '
+        'Required equipment: ${required.isEmpty ? '[]' : required} | '
+        'Reason: EQUIPMENT_NOT_AVAILABLE',
+      );
+    }
+    return allowed;
   }
 
   // Calcula séries baseado no nível de experiência
@@ -337,7 +372,7 @@ class HomeWorkoutEngine {
   // Calcula repetições baseado no exercício e nível
   int _calculateReps(HomeExercise exercise, String experienceLevel) {
     // Exercícios isométricos usam tempo
-    if (exercise.id.contains('plank') || 
+    if (exercise.id.contains('plank') ||
         exercise.id.contains('wall_sit') ||
         exercise.id.contains('hold')) {
       switch (experienceLevel) {
@@ -351,7 +386,7 @@ class HomeWorkoutEngine {
           return 30;
       }
     }
-    
+
     // Exercícios dinâmicos
     switch (experienceLevel) {
       case 'beginner':
@@ -380,7 +415,7 @@ class HomeWorkoutEngine {
           return 60;
       }
     }
-    
+
     // Exercícios de menor demanda
     switch (experienceLevel) {
       case 'beginner':
@@ -397,19 +432,19 @@ class HomeWorkoutEngine {
   // Estima duração total do treino
   int _estimateDuration(List<HomeWorkoutExercise> exercises) {
     int totalSeconds = 0;
-    
+
     for (final exercise in exercises) {
       // Tempo por série (estimativa: 30 segundos por série)
       final timePerSet = 30;
       final totalTime = exercise.sets * timePerSet;
       final restTime = exercise.sets * exercise.restSeconds;
-      
+
       totalSeconds += totalTime + restTime;
     }
-    
+
     // Adiciona 5 minutos de aquecimento
     totalSeconds += 300;
-    
+
     return (totalSeconds / 60).ceil();
   }
 }
@@ -419,10 +454,7 @@ class _AnalyzedExercise {
   final HomeExercise exercise;
   final HomeExerciseAnalysis analysis;
 
-  const _AnalyzedExercise({
-    required this.exercise,
-    required this.analysis,
-  });
+  const _AnalyzedExercise({required this.exercise, required this.analysis});
 }
 
 // Modelo de treino para casa

@@ -9,7 +9,13 @@ class ExerciseModel {
   final List<String> primaryMuscles;
   final List<String> secondaryMuscles;
   final String movementPattern;
+
+  /// Required resources. `bodyweight` is a marker for no external resource;
+  /// every other value is mandatory, including in composite requirements.
   final List<String> equipment;
+  /// False means the exercise came from a source whose requirements were not
+  /// audited. Such an exercise cannot enter a prescription.
+  final bool equipmentMetadataVerified;
   final List<String> environment;
   final String category; // compound | isolation
   final String difficulty; // beginner | intermediate | advanced
@@ -17,7 +23,6 @@ class ExerciseModel {
   final int repRangeMin;
   final int repRangeMax;
   final bool isUnilateral;
-  final String? gifUrl;
   final String? videoUrl;
   final List<String> cues;
   final List<String> instructions;
@@ -27,13 +32,16 @@ class ExerciseModel {
   final List<String> tags;
 
   // Perfil de fadiga (0.0–1.0)
-  final double spinalLoad;       // 0.0 = sem carga lombar, 1.0 = terra pesado
-  final double shoulderStress;   // 0.0 = zero impacto, 1.0 = desenvolvimento pesado
-  final double kneeStress;       // 0.0 = nenhuma demanda, 1.0 = agachamento profundo
-  final double cnsLoad;          // 0.0 = isolamento local, 1.0 = composto multiarticular pesado
-  final String stabilityType;    // 'none' | 'anti_extension' | 'anti_rotation' | 'lateral' | 'scapular'
-  final String lengthBias;       // 'lengthened' | 'shortened' | 'mid_range'
-  final int skillLevel;          // 1–5 complexidade técnica/neural
+  final double spinalLoad; // 0.0 = sem carga lombar, 1.0 = terra pesado
+  final double
+  shoulderStress; // 0.0 = zero impacto, 1.0 = desenvolvimento pesado
+  final double kneeStress; // 0.0 = nenhuma demanda, 1.0 = agachamento profundo
+  final double
+  cnsLoad; // 0.0 = isolamento local, 1.0 = composto multiarticular pesado
+  final String
+  stabilityType; // 'none' | 'anti_extension' | 'anti_rotation' | 'lateral' | 'scapular'
+  final String lengthBias; // 'lengthened' | 'shortened' | 'mid_range'
+  final int skillLevel; // 1–5 complexidade técnica/neural
 
   const ExerciseModel({
     required this.id,
@@ -43,6 +51,7 @@ class ExerciseModel {
     this.secondaryMuscles = const [],
     this.movementPattern = 'isolation',
     this.equipment = const [],
+    this.equipmentMetadataVerified = true,
     this.environment = const ['gym'],
     this.category = 'isolation',
     this.difficulty = 'beginner',
@@ -50,7 +59,6 @@ class ExerciseModel {
     this.repRangeMin = 8,
     this.repRangeMax = 12,
     this.isUnilateral = false,
-    this.gifUrl,
     this.videoUrl,
     this.cues = const [],
     this.instructions = const [],
@@ -67,15 +75,57 @@ class ExerciseModel {
     this.skillLevel = 1,
   });
 
+  ExerciseModel copyWith({
+    List<String>? equipment,
+    bool? equipmentMetadataVerified,
+  }) => ExerciseModel(
+    id: id,
+    name: name,
+    nameEn: nameEn,
+    primaryMuscles: primaryMuscles,
+    secondaryMuscles: secondaryMuscles,
+    movementPattern: movementPattern,
+    equipment: equipment ?? this.equipment,
+    equipmentMetadataVerified:
+        equipmentMetadataVerified ?? this.equipmentMetadataVerified,
+    environment: environment,
+    category: category,
+    difficulty: difficulty,
+    restrictions: restrictions,
+    repRangeMin: repRangeMin,
+    repRangeMax: repRangeMax,
+    isUnilateral: isUnilateral,
+    videoUrl: videoUrl,
+    cues: cues,
+    instructions: instructions,
+    substituteIds: substituteIds,
+    progressionIds: progressionIds,
+    regressionIds: regressionIds,
+    tags: tags,
+    spinalLoad: spinalLoad,
+    shoulderStress: shoulderStress,
+    kneeStress: kneeStress,
+    cnsLoad: cnsLoad,
+    stabilityType: stabilityType,
+    lengthBias: lengthBias,
+    skillLevel: skillLevel,
+  );
+
   factory ExerciseModel.fromMap(Map<String, dynamic> d) {
     return ExerciseModel(
       id: d['id'] as String? ?? '',
       name: d['name'] as String? ?? '',
       nameEn: d['nameEn'] as String? ?? '',
-      primaryMuscles: (d['primaryMuscles'] as List?)?.map((e) => e.toString()).toList() ?? [],
-      secondaryMuscles: (d['secondaryMuscles'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      primaryMuscles:
+          (d['primaryMuscles'] as List?)?.map((e) => e.toString()).toList() ??
+          [],
+      secondaryMuscles:
+          (d['secondaryMuscles'] as List?)?.map((e) => e.toString()).toList() ??
+          [],
       movementPattern: d['movementPattern'] as String? ?? 'isolation',
       equipment: List<String>.from(d['equipment'] ?? []),
+      equipmentMetadataVerified:
+          d['equipmentMetadataVerified'] as bool? ?? false,
       environment: List<String>.from(d['environment'] ?? []),
       category: d['category'] as String? ?? 'isolation',
       difficulty: d['difficulty'] as String? ?? 'beginner',
@@ -83,7 +133,6 @@ class ExerciseModel {
       repRangeMin: (d['repRangeMin'] as num?)?.toInt() ?? 8,
       repRangeMax: (d['repRangeMax'] as num?)?.toInt() ?? 12,
       isUnilateral: d['isUnilateral'] as bool? ?? false,
-      gifUrl: d['gifUrl'] as String?,
       videoUrl: d['videoUrl'] as String?,
       cues: List<String>.from(d['cues'] ?? []),
       instructions: List<String>.from(d['instructions'] ?? []),
@@ -102,34 +151,34 @@ class ExerciseModel {
   }
 
   Map<String, dynamic> toMap() => {
-        'id': id,
-        'name': name,
-        'nameEn': nameEn,
-        'primaryMuscles': primaryMuscles,
-        'secondaryMuscles': secondaryMuscles,
-        'movementPattern': movementPattern,
-        'equipment': equipment,
-        'environment': environment,
-        'category': category,
-        'difficulty': difficulty,
-        'restrictions': restrictions,
-        'repRangeMin': repRangeMin,
-        'repRangeMax': repRangeMax,
-        'isUnilateral': isUnilateral,
-        'gifUrl': gifUrl,
-        'videoUrl': videoUrl,
-        'cues': cues,
-        'instructions': instructions,
-        'substituteIds': substituteIds,
-        'progressionIds': progressionIds,
-        'regressionIds': regressionIds,
-        'tags': tags,
-        'spinalLoad': spinalLoad,
-        'shoulderStress': shoulderStress,
-        'kneeStress': kneeStress,
-        'cnsLoad': cnsLoad,
-        'stabilityType': stabilityType,
-        'lengthBias': lengthBias,
-        'skillLevel': skillLevel,
-      };
+    'id': id,
+    'name': name,
+    'nameEn': nameEn,
+    'primaryMuscles': primaryMuscles,
+    'secondaryMuscles': secondaryMuscles,
+    'movementPattern': movementPattern,
+    'equipment': equipment,
+    'equipmentMetadataVerified': equipmentMetadataVerified,
+    'environment': environment,
+    'category': category,
+    'difficulty': difficulty,
+    'restrictions': restrictions,
+    'repRangeMin': repRangeMin,
+    'repRangeMax': repRangeMax,
+    'isUnilateral': isUnilateral,
+    'videoUrl': videoUrl,
+    'cues': cues,
+    'instructions': instructions,
+    'substituteIds': substituteIds,
+    'progressionIds': progressionIds,
+    'regressionIds': regressionIds,
+    'tags': tags,
+    'spinalLoad': spinalLoad,
+    'shoulderStress': shoulderStress,
+    'kneeStress': kneeStress,
+    'cnsLoad': cnsLoad,
+    'stabilityType': stabilityType,
+    'lengthBias': lengthBias,
+    'skillLevel': skillLevel,
+  };
 }

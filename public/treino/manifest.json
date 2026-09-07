@@ -1,11 +1,11 @@
 {
-    "name": "app",
-    "short_name": "app",
+    "name": "BuildFit",
+    "short_name": "BuildFit",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#000000",
+    "theme_color": "#CCFF00",
+    "description": "Sistema de treinamento bio-adaptativo com prescrição inteligente.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
