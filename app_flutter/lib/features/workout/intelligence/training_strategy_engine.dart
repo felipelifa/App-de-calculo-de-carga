@@ -294,6 +294,21 @@ class TrainingStrategyEngine {
       maxExercises = (maxExercises - 1).clamp(3, 8);
     }
 
+    // Ajuste por idade
+    maxExercises = (maxExercises * context.ageVolumeFactor).floor().clamp(3, 8);
+    setsPerExercise = (setsPerExercise * context.ageVolumeFactor).floor().clamp(2, 5);
+
+    // Ajuste por frequência alta (diluir volume)
+    if (context.highFrequency) {
+      maxExercises = (maxExercises - 1).clamp(3, 8);
+    }
+
+    // Ajuste por sessão curta
+    if (context.shortSession) {
+      final maxByTime = (context.sessionDurationMinutes * 60 / context.timePerExerciseSeconds).floor();
+      maxExercises = maxByTime.clamp(3, 6);
+    }
+
     return VolumeTarget(
       maxExercises: maxExercises,
       setsPerExercise: setsPerExercise,
@@ -351,6 +366,14 @@ class TrainingStrategyEngine {
       restSeconds = (restSeconds + 30);
     } else if (context.userDifficulty.index >= 3) {
       rir = (rir - 1).clamp(1, 3);
+    }
+
+    // Ajuste por idade (mais velho = mais descanso, menos intenso)
+    if (context.age >= 50) {
+      restSeconds = (restSeconds + 30);
+      rir = (rir + 1).clamp(1, 3);
+    } else if (context.age >= 40) {
+      restSeconds = (restSeconds + 15);
     }
 
     return IntensityTarget(

@@ -57,15 +57,23 @@ class WorkoutComposer {
     final engineRules = v2Exercise?.engineRules;
 
     // Usar V2EngineRules como base
-    final repsMin = engineRules?.repRangeMin ?? 8;
-    final repsMax = engineRules?.repRangeMax ?? 12;
-    final restSeconds = engineRules?.defaultRestSeconds ?? strategy.intensityTarget.defaultRestSeconds;
+    var repsMin = engineRules?.repRangeMin ?? 8;
+    var repsMax = engineRules?.repRangeMax ?? 12;
+    var restSeconds = engineRules?.defaultRestSeconds ?? strategy.intensityTarget.defaultRestSeconds;
 
-    // Ajustar séries pela estratégia
-    final sets = strategy.volumeTarget.setsPerExercise;
+    // Ajustar séries pela estratégia + idade
+    var sets = strategy.volumeTarget.setsPerExercise;
+    if (context.age >= 50) sets = (sets - 1).clamp(2, 4);
 
-    // Ajustar RIR pelo contexto
-    final rir = _adjustRir(strategy.intensityTarget.targetRir, selected.role);
+    // Ajustar RIR pelo contexto + idade
+    var rir = _adjustRir(strategy.intensityTarget.targetRir, selected.role);
+    if (context.age >= 50) rir = (rir + 1).clamp(1, 3);
+
+    // Ajustar reps por duração
+    if (context.shortSession) {
+      repsMax = (repsMax - 2).clamp(repsMin, 20);
+      restSeconds = (restSeconds - 15).clamp(30, 180);
+    }
 
     // Tempo baseado no objetivo
     final tempo = _determineTempo(context, strategy);

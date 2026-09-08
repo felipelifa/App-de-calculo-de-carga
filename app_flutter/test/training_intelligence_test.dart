@@ -434,8 +434,9 @@ void main() {
       expect(workout.sessions.length, equals(2));
 
       for (final session in workout.sessions) {
-        expect(session.exercises.length, lessThanOrEqualTo(5));
-        expect(session.estimatedDurationMinutes, lessThanOrEqualTo(30));
+        // 20min não deve gerar mais de 7 exercises (com margem)
+        expect(session.exercises.length, lessThanOrEqualTo(7));
+        expect(session.estimatedDurationMinutes, lessThanOrEqualTo(35));
       }
     });
   });

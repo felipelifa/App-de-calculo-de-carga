@@ -151,11 +151,23 @@ class WorkoutValidator {
     TrainingContext context,
     List<ValidationIssue> issues,
   ) {
-    if (session.estimatedDurationMinutes > context.sessionDurationMinutes * 1.3) {
+    // Calcular tempo real baseado em sets × (execução + descanso)
+    int realTimeSeconds = 300; // 5min warmup
+    for (final ex in session.exercises) {
+      // Execução: ~45s por série
+      realTimeSeconds += ex.sets * 45;
+      // Descanso entre séries
+      realTimeSeconds += (ex.sets - 1) * ex.restSeconds;
+      // Transição: ~30s
+      realTimeSeconds += 30;
+    }
+    final realTimeMinutes = (realTimeSeconds / 60).ceil();
+
+    if (realTimeMinutes > context.sessionDurationMinutes * 1.2) {
       issues.add(ValidationIssue(
         severity: ValidationSeverity.warning,
         code: 'duration_exceeded',
-        description: 'Duração estimada (${session.estimatedDurationMinutes}min) '
+        description: 'Duração real estimada (${realTimeMinutes}min) '
             'excede o tempo disponível (${context.sessionDurationMinutes}min)',
       ));
     }

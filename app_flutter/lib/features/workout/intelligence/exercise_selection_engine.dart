@@ -5,6 +5,7 @@ import '../../exercise_library_v2/enums/exercise_role.dart';
 import '../../exercise_library_v2/enums/intensity.dart';
 import '../../exercise_library_v2/enums/environment.dart';
 import '../../exercise_library_v2/enums/compatibility.dart';
+import '../../exercise_library_v2/bridge/v2_home_bridge.dart';
 import 'training_context.dart';
 import 'training_strategy_engine.dart';
 import 'session_blueprint.dart';
@@ -217,6 +218,29 @@ class ExerciseSelectionEngine {
     if (context.preferredExerciseIds.contains(exercise.id)) {
       score += 10;
       reasons.add('userPreferred');
+    }
+
+    // ── Demand vs Capacity (0-15 pontos) ──
+    final v2Exercise = V2HomeBridge.getV2Exercise(exercise.id);
+    if (v2Exercise != null) {
+      final comparison = context.compareDemand(
+        exerciseStrength: v2Exercise.demands.strength,
+        exerciseStability: v2Exercise.demands.stability,
+        exerciseMobility: v2Exercise.demands.mobility,
+        exerciseBalance: v2Exercise.demands.balance,
+        exerciseCoordination: v2Exercise.demands.coordination,
+      );
+
+      if (comparison.isCompatible) {
+        score += 15;
+        reasons.add('demandCapacityMatch');
+      } else if (comparison.needsAdaptation) {
+        score += 5;
+        reasons.add('demandNeedsAdaptation: ${comparison.exceedingCapacities.join(",")}');
+      } else {
+        score -= 10;
+        reasons.add('demandIncompatible: ${comparison.exceedingCapacities.join(",")}');
+      }
     }
 
     // ── Limitation compatibility (0-10 pontos) ──
