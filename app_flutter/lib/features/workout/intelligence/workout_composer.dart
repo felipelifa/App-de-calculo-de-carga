@@ -74,7 +74,16 @@ class WorkoutComposer {
     if (context.age >= 50) sets = (sets - 1).clamp(2, 4);
 
     // Ajustar RIR pelo contexto + idade
-    var rir = _adjustRir(strategy.intensityTarget.targetRir, selected.role);
+    // O ajuste de papel NÃO deve reduzir RIR abaixo de 2 para iniciantes,
+    // pois isso ultrapassaria a margem de segurança definida pela estratégia.
+    var rir = strategy.intensityTarget.targetRir;
+    final isBeginner = context.userDifficulty.index <= 1;
+    if (!isBeginner) {
+      rir = _adjustRir(baseRir: rir, role: selected.role);
+    } else {
+      // Iniciante: apenas acessórios e preparação recebem ajuste suave
+      rir = _adjustRirForBeginner(baseRir: rir, role: selected.role);
+    }
     if (context.age >= 50) rir = (rir + 1).clamp(1, 3);
 
     // Ajustar reps por duração
@@ -104,8 +113,8 @@ class WorkoutComposer {
     );
   }
 
-  /// Ajusta RIR pelo papel do exercício.
-  int _adjustRir(int baseRir, V2ExerciseRole role) {
+  /// Ajusta RIR pelo papel do exercício (para não-iniciantes).
+  int _adjustRir({required int baseRir, required V2ExerciseRole role}) {
     switch (role) {
       case V2ExerciseRole.principal:
         return (baseRir - 1).clamp(0, 3);
@@ -121,6 +130,28 @@ class WorkoutComposer {
         return 3;
       case V2ExerciseRole.finisher:
         return (baseRir - 1).clamp(0, 3);
+    }
+  }
+
+  /// Ajusta RIR para iniciantes: mais conservador.
+  /// Iniciantes não devem ter RIR reduzido por papel do exercício.
+  int _adjustRirForBeginner({required int baseRir, required V2ExerciseRole role}) {
+    switch (role) {
+      case V2ExerciseRole.principal:
+        // Iniciante: manter RIR base (não reduzir para principal)
+        return baseRir;
+      case V2ExerciseRole.complementary:
+        return baseRir;
+      case V2ExerciseRole.accessory:
+        return (baseRir + 1).clamp(0, 3);
+      case V2ExerciseRole.conditioning:
+        return baseRir;
+      case V2ExerciseRole.preparation:
+        return 3;
+      case V2ExerciseRole.mobility:
+        return 3;
+      case V2ExerciseRole.finisher:
+        return baseRir;
     }
   }
 

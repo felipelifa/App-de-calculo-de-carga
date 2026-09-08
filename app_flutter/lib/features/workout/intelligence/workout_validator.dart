@@ -80,10 +80,10 @@ class WorkoutValidator {
     TrainingContext context,
     List<ValidationIssue> issues,
   ) {
+    final userEquipNames = context.availableEquipment.map((e) => e.name).toSet();
     for (final ex in session.exercises) {
       if (ex.exercise.equipment.isNotEmpty) {
-        final userSet = context.availableEquipment.toSet();
-        final hasAll = ex.exercise.equipment.every(userSet.contains);
+        final hasAll = ex.exercise.equipment.every(userEquipNames.contains);
         if (!hasAll) {
           issues.add(ValidationIssue(
             severity: ValidationSeverity.error,

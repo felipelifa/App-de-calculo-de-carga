@@ -278,6 +278,7 @@ class TrainingStrategyEngine {
     if (context.primaryGoal == V2Goal.hypertrophy) {
       setsPerExercise = (setsPerExercise + 1).clamp(2, 4);
     } else if (context.primaryGoal == V2Goal.strength) {
+      // Força: mais séries, menos exercícios (mais foco)
       setsPerExercise = (setsPerExercise + 1).clamp(3, 5);
       maxExercises = (maxExercises - 1).clamp(3, 8);
     } else if (context.primaryGoal == V2Goal.conditioning) {
@@ -291,14 +292,18 @@ class TrainingStrategyEngine {
     // Ajuste por nível
     if (context.userDifficulty.index <= 1) {
       setsPerExercise = (setsPerExercise - 1).clamp(2, 4);
-      maxExercises = (maxExercises - 1).clamp(3, 8);
+      // Iniciantes: reduzir exercícios apenas em sessões curtas.
+      // Em sessões longas, manter mais exercícios para preencher o tempo.
+      if (context.sessionDurationMinutes <= 30) {
+        maxExercises = (maxExercises - 1).clamp(3, 8);
+      }
     }
 
     // Ajuste por idade
     maxExercises = (maxExercises * context.ageVolumeFactor).floor().clamp(3, 8);
     setsPerExercise = (setsPerExercise * context.ageVolumeFactor).floor().clamp(2, 5);
 
-    // Ajuste por frequência alta (diluir volume)
+    // Ajuste por frequência alta (diluir volume por sessão)
     if (context.highFrequency) {
       maxExercises = (maxExercises - 1).clamp(3, 8);
     }
@@ -307,6 +312,12 @@ class TrainingStrategyEngine {
     if (context.shortSession) {
       maxExercises = maxExercises.clamp(3, 6);
     }
+
+    // Garantir mínimo de exercícios baseado na duração disponível.
+    // Mesmo com todas as reduções, o treino deve ter exercícios
+    // suficientes para justificar o tempo disponível.
+    final minByDuration = _minExercisesForDuration(context.sessionDurationMinutes);
+    maxExercises = maxExercises.clamp(minByDuration, 10);
 
     // Progressão contextual: decidir se há motivo para variar volume
     final progression = _evaluateProgression(context, weekNumber);
@@ -320,12 +331,22 @@ class TrainingStrategyEngine {
     );
   }
 
+  /// Mínimo de exercícios necessários para justificar o tempo disponível.
+  int _minExercisesForDuration(int minutes) {
+    if (minutes <= 20) return 3;
+    if (minutes <= 30) return 3;
+    if (minutes <= 45) return 4;
+    if (minutes <= 60) return 5;
+    return 6;
+  }
+
   // ── Intensity Target ──
 
   IntensityTarget _determineIntensityTarget(TrainingContext context, {int weekNumber = 1}) {
     int rir;
     int restSeconds;
 
+    // RIR baseado no objetivo
     switch (context.primaryGoal) {
       case V2Goal.hypertrophy:
         rir = 2;
@@ -365,7 +386,9 @@ class TrainingStrategyEngine {
         break;
     }
 
-    // Ajuste por nível
+    // Ajuste por nível: iniciantes recebem margem de segurança.
+    // Força + iniciante = RIR 2 (não 1), pois iniciante não deveria
+    // trabalhar tão perto da falha independentemente do objetivo.
     if (context.userDifficulty.index <= 1) {
       rir = (rir + 1).clamp(1, 3);
       restSeconds = (restSeconds + 30);
@@ -380,10 +403,6 @@ class TrainingStrategyEngine {
     } else if (context.age >= 40) {
       restSeconds = (restSeconds + 15);
     }
-
-    // A intensidade NÃO é determinada pelo weekNumber.
-    // É determinada pelo perfil: objetivo, nível, idade, limitações.
-    // O weekNumber apenas modula volume (quando aplicável), não intensidade.
 
     return IntensityTarget(
       targetRir: rir,
