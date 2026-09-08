@@ -254,4 +254,84 @@ void main() {
       }
     });
   });
+
+  group('Home Block - Qualidade dos Dados', () {
+    test('Todos têm primaryMuscles não vazio', () {
+      for (final ex in exercises) {
+        expect(ex.primaryMuscles.isNotEmpty, isTrue,
+          reason: '${ex.id} não tem primaryMuscles');
+      }
+    });
+
+    test('Nenhum músculo usa nome genérico (core, shoulders, full_body)', () {
+      final generic = {'core', 'shoulders', 'full_body', 'hip_abductors', 'hip_adductors', 'ankle_stabilizers', 'thoracic_spine'};
+      for (final ex in exercises) {
+        for (final m in ex.primaryMuscles) {
+          expect(generic, isNot(contains(m)),
+            reason: '${ex.id} usa músculo genérico: $m');
+        }
+        for (final m in ex.secondaryMuscles) {
+          expect(generic, isNot(contains(m)),
+            reason: '${ex.id} usa músculo genérico secundário: $m');
+        }
+      }
+    });
+
+    test('Todos têm joints não vazio', () {
+      for (final ex in exercises) {
+        expect(ex.joints.isNotEmpty, isTrue,
+          reason: '${ex.id} não tem joints');
+      }
+    });
+
+    test('Todos têm bodyRegions não vazio', () {
+      for (final ex in exercises) {
+        expect(ex.bodyRegions.isNotEmpty, isTrue,
+          reason: '${ex.id} não tem bodyRegions');
+      }
+    });
+
+    test('Todos têm stimuli não vazio', () {
+      for (final ex in exercises) {
+        expect(ex.stimuli.isNotEmpty, isTrue,
+          reason: '${ex.id} não tem stimuli');
+      }
+    });
+
+    test('Todos têm goalAffinity não vazio', () {
+      for (final ex in exercises) {
+        expect(ex.goalAffinity.isNotEmpty, isTrue,
+          reason: '${ex.id} não tem goalAffinity');
+      }
+    });
+
+    test('Todos têm cues não vazio', () {
+      for (final ex in exercises) {
+        expect(ex.cues.isNotEmpty, isTrue,
+          reason: '${ex.id} não tem cues');
+      }
+    });
+
+    test('Nenhum exercise usa position inválida', () {
+      final valid = {'standing', 'prone', 'supine', 'sideLying', 'quadruped', 'sitting', 'hanging'};
+      for (final ex in exercises) {
+        expect(valid, contains(ex.position),
+          reason: '${ex.id} tem position inválida: ${ex.position}');
+      }
+    });
+
+    test('Todos têm defaultRoles não vazio', () {
+      for (final ex in exercises) {
+        expect(ex.defaultRoles.isNotEmpty, isTrue,
+          reason: '${ex.id} não tem defaultRoles');
+      }
+    });
+
+    test('Todos têm modalities não vazio', () {
+      for (final ex in exercises) {
+        expect(ex.modalities.isNotEmpty, isTrue,
+          reason: '${ex.id} não tem modalities');
+      }
+    });
+  });
 }
