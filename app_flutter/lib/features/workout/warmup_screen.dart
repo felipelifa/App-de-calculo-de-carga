@@ -186,11 +186,13 @@ class _WarmupScreenState extends State<WarmupScreen>
       setState(() {
         _currentPhase++;
         _currentStep = 0;
-        _pageController.animateToPage(
-          _currentPhase,
-          duration: const Duration(milliseconds: 400),
-          curve: Curves.easeInOut,
-        );
+        if (_pageController.hasClients) {
+          _pageController.animateToPage(
+            _currentPhase,
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeInOut,
+          );
+        }
         _startCurrentTimer();
       });
     } else {

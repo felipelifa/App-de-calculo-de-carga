@@ -32,8 +32,6 @@
   ],
   "exclude": [
     "node_modules",
-    "buildfit-api",
-    "app_flutter",
-    "firebase"
+    "app_flutter"
   ]
 }

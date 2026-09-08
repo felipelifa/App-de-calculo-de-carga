@@ -6,13 +6,9 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_NOTIFICATION"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <application
-        android:label="app"
+        android:label="BuildFit"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <!-- FCM: canal padrão de notificação -->
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="general" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

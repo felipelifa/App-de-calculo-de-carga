@@ -1,9 +1,27 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#CCFF00',
+};
+
 export const metadata: Metadata = {
-  title: 'Controle de Carga — App de Treino Inteligente',
+  title: 'BuildFit — Treino Inteligente',
   description: 'App de treino com progressão automática, prescrição inteligente baseada em ciência e sistema de periodização DUP. Treine melhor.',
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/manifest.json',
+  other: {
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'black-translucent',
+    'apple-mobile-web-app-title': 'BuildFit',
+  },
 };
 
 export default function RootLayout({

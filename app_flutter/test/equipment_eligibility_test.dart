@@ -526,4 +526,35 @@ void main() {
       expect(validation.isValid, isTrue, reason: validation.issues.toString());
     },
   );
+
+  test(
+    'HOME com availableEquipment contendo apenas bodyweight usa home engine',
+    () {
+      final profile = testProfile(
+        environment: 'home',
+        equipment: const ['bodyweight'],
+      );
+      final workout = WorkoutPrescriptionEngine(profile).generate(profile);
+
+      final allExercises = workout.sessions
+          .expand((session) => session.exercises)
+          .toList();
+
+      expect(allExercises, isNotEmpty);
+      expect(
+        allExercises.every(
+          (prescribed) => ExerciseCompatibility.requiredEquipment(
+            prescribed.exercise.equipment,
+          ).isEmpty,
+        ),
+        isTrue,
+      );
+      expect(
+        allExercises.every(
+          (prescribed) => !prescribed.exercise.equipment.contains('trx'),
+        ),
+        isTrue,
+      );
+    },
+  );
 }

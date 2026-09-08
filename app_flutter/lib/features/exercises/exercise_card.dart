@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../shared/theme/app_theme.dart';
 import 'exercise_model.dart';
 import 'exercise_provider.dart';
@@ -137,46 +136,10 @@ class ExerciseCard extends StatelessWidget {
   }
 
   Widget _buildImage(BuildContext context) {
-    final url = context.read<ExerciseProvider>().getEffectiveGifUrl(exercise);
-
-    // No URL — show placeholder directly, no network attempt
-    if (url == null || url.isEmpty) {
-      final primaryMuscle = exercise.primaryMuscles.isNotEmpty ? exercise.primaryMuscles.first : 'Geral';
-      return _MuscleGroupPlaceholder(muscleGroup: primaryMuscle);
-    }
-
-    // URL present — use Image.network to support GIF animation natively
-    return Image.network(
-      url,
-      height: 200,
-      width: double.infinity,
-      fit: BoxFit.contain,
-      gaplessPlayback: true,
-      headers: const {
-        'Accept': 'image/gif,image/*,*/*',
-      },
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return SizedBox(
-          height: 200,
-          child: Center(
-            child: CircularProgressIndicator(
-              color: AppTheme.accent,
-              strokeWidth: 2.5,
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      (loadingProgress.expectedTotalBytes ?? 1)
-                  : null,
-            ),
-          ),
-        );
-      },
-      errorBuilder: (context, error, stackTrace) {
-        debugPrint('Erro ao carregar GIF do card: $url - $error');
-        final primaryMuscle = exercise.primaryMuscles.isNotEmpty ? exercise.primaryMuscles.first : 'Geral';
-        return _MuscleGroupPlaceholder(muscleGroup: primaryMuscle);
-      },
-    );
+    final primaryMuscle = exercise.primaryMuscles.isNotEmpty
+        ? exercise.primaryMuscles.first
+        : 'Geral';
+    return _MuscleGroupPlaceholder(muscleGroup: primaryMuscle);
   }
 }
 

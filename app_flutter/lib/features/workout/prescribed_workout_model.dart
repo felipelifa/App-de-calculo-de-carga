@@ -24,13 +24,12 @@ class FatigueMetrics {
     double? shoulderStress,
     double? kneeStress,
     double? cnsLoad,
-  }) =>
-      FatigueMetrics(
-        spinalLoad: spinalLoad ?? this.spinalLoad,
-        shoulderStress: shoulderStress ?? this.shoulderStress,
-        kneeStress: kneeStress ?? this.kneeStress,
-        cnsLoad: cnsLoad ?? this.cnsLoad,
-      );
+  }) => FatigueMetrics(
+    spinalLoad: spinalLoad ?? this.spinalLoad,
+    shoulderStress: shoulderStress ?? this.shoulderStress,
+    kneeStress: kneeStress ?? this.kneeStress,
+    cnsLoad: cnsLoad ?? this.cnsLoad,
+  );
 
   String status(double value) {
     if (value > 0.85) return 'crítico';
@@ -40,18 +39,18 @@ class FatigueMetrics {
   }
 
   Map<String, dynamic> toMap() => {
-        'spinalLoad': spinalLoad,
-        'shoulderStress': shoulderStress,
-        'kneeStress': kneeStress,
-        'cnsLoad': cnsLoad,
-      };
+    'spinalLoad': spinalLoad,
+    'shoulderStress': shoulderStress,
+    'kneeStress': kneeStress,
+    'cnsLoad': cnsLoad,
+  };
 
   factory FatigueMetrics.fromMap(Map<String, dynamic> map) => FatigueMetrics(
-        spinalLoad: (map['spinalLoad'] as num?)?.toDouble() ?? 0.0,
-        shoulderStress: (map['shoulderStress'] as num?)?.toDouble() ?? 0.0,
-        kneeStress: (map['kneeStress'] as num?)?.toDouble() ?? 0.0,
-        cnsLoad: (map['cnsLoad'] as num?)?.toDouble() ?? 0.0,
-      );
+    spinalLoad: (map['spinalLoad'] as num?)?.toDouble() ?? 0.0,
+    shoulderStress: (map['shoulderStress'] as num?)?.toDouble() ?? 0.0,
+    kneeStress: (map['kneeStress'] as num?)?.toDouble() ?? 0.0,
+    cnsLoad: (map['cnsLoad'] as num?)?.toDouble() ?? 0.0,
+  );
 }
 
 class PrescribedExercise {
@@ -59,14 +58,15 @@ class PrescribedExercise {
   final int sets;
   final int repsMin;
   final int repsMax;
-  final int rir;         // Reps in Reserve alvo (Schoenfeld 2021)
+  final int rir; // Reps in Reserve alvo (Schoenfeld 2021)
   final int restSeconds;
-  final String tempo;    // Cadência: ex '2-0-2' (conc-iso-exc)
+  final String tempo; // Cadência: ex '2-0-2' (conc-iso-exc)
   final List<String> sessionCues;
   final String progressionNote;
   final String? injuryNote; // Alertas de segurança baseados no histórico
   final double defaultWeightKg;
   final String? decisionReason;
+  final double? selectionScore;
 
   const PrescribedExercise({
     required this.exercise,
@@ -81,38 +81,43 @@ class PrescribedExercise {
     this.defaultWeightKg = 0.0,
     this.tempo = '2-0-2',
     this.decisionReason,
+    this.selectionScore,
   });
 
   Map<String, dynamic> toMap() => {
-        'functions': ExerciseDna.fromExercise(exercise).functions,
-        'capabilities': ExerciseDna.fromExercise(exercise).capabilities,
-        'joints': ExerciseDna.fromExercise(exercise).joints,
-        'recoveryCost': ExerciseDna.fromExercise(exercise).recoveryCost,
-        'exerciseId': exercise.id,
-        'exerciseName': exercise.name,
-        'muscleGroup': exercise.primaryMuscles.isNotEmpty
-            ? exercise.primaryMuscles.first
-            : '',
-        'sets': sets,
-        'repsMin': repsMin,
-        'repsMax': repsMax,
-        'rir': rir,
-        'restSeconds': restSeconds,
-        'tempo': tempo,
-        'sessionCues': sessionCues,
-        'progressionNote': progressionNote,
-        'injuryNote': injuryNote,
-        'defaultWeightKg': defaultWeightKg,
-        'decisionReason': decisionReason,
-        // Metadados para o motor de progressão
-        'isBodyweight': exercise.equipment.contains('bodyweight') &&
-            exercise.equipment.length == 1,
-        'progressionIds': exercise.progressionIds,
-        'substituteIds': exercise.substituteIds,
-      };
+    'functions': ExerciseDna.fromExercise(exercise).functions,
+    'capabilities': ExerciseDna.fromExercise(exercise).capabilities,
+    'joints': ExerciseDna.fromExercise(exercise).joints,
+    'recoveryCost': ExerciseDna.fromExercise(exercise).recoveryCost,
+    'exerciseId': exercise.id,
+    'exerciseName': exercise.name,
+    'muscleGroup': exercise.primaryMuscles.isNotEmpty
+        ? exercise.primaryMuscles.first
+        : '',
+    'sets': sets,
+    'repsMin': repsMin,
+    'repsMax': repsMax,
+    'rir': rir,
+    'restSeconds': restSeconds,
+    'tempo': tempo,
+    'sessionCues': sessionCues,
+    'progressionNote': progressionNote,
+    'injuryNote': injuryNote,
+    'defaultWeightKg': defaultWeightKg,
+    'decisionReason': decisionReason,
+    'selectionScore': selectionScore,
+    // Metadados para o motor de progressão
+    'isBodyweight':
+        exercise.equipment.contains('bodyweight') &&
+        exercise.equipment.length == 1,
+    'progressionIds': exercise.progressionIds,
+    'substituteIds': exercise.substituteIds,
+  };
 
   factory PrescribedExercise.fromMap(
-      Map<String, dynamic> map, ExerciseModel exercise) {
+    Map<String, dynamic> map,
+    ExerciseModel exercise,
+  ) {
     return PrescribedExercise(
       exercise: exercise,
       sets: (map['sets'] as num?)?.toInt() ?? 3,
@@ -121,11 +126,14 @@ class PrescribedExercise {
       rir: (map['rir'] as num?)?.toInt() ?? 2,
       restSeconds: (map['restSeconds'] as num?)?.toInt() ?? 90,
       tempo: map['tempo'] as String? ?? '2-0-2',
-      sessionCues: (map['sessionCues'] as List? ?? []).map((e) => e.toString()).toList(),
+      sessionCues: (map['sessionCues'] as List? ?? [])
+          .map((e) => e.toString())
+          .toList(),
       progressionNote: map['progressionNote'] as String? ?? '',
       injuryNote: map['injuryNote'] as String?,
       defaultWeightKg: (map['defaultWeightKg'] as num?)?.toDouble() ?? 0.0,
       decisionReason: map['decisionReason'] as String?,
+      selectionScore: (map['selectionScore'] as num?)?.toDouble(),
     );
   }
 }
@@ -140,6 +148,7 @@ class PrescribedSession {
   final String progressionNote;
   final FatigueMetrics fatigue;
   final String? userExplanation;
+  final List<String> unresolvedExerciseIds;
 
   const PrescribedSession({
     required this.id,
@@ -151,30 +160,42 @@ class PrescribedSession {
     required this.progressionNote,
     this.fatigue = const FatigueMetrics(),
     this.userExplanation,
+    this.unresolvedExerciseIds = const [],
   });
 
   Map<String, dynamic> toMap() => {
-        'id': id,
-        'name': name,
-        'objective': objective,
-        'estimatedDurationMinutes': estimatedDurationMinutes,
-        'warmupInstructions': warmupInstructions,
-        'exercises': exercises.map((e) => e.toMap()).toList(),
-        'progressionNote': progressionNote,
-        if (fatigue != const FatigueMetrics()) 'fatigue': fatigue.toMap(),
-        if (userExplanation != null) 'userExplanation': userExplanation,
-      };
+    'id': id,
+    'name': name,
+    'objective': objective,
+    'estimatedDurationMinutes': estimatedDurationMinutes,
+    'warmupInstructions': warmupInstructions,
+    'exercises': exercises.map((e) => e.toMap()).toList(),
+    'progressionNote': progressionNote,
+    if (fatigue != const FatigueMetrics()) 'fatigue': fatigue.toMap(),
+    if (userExplanation != null) 'userExplanation': userExplanation,
+    if (unresolvedExerciseIds.isNotEmpty)
+      'unresolvedExerciseIds': unresolvedExerciseIds,
+  };
 
   factory PrescribedSession.fromMap(
     Map<String, dynamic> map,
     ExerciseModel? Function(String) getExerciseById,
   ) {
-    final exList = (map['exercises'] as List? ?? []).map((e) {
-      final data = Map<String, dynamic>.from(e as Map);
-      final ex = getExerciseById(data['exerciseId'] as String? ?? '');
-      if (ex == null) return null;
-      return PrescribedExercise.fromMap(data, ex);
-    }).where((e) => e != null).cast<PrescribedExercise>().toList();
+    final unresolved = <String>[];
+    final exList = (map['exercises'] as List? ?? [])
+        .map((e) {
+          final data = Map<String, dynamic>.from(e as Map);
+          final exerciseId = data['exerciseId'] as String? ?? '';
+          final ex = getExerciseById(exerciseId);
+          if (ex == null) {
+            if (exerciseId.isNotEmpty) unresolved.add(exerciseId);
+            return null;
+          }
+          return PrescribedExercise.fromMap(data, ex);
+        })
+        .where((e) => e != null)
+        .cast<PrescribedExercise>()
+        .toList();
 
     return PrescribedSession(
       id: map['id'] as String? ?? '',
@@ -182,14 +203,19 @@ class PrescribedSession {
       objective: map['objective'] as String? ?? '',
       estimatedDurationMinutes:
           (map['estimatedDurationMinutes'] as num?)?.toInt() ?? 60,
-      warmupInstructions:
-          (map['warmupInstructions'] as List? ?? []).map((e) => e.toString()).toList(),
+      warmupInstructions: (map['warmupInstructions'] as List? ?? [])
+          .map((e) => e.toString())
+          .toList(),
       exercises: exList,
       progressionNote: map['progressionNote'] as String? ?? '',
       fatigue: map['fatigue'] != null
           ? FatigueMetrics.fromMap(map['fatigue'] as Map<String, dynamic>)
           : const FatigueMetrics(),
       userExplanation: map['userExplanation'] as String?,
+      unresolvedExerciseIds: [
+        ...unresolved,
+        ...List<String>.from(map['unresolvedExerciseIds'] ?? const []),
+      ],
     );
   }
 }
@@ -222,18 +248,15 @@ class GeneratedWorkout {
   });
 
   Map<String, dynamic> toMap() => {
-        'id': id,
-        'userId': userId,
-        'name': name,
-        'splitType': splitType,
-        'periodizationModel': periodizationModel,
-        'sessions': sessions.map((s) => s.toMap()).toList(),
-        'mesocycleDurationWeeks': mesocycleDurationWeeks,
-        'preferredStyle': preferredStyle,
-        'generatedAt': generatedAt.toIso8601String(),
-        'isActive': isActive,
-        if (planExplanation != null) 'planExplanation': planExplanation,
-      };
+    'name': name,
+    'splitType': splitType,
+    'periodizationModel': periodizationModel,
+    'sessions': sessions.map((s) => s.toMap()).toList(),
+    'mesocycleDurationWeeks': mesocycleDurationWeeks,
+    'preferredStyle': preferredStyle,
+    'createdAt': generatedAt.toIso8601String(),
+    'isActive': isActive,
+  };
 
   factory GeneratedWorkout.fromMap(
     Map<String, dynamic> map,
@@ -246,8 +269,12 @@ class GeneratedWorkout {
       splitType: map['splitType'] as String? ?? 'full_body',
       periodizationModel: map['periodizationModel'] as String? ?? 'linear',
       sessions: (map['sessions'] as List? ?? [])
-          .map((s) => PrescribedSession.fromMap(
-              Map<String, dynamic>.from(s as Map), getExerciseById))
+          .map(
+            (s) => PrescribedSession.fromMap(
+              Map<String, dynamic>.from(s as Map),
+              getExerciseById,
+            ),
+          )
           .toList(),
       mesocycleDurationWeeks:
           (map['mesocycleDurationWeeks'] as num?)?.toInt() ?? 8,

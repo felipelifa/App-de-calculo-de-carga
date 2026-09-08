@@ -63,6 +63,7 @@ class ProgressionProvider extends ChangeNotifier {
     required Map<String, int> rirByExercise,
     required Map<String, Map<String, dynamic>> exerciseMetadata,
     required String experienceLevel,
+    int sessionsPerWeek = 3,
   }) async {
     _isLoading = true;
     notifyListeners();
@@ -72,6 +73,7 @@ class ProgressionProvider extends ChangeNotifier {
         rirByExercise: rirByExercise,
         exerciseMetadata: exerciseMetadata,
         experienceLevel: experienceLevel,
+        sessionsPerWeek: sessionsPerWeek,
       );
       _state = await _engine.loadState();
 

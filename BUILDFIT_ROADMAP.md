@@ -11,7 +11,7 @@
 | 1.1 | **Tela Perfil de Atleta** pós-anamnese | `athlete_profile_screen.dart` + `app_router.dart` + `anamnese_screen.dart` | ✅ Feito |
 | 1.2 | **Coach Explainer** — IA local que explica cada decisão | `coach_explainer_service.dart` + `progression_screen.dart` + `progression_engine.dart` | ✅ Feito |
 | 1.3 | **Plano de Deload Prescrito** | `deload_screen.dart` + `prescription_engine.dart` | ✅ Feito |
-| 4.1 | Deploy Cloud Functions em produção | `firebase/functions` | 🔴 Requer acesso Firebase CLI |
+| 4.1 | Aplicar migrations e políticas no Supabase | `supabase_schema.sql`, `fix_rls_policies.sql` | ✅ Fluxo atual |
 
 ---
 

@@ -42,7 +42,6 @@ class AddExerciseScreen extends StatefulWidget {
 class _AddExerciseScreenState extends State<AddExerciseScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameCtrl = TextEditingController();
-  final _gifUrlCtrl = TextEditingController();
   final _seriesCtrl = TextEditingController(text: '3');
   final _repMinCtrl = TextEditingController(text: '8');
   final _repMaxCtrl = TextEditingController(text: '12');
@@ -55,7 +54,6 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
   @override
   void dispose() {
     _nameCtrl.dispose();
-    _gifUrlCtrl.dispose();
     _seriesCtrl.dispose();
     _repMinCtrl.dispose();
     _repMaxCtrl.dispose();
@@ -79,7 +77,6 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
         seriesDefault: int.parse(_seriesCtrl.text.trim()),
         repMin: int.parse(_repMinCtrl.text.trim()),
         repMax: int.parse(_repMaxCtrl.text.trim()),
-        gifUrl: _gifUrlCtrl.text.trim().isEmpty ? null : _gifUrlCtrl.text.trim(),
       );
 
       if (mounted) {
@@ -280,19 +277,6 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
               ),
 
               const SizedBox(height: 24),
-
-              // ── GIF URL (optional) ────────────────
-              _sectionLabel('URL do GIF (opcional)'),
-              TextFormField(
-                controller: _gifUrlCtrl,
-                keyboardType: TextInputType.url,
-                style: const TextStyle(color: AppTheme.textPrimary),
-                decoration: const InputDecoration(
-                  hintText: 'https://…gif',
-                  prefixIcon:
-                      Icon(Icons.gif_box_rounded, color: AppTheme.textSecondary),
-                ),
-              ),
 
               const SizedBox(height: 32),
 

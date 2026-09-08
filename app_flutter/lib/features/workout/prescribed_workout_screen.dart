@@ -15,7 +15,8 @@ class PrescribedWorkoutScreen extends StatefulWidget {
   const PrescribedWorkoutScreen({super.key});
 
   @override
-  State<PrescribedWorkoutScreen> createState() => _PrescribedWorkoutScreenState();
+  State<PrescribedWorkoutScreen> createState() =>
+      _PrescribedWorkoutScreenState();
 }
 
 class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
@@ -38,7 +39,9 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
     if (wpAuth.isLoading) {
       return const Scaffold(
         backgroundColor: AppTheme.background,
-        body: Center(child: CircularProgressIndicator(color: Color(0xFFCCFF00))),
+        body: Center(
+          child: CircularProgressIndicator(color: Color(0xFFCCFF00)),
+        ),
       );
     }
 
@@ -52,7 +55,11 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
             pinned: true,
             expandedHeight: 80,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppTheme.textPrimary, size: 20),
+              icon: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: AppTheme.textPrimary,
+                size: 20,
+              ),
               onPressed: () => context.go('/dashboard'),
             ),
             flexibleSpace: FlexibleSpaceBar(
@@ -69,45 +76,60 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
             ),
             actions: [
               IconButton(
-                icon: const Icon(Icons.add_circle_outline_rounded, color: Color(0xFFCCFF00)),
+                icon: const Icon(
+                  Icons.add_circle_outline_rounded,
+                  color: Color(0xFFCCFF00),
+                ),
                 onPressed: () => _generateNewWorkout(context),
               ),
               const SizedBox(width: 8),
             ],
           ),
 
-          if (allWorkouts.isEmpty)
-            SliverFillRemaining(
-              child: _buildEmptyState(context),
-            )
+          if (wpAuth.error != null && allWorkouts.isEmpty)
+            SliverFillRemaining(child: _buildErrorState(context, wpAuth.error!))
+          else if (allWorkouts.isEmpty)
+            SliverFillRemaining(child: _buildEmptyState(context))
           else
             SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
               sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final workout = allWorkouts[index];
-                    return _WorkoutPlanCard(
-                      workout: workout,
-                      isActive: workout.id == activeWorkout?.id,
-                       onDelete: () => _confirmDeletion(context, workout.id),
-                      onSelect: () async {
-                        await wpAuth.setActiveWorkout(workout.id);
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Plano "${workout.name}" ativado!'),
-                              backgroundColor: const Color(0xFFCCFF00),
-                              behavior: SnackBarBehavior.floating,
-                            ),
-                          );
-                        }
-                      },
-                      onView: () => _showWorkoutDetails(context, workout),
-                    ).animate().fadeIn(delay: (index * 100).ms).slideX(begin: 0.1);
-                  },
-                  childCount: allWorkouts.length,
-                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final workout = allWorkouts[index];
+                  return _WorkoutPlanCard(
+                        workout: workout,
+                        isActive: workout.id == activeWorkout?.id,
+                        onDelete: () => _confirmDeletion(context, workout.id),
+                        onSelect: () async {
+                          try {
+                            await wpAuth.setActiveWorkout(workout.id);
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Plano "${workout.name}" ativado!',
+                                  ),
+                                  backgroundColor: const Color(0xFFCCFF00),
+                                  behavior: SnackBarBehavior.floating,
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Erro ao ativar plano: $e'),
+                                ),
+                              );
+                            }
+                          }
+                        },
+                        onView: () => _showWorkoutDetails(context, workout),
+                      )
+                      .animate()
+                      .fadeIn(delay: (index * 100).ms)
+                      .slideX(begin: 0.1);
+                }, childCount: allWorkouts.length),
               ),
             ),
         ],
@@ -120,22 +142,38 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.fitness_center_rounded, size: 64, color: AppTheme.textSecondary),
+          const Icon(
+            Icons.fitness_center_rounded,
+            size: 64,
+            color: AppTheme.textSecondary,
+          ),
           const SizedBox(height: 24),
           Text(
             'Nenhum treino gerado ainda.',
-            style: GoogleFonts.outfit(color: AppTheme.textPrimary, fontSize: 18, fontWeight: FontWeight.bold),
+            style: GoogleFonts.outfit(
+              color: AppTheme.textPrimary,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             'Responda a anamnese para criar seu plano.',
-            style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 14),
+            style: GoogleFonts.outfit(
+              color: AppTheme.textSecondary,
+              fontSize: 14,
+            ),
           ),
           const SizedBox(height: 32),
           ElevatedButton(
             onPressed: () => context.go('/anamnese'),
-            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFCCFF00)),
-            child: const Text('GERAR MEU TREINO', style: TextStyle(color: Colors.black)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFCCFF00),
+            ),
+            child: const Text(
+              'GERAR MEU TREINO',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
         ],
       ),
@@ -143,7 +181,7 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
   }
 
   void _generateNewWorkout(BuildContext context) {
-     context.go('/anamnese');
+    context.go('/anamnese');
   }
 
   void _confirmDeletion(BuildContext context, String id) {
@@ -151,10 +189,19 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: AppTheme.surface,
-        title: const Text('Excluir Plano?', style: TextStyle(color: AppTheme.textPrimary)),
-        content: const Text('Esta ação não pode ser desfeita.', style: TextStyle(color: AppTheme.textSecondary)),
+        title: const Text(
+          'Excluir Plano?',
+          style: TextStyle(color: AppTheme.textPrimary),
+        ),
+        content: const Text(
+          'Esta ação não pode ser desfeita.',
+          style: TextStyle(color: AppTheme.textSecondary),
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('CANCELAR')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('CANCELAR'),
+          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
             onPressed: () async {
@@ -180,14 +227,54 @@ class _PrescribedWorkoutScreenState extends State<PrescribedWorkoutScreen> {
     _showSessionsList(context, workout);
   }
 
+  Widget _buildErrorState(BuildContext context, String error) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.cloud_off_rounded,
+              size: 64,
+              color: Colors.redAccent,
+            ),
+            const SizedBox(height: 20),
+            Text(
+              error,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.outfit(
+                color: AppTheme.textPrimary,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => context.read<WorkoutProfileProvider>().refresh(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFCCFF00),
+              ),
+              child: const Text(
+                'TENTAR NOVAMENTE',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _showSessionsList(BuildContext context, GeneratedWorkout workout) {
-     showModalBottomSheet(
-       context: context,
-       isScrollControlled: true,
-       backgroundColor: AppTheme.background,
-       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(32))),
-       builder: (context) => _WorkoutSessionsSheet(workout: workout),
-     );
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppTheme.background,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+      ),
+      builder: (context) => _WorkoutSessionsSheet(workout: workout),
+    );
   }
 }
 
@@ -209,19 +296,27 @@ class _WorkoutPlanCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const neon = Color(0xFFCCFF00);
-    
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: const Color(0xFF161616),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: isActive ? neon.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.03),
+          color: isActive
+              ? neon.withValues(alpha: 0.5)
+              : Colors.white.withValues(alpha: 0.03),
           width: isActive ? 2 : 1,
         ),
-        boxShadow: isActive ? [
-          BoxShadow(color: neon.withValues(alpha: 0.1), blurRadius: 40, offset: const Offset(0, 10))
-        ] : [],
+        boxShadow: isActive
+            ? [
+                BoxShadow(
+                  color: neon.withValues(alpha: 0.1),
+                  blurRadius: 40,
+                  offset: const Offset(0, 10),
+                ),
+              ]
+            : [],
       ),
       child: Column(
         children: [
@@ -229,16 +324,20 @@ class _WorkoutPlanCard extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                 Row(
+                Row(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: (isActive ? neon : Colors.white).withValues(alpha: 0.05),
+                        color: (isActive ? neon : Colors.white).withValues(
+                          alpha: 0.05,
+                        ),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
-                        isActive ? Icons.auto_awesome_rounded : Icons.fitness_center_rounded,
+                        isActive
+                            ? Icons.auto_awesome_rounded
+                            : Icons.fitness_center_rounded,
                         color: isActive ? neon : AppTheme.textSecondary,
                         size: 20,
                       ),
@@ -259,19 +358,36 @@ class _WorkoutPlanCard extends StatelessWidget {
                           if (isActive)
                             Container(
                               margin: const EdgeInsets.only(top: 4),
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
                                 color: neon.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: neon.withValues(alpha: 0.2))
+                                border: Border.all(
+                                  color: neon.withValues(alpha: 0.2),
+                                ),
                               ),
-                              child: Text('PLANO ATIVO', style: GoogleFonts.outfit(fontSize: 8, fontWeight: FontWeight.w900, color: neon, letterSpacing: 1)),
+                              child: Text(
+                                'PLANO ATIVO',
+                                style: GoogleFonts.outfit(
+                                  fontSize: 8,
+                                  fontWeight: FontWeight.w900,
+                                  color: neon,
+                                  letterSpacing: 1,
+                                ),
+                              ),
                             ),
                         ],
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.delete_outline_rounded, color: Colors.white12, size: 20),
+                      icon: const Icon(
+                        Icons.delete_outline_rounded,
+                        color: Colors.white12,
+                        size: 20,
+                      ),
                       onPressed: onDelete,
                     ),
                   ],
@@ -280,9 +396,21 @@ class _WorkoutPlanCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildInfoField('Divisão', _formatSplit(workout.splitType), Icons.grid_view_rounded),
-                    _buildInfoField('Período', '${workout.mesocycleDurationWeeks} Semanas', Icons.calendar_month_rounded),
-                    _buildInfoField('Estilo', _formatStyle(workout.preferredStyle), Icons.psychology_rounded),
+                    _buildInfoField(
+                      'Divisão',
+                      _formatSplit(workout.splitType),
+                      Icons.grid_view_rounded,
+                    ),
+                    _buildInfoField(
+                      'Período',
+                      '${workout.mesocycleDurationWeeks} Semanas',
+                      Icons.calendar_month_rounded,
+                    ),
+                    _buildInfoField(
+                      'Estilo',
+                      _formatStyle(workout.preferredStyle),
+                      Icons.psychology_rounded,
+                    ),
                   ],
                 ),
                 if (workout.planExplanation != null) ...[
@@ -297,7 +425,11 @@ class _WorkoutPlanCard extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.auto_awesome, color: neon.withValues(alpha: 0.7), size: 16),
+                        Icon(
+                          Icons.auto_awesome,
+                          color: neon.withValues(alpha: 0.7),
+                          size: 16,
+                        ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
@@ -320,7 +452,9 @@ class _WorkoutPlanCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.01),
-              borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(24),
+              ),
             ),
             child: Row(
               children: [
@@ -331,9 +465,19 @@ class _WorkoutPlanCard extends StatelessWidget {
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: neon.withValues(alpha: 0.3)),
                         padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                       ),
-                      child: const Text('ATIVAR ESTE PLANO', style: TextStyle(color: neon, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1)),
+                      child: const Text(
+                        'ATIVAR ESTE PLANO',
+                        style: TextStyle(
+                          color: neon,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 11,
+                          letterSpacing: 1,
+                        ),
+                      ),
                     ),
                   ),
                 if (!isActive) const SizedBox(width: 8),
@@ -341,14 +485,25 @@ class _WorkoutPlanCard extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: onView,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: isActive ? neon : const Color(0xFF222222),
+                      backgroundColor: isActive
+                          ? neon
+                          : const Color(0xFF222222),
                       foregroundColor: isActive ? Colors.black : Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       elevation: isActive ? 10 : 0,
                       shadowColor: neon.withValues(alpha: 0.4),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                     ),
-                    child: Text(isActive ? 'VER SESSÕES DE HOJE' : 'DETALHES', style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 0.5)),
+                    child: Text(
+                      isActive ? 'VER SESSÕES DE HOJE' : 'DETALHES',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 11,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -365,13 +520,32 @@ class _WorkoutPlanCard extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(icon, size: 10, color: AppTheme.textSecondary.withValues(alpha: 0.5)),
+            Icon(
+              icon,
+              size: 10,
+              color: AppTheme.textSecondary.withValues(alpha: 0.5),
+            ),
             const SizedBox(width: 4),
-            Text(label.toUpperCase(), style: GoogleFonts.outfit(fontSize: 8, color: AppTheme.textSecondary.withValues(alpha: 0.6), fontWeight: FontWeight.w900, letterSpacing: 1)),
+            Text(
+              label.toUpperCase(),
+              style: GoogleFonts.outfit(
+                fontSize: 8,
+                color: AppTheme.textSecondary.withValues(alpha: 0.6),
+                fontWeight: FontWeight.w900,
+                letterSpacing: 1,
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 6),
-        Text(value, style: GoogleFonts.outfit(fontSize: 12, color: AppTheme.textPrimary, fontWeight: FontWeight.w700)),
+        Text(
+          value,
+          style: GoogleFonts.outfit(
+            fontSize: 12,
+            color: AppTheme.textPrimary,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
       ],
     );
   }
@@ -392,170 +566,264 @@ class _WorkoutSessionsSheet extends StatelessWidget {
       expand: false,
       builder: (context, controller) => Column(
         children: [
-           Container(
-             margin: const EdgeInsets.only(top: 12),
-             width: 40, height: 4,
-             decoration: BoxDecoration(color: Colors.white12, borderRadius: BorderRadius.circular(2)),
-           ),
-           Padding(
-             padding: const EdgeInsets.all(24),
-             child: Row(
-               children: [
-                 Expanded(
-                   child: Text(
-                     workout.name,
-                     style: GoogleFonts.outfit(fontSize: 22, fontWeight: FontWeight.w900, color: AppTheme.textPrimary),
-                   ),
-                 ),
-                 IconButton(
-                  onPressed: () => Navigator.pop(context), 
-                  icon: const Icon(Icons.close_rounded, color: AppTheme.textSecondary, size: 20)
+          Container(
+            margin: const EdgeInsets.only(top: 12),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.white12,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    workout.name,
+                    style: GoogleFonts.outfit(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w900,
+                      color: AppTheme.textPrimary,
+                    ),
+                  ),
                 ),
-               ],
-             ),
-           ),
-           Expanded(
-             child: ListView.builder(
-               controller: controller,
-               padding: const EdgeInsets.symmetric(horizontal: 20),
-               itemCount: workout.sessions.length,
-               itemBuilder: (context, index) {
-                 final session = workout.sessions[index];
-                 
-                 final obj = session.objective.toLowerCase();
-                 String dupPhase = 'Equilíbrio ⚖️';
-                 Color dupColor = Colors.white70;
-                 if (obj.contains('força')) { dupPhase = 'Sessão de Força 💪'; dupColor = Colors.orangeAccent; }
-                 else if (obj.contains('hipertrofia')) { dupPhase = 'Sessão de Hipertrofia 🔥'; dupColor = const Color(0xFF00E5FF); }
-                 else if (obj.contains('resistência')) { dupPhase = 'Sessão de Resistência 🏃'; dupColor = const Color(0xFFCCFF00); }
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(
+                    Icons.close_rounded,
+                    color: AppTheme.textSecondary,
+                    size: 20,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              controller: controller,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              itemCount: workout.sessions.length,
+              itemBuilder: (context, index) {
+                final session = workout.sessions[index];
 
-                 return Container(
-                   margin: const EdgeInsets.only(bottom: 16),
-                   padding: const EdgeInsets.all(20),
-                   decoration: BoxDecoration(
-                     color: const Color(0xFF161616),
-                     borderRadius: BorderRadius.circular(24),
-                     border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
-                   ),
-                   child: Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-                       Row(
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                         children: [
-                           Expanded(
-                             child: Column(
-                               crossAxisAlignment: CrossAxisAlignment.start,
-                               children: [
-                                 Text(session.name, style: GoogleFonts.outfit(fontWeight: FontWeight.w900, fontSize: 18, color: AppTheme.textPrimary)),
-                                 const SizedBox(height: 6),
-                                 Container(
-                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                   decoration: BoxDecoration(
-                                     color: dupColor.withOpacity(0.1),
-                                     borderRadius: BorderRadius.circular(6),
-                                     border: Border.all(color: dupColor.withOpacity(0.3)),
-                                   ),
-                                   child: Text(dupPhase, style: GoogleFonts.outfit(color: dupColor, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5)),
-                                 ),
-                               ],
-                             ),
-                           ),
-                           Text('${session.estimatedDurationMinutes} min', style: GoogleFonts.outfit(color: neon, fontSize: 11, fontWeight: FontWeight.w900)),
-                         ],
-                       ),
-                        const SizedBox(height: 12),
-                        Text(session.objective, style: GoogleFonts.outfit(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.w500)),
-                        if (session.userExplanation != null) ...[
-                          const SizedBox(height: 8),
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: neon.withValues(alpha: 0.05),
-                              borderRadius: BorderRadius.circular(8),
+                final obj = session.objective.toLowerCase();
+                String dupPhase = 'Equilíbrio ⚖️';
+                Color dupColor = Colors.white70;
+                if (obj.contains('força')) {
+                  dupPhase = 'Sessão de Força 💪';
+                  dupColor = Colors.orangeAccent;
+                } else if (obj.contains('hipertrofia')) {
+                  dupPhase = 'Sessão de Hipertrofia 🔥';
+                  dupColor = const Color(0xFF00E5FF);
+                } else if (obj.contains('resistência')) {
+                  dupPhase = 'Sessão de Resistência 🏃';
+                  dupColor = const Color(0xFFCCFF00);
+                }
+
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF161616),
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.03),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  session.name,
+                                  style: GoogleFonts.outfit(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 18,
+                                    color: AppTheme.textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: dupColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(
+                                      color: dupColor.withOpacity(0.3),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    dupPhase,
+                                    style: GoogleFonts.outfit(
+                                      color: dupColor,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            child: Text(
-                              session.userExplanation!,
-                              style: GoogleFonts.outfit(
-                                color: neon.withValues(alpha: 0.8),
-                                fontSize: 11,
-                                fontWeight: FontWeight.w500,
-                              ),
+                          ),
+                          Text(
+                            '${session.estimatedDurationMinutes} min',
+                            style: GoogleFonts.outfit(
+                              color: neon,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
                         ],
-                        const Divider(height: 32, color: Colors.white10),
-                        ...session.exercises.take(3).map((e) => Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Row(
-                            children : [
-                              const Icon(Icons.check_circle_rounded, size: 14, color: neon),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(e.exercise.name, style: GoogleFonts.outfit(color: Colors.white70, fontSize: 13)),
-                                    if (e.decisionReason != null)
-                                      Text(
-                                        e.decisionReason!,
-                                        style: GoogleFonts.outfit(
-                                          color: Colors.white24,
-                                          fontSize: 10,
-                                          fontStyle: FontStyle.italic,
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        session.objective,
+                        style: GoogleFonts.outfit(
+                          color: AppTheme.textSecondary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      if (session.userExplanation != null) ...[
+                        const SizedBox(height: 8),
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: neon.withValues(alpha: 0.05),
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                        )),
-                       if (session.exercises.length > 3)
-                         Padding(
-                           padding: const EdgeInsets.only(left: 26, top: 4),
-                           child: Text('+ ${session.exercises.length - 3} exercícios...', style: GoogleFonts.outfit(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.w500)),
-                         ),
-                       const SizedBox(height: 24),
-                       SizedBox(
-                         width: double.infinity,
-                         height: 54,
-                         child: ElevatedButton(
-                           onPressed: () {
-                              // Passa pelo aquecimento antes de iniciar
-                              final router = GoRouter.of(context);
-                              Navigator.of(context).pop();
-                              
-                              // Determina a fase DUP baseada no objetivo
-                              final obj = session.objective.toLowerCase();
-                              String? dupPhase;
-                              if (obj.contains('força')) dupPhase = 'Força';
-                              else if (obj.contains('hipertrofia')) dupPhase = 'Hipertrofia';
-                              else if (obj.contains('resistência')) dupPhase = 'Resistência';
-                              
-                              router.go('/warmup', extra: {
+                          child: Text(
+                            session.userExplanation!,
+                            style: GoogleFonts.outfit(
+                              color: neon.withValues(alpha: 0.8),
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                      const Divider(height: 32, color: Colors.white10),
+                      ...session.exercises
+                          .take(3)
+                          .map(
+                            (e) => Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.check_circle_rounded,
+                                    size: 14,
+                                    color: neon,
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          e.exercise.name,
+                                          style: GoogleFonts.outfit(
+                                            color: Colors.white70,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        if (e.decisionReason != null)
+                                          Text(
+                                            e.decisionReason!,
+                                            style: GoogleFonts.outfit(
+                                              color: Colors.white24,
+                                              fontSize: 10,
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      if (session.exercises.length > 3)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 26, top: 4),
+                          child: Text(
+                            '+ ${session.exercises.length - 3} exercícios...',
+                            style: GoogleFonts.outfit(
+                              color: Colors.white24,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 24),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 54,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Passa pelo aquecimento antes de iniciar
+                            final router = GoRouter.of(context);
+                            Navigator.of(context).pop();
+
+                            // Determina a fase DUP baseada no objetivo
+                            final obj = session.objective.toLowerCase();
+                            String? dupPhase;
+                            if (obj.contains('força'))
+                              dupPhase = 'Força';
+                            else if (obj.contains('hipertrofia'))
+                              dupPhase = 'Hipertrofia';
+                            else if (obj.contains('resistência'))
+                              dupPhase = 'Resistência';
+
+                            router.go(
+                              '/warmup',
+                              extra: {
                                 'sessionId': session.id,
                                 'sessionName': session.name,
-                                'prescribedExercises': session.exercises.map((e) => e.toMap()).toList(),
+                                'prescribedExercises': session.exercises
+                                    .map((e) => e.toMap())
+                                    .toList(),
                                 'dupPhase': dupPhase,
-                              });
-                            },
-                           style: ElevatedButton.styleFrom(
-                             backgroundColor: neon,
-                             foregroundColor: Colors.black,
-                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                             elevation: 0,
-                           ),
-                           child: const Text('COMEÇAR TREINO', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
-                         ),
-                       ),
-                     ],
-                   ),
-                 );
-               },
-             ),
-           ),
+                              },
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: neon,
+                            foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: const Text(
+                            'COMEÇAR TREINO',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 12,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -564,20 +832,33 @@ class _WorkoutSessionsSheet extends StatelessWidget {
 
 String _formatStyle(String? s) {
   switch (s) {
-    case 'compound_focus': return 'Poliarticular';
-    case 'isolation_focus': return 'Isoladores';
-    case 'circuit': return 'Circuito';
-    default: return 'Equilibrado';
+    case 'compound_focus':
+      return 'Poliarticular';
+    case 'isolation_focus':
+      return 'Isoladores';
+    case 'circuit':
+      return 'Circuito';
+    default:
+      return 'Equilibrado';
   }
 }
 
 String _formatSplit(String s) {
   switch (s) {
-    case 'full_body': return 'Corpo Todo';
-    case 'upper_lower': return 'Superior/Inferior';
-    case 'ppl': return 'Empurrar/Puxar/Pernas';
-    case 'running_none': return 'Corrida - Geral';
-    case 'push_pull_legs': return 'Empurrar/Puxar/Pernas';
-    default: return s.split('_').map((str) => str[0].toUpperCase() + str.substring(1)).join(' ');
+    case 'full_body':
+      return 'Corpo Todo';
+    case 'upper_lower':
+      return 'Superior/Inferior';
+    case 'ppl':
+      return 'Empurrar/Puxar/Pernas';
+    case 'running_none':
+      return 'Corrida - Geral';
+    case 'push_pull_legs':
+      return 'Empurrar/Puxar/Pernas';
+    default:
+      return s
+          .split('_')
+          .map((str) => str[0].toUpperCase() + str.substring(1))
+          .join(' ');
   }
 }

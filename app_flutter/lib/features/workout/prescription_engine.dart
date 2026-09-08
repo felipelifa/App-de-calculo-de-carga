@@ -220,11 +220,15 @@ class WorkoutPrescriptionEngine {
     final env = profile.environment.toLowerCase();
     final modality = profile.trainingModality.toLowerCase();
 
-    return env == 'home_bodyweight' ||
-        env == 'outdoor' ||
-        modality == 'home_no_equip' ||
-        (ExerciseCompatibility.isHome(env) &&
-            profile.availableEquipment.isEmpty);
+    if (env == 'home_bodyweight' || env == 'outdoor' || modality == 'home_no_equip') {
+      return true;
+    }
+    if (!ExerciseCompatibility.isHome(env)) return false;
+
+    // 'bodyweight' é intrínseco ao ambiente home — não conta como equipamento externo
+    final hasExternalEquipment = profile.availableEquipment
+        .any((e) => e.toLowerCase() != 'bodyweight');
+    return !hasExternalEquipment;
   }
 
   // Gera treino usando o novo motor de casa sem equipamento

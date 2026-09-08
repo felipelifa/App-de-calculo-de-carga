@@ -52,6 +52,3 @@ workflows:
       email:
         recipients:
           - admin@buildfit.com
-      firebase:
-        firebase_token: $FIREBASE_TOKEN
-        project_id: appcalculotreino-51f23

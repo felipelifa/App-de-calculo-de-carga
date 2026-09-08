@@ -20,10 +20,10 @@ class WorkoutProvider extends ChangeNotifier {
   ProgressionProvider? _progressionProvider;
 
   WorkoutProvider({ApiService? api, WorkoutsApiService? workoutsApi})
-      : _api = api ?? ApiService(),
-        _workoutsApi = workoutsApi ?? WorkoutsApiService(),
-        _progressionEngine = ProgressionEngine(),
-        _decisionMemory = DecisionMemory() {
+    : _api = api ?? ApiService(),
+      _workoutsApi = workoutsApi ?? WorkoutsApiService(),
+      _progressionEngine = ProgressionEngine(),
+      _decisionMemory = DecisionMemory() {
     _loadSessionFromLocal();
     _decisionMemory.load();
   }
@@ -141,7 +141,10 @@ class WorkoutProvider extends ChangeNotifier {
         exerciseId: re.exerciseId,
         exerciseName: re.name,
         muscleGroup: re.muscleGroup,
-        sets: List.generate(re.sets, (_) => WorkoutSet(reps: re.reps, weight: 0, volume: 0)),
+        sets: List.generate(
+          re.sets,
+          (_) => WorkoutSet(reps: re.reps, weight: 0, volume: 0),
+        ),
       );
       _currentExercises.add(entry);
     }
@@ -174,7 +177,14 @@ class WorkoutProvider extends ChangeNotifier {
         exerciseName: pe['exerciseName'] as String? ?? '',
         muscleGroup: pe['muscleGroup'] as String? ?? '',
         injuryNote: pe['injuryNote'] as String?,
-        sets: List.generate(sets, (_) => WorkoutSet(reps: repsMax, weight: defaultWeight, volume: repsMax * defaultWeight)),
+        sets: List.generate(
+          sets,
+          (_) => WorkoutSet(
+            reps: repsMax,
+            weight: defaultWeight,
+            volume: repsMax * defaultWeight,
+          ),
+        ),
       );
       _currentExercises.add(entry);
 
@@ -207,13 +217,17 @@ class WorkoutProvider extends ChangeNotifier {
     );
     for (int i = 0; i < defaultSeries; i++) {
       final vol = defaultReps * defaultWeight;
-      entry.sets.add(WorkoutSet(reps: defaultReps, weight: defaultWeight, volume: vol));
+      entry.sets.add(
+        WorkoutSet(reps: defaultReps, weight: defaultWeight, volume: vol),
+      );
     }
     _currentExercises.add(entry);
 
     if (exerciseModel != null) {
       _exerciseMetadata[exerciseId] = {
-        'isBodyweight': exerciseModel.equipment.contains('bodyweight') && exerciseModel.equipment.length == 1,
+        'isBodyweight':
+            exerciseModel.equipment.contains('bodyweight') &&
+            exerciseModel.equipment.length == 1,
         'progressionIds': exerciseModel.progressionIds,
         'substituteIds': exerciseModel.substituteIds,
       };
@@ -239,13 +253,19 @@ class WorkoutProvider extends ChangeNotifier {
     final newEntry = WorkoutExerciseEntry(
       exerciseId: newEx.id,
       exerciseName: newEx.name,
-      muscleGroup: newEx.primaryMuscles.isNotEmpty ? newEx.primaryMuscles.first : 'Geral',
-      sets: List.generate(setsCount, (_) => WorkoutSet(reps: reps, weight: 0, volume: 0)),
+      muscleGroup: newEx.primaryMuscles.isNotEmpty
+          ? newEx.primaryMuscles.first
+          : 'Geral',
+      sets: List.generate(
+        setsCount,
+        (_) => WorkoutSet(reps: reps, weight: 0, volume: 0),
+      ),
     );
 
     _currentExercises[index] = newEntry;
     _exerciseMetadata[newEx.id] = {
-      'isBodyweight': newEx.equipment.contains('bodyweight') && newEx.equipment.length == 1,
+      'isBodyweight':
+          newEx.equipment.contains('bodyweight') && newEx.equipment.length == 1,
       'progressionIds': newEx.progressionIds,
       'substituteIds': newEx.substituteIds,
     };
@@ -281,7 +301,14 @@ class WorkoutProvider extends ChangeNotifier {
     final last = exercise.sets.isNotEmpty ? exercise.sets.last : null;
     final reps = last?.reps ?? 10;
     final weight = last?.weight ?? 20;
-    exercise.sets.add(WorkoutSet(reps: reps, weight: weight, volume: reps * weight, isWarmup: false));
+    exercise.sets.add(
+      WorkoutSet(
+        reps: reps,
+        weight: weight,
+        volume: reps * weight,
+        isWarmup: false,
+      ),
+    );
     _saveSessionToLocal();
     notifyListeners();
   }
@@ -304,7 +331,15 @@ class WorkoutProvider extends ChangeNotifier {
     final reps = lastSet?.reps ?? 12;
     final weight = (lastSet?.weight ?? 20) * 0.5;
 
-    exercise.sets.insert(0, WorkoutSet(reps: reps, weight: weight, volume: reps * weight, isWarmup: true));
+    exercise.sets.insert(
+      0,
+      WorkoutSet(
+        reps: reps,
+        weight: weight,
+        volume: reps * weight,
+        isWarmup: true,
+      ),
+    );
     _saveSessionToLocal();
     notifyListeners();
   }
@@ -315,7 +350,8 @@ class WorkoutProvider extends ChangeNotifier {
     int sessionsPerWeek = 3,
   }) async {
     if (!_api.isAuthenticated) throw Exception('Usuário não autenticado');
-    if (_currentExercises.isEmpty) throw Exception('Nenhum exercício registrado');
+    if (_currentExercises.isEmpty)
+      throw Exception('Nenhum exercício registrado');
     if (!_currentExercises.any((exercise) => exercise.hasCompletedWork)) {
       throw Exception('Marque pelo menos uma série concluída antes de salvar');
     }
@@ -332,32 +368,26 @@ class WorkoutProvider extends ChangeNotifier {
       notes: notes,
     );
 
-    _newPrs = [];
-    _detectPrsLocally(exercisesCopy).then((achievements) {
-      _newPrs = achievements;
-      notifyListeners();
-    });
+    _newPrs = await _detectPrsLocally(exercisesCopy);
 
-    _progressionDecisions = [];
-    _progressionEngine
-        .processSession(
-          workoutEntries: exercisesCopy,
-          rirByExercise: rirCopy,
-          exerciseMetadata: metaCopy,
-          experienceLevel: experienceLevel,
-          sessionsPerWeek: sessionsPerWeek,
-        )
-        .then((decisions) {
-      _progressionDecisions = decisions;
-      notifyListeners();
-
-      _progressionProvider?.processCompletedSession(
+    if (_progressionProvider != null) {
+      await _progressionProvider!.processCompletedSession(
         exercises: exercisesCopy,
         rirByExercise: rirCopy,
         exerciseMetadata: metaCopy,
         experienceLevel: experienceLevel,
+        sessionsPerWeek: sessionsPerWeek,
       );
-    });
+      _progressionDecisions = _progressionProvider!.lastDecisions;
+    } else {
+      _progressionDecisions = await _progressionEngine.processSession(
+        workoutEntries: exercisesCopy,
+        rirByExercise: rirCopy,
+        exerciseMetadata: metaCopy,
+        experienceLevel: experienceLevel,
+        sessionsPerWeek: sessionsPerWeek,
+      );
+    }
 
     _isSessionActive = false;
     _sessionStart = null;
@@ -376,7 +406,9 @@ class WorkoutProvider extends ChangeNotifier {
     final achievements = <PrAchievement>[];
     try {
       final result = await _workoutsApi.getWorkouts(limit: 100);
-      final sessions = result.map((w) => WorkoutSession.fromMap(w as Map<String, dynamic>)).toList();
+      final sessions = result
+          .map((w) => WorkoutSession.fromMap(w as Map<String, dynamic>))
+          .toList();
 
       final bestByExercise = <String, _ExerciseBest>{};
       for (final session in sessions) {
@@ -390,11 +422,20 @@ class WorkoutProvider extends ChangeNotifier {
             if (s.reps > maxR) maxR = s.reps;
             if (s.volume > maxV) maxV = s.volume;
           }
-          if (existing == null || maxW > existing.maxWeight || maxR > existing.maxReps || maxV > existing.maxVolume) {
+          if (existing == null ||
+              maxW > existing.maxWeight ||
+              maxR > existing.maxReps ||
+              maxV > existing.maxVolume) {
             bestByExercise[ex.exerciseId] = _ExerciseBest(
-              maxWeight: existing != null ? (maxW > existing.maxWeight ? maxW : existing.maxWeight) : maxW,
-              maxReps: existing != null ? (maxR > existing.maxReps ? maxR : existing.maxReps) : maxR,
-              maxVolume: existing != null ? (maxV > existing.maxVolume ? maxV : existing.maxVolume) : maxV,
+              maxWeight: existing != null
+                  ? (maxW > existing.maxWeight ? maxW : existing.maxWeight)
+                  : maxW,
+              maxReps: existing != null
+                  ? (maxR > existing.maxReps ? maxR : existing.maxReps)
+                  : maxR,
+              maxVolume: existing != null
+                  ? (maxV > existing.maxVolume ? maxV : existing.maxVolume)
+                  : maxV,
             );
           }
         }
@@ -413,30 +454,38 @@ class WorkoutProvider extends ChangeNotifier {
 
         final prev = bestByExercise[entry.exerciseId];
         if (prev == null) {
-          achievements.add(PrAchievement(
-            exerciseId: entry.exerciseId,
-            exerciseName: entry.exerciseName,
-            muscleGroup: entry.muscleGroup,
-            newMaxWeight: sessionMaxWeight,
-            newMaxReps: sessionMaxReps,
-            newMaxVolume: sessionMaxVolume,
-          ));
-        } else {
-          final newW = sessionMaxWeight > prev.maxWeight ? sessionMaxWeight : null;
-          final newR = sessionMaxReps > prev.maxReps ? sessionMaxReps : null;
-          final newV = sessionMaxVolume > prev.maxVolume ? sessionMaxVolume : null;
-          if (newW != null || newR != null || newV != null) {
-            achievements.add(PrAchievement(
+          achievements.add(
+            PrAchievement(
               exerciseId: entry.exerciseId,
               exerciseName: entry.exerciseName,
               muscleGroup: entry.muscleGroup,
-              newMaxWeight: newW,
-              prevMaxWeight: newW != null ? prev.maxWeight : null,
-              newMaxReps: newR,
-              prevMaxReps: newR != null ? prev.maxReps : null,
-              newMaxVolume: newV,
-              prevMaxVolume: newV != null ? prev.maxVolume : null,
-            ));
+              newMaxWeight: sessionMaxWeight,
+              newMaxReps: sessionMaxReps,
+              newMaxVolume: sessionMaxVolume,
+            ),
+          );
+        } else {
+          final newW = sessionMaxWeight > prev.maxWeight
+              ? sessionMaxWeight
+              : null;
+          final newR = sessionMaxReps > prev.maxReps ? sessionMaxReps : null;
+          final newV = sessionMaxVolume > prev.maxVolume
+              ? sessionMaxVolume
+              : null;
+          if (newW != null || newR != null || newV != null) {
+            achievements.add(
+              PrAchievement(
+                exerciseId: entry.exerciseId,
+                exerciseName: entry.exerciseName,
+                muscleGroup: entry.muscleGroup,
+                newMaxWeight: newW,
+                prevMaxWeight: newW != null ? prev.maxWeight : null,
+                newMaxReps: newR,
+                prevMaxReps: newR != null ? prev.maxReps : null,
+                newMaxVolume: newV,
+                prevMaxVolume: newV != null ? prev.maxVolume : null,
+              ),
+            );
           }
         }
       }
@@ -458,11 +507,11 @@ class WorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void loadHistory() {
+  Future<void> loadHistory() async {
     _isLoadingHistory = true;
     notifyListeners();
 
-    _fetchHistory();
+    await _fetchHistory();
 
     _historyPollTimer?.cancel();
     _historyPollTimer = Timer.periodic(const Duration(seconds: 30), (_) {
@@ -473,10 +522,11 @@ class WorkoutProvider extends ChangeNotifier {
   Future<void> _fetchHistory() async {
     try {
       final result = await _workoutsApi.getWorkouts(limit: 20);
-      _history = result
-          .map((w) => WorkoutSession.fromMap(w as Map<String, dynamic>))
-          .toList()
-        ..sort((a, b) => b.date.compareTo(a.date));
+      _history =
+          result
+              .map((w) => WorkoutSession.fromMap(w as Map<String, dynamic>))
+              .toList()
+            ..sort((a, b) => b.date.compareTo(a.date));
     } catch (e) {
       debugPrint('Erro ao carregar histórico: $e');
     } finally {
@@ -533,7 +583,9 @@ class WorkoutProvider extends ChangeNotifier {
       _currentExercises.clear();
       if (data['currentExercises'] != null) {
         for (var exMap in data['currentExercises']) {
-          _currentExercises.add(WorkoutExerciseEntry.fromMap(Map<String, dynamic>.from(exMap)));
+          _currentExercises.add(
+            WorkoutExerciseEntry.fromMap(Map<String, dynamic>.from(exMap)),
+          );
         }
       }
 

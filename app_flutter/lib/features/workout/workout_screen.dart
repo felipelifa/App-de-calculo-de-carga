@@ -8,8 +8,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../shared/theme/app_theme.dart';
 import '../exercises/exercise_provider.dart';
 import '../exercises/exercise_model.dart';
-// cached_network_image removido: não suporta GIF animado.
-// Usando Image.network nativo do Flutter (suporta GIF no Android, iOS e Web).
 import 'workout_provider.dart';
 import 'workout_profile_provider.dart';
 import 'workout_profile_model.dart';
@@ -361,24 +359,14 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                   style: const TextStyle(color: AppTheme.textSecondary),
                 ),
               const SizedBox(height: 24),
-              Builder(
-                builder: (context) {
-                  final url = context.read<ExerciseProvider>().getEffectiveGifUrl(exercise);
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: Container(
-                      width: double.infinity,
-                      height: 320,
-                      color: AppTheme.background,
-                      child: url == null || url.isEmpty
-                          ? _buildNoGifPlaceholder()
-                          : _AnimatedGifWidget(
-                              url: url,
-                              onError: () => debugPrint('Erro ao carregar GIF: $url'),
-                            ),
-                    ),
-                  );
-                },
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Container(
+                  width: double.infinity,
+                  height: 320,
+                  color: AppTheme.background,
+                  child: _buildExercisePlaceholder(exercise),
+                ),
               ),
               if (exercise.videoUrl != null &&
                   exercise.videoUrl!.isNotEmpty) ...[
@@ -692,165 +680,20 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
           : _ReadyState(onStart: () => provider.startSession()),
     );
   }
-  Widget _buildNoGifPlaceholder({bool isError = false}) {
+  Widget _buildExercisePlaceholder(ExerciseModel exercise) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            isError ? Icons.error_outline_rounded : Icons.video_library_rounded,
-            size: 48,
-            color: isError ? AppTheme.danger.withValues(alpha: 0.5) : AppTheme.textSecondary,
-          ),
+          const Icon(Icons.fitness_center_rounded, size: 48, color: AppTheme.textSecondary),
           const SizedBox(height: 12),
           Text(
-            isError ? 'Erro ao carregar animação' : 'Tutorial em vídeo sendo processado',
+            exercise.primaryMuscles.isNotEmpty ? exercise.primaryMuscles.first : 'Exercício',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: AppTheme.textSecondary,
-              fontSize: 13,
-              fontStyle: isError ? FontStyle.normal : FontStyle.italic,
-            ),
+            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13),
           ),
-          if (isError)
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                'Verifique sua conexão ou tente mais tarde',
-                style: TextStyle(color: AppTheme.textSecondary.withValues(alpha: 0.7), fontSize: 11),
-              ),
-            ),
         ],
       ),
-    );
-  }
-}
-
-// ── Widget de GIF animado ─────────────────────
-// Usa Image.network que suporta GIF animado nativo em todas as plataformas.
-// CachedNetworkImage NÃO anima GIFs — exibe apenas o 1º frame estático.
-
-class _AnimatedGifWidget extends StatefulWidget {
-  final String url;
-  final VoidCallback? onError;
-
-  const _AnimatedGifWidget({required this.url, this.onError});
-
-  @override
-  State<_AnimatedGifWidget> createState() => _AnimatedGifWidgetState();
-}
-
-class _AnimatedGifWidgetState extends State<_AnimatedGifWidget> {
-  bool _hasError = false;
-  bool _isLoading = true;
-
-  @override
-  void didUpdateWidget(_AnimatedGifWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.url != widget.url) {
-      setState(() {
-        _hasError = false;
-        _isLoading = true;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_hasError) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.fitness_center_rounded, size: 48, color: AppTheme.textSecondary.withValues(alpha: 0.4)),
-            const SizedBox(height: 12),
-            const Text(
-              'GIF não disponível',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: AppTheme.textSecondary, fontSize: 13),
-            ),
-            const SizedBox(height: 8),
-            TextButton.icon(
-              onPressed: () => setState(() { _hasError = false; _isLoading = true; }),
-              icon: const Icon(Icons.refresh_rounded, size: 16),
-              label: const Text('Tentar novamente', style: TextStyle(fontSize: 12)),
-              style: TextButton.styleFrom(foregroundColor: AppTheme.accent),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Image.network(
-          widget.url,
-          fit: BoxFit.contain,
-          width: double.infinity,
-          height: double.infinity,
-          gaplessPlayback: true,
-          headers: const {
-            'Accept': 'image/gif,image/*,*/*',
-          },
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) {
-              if (_isLoading) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (mounted) setState(() => _isLoading = false);
-                });
-              }
-              return child;
-            }
-            final progress = loadingProgress.expectedTotalBytes != null
-                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                : null;
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(
-                    value: progress,
-                    color: AppTheme.accent,
-                    strokeWidth: 3,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    progress != null
-                        ? 'Carregando ${(progress * 100).toStringAsFixed(0)}%'
-                        : 'Carregando animação...',
-                    style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
-                  ),
-                ],
-              ),
-            );
-          },
-          errorBuilder: (context, error, stackTrace) {
-            debugPrint('Erro ao carregar GIF: ${widget.url} - $error');
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.fitness_center_rounded, size: 48, color: AppTheme.textSecondary.withValues(alpha: 0.4)),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'GIF não disponível',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: AppTheme.textSecondary, fontSize: 13),
-                  ),
-                  const SizedBox(height: 8),
-                  TextButton.icon(
-                    onPressed: () => setState(() { _hasError = false; _isLoading = true; }),
-                    icon: const Icon(Icons.refresh_rounded, size: 16),
-                    label: const Text('Tentar novamente', style: TextStyle(fontSize: 12)),
-                    style: TextButton.styleFrom(foregroundColor: AppTheme.accent),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      ],
     );
   }
 }

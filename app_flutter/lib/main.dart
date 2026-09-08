@@ -64,7 +64,9 @@ class WorkoutApp extends StatelessWidget {
           create: (_) => WorkoutProvider(),
         ),
         ChangeNotifierProvider<WorkoutProfileProvider>(
-          create: (_) => WorkoutProfileProvider(),
+          create: (context) => WorkoutProfileProvider(
+            exerciseProvider: context.read<ExerciseProvider>(),
+          ),
         ),
         ChangeNotifierProvider<ProgressionProvider>(
           create: (context) {
@@ -108,7 +110,7 @@ class _RouterHostState extends State<_RouterHost> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Controle de Carga',
+      title: 'BuildFit',
       theme: AppTheme.darkTheme,
       debugShowCheckedModeBanner: false,
       routerConfig: _router!,

@@ -185,29 +185,8 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
   }
 
   Widget _buildHeroImage(ExerciseModel ex) {
-    final url = context.read<ExerciseProvider>().getEffectiveGifUrl(ex);
     final primaryMuscle = ex.primaryMuscles.isNotEmpty ? ex.primaryMuscles.first : 'Geral';
-    
-    if (url == null || url.isEmpty) {
-      return _placeholderHero(primaryMuscle);
-    }
-    return Image.network(
-      url,
-      fit: BoxFit.contain,
-      width: double.infinity,
-      gaplessPlayback: true,
-      headers: const {
-        'Accept': 'image/gif,image/*,*/*',
-      },
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return _shimmerBox();
-      },
-      errorBuilder: (context, error, stackTrace) {
-        debugPrint('Erro ao carregar GIF do detail: $url - $error');
-        return _placeholderHero(primaryMuscle);
-      },
-    );
+    return _placeholderHero(primaryMuscle);
   }
 
   Widget _placeholderHero(String muscleGroup) {

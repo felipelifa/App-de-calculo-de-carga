@@ -1,4 +1,0 @@
-[build]
-  base = "app"
-  command = "rm -rf flutter_sdk && git clone https://github.com/flutter/flutter.git -b stable --depth 1 flutter_sdk && ./flutter_sdk/bin/flutter pub get && ./flutter_sdk/bin/flutter build web --release"
-  publish = "build/web"

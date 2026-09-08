@@ -6,32 +6,40 @@ import '../../core/services/supabase_service.dart';
 import 'workout_profile_model.dart';
 import 'prescribed_workout_model.dart';
 import 'prescription_engine.dart';
+import 'exercise_compatibility.dart';
 import '../exercises/exercise_model.dart';
 import '../exercises/exercise_provider.dart';
 import '../../core/data/exercise_library.dart' show exerciseLibrary;
 import 'progression_engine.dart';
 import 'decision_memory.dart';
+import 'workout_validator.dart';
+import 'session_fatigue_accumulator.dart';
+import 'home_workout/home_workout_integrator.dart';
 
 class WorkoutProfileProvider extends ChangeNotifier {
   final ApiService _api;
   final SupabaseService _supabase;
   final DecisionMemory _decisionMemory;
+  final HomeWorkoutIntegrator _homeWorkoutIntegrator = HomeWorkoutIntegrator();
+  late final Future<void> _decisionMemoryReady;
 
-  WorkoutProfileProvider({ApiService? api})
-      : _api = api ?? ApiService(),
-        _supabase = SupabaseService(),
-        _decisionMemory = DecisionMemory() {
+  WorkoutProfileProvider({ApiService? api, ExerciseProvider? exerciseProvider})
+    : _api = api ?? ApiService(),
+      _supabase = SupabaseService(),
+      _decisionMemory = DecisionMemory(),
+      _exerciseProvider = exerciseProvider {
+    _decisionMemoryReady = _decisionMemory.load();
     _init();
-    _decisionMemory.load();
   }
 
   WorkoutProfile? _profile;
   List<GeneratedWorkout> _allWorkouts = [];
   ProgressionState? _progressionState;
   ExerciseProvider? _exerciseProvider;
-  
+
   Timer? _pollTimer;
   bool _isLoading = true;
+  bool _workoutsRequestInFlight = false;
   String? _error;
 
   WorkoutProfile? get profile => _profile;
@@ -80,34 +88,104 @@ class WorkoutProfileProvider extends ChangeNotifier {
   void connectExerciseProvider(ExerciseProvider exerciseProvider) {
     if (_exerciseProvider == exerciseProvider) return;
     _exerciseProvider = exerciseProvider;
-    _loadWorkouts();
+    _loadWorkouts(force: true);
   }
 
   ExerciseModel? _resolveExercise(String id) {
+    if (id.isEmpty) return null;
     final remoteExercise = _exerciseProvider?.getById(id);
     if (remoteExercise != null) return remoteExercise;
+    final homeExercise = _homeWorkoutIntegrator.getExerciseModelById(id);
+    if (homeExercise != null) return homeExercise;
     for (final exercise in exerciseLibrary) {
       if (exercise.id == id) return exercise;
     }
+    debugPrint(
+      'RESOLUÇÃO FALHOU: exercício "$id" não encontrado. '
+      'Provider: ${_exerciseProvider != null ? "conectado" : "null"}, '
+      'Library: ${exerciseLibrary.length} exercícios.',
+    );
     return null;
   }
 
-  Future<void> _loadWorkouts() async {
+  Future<void> _loadWorkouts({bool force = false}) async {
+    if (_workoutsRequestInFlight && !force) return;
+    _workoutsRequestInFlight = true;
     try {
       final data = await _supabase.getGeneratedWorkouts();
-      _allWorkouts = data.map((item) {
-        return GeneratedWorkout.fromMap(
-          item,
-          _resolveExercise,
+      debugPrint('═══ DIAGNÓSTICO LOAD ═══');
+      debugPrint('Workouts do Supabase: ${data.length}');
+      for (int i = 0; i < data.length; i++) {
+        final item = data[i];
+        final sessions = item['sessions'] as List? ?? [];
+        int totalEx = 0;
+        for (final s in sessions) {
+          final exList =
+              (s as Map<String, dynamic>)['exercises'] as List? ?? [];
+          totalEx += exList.length;
+        }
+        debugPrint(
+          '  Workout $i: id=${item['id']}, '
+          'sessions=${sessions.length}, '
+          'exercises=$totalEx, '
+          'isActive=${item['isActive']}',
         );
+      }
+      debugPrint('═══════════════════════');
+
+      final loadedWorkouts = data.map((item) {
+        return GeneratedWorkout.fromMap(item, _resolveExercise);
       }).toList();
+
+      final validWorkouts = <GeneratedWorkout>[];
+      final invalidWorkouts = <String>[];
+      for (final workout in loadedWorkouts) {
+        if (_profile == null) {
+          validWorkouts.add(workout);
+          continue;
+        }
+        final validation = WorkoutValidator.validate(
+          profile: _profile!,
+          workout: workout,
+          requireExpectedSessionCount: false,
+        );
+        if (validation.isValid) {
+          validWorkouts.add(workout);
+        } else {
+          invalidWorkouts.add(workout.name);
+          debugPrint('PLANO INVÁLIDO ${workout.name}: ${validation.summary}');
+        }
+      }
+      _allWorkouts = validWorkouts;
+      if (invalidWorkouts.isNotEmpty && validWorkouts.isEmpty) {
+        _error = 'Seus planos antigos precisam ser regenerados.';
+      } else if (invalidWorkouts.isEmpty) {
+        _error = null;
+      }
+
+      // Log pós-resolução
+      for (int i = 0; i < _allWorkouts.length; i++) {
+        final w = _allWorkouts[i];
+        final resolvedEx = w.sessions.fold(
+          0,
+          (sum, s) => sum + s.exercises.length,
+        );
+        debugPrint(
+          '  Resolvido $i: ${w.sessions.length} sessões, '
+          '$resolvedEx exercícios',
+        );
+      }
+
       _isLoading = false;
       _error = null;
       notifyListeners();
     } catch (e) {
       _isLoading = false;
       _error = 'Não foi possível carregar seus planos.';
+      debugPrint('ERRO LOAD WORKOUTS: $e');
       notifyListeners();
+    } finally {
+      _workoutsRequestInFlight = false;
     }
   }
 
@@ -152,32 +230,53 @@ class WorkoutProfileProvider extends ChangeNotifier {
   }
 
   Future<void> generateAndSaveWorkout({String? customName}) async {
-    if (_profile == null) return;
+    if (_profile == null) {
+      throw StateError('Complete a anamnese antes de gerar o treino');
+    }
 
     _isLoading = true;
     notifyListeners();
 
     try {
-      // Extrair sessões recentes para fadiga residual
-      final recentSessions = <PrescribedSession>[];
-      if (_allWorkouts.isNotEmpty) {
-        final lastWorkout = _allWorkouts.first;
-        recentSessions.addAll(lastWorkout.sessions);
-      }
+      await _decisionMemoryReady;
+      final recentSessions = await _loadRecentCompletedSessions();
 
       final engine = WorkoutPrescriptionEngine(
         _profile!,
-        library: _exerciseProvider?.allExercises,
+        library: _exerciseProvider?.allExercises.isNotEmpty == true
+            ? _exerciseProvider!.allExercises
+            : null,
         decisionMemory: _decisionMemory,
         recentSessions: recentSessions,
+        progressionState: _progressionState,
       );
       final workoutRaw = engine.generate(_profile!);
-      
-      final name = customName ?? 'Treino ${DateTime.now().day}/${DateTime.now().month}';
+
+      // ── VALIDAÇÃO OBRIGATÓRIA ──
+      final validation = WorkoutValidator.validate(
+        profile: _profile!,
+        workout: workoutRaw,
+      );
+      if (!validation.isValid) {
+        throw StateError(
+          'O treino gerado não passou na validação: ${validation.summary}',
+        );
+      }
+      final totalExercises = workoutRaw.sessions.fold(
+        0,
+        (sum, s) => sum + s.exercises.length,
+      );
+      debugPrint(
+        'TREINO GERADO: ${workoutRaw.sessions.length} sessões, '
+        '$totalExercises exercícios totais.',
+      );
+
+      final name =
+          customName ?? 'Treino ${DateTime.now().day}/${DateTime.now().month}';
 
       final workout = GeneratedWorkout(
-        id: '',
-        userId: '',
+        id: workoutRaw.id,
+        userId: _profile!.uid,
         name: name,
         splitType: workoutRaw.splitType,
         periodizationModel: workoutRaw.periodizationModel,
@@ -188,6 +287,17 @@ class WorkoutProfileProvider extends ChangeNotifier {
         isActive: true,
         planExplanation: workoutRaw.planExplanation,
       );
+
+      final persistenceValidation = WorkoutValidator.validate(
+        profile: _profile!,
+        workout: workout,
+      );
+      if (!persistenceValidation.isValid) {
+        throw StateError(
+          'NO_COMPATIBLE_EXERCISES: o treino foi rejeitado antes da persistência: '
+          '${persistenceValidation.summary}',
+        );
+      }
 
       await _supabase.saveGeneratedWorkout(workout.toMap());
       await _loadWorkouts();
@@ -200,47 +310,90 @@ class WorkoutProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> setActiveWorkout(String id) async {
-    // Optimistic Update
-    for (int i = 0; i < _allWorkouts.length; i++) {
-        final w = _allWorkouts[i];
-        if (w.id == id && !w.isActive) {
-           _allWorkouts[i] = GeneratedWorkout(
-             id: w.id,
-             userId: w.userId,
-             name: w.name,
-             splitType: w.splitType,
-             periodizationModel: w.periodizationModel,
-             sessions: w.sessions,
-             mesocycleDurationWeeks: w.mesocycleDurationWeeks,
-             preferredStyle: w.preferredStyle,
-             generatedAt: w.generatedAt,
-             isActive: true,
-             planExplanation: w.planExplanation,
-           );
-        } else if (w.id != id && w.isActive) {
-          _allWorkouts[i] = GeneratedWorkout(
-             id: w.id,
-             userId: w.userId,
-             name: w.name,
-             splitType: w.splitType,
-             periodizationModel: w.periodizationModel,
-             sessions: w.sessions,
-             mesocycleDurationWeeks: w.mesocycleDurationWeeks,
-             preferredStyle: w.preferredStyle,
-             generatedAt: w.generatedAt,
-             isActive: false,
-             planExplanation: w.planExplanation,
-           );
+  Future<List<PrescribedSession>> _loadRecentCompletedSessions() async {
+    try {
+      final rawWorkouts = await _supabase.getWorkouts(limit: 3);
+      final sessions = <PrescribedSession>[];
+      for (final raw in rawWorkouts) {
+        final rawExercises = List<Map<String, dynamic>>.from(
+          raw['exercises'] ?? const [],
+        );
+        final prescribed = <PrescribedExercise>[];
+        var spinal = 0.0;
+        var shoulder = 0.0;
+        var knee = 0.0;
+        var cns = 0.0;
+        for (final rawExercise in rawExercises) {
+          final exercise = _resolveExercise(
+            rawExercise['exerciseId']?.toString() ?? '',
+          );
+          if (exercise == null) continue;
+          final sets = List<Map<String, dynamic>>.from(
+            rawExercise['sets'] ?? const [],
+          );
+          final setCount = sets.length.clamp(1, 20).toInt();
+          final reps = sets.isEmpty
+              ? exercise.repRangeMin
+              : (sets.first['reps'] as num?)?.toInt() ?? exercise.repRangeMin;
+          prescribed.add(
+            PrescribedExercise(
+              exercise: exercise,
+              sets: setCount,
+              repsMin: reps,
+              repsMax: reps,
+              rir: 3,
+              restSeconds: 90,
+              sessionCues: const [],
+              progressionNote: 'Histórico da sessão realizada.',
+            ),
+          );
+          spinal += exercise.spinalLoad * setCount;
+          shoulder += exercise.shoulderStress * setCount;
+          knee += exercise.kneeStress * setCount;
+          cns += exercise.cnsLoad * setCount;
         }
+        if (prescribed.isEmpty) continue;
+        sessions.add(
+          PrescribedSession(
+            id: raw['id']?.toString() ?? 'completed_session',
+            name: raw['sessionType']?.toString() ?? 'Sessão realizada',
+            objective: 'Histórico de fadiga',
+            estimatedDurationMinutes:
+                (raw['durationMinutes'] as num?)?.toInt() ?? 60,
+            warmupInstructions: const [],
+            exercises: prescribed,
+            progressionNote: 'Dados coletados da sessão realizada.',
+            fatigue: FatigueMetrics(
+              spinalLoad: (spinal / SessionFatigueAccumulator.maxSpinalLoad)
+                  .clamp(0.0, 1.0),
+              shoulderStress:
+                  (shoulder / SessionFatigueAccumulator.maxShoulderStress)
+                      .clamp(0.0, 1.0),
+              kneeStress: (knee / SessionFatigueAccumulator.maxKneeStress)
+                  .clamp(0.0, 1.0),
+              cnsLoad: (cns / SessionFatigueAccumulator.maxCnsLoad).clamp(
+                0.0,
+                1.0,
+              ),
+            ),
+          ),
+        );
+      }
+      return sessions;
+    } catch (e) {
+      debugPrint('Histórico de fadiga indisponível: $e');
+      return const [];
     }
-    notifyListeners();
+  }
 
+  Future<void> setActiveWorkout(String id) async {
     try {
       await _api.put('/prescription/$id/activate');
-    } catch (e) {
-      debugPrint('Erro ao ativar treino: $e');
       await _loadWorkouts();
+    } catch (e) {
+      _error = 'Erro ao ativar treino: $e';
+      notifyListeners();
+      rethrow;
     }
   }
 
@@ -265,19 +418,35 @@ class WorkoutProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> swapPrescribedExercise(String workoutId, String sessionId, String oldExId, ExerciseModel newEx) async {
+  Future<void> swapPrescribedExercise(
+    String workoutId,
+    String sessionId,
+    String oldExId,
+    ExerciseModel newEx,
+  ) async {
     final workout = _allWorkouts.firstWhere((w) => w.id == workoutId);
-    
+
+    if (_profile != null &&
+        !ExerciseCompatibility.isCompatible(_profile!, newEx)) {
+      throw StateError(
+        'O exercício escolhido não é compatível com seu contexto.',
+      );
+    }
+
     try {
-      final sessionIndex = workout.sessions.indexWhere((s) => s.id == sessionId);
+      final sessionIndex = workout.sessions.indexWhere(
+        (s) => s.id == sessionId,
+      );
       if (sessionIndex == -1) return;
 
       final session = workout.sessions[sessionIndex];
-      final exIndex = session.exercises.indexWhere((e) => e.exercise.id == oldExId);
+      final exIndex = session.exercises.indexWhere(
+        (e) => e.exercise.id == oldExId,
+      );
       if (exIndex == -1) return;
 
       final oldEx = session.exercises[exIndex];
-      
+
       final swappedEx = PrescribedExercise(
         exercise: newEx,
         sets: oldEx.sets,
@@ -289,10 +458,11 @@ class WorkoutProfileProvider extends ChangeNotifier {
         tempo: oldEx.tempo,
         progressionNote: oldEx.progressionNote,
         injuryNote: null,
+        selectionScore: null,
       );
 
       session.exercises[exIndex] = swappedEx;
-      
+
       await _api.put('/prescription/$workoutId', body: workout.toMap());
 
       notifyListeners();

@@ -6,11 +6,12 @@ import 'training_readiness.dart';
 class UserAdaptiveProfile {
   final String volumeTolerance; // high | medium | low
   final String recoveryCapacity; // high | medium | low
-  
+
   // 📈 Tendências Bio-Adaptativas (Digital Twin)
-  final double adherenceRate;      // 0.0 a 1.0 (Consistência real)
-  final double volumeSensitivity;  // 1.0 (Normal) - quanto o usuário "quebra" com volume alto
-  
+  final double adherenceRate; // 0.0 a 1.0 (Consistência real)
+  final double
+  volumeSensitivity; // 1.0 (Normal) - quanto o usuário "quebra" com volume alto
+
   const UserAdaptiveProfile({
     this.volumeTolerance = 'medium',
     this.recoveryCapacity = 'medium',
@@ -52,12 +53,16 @@ class WorkoutProfile {
   final String bodyFatCategory; // low | medium | high
 
   // Passo 3: Metas + Estilo
-  final String primaryGoal; // hypertrophy | fat_loss | strength | endurance | general_health | athletic_performance | sport_specific | calisthenics | functional_hiit | mobility_rehab
-  final String sportSubType; // run_5k | run_10k | run_half | run_marathon | mma | bjj | boxing | soccer | basketball | swimming | cycling | agility | none
-  final String trainingModality; // traditional | calisthenics | hiit_tabata | functional | home_no_equip | home_dumbbells | home_bands | kettlebell_only | mobility | rehab | template_5x5 | template_gvt | template_531 | template_phat | template_phul | none
+  final String
+  primaryGoal; // hypertrophy | fat_loss | strength | endurance | general_health | athletic_performance | sport_specific | calisthenics | functional_hiit | mobility_rehab
+  final String
+  sportSubType; // run_5k | run_10k | run_half | run_marathon | mma | bjj | boxing | soccer | basketball | swimming | cycling | agility | none
+  final String
+  trainingModality; // traditional | calisthenics | hiit_tabata | functional | home_no_equip | home_dumbbells | home_bands | kettlebell_only | mobility | rehab | template_5x5 | template_gvt | template_531 | template_phat | template_phul | none
   final int availableDaysPerWeek; // 2-7
   final int sessionDurationMinutes; // 30 | 45 | 60 | 75 | 90
-  final String preferredStyle; // compound_focus | isolation_focus | circuit | high_frequency | moderate_volume
+  final String
+  preferredStyle; // compound_focus | isolation_focus | circuit | high_frequency | moderate_volume
 
   // Passo 4: Recuperação + Prioridades
   final String sleepQuality; // good | regular | poor
@@ -65,7 +70,8 @@ class WorkoutProfile {
   final List<String> priorityMuscles; // grupos a priorizar
 
   // Passo 5: Preferências + Restrições
-  final String environment; // full_gym | basic_gym | home_dumbbell | home_bodyweight | outdoor
+  final String
+  environment; // full_gym | basic_gym | home_dumbbell | home_bodyweight | outdoor
   final List<String> availableEquipment; // equipamentos específicos
   final List<String> dislikedExercises; // exercícios a evitar
   final List<String> favoriteExercises; // exercícios preferidos
@@ -125,16 +131,22 @@ class WorkoutProfile {
   }
 
   factory WorkoutProfile.fromMap(Map<String, dynamic> d) {
-    final userId = d['uid'] as String? ?? '';
+    final userId = d['userId'] as String? ?? d['uid'] as String? ?? '';
 
     String normalizeEquipment(String value) {
       switch (value.trim().toLowerCase()) {
-        case 'dumbbells': return 'dumbbell';
-        case 'cables': return 'cable';
-        case 'machines': return 'machine';
-        case 'bands': return 'band';
-        case 'pullup_bar': return 'pull_up_bar';
-        default: return value.trim().toLowerCase();
+        case 'dumbbells':
+          return 'dumbbell';
+        case 'cables':
+          return 'cable';
+        case 'machines':
+          return 'machine';
+        case 'bands':
+          return 'band';
+        case 'pullup_bar':
+          return 'pull_up_bar';
+        default:
+          return value.trim().toLowerCase();
       }
     }
 
@@ -151,26 +163,35 @@ class WorkoutProfile {
       experienceLevel: d['experienceLevel'] as String? ?? 'beginner',
       trainingAge: (d['trainingAge'] as num?)?.toInt() ?? 0,
       availableDaysPerWeek: (d['availableDaysPerWeek'] as num?)?.toInt() ?? 3,
-      sessionDurationMinutes: (d['sessionDurationMinutes'] as num?)?.toInt() ?? 60,
+      sessionDurationMinutes:
+          (d['sessionDurationMinutes'] as num?)?.toInt() ?? 60,
       preferredStyle: d['preferredStyle'] as String? ?? 'compound_focus',
       sleepQuality: d['sleepQuality'] as String? ?? 'regular',
       stressLevel: d['stressLevel'] as String? ?? 'medium',
-      priorityMuscles: List<String>.from(d['priorityMuscles'] ?? [])
-          .map(_normalizePriorityMuscle)
-          .toSet()
-          .toList(),
+      priorityMuscles: List<String>.from(
+        d['priorityMuscles'] ?? [],
+      ).map(_normalizePriorityMuscle).toSet().toList(),
       environment: d['environment'] as String? ?? 'full_gym',
-      availableEquipment: List<String>.from(d['availableEquipment'] ?? [])
-          .map(normalizeEquipment)
-          .toSet()
-          .toList(),
+      availableEquipment: List<String>.from(
+        d['availableEquipment'] ?? [],
+      ).map(normalizeEquipment).where((e) => e != 'bodyweight').toSet().toList(),
       dislikedExercises: List<String>.from(d['dislikedExercises'] ?? []),
       favoriteExercises: List<String>.from(d['favoriteExercises'] ?? []),
       healthRestrictions: List<String>.from(d['healthRestrictions'] ?? []),
       currentWeek: (d['currentWeek'] as num?)?.toInt() ?? 1,
-      exerciseRotationOffset: (d['exerciseRotationOffset'] as num?)?.toInt() ?? 0,
-      adaptive: UserAdaptiveProfile.fromMap(d['adaptive'] as Map<String, dynamic>?),
-      lifeLoad: LifeLoad.fromMap(d['lifeLoad'] as Map<String, dynamic>?),
+      exerciseRotationOffset:
+          (d['exerciseRotationOffset'] as num?)?.toInt() ?? 0,
+      adaptive: UserAdaptiveProfile(
+        volumeTolerance: d['volumeTolerance'] as String? ?? 'medium',
+        recoveryCapacity: d['recoveryCapacity'] as String? ?? 'medium',
+        adherenceRate: (d['adherenceRate'] as num?)?.toDouble() ?? 1.0,
+        volumeSensitivity: (d['volumeSensitivity'] as num?)?.toDouble() ?? 1.0,
+      ),
+      lifeLoad: LifeLoad(
+        physicalWork: d['physicalWork'] as String? ?? 'moderate',
+        parallelSport: d['parallelSport'] as String? ?? 'low',
+        dailyRoutine: d['dailyRoutine'] as String? ?? 'moderate',
+      ),
       confidenceByVariable: _confidenceFromMap(d['confidenceByVariable']),
       calibrationActive: d['calibrationActive'] as bool? ?? true,
       calibrationSessionsRemaining:
@@ -181,46 +202,45 @@ class WorkoutProfile {
   }
 
   Map<String, dynamic> toMap() => {
-        'uid': uid,
-        'age': age,
-        'biologicalSex': biologicalSex,
-        'weightKg': weightKg,
-        'heightCm': heightCm,
-        'bodyFatCategory': bodyFatCategory,
-        'primaryGoal': primaryGoal,
-        'sportSubType': sportSubType,
-        'trainingModality': trainingModality,
-        'experienceLevel': experienceLevel,
-        'trainingAge': trainingAge,
-        'availableDaysPerWeek': availableDaysPerWeek,
-        'sessionDurationMinutes': sessionDurationMinutes,
-        'preferredStyle': preferredStyle,
-        'sleepQuality': sleepQuality,
-        'stressLevel': stressLevel,
-        'priorityMuscles': priorityMuscles,
-        'environment': environment,
-        'availableEquipment': availableEquipment,
-        'dislikedExercises': dislikedExercises,
-        'favoriteExercises': favoriteExercises,
-        'healthRestrictions': healthRestrictions,
-        'currentWeek': currentWeek,
-        'exerciseRotationOffset': exerciseRotationOffset,
-        'adaptive': adaptive.toMap(),
-        'lifeLoad': lifeLoad.toMap(),
-        'confidenceByVariable': confidenceByVariable.map(
-          (key, value) => MapEntry(key, value.name),
-        ),
-        'calibrationActive': calibrationActive,
-        'calibrationSessionsRemaining': calibrationSessionsRemaining,
-        'createdAt': createdAt.toIso8601String(),
-        'updatedAt': updatedAt.toIso8601String(),
-      };
+    'age': age,
+    'biologicalSex': biologicalSex,
+    'weightKg': weightKg,
+    'heightCm': heightCm,
+    'bodyFatCategory': bodyFatCategory,
+    'primaryGoal': primaryGoal,
+    'sportSubType': sportSubType,
+    'trainingModality': trainingModality,
+    'experienceLevel': experienceLevel,
+    'trainingAge': trainingAge,
+    'availableDaysPerWeek': availableDaysPerWeek,
+    'sessionDurationMinutes': sessionDurationMinutes,
+    'preferredStyle': preferredStyle,
+    'sleepQuality': sleepQuality,
+    'stressLevel': stressLevel,
+    'priorityMuscles': priorityMuscles,
+    'environment': environment,
+    'availableEquipment': availableEquipment,
+    'dislikedExercises': dislikedExercises,
+    'favoriteExercises': favoriteExercises,
+    'healthRestrictions': healthRestrictions,
+    'currentWeek': currentWeek,
+    'exerciseRotationOffset': exerciseRotationOffset,
+    // Adaptive (flat columns in Supabase)
+    'volumeTolerance': adaptive.volumeTolerance,
+    'recoveryCapacity': adaptive.recoveryCapacity,
+    'adherenceRate': adaptive.adherenceRate,
+    'volumeSensitivity': adaptive.volumeSensitivity,
+    'createdAt': createdAt.toIso8601String(),
+    'updatedAt': updatedAt.toIso8601String(),
+  };
 
   static Map<String, ConfidenceLevel> _confidenceFromMap(dynamic value) {
     if (value is! Map) return {};
     final result = <String, ConfidenceLevel>{};
     for (final entry in value.entries) {
-      final level = ConfidenceLevel.values.where((item) => item.name == entry.value).firstOrNull;
+      final level = ConfidenceLevel.values
+          .where((item) => item.name == entry.value)
+          .firstOrNull;
       if (level != null) result[entry.key.toString()] = level;
     }
     return result;

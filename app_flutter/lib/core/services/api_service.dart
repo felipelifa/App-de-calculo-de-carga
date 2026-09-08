@@ -111,7 +111,10 @@ class ApiService {
 
     // Workouts
     if (path == '/workouts') {
-      return await _supabase.getWorkouts();
+      return await _supabase.getWorkouts(
+        week: int.tryParse(params?['week'] ?? ''),
+        limit: int.tryParse(params?['limit'] ?? ''),
+      );
     }
 
     // Exercises
@@ -126,7 +129,8 @@ class ApiService {
     }
 
     if (path == '/nutrition/daily') {
-      final date = params?['date'] ?? DateTime.now().toIso8601String().substring(0, 10);
+      final date =
+          params?['date'] ?? DateTime.now().toIso8601String().substring(0, 10);
       final days = await _supabase.getNutritionDays(
         DateTime.parse(date),
         DateTime.parse(date).add(const Duration(days: 1)),
@@ -135,7 +139,8 @@ class ApiService {
     }
 
     if (path == '/nutrition/meals') {
-      final date = params?['date'] ?? DateTime.now().toIso8601String().substring(0, 10);
+      final date =
+          params?['date'] ?? DateTime.now().toIso8601String().substring(0, 10);
       final days = await _supabase.getNutritionDays(
         DateTime.parse(date),
         DateTime.parse(date).add(const Duration(days: 1)),
@@ -147,10 +152,7 @@ class ApiService {
     if (path == '/dashboard/summary') {
       final workouts = await _supabase.getWorkouts();
       final profile = await _supabase.getProfile();
-      return {
-        'totalWorkouts': workouts.length,
-        'profile': profile,
-      };
+      return {'totalWorkouts': workouts.length, 'profile': profile};
     }
 
     // Analytics
@@ -159,8 +161,7 @@ class ApiService {
       return {'workouts': workouts};
     }
 
-    // Default
-    return {};
+    throw ApiException(404, 'Rota GET não implementada: $path');
   }
 
   Future<dynamic> _routePost(String path, dynamic body) async {
@@ -203,8 +204,7 @@ class ApiService {
       return {'success': true};
     }
 
-    // Default
-    return {'success': true};
+    throw ApiException(404, 'Rota POST não implementada: $path');
   }
 
   Future<dynamic> _routePut(String path, dynamic body) async {
@@ -216,12 +216,14 @@ class ApiService {
 
     // Prescription
     if (path.startsWith('/prescription/') && path.endsWith('/activate')) {
-      await _supabase.saveGeneratedWorkout({...body, 'isActive': true});
+      final id = path.split('/')[2];
+      await _supabase.activateGeneratedWorkout(id);
       return {'success': true};
     }
 
     if (path.startsWith('/prescription/')) {
-      await _supabase.saveGeneratedWorkout(body);
+      final id = path.split('/')[2];
+      await _supabase.updateGeneratedWorkout(id, body as Map<String, dynamic>);
       return {'success': true};
     }
 
@@ -243,12 +245,15 @@ class ApiService {
       return {'success': true};
     }
 
-    // Default
-    return {'success': true};
+    throw ApiException(404, 'Rota PUT não implementada: $path');
   }
 
   Future<void> _routeDelete(String path) async {
-    // Implement as needed
+    if (path.startsWith('/prescription/')) {
+      final id = path.split('/')[2];
+      await _supabase.deleteGeneratedWorkout(id);
+      return;
+    }
+    throw ApiException(404, 'Rota de exclusão não encontrada: $path');
   }
-
 }

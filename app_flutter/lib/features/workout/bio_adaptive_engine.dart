@@ -5,7 +5,6 @@ import 'training_readiness.dart';
 /// O "Organismo Digital" que simula fadiga e adaptação.
 /// Integrado com DailyReadiness para unificar fonte de verdade.
 class BioAdaptiveEngine {
-  
   // Limites de fadiga para intervenção (0.0 a 1.0)
   static const double maxCnsLoadThreshold = 0.8;
   static const double maxJointStressThreshold = 0.75;
@@ -23,7 +22,7 @@ class BioAdaptiveEngine {
 
     // Analisa as últimas 3 sessões (janela de fadiga aguda)
     final sessionsToAnalyze = recentHistory.take(3).toList();
-    
+
     // Se não há histórico, usar apenas DailyReadiness
     if (sessionsToAnalyze.isEmpty) {
       return BioReadiness(
@@ -47,8 +46,11 @@ class BioAdaptiveEngine {
     // Multiplicador de fadiga baseado no sono e estresse (DailyReadiness)
     final sleepMultiplier = 1.0 + (1.0 - dailyReadiness.sleepScore) * 0.4;
     final stressMultiplier = 1.0 + (1.0 - dailyReadiness.stressScore) * 0.3;
-    final avgCns = (accumulatedCns / count) * sleepMultiplier * stressMultiplier;
-    final avgJoint = (accumulatedSpinal + accumulatedShoulder + accumulatedKnee) / (count * 3);
+    final avgCns =
+        (accumulatedCns / count) * sleepMultiplier * stressMultiplier;
+    final avgJoint =
+        (accumulatedSpinal + accumulatedShoulder + accumulatedKnee) /
+        (count * 3);
 
     // Determina o estado combinando fadiga acumulada e DailyReadiness
     BioStatus status = BioStatus.optimal;
@@ -56,18 +58,25 @@ class BioAdaptiveEngine {
 
     if (avgCns > maxCnsLoadThreshold || avgJoint > maxJointStressThreshold) {
       status = BioStatus.recovering;
-      recommendation = "Sistema detectou fadiga acumulada. Reduzindo volume acessório.";
+      recommendation =
+          "Sistema detectou fadiga acumulada. Reduzindo volume acessório.";
     } else if (dailyReadiness.status == 'recover') {
       status = BioStatus.fragile;
-      recommendation = "Fatores externos de stress detectados. Priorizando intensidade controlada.";
+      recommendation =
+          "Fatores externos de stress detectados. Priorizando intensidade controlada.";
     } else if (dailyReadiness.status == 'adapt') {
       status = BioStatus.recovering;
-      recommendation = "Readiness moderada. Ajustando volume conforme necessário.";
+      recommendation =
+          "Readiness moderada. Ajustando volume conforme necessário.";
     }
 
     // Score combinado: 60% DailyReadiness + 40% fadiga acumulada
     final fatigueScore = (1.0 - ((avgCns + avgJoint) / 2)).clamp(0.0, 1.0);
-    final combinedScore = (dailyReadiness.volumeMultiplier * 0.6 + fatigueScore * 0.4).clamp(0.0, 1.0);
+    final combinedScore =
+        (dailyReadiness.volumeMultiplier * 0.6 + fatigueScore * 0.4).clamp(
+          0.0,
+          1.0,
+        );
 
     return BioReadiness(
       score: combinedScore,
@@ -95,7 +104,10 @@ class BioAdaptiveEngine {
   }
 
   /// Intervém na prescrição de forma "silenciosa" se as tendências indicarem risco.
-  static PrescribedExercise applyBioAdaptation(PrescribedExercise ex, BioReadiness readiness) {
+  static PrescribedExercise applyBioAdaptation(
+    PrescribedExercise ex,
+    BioReadiness readiness,
+  ) {
     if (readiness.status == BioStatus.optimal) return ex;
 
     // Se a fadiga do CNS está alta, reduz o número de séries (Volume)
@@ -116,13 +128,20 @@ class BioAdaptiveEngine {
       repsMin: ex.repsMin,
       repsMax: ex.repsMax,
       rir: finalRir,
-      restSeconds: ex.restSeconds + (readiness.status == BioStatus.recovering ? 30 : 0),
+      restSeconds:
+          ex.restSeconds + (readiness.status == BioStatus.recovering ? 30 : 0),
       sessionCues: [
         ...ex.sessionCues,
-        if (readiness.status != BioStatus.optimal) "Bio-Adaptation: Foco em controle e técnica hoje."
+        if (readiness.status != BioStatus.optimal)
+          "Bio-Adaptation: Foco em controle e técnica hoje.",
       ],
       progressionNote: ex.progressionNote,
-      injuryNote: readiness.status == BioStatus.fragile ? "Risco de lesão moderadamente elevado por fadiga." : ex.injuryNote,
+      injuryNote: readiness.status == BioStatus.fragile
+          ? "Risco de lesão moderadamente elevado por fadiga."
+          : ex.injuryNote,
+      defaultWeightKg: ex.defaultWeightKg,
+      decisionReason: ex.decisionReason,
+      selectionScore: ex.selectionScore,
       tempo: ex.tempo,
     );
   }

@@ -37,12 +37,16 @@ class _TodayScreenState extends State<TodayScreen> {
     if (uid == null) return;
 
     try {
-      final now = DateTime.now();
-      final weekNumber = (now.difference(DateTime(now.year, 1, 1)).inDays / 7).ceil();
-
-      final profileProvider = context.read<WorkoutProfileProvider>();
+        final profileProvider = context.read<WorkoutProfileProvider>();
+        final workoutProvider = context.read<WorkoutProvider>();
+        await workoutProvider.loadHistory();
+        if (!mounted) return;
       final profile = profileProvider.profile;
       final targetDays = profile?.availableDaysPerWeek ?? 3;
+      final currentWeek = workoutProvider.currentWeekNumber;
+      final weekWorkouts = workoutProvider.history
+          .where((session) => session.weekNumber == currentWeek)
+          .toList();
 
       final integrationService = IntegrationService();
       final todayMsg = await integrationService.getTodayMessage();
@@ -56,10 +60,13 @@ class _TodayScreenState extends State<TodayScreen> {
 
       setState(() {
         _todayData = {
-          'weekSessions': 0,
+          'weekSessions': weekWorkouts.length,
           'targetDays': targetDays,
-          'weekVolume': 0.0,
-          'hasWorkoutToday': true,
+          'weekVolume': weekWorkouts.fold<double>(
+            0,
+            (total, session) => total + session.totalVolume,
+          ),
+          'hasWorkoutToday': profileProvider.activeWorkout != null,
         };
         _todayMessage = todayMsg;
         _nutritionMessage = nutritionMsg;
@@ -135,10 +142,7 @@ class _TodayScreenState extends State<TodayScreen> {
         const SizedBox(height: 8),
         Text(
           _todayMessage.isNotEmpty ? _todayMessage : 'Seu treino está pronto.',
-          style: const TextStyle(
-            color: AppTheme.textSecondary,
-            fontSize: 18,
-          ),
+          style: const TextStyle(color: AppTheme.textSecondary, fontSize: 18),
         ),
       ],
     );
@@ -203,7 +207,9 @@ class _TodayScreenState extends State<TodayScreen> {
                 child: LinearProgressIndicator(
                   value: weekSessions / targetDays,
                   backgroundColor: AppTheme.surfaceHighlight,
-                  valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.accent),
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    AppTheme.accent,
+                  ),
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
@@ -221,7 +227,7 @@ class _TodayScreenState extends State<TodayScreen> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: hasWorkout ? () => context.push('/workout') : null,
+              onPressed: hasWorkout ? () => context.push('/prescribed') : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.accent,
                 foregroundColor: AppTheme.background,
@@ -281,7 +287,9 @@ class _TodayScreenState extends State<TodayScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      _nutritionMessage.isNotEmpty ? _nutritionMessage : 'Ver resumo do dia',
+                      _nutritionMessage.isNotEmpty
+                          ? _nutritionMessage
+                          : 'Ver resumo do dia',
                       style: const TextStyle(
                         color: AppTheme.textPrimary,
                         fontSize: 14,
@@ -359,17 +367,19 @@ class _TodayScreenState extends State<TodayScreen> {
     );
   }
 
-  Widget _buildNutritionRow(String label, String value, double progress, Color color) {
+  Widget _buildNutritionRow(
+    String label,
+    String value,
+    double progress,
+    Color color,
+  ) {
     return Row(
       children: [
         SizedBox(
           width: 100,
           child: Text(
             label,
-            style: const TextStyle(
-              color: AppTheme.textSecondary,
-              fontSize: 14,
-            ),
+            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 14),
           ),
         ),
         Expanded(
@@ -433,7 +443,9 @@ class _TodayScreenState extends State<TodayScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      _hydrationMessage.isNotEmpty ? _hydrationMessage : 'Beba água!',
+                      _hydrationMessage.isNotEmpty
+                          ? _hydrationMessage
+                          : 'Beba água!',
                       style: const TextStyle(
                         color: AppTheme.textPrimary,
                         fontSize: 14,
@@ -515,7 +527,9 @@ class _TodayScreenState extends State<TodayScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      _progressMessage.isNotEmpty ? _progressMessage : '${(weekVolume / 1000).toStringAsFixed(1)}k kg esta semana',
+                      _progressMessage.isNotEmpty
+                          ? _progressMessage
+                          : '${(weekVolume / 1000).toStringAsFixed(1)}k kg esta semana',
                       style: const TextStyle(
                         color: AppTheme.textPrimary,
                         fontSize: 14,
