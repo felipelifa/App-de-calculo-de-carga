@@ -197,32 +197,32 @@ class V2Exercise {
     name: m['name'] as String? ?? '',
     nameEn: m['nameEn'] as String? ?? '',
     aliases: List<String>.from(m['aliases'] ?? []),
-    block: _parseEnum(m['block'], V2ExerciseBlock.values, V2ExerciseBlock.home),
-    pattern: _parseEnum(m['pattern'], V2MovementPattern.values, V2MovementPattern.squat),
+    block: _parseBlock(m['block']),
+    pattern: _parsePattern(m['pattern']),
     primaryFunction: m['primaryFunction'] as String? ?? '',
-    category: _parseEnum(m['category'], V2ExerciseCategory.values, V2ExerciseCategory.compound),
-    defaultRoles: _parseEnumList(m['defaultRoles'], V2ExerciseRole.values, V2ExerciseRole.principal),
-    modalities: _parseEnumList(m['modalities'], V2Modality.values, V2Modality.strength),
-    requiredEquipment: _parseEnumList(m['requiredEquipment'], V2Equipment.values, V2Equipment.none),
-    environments: _parseEnumList(m['environments'], V2Environment.values, V2Environment.any),
+    category: _parseCategory(m['category']),
+    defaultRoles: _parseRoles(m['defaultRoles']),
+    modalities: _parseModalities(m['modalities']),
+    requiredEquipment: _parseEquipment(m['requiredEquipment']),
+    environments: _parseEnvironments(m['environments']),
     equipmentMetadataVerified: m['equipmentMetadataVerified'] as bool? ?? true,
     primaryMuscles: List<String>.from(m['primaryMuscles'] ?? []),
     secondaryMuscles: List<String>.from(m['secondaryMuscles'] ?? []),
     stabilizers: List<String>.from(m['stabilizers'] ?? []),
-    bodyRegions: _parseEnumList(m['bodyRegions'], V2BodyRegion.values, V2BodyRegion.trunk),
-    joints: _parseEnumList(m['joints'], V2Joint.values, V2Joint.knee),
-    difficulty: _parseEnum(m['difficulty'], V2Difficulty.values, V2Difficulty.level3),
+    bodyRegions: _parseBodyRegions(m['bodyRegions']),
+    joints: _parseJoints(m['joints']),
+    difficulty: _parseDifficulty(m['difficulty']),
     skillLevel: (m['skillLevel'] as num?)?.toInt() ?? 1,
-    stabilityType: _parseEnum(m['stabilityType'], V2StabilityType.values, V2StabilityType.none),
-    lengthBias: _parseEnum(m['lengthBias'], V2LengthBias.values, V2LengthBias.midRange),
+    stabilityType: _parseStabilityType(m['stabilityType']),
+    lengthBias: _parseLengthBias(m['lengthBias']),
     position: m['position'] as String? ?? 'standing',
     resistanceVector: m['resistanceVector'] as String?,
     angle: m['angle'] as String?,
     grip: m['grip'] as String?,
     laterality: m['laterality'] as String? ?? 'bilateral',
     demands: V2DemandProfile.fromMap(Map<String, dynamic>.from(m['demands'] ?? {})),
-    goalAffinity: _parseIntensityMap(m['goalAffinity'], V2Goal.values),
-    stimuli: _parseIntensityMap(m['stimuli'], V2Stimulus.values),
+    goalAffinity: _parseGoalAffinity(m['goalAffinity']),
+    stimuli: _parseStimuli(m['stimuli']),
     relatedExercises: _parseRelationships(m['relatedExercises']),
     limitationRules: _parseLimitationRules(m['limitationRules']),
     relevantLimitations: List<String>.from(m['relevantLimitations'] ?? []),
@@ -236,52 +236,122 @@ class V2Exercise {
 
   // ── Parsing helpers ──
 
-  static T _parseEnum<T>(dynamic value, List<T> values, T fallback) {
-    if (value == null) return fallback;
-    for (final v in values) {
-      if ((v as dynamic).name == value) return v;
-    }
-    return fallback;
+  static V2ExerciseBlock _parseBlock(dynamic v) {
+    if (v == null) return V2ExerciseBlock.home;
+    return V2ExerciseBlock.values.firstWhere(
+      (e) => e.name == v, orElse: () => V2ExerciseBlock.home);
   }
 
-  static List<T> _parseEnumList<T>(dynamic value, List<T> values, T fallback) {
-    if (value == null) return [fallback];
-    return (value as List).map((e) {
-      for (final v in values) {
-        if ((v as dynamic).name == e) return v;
-      }
-      return fallback;
-    }).toList();
+  static V2MovementPattern _parsePattern(dynamic v) {
+    if (v == null) return V2MovementPattern.squat;
+    return V2MovementPattern.values.firstWhere(
+      (e) => e.name == v, orElse: () => V2MovementPattern.squat);
   }
 
-  static Map<T, V2Intensity> _parseIntensityMap<T>(dynamic value, List<T> keys) {
-    if (value == null) return {};
-    final map = Map<String, dynamic>.from(value);
-    final result = <T, V2Intensity>{};
+  static V2ExerciseCategory _parseCategory(dynamic v) {
+    if (v == null) return V2ExerciseCategory.compound;
+    return V2ExerciseCategory.values.firstWhere(
+      (e) => e.name == v, orElse: () => V2ExerciseCategory.compound);
+  }
+
+  static V2Difficulty _parseDifficulty(dynamic v) {
+    if (v == null) return V2Difficulty.level3;
+    return V2Difficulty.values.firstWhere(
+      (e) => e.name == v, orElse: () => V2Difficulty.level3);
+  }
+
+  static V2StabilityType _parseStabilityType(dynamic v) {
+    if (v == null) return V2StabilityType.none;
+    return V2StabilityType.values.firstWhere(
+      (e) => e.name == v, orElse: () => V2StabilityType.none);
+  }
+
+  static V2LengthBias _parseLengthBias(dynamic v) {
+    if (v == null) return V2LengthBias.midRange;
+    return V2LengthBias.values.firstWhere(
+      (e) => e.name == v, orElse: () => V2LengthBias.midRange);
+  }
+
+  static List<V2ExerciseRole> _parseRoles(dynamic v) {
+    if (v == null) return const [V2ExerciseRole.principal];
+    return (v as List).map((e) => V2ExerciseRole.values.firstWhere(
+      (r) => r.name == e, orElse: () => V2ExerciseRole.principal,
+    )).toList();
+  }
+
+  static List<V2Modality> _parseModalities(dynamic v) {
+    if (v == null) return const [];
+    return (v as List).map((e) => V2Modality.values.firstWhere(
+      (m) => m.name == e, orElse: () => V2Modality.strength,
+    )).toList();
+  }
+
+  static List<V2Equipment> _parseEquipment(dynamic v) {
+    if (v == null) return const [];
+    return (v as List).map((e) => V2Equipment.values.firstWhere(
+      (eq) => eq.name == e, orElse: () => V2Equipment.none,
+    )).toList();
+  }
+
+  static List<V2Environment> _parseEnvironments(dynamic v) {
+    if (v == null) return const [V2Environment.any];
+    return (v as List).map((e) => V2Environment.values.firstWhere(
+      (env) => env.name == e, orElse: () => V2Environment.any,
+    )).toList();
+  }
+
+  static List<V2BodyRegion> _parseBodyRegions(dynamic v) {
+    if (v == null) return const [];
+    return (v as List).map((e) => V2BodyRegion.values.firstWhere(
+      (r) => r.name == e, orElse: () => V2BodyRegion.trunk,
+    )).toList();
+  }
+
+  static List<V2Joint> _parseJoints(dynamic v) {
+    if (v == null) return const [];
+    return (v as List).map((e) => V2Joint.values.firstWhere(
+      (j) => j.name == e, orElse: () => V2Joint.knee,
+    )).toList();
+  }
+
+  static Map<V2Goal, V2Intensity> _parseGoalAffinity(dynamic v) {
+    if (v == null) return {};
+    final map = Map<String, dynamic>.from(v);
+    final result = <V2Goal, V2Intensity>{};
     for (final entry in map.entries) {
-      final key = keys.firstWhere(
-        (k) => (k as dynamic).name == entry.key,
-        orElse: () => keys.first,
-      );
-      final intensity = V2Intensity.values.firstWhere(
-        (i) => i.name == entry.value,
-        orElse: () => V2Intensity.moderate,
-      );
-      result[key] = intensity;
+      final key = V2Goal.values.firstWhere(
+        (k) => k.name == entry.key, orElse: () => V2Goal.generalFitness);
+      final val = V2Intensity.values.firstWhere(
+        (i) => i.name == entry.value, orElse: () => V2Intensity.moderate);
+      result[key] = val;
     }
     return result;
   }
 
-  static List<V2Relationship> _parseRelationships(dynamic value) {
-    if (value == null) return const [];
-    return (value as List).map((r) =>
+  static Map<V2Stimulus, V2Intensity> _parseStimuli(dynamic v) {
+    if (v == null) return {};
+    final map = Map<String, dynamic>.from(v);
+    final result = <V2Stimulus, V2Intensity>{};
+    for (final entry in map.entries) {
+      final key = V2Stimulus.values.firstWhere(
+        (k) => k.name == entry.key, orElse: () => V2Stimulus.mechanicalTension);
+      final val = V2Intensity.values.firstWhere(
+        (i) => i.name == entry.value, orElse: () => V2Intensity.moderate);
+      result[key] = val;
+    }
+    return result;
+  }
+
+  static List<V2Relationship> _parseRelationships(dynamic v) {
+    if (v == null) return const [];
+    return (v as List).map((r) =>
       V2Relationship.fromMap(Map<String, dynamic>.from(r))
     ).toList();
   }
 
-  static List<V2LimitationRule> _parseLimitationRules(dynamic value) {
-    if (value == null) return const [];
-    return (value as List).map((l) =>
+  static List<V2LimitationRule> _parseLimitationRules(dynamic v) {
+    if (v == null) return const [];
+    return (v as List).map((l) =>
       V2LimitationRule.fromMap(Map<String, dynamic>.from(l))
     ).toList();
   }

@@ -486,6 +486,10 @@ void main() {
           ],
         ),
         _testExercise(id: 'b', name: 'B', pattern: V2MovementPattern.pushHorizontal, primaryMuscles: ['chest']),
+      ]);
+
+      expect(resolver.wouldConflict('a', 'b'), isTrue);
+      expect(resolver.wouldConflict('b', 'a'), isFalse);
     });
   });
 
