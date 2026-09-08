@@ -73,7 +73,7 @@ List<V2Exercise> createGymFreeWeightExercises() {
         V2Stimulus.stability: V2Intensity.moderate,
       },
       relatedExercises: const [
-        V2Relationship(targetId: 'gym_pushh_002', type: V2RelationshipType.variation),
+        V2Relationship(targetId: 'gym_pushh_002', type: V2RelationshipType.progression),
         V2Relationship(targetId: 'gym_pushh_003', type: V2RelationshipType.variation),
         V2Relationship(targetId: 'gym_pushh_004', type: V2RelationshipType.regression),
         V2Relationship(targetId: 'home_pushh_001', type: V2RelationshipType.alternative),
@@ -1018,6 +1018,7 @@ List<V2Exercise> createGymFreeWeightExercises() {
       },
       relatedExercises: const [
         V2Relationship(targetId: 'gym_squat_001', type: V2RelationshipType.regression),
+        V2Relationship(targetId: 'gym_squat_003', type: V2RelationshipType.progression),
         V2Relationship(targetId: 'gym_squat_004', type: V2RelationshipType.variation),
         V2Relationship(targetId: 'gym_squat_005', type: V2RelationshipType.variation),
         V2Relationship(targetId: 'home_squat_001', type: V2RelationshipType.alternative),

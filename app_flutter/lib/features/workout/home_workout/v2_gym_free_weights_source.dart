@@ -7,6 +7,7 @@ import '../../exercise_library_v2/queries/compatibility_evaluator.dart';
 import '../../exercise_library_v2/bridge/v2_home_bridge.dart';
 import '../../exercise_library_v2/enums/exercise_block.dart';
 import '../../exercise_library_v2/enums/environment.dart';
+import '../../exercise_library_v2/enums/equipment.dart';
 import '../../exercise_library_v2/enums/difficulty.dart';
 import '../../exercise_library_v2/enums/joint.dart';
 import '../../exercise_library_v2/enums/limitation_severity.dart';
@@ -138,7 +139,12 @@ class V2GymFreeWeightsSource {
     return V2CompatibilityEvaluator.filterEligible(
       exercises: exercises,
       userEnvironments: const [V2Environment.gym, V2Environment.any],
-      userEquipment: profile.availableEquipment,
+      userEquipment: profile.availableEquipment
+          .map((e) => V2Equipment.values.firstWhere(
+                (v) => v.name == e,
+                orElse: () => V2Equipment.none,
+              ))
+          .toList(),
       userDifficulty: userDifficulty,
       userLimitations: userLimitations,
       dislikedExerciseIds: profile.dislikedExercises,
