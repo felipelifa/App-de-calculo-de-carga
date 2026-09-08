@@ -308,6 +308,12 @@ class TrainingStrategyEngine {
       maxExercises = maxExercises.clamp(3, 6);
     }
 
+    // Progressão contextual: decidir se há motivo para variar volume
+    final progression = _evaluateProgression(context, weekNumber);
+    if (progression.shouldProgressVolume) {
+      setsPerExercise = (setsPerExercise + progression.volumeDelta).clamp(2, 5);
+    }
+
     return VolumeTarget(
       maxExercises: maxExercises,
       setsPerExercise: setsPerExercise,
@@ -375,10 +381,157 @@ class TrainingStrategyEngine {
       restSeconds = (restSeconds + 15);
     }
 
+    // A intensidade NÃO é determinada pelo weekNumber.
+    // É determinada pelo perfil: objetivo, nível, idade, limitações.
+    // O weekNumber apenas modula volume (quando aplicável), não intensidade.
+
     return IntensityTarget(
       targetRir: rir,
       defaultRestSeconds: restSeconds,
     );
+  }
+
+  // ── Progressão Contextual ──
+
+  /// Avalia se há motivo para progressão de volume baseado no perfil e contexto.
+  ///
+  /// Retorna um [ProgressionDecision] que indica:
+  /// - [shouldProgressVolume]: se o volume deve variar
+  /// - [shouldProgressIntensity]: sempre false (intensidade é determinada pelo perfil)
+  /// - [volumeDelta]: alteração no número de séries (+1, 0, ou -1 para deload)
+  /// - [intensityDelta]: sempre 0 (intensidade é determinada pelo perfil)
+  ///
+  /// A progressão NÃO é automática. Ela depende de:
+  /// - Objetivo do usuário
+  /// - Nível de experiência
+  /// - Duração da sessão
+  /// - Frequência semanal
+  /// - Capacidade de recuperação
+  /// - Limitações
+  /// - Número da semana (apenas como modulador sutil para volume)
+  ProgressionDecision _evaluateProgression(TrainingContext context, int weekNumber) {
+    // A intensidade é determinada pelo perfil, não pelo weekNumber.
+    // Apenas o volume pode variar contextualmente.
+
+    // Fator de recuperação do contexto
+    final recovery = context.recoveryCapacity;
+
+    // Determinar se o usuário está em condição para progressão de volume
+    final canProgress = _canProgressVolume(context, recovery);
+
+    // Determinar se deve haver deload de volume
+    final shouldDeload = _shouldDeloadVolume(context, weekNumber, recovery);
+
+    if (shouldDeload) {
+      return const ProgressionDecision(
+        shouldProgressVolume: false,
+        shouldProgressIntensity: false,
+        volumeDelta: 0,
+        intensityDelta: 0,
+      );
+    }
+
+    if (!canProgress) {
+      return const ProgressionDecision(
+        shouldProgressVolume: false,
+        shouldProgressIntensity: false,
+        volumeDelta: 0,
+        intensityDelta: 0,
+      );
+    }
+
+    // Decidir se há progressão de volume baseada no perfil
+    return _decideVolumeProgression(context, weekNumber, recovery);
+  }
+
+  /// Verifica se o usuário está em condição para progredir volume.
+  bool _canProgressVolume(TrainingContext context, double recovery) {
+    // Iniciantes com sessão curta: não há espaço para progressão de volume
+    if (context.userDifficulty.index <= 1 && context.shortSession) return false;
+
+    // Recuperação muito baixa: não progredir
+    if (recovery < 0.6) return false;
+
+    // Limitações severas: não progredir
+    if (context.hasLimitations) {
+      final hasSevere = context.limitations
+          .any((l) => l.severity.name == 'severe' || l.severity.name == 'critical');
+      if (hasSevere) return false;
+    }
+
+    return true;
+  }
+
+  /// Verifica se deve haver deload de volume.
+  bool _shouldDeloadVolume(TrainingContext context, int weekNumber, double recovery) {
+    // Deload na semana 4 para perfis com baixa recuperação
+    if (weekNumber == 4 && recovery < 0.8) return true;
+
+    // Deload para iniciantes a cada 3 semanas
+    if (context.userDifficulty.index <= 1 && weekNumber % 3 == 0) return true;
+
+    return false;
+  }
+
+  /// Decide se há progressão de volume baseada no perfil.
+  ProgressionDecision _decideVolumeProgression(
+    TrainingContext context,
+    int weekNumber,
+    double recovery,
+  ) {
+    // Para sessões curtas: sem progressão de volume
+    if (context.shortSession) {
+      return const ProgressionDecision(
+        shouldProgressVolume: false,
+        shouldProgressIntensity: false,
+        volumeDelta: 0,
+        intensityDelta: 0,
+      );
+    }
+
+    // Para sessões normais/largas: progressão contextual de volume
+    switch (weekNumber) {
+      case 2:
+        // Semana 2: manter volume (foco em adaptação)
+        return const ProgressionDecision(
+          shouldProgressVolume: false,
+          shouldProgressIntensity: false,
+          volumeDelta: 0,
+          intensityDelta: 0,
+        );
+      case 3:
+        // Semana 3: micro-progressão de volume (se recovery permite)
+        if (recovery >= 0.8) {
+          return const ProgressionDecision(
+            shouldProgressVolume: true,
+            shouldProgressIntensity: false,
+            volumeDelta: 1,
+            intensityDelta: 0,
+          );
+        }
+        return const ProgressionDecision(
+          shouldProgressVolume: false,
+          shouldProgressIntensity: false,
+          volumeDelta: 0,
+          intensityDelta: 0,
+        );
+      case 4:
+        // Semana 4: consolidação
+        return const ProgressionDecision(
+          shouldProgressVolume: false,
+          shouldProgressIntensity: false,
+          volumeDelta: 0,
+          intensityDelta: 0,
+        );
+      default:
+        // Semana 1: base
+        return const ProgressionDecision(
+          shouldProgressVolume: false,
+          shouldProgressIntensity: false,
+          volumeDelta: 0,
+          intensityDelta: 0,
+        );
+    }
   }
 
   // ── Session Structure ──
@@ -529,4 +682,19 @@ enum ComplexityLevel {
   moderate,
   complex,
   advanced,
+}
+
+/// Decisão de progressão contextual.
+class ProgressionDecision {
+  final bool shouldProgressVolume;
+  final bool shouldProgressIntensity;
+  final int volumeDelta; // +1, 0, ou -1 (deload)
+  final int intensityDelta; // -1 = mais intenso, 0 = manter, +1 = mais leve
+
+  const ProgressionDecision({
+    required this.shouldProgressVolume,
+    required this.shouldProgressIntensity,
+    required this.volumeDelta,
+    required this.intensityDelta,
+  });
 }

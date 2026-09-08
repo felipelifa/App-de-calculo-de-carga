@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 
 import '../../exercise_library_v2/v2_exercise_library.dart';
 import '../../exercise_library_v2/enums/exercise_block.dart';
+import '../../exercise_library_v2/enums/environment.dart';
+import '../../exercise_library_v2/models/v2_exercise.dart';
 import '../prescribed_workout_model.dart';
 import 'user_training_profile.dart';
 import 'training_context.dart';
@@ -33,8 +35,8 @@ class TrainingIntelligence {
 
   /// Gera treino completo a partir do perfil do usuário.
   ///
-  /// [weekNumber] permite progressão ao longo das semanas (1-4).
-  /// Semana 1 = base, Semana 4 = maior volume/intensidade.
+  /// [weekNumber] permite variação contextual ao longo das semanas (1-4).
+  /// A progressão é determinada pelo perfil do usuário, não pelo número da semana.
   GeneratedWorkout generateWorkout(
     UserTrainingProfile profile, {
     int weekNumber = 1,
@@ -55,7 +57,16 @@ class TrainingIntelligence {
 
     // 3. Verificar se há exercícios disponíveis
     final library = V2ExerciseLibrary();
-    final available = library.getByBlock(V2ExerciseBlock.home);
+    final blocks = <V2ExerciseBlock>[];
+    if (context.environment == V2Environment.gym) {
+      blocks.add(V2ExerciseBlock.gymFreeWeights);
+    }
+    blocks.add(V2ExerciseBlock.home);
+
+    final available = <V2Exercise>[];
+    for (final block in blocks) {
+      available.addAll(library.getByBlock(block));
+    }
 
     if (available.isEmpty) {
       debugPrint('  ERRO: Nenhum exercício V2 disponível');
@@ -98,7 +109,16 @@ class TrainingIntelligence {
     final strategy = _strategyEngine.determine(context);
 
     final library = V2ExerciseLibrary();
-    final available = library.getByBlock(V2ExerciseBlock.home);
+    final blocks = <V2ExerciseBlock>[];
+    if (context.environment == V2Environment.gym) {
+      blocks.add(V2ExerciseBlock.gymFreeWeights);
+    }
+    blocks.add(V2ExerciseBlock.home);
+
+    final available = <V2Exercise>[];
+    for (final block in blocks) {
+      available.addAll(library.getByBlock(block));
+    }
 
     final blueprint = _blueprintGenerator.generate(
       strategy,

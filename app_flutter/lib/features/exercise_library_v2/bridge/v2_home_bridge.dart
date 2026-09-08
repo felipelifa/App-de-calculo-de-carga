@@ -47,6 +47,23 @@ class V2HomeBridge {
   /// O ExerciseModel.id será igual ao V2Exercise.id.
   static ExerciseModel toExerciseModel(V2Exercise v2) {
     register(v2);
+
+    final envNames = v2.environments.map((e) => e.name).toList();
+    final equipNames = v2.requiredEquipment.map((e) => e.name).toList();
+
+    final tags = <String>[
+      ...v2.tags,
+      'v2',
+      'v2_pattern_${v2.pattern.name}',
+      'v2_difficulty_${v2.difficulty.name}',
+    ];
+    if (v2.block.name == 'home') {
+      tags.add('home');
+      tags.add('bodyweight');
+    } else {
+      tags.add(v2.block.name);
+    }
+
     return ExerciseModel(
       id: v2.id,
       name: v2.name,
@@ -54,9 +71,9 @@ class V2HomeBridge {
       primaryMuscles: v2.primaryMuscles,
       secondaryMuscles: v2.secondaryMuscles,
       movementPattern: _mapPattern(v2.pattern),
-      equipment: const [],
+      equipment: equipNames,
       equipmentMetadataVerified: true,
-      environment: const ['home'],
+      environment: envNames,
       category: v2.category.name,
       difficulty: _mapDifficulty(v2.difficulty),
       restrictions: v2.relativeContraindications,
@@ -69,14 +86,7 @@ class V2HomeBridge {
       substituteIds: v2.substituteIds,
       progressionIds: v2.progressionIds,
       regressionIds: v2.regressionIds,
-      tags: [
-        ...v2.tags,
-        'home',
-        'bodyweight',
-        'v2',
-        'v2_pattern_${v2.pattern.name}',
-        'v2_difficulty_${v2.difficulty.name}',
-      ],
+      tags: tags,
       spinalLoad: _regionStress(v2, V2Joint.spine),
       shoulderStress: _regionStress(v2, V2Joint.shoulder),
       kneeStress: _regionStress(v2, V2Joint.knee),
