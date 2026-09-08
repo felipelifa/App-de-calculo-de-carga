@@ -256,21 +256,21 @@ class TrainingStrategyEngine {
     int maxExercises;
     int setsPerExercise;
 
-    // Baseado na duração
+    // Baseado na duração - escala mais agressiva
     if (context.sessionDurationMinutes <= 20) {
-      maxExercises = 4;
+      maxExercises = 3;
       setsPerExercise = 2;
     } else if (context.sessionDurationMinutes <= 30) {
-      maxExercises = 5;
+      maxExercises = 4;
       setsPerExercise = 2;
     } else if (context.sessionDurationMinutes <= 45) {
-      maxExercises = 6;
+      maxExercises = 5;
       setsPerExercise = 3;
     } else if (context.sessionDurationMinutes <= 60) {
-      maxExercises = 7;
+      maxExercises = 6;
       setsPerExercise = 3;
     } else {
-      maxExercises = 8;
+      maxExercises = 7;
       setsPerExercise = 4;
     }
 
@@ -303,10 +303,10 @@ class TrainingStrategyEngine {
       maxExercises = (maxExercises - 1).clamp(3, 8);
     }
 
-    // Ajuste por sessão curta
+    // Ajuste por sessão curta - usar volume target como limite principal
     if (context.shortSession) {
-      final maxByTime = (context.sessionDurationMinutes * 60 / context.timePerExerciseSeconds).floor();
-      maxExercises = maxByTime.clamp(3, 6);
+      // Não exceder o volume target mesmo que o tempo permita mais
+      maxExercises = maxExercises.clamp(3, 6);
     }
 
     return VolumeTarget(

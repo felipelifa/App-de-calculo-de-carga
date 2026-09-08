@@ -61,6 +61,14 @@ class WorkoutComposer {
     var repsMax = engineRules?.repRangeMax ?? 12;
     var restSeconds = engineRules?.defaultRestSeconds ?? strategy.intensityTarget.defaultRestSeconds;
 
+    // Para condicionamento, limitar descanso ao máximo da estratégia
+    if (context.primaryGoal == V2Goal.conditioning ||
+        context.primaryGoal == V2Goal.fatLoss) {
+      if (restSeconds > strategy.intensityTarget.defaultRestSeconds) {
+        restSeconds = strategy.intensityTarget.defaultRestSeconds;
+      }
+    }
+
     // Ajustar séries pela estratégia + idade
     var sets = strategy.volumeTarget.setsPerExercise;
     if (context.age >= 50) sets = (sets - 1).clamp(2, 4);

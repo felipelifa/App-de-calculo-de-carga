@@ -106,7 +106,12 @@ class ExerciseSelectionEngine {
       // Ambiente
       if (!ex.environments.contains(context.environment) &&
           !ex.environments.contains(V2Environment.any)) {
-        return false;
+        // Para gym sem equipamento, permitir exercícios bodyweight
+        if (context.isGym && !context.hasEquipment && ex.requiredEquipment.isEmpty) {
+          // Permitir exercícios sem equipamento em gym
+        } else {
+          return false;
+        }
       }
 
       // Equipamento
