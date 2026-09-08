@@ -256,7 +256,7 @@ class TrainingStrategyEngine {
     int maxExercises;
     int setsPerExercise;
 
-    // Baseado na duração - escala mais agressiva
+    // Baseado na duração
     if (context.sessionDurationMinutes <= 20) {
       maxExercises = 3;
       setsPerExercise = 2;
@@ -303,20 +303,9 @@ class TrainingStrategyEngine {
       maxExercises = (maxExercises - 1).clamp(3, 8);
     }
 
-    // Ajuste por sessão curta - usar volume target como limite principal
+    // Ajuste por sessão curta
     if (context.shortSession) {
       maxExercises = maxExercises.clamp(3, 6);
-    }
-
-    // ── PROGRESSÃO: aumentar volume ao longo das semanas ──
-    // Semana 1: base, Semana 2: +1 exercício, Semana 3: +1 exercício, Semana 4: +1 exercício
-    if (weekNumber >= 2 && weekNumber <= 4) {
-      final progressionBonus = (weekNumber - 1).clamp(0, 2);
-      maxExercises = (maxExercises + progressionBonus).clamp(3, 8);
-      // Semana 4: adicionar 1 série por exercício
-      if (weekNumber == 4) {
-        setsPerExercise = (setsPerExercise + 1).clamp(2, 5);
-      }
     }
 
     return VolumeTarget(
@@ -384,13 +373,6 @@ class TrainingStrategyEngine {
       rir = (rir + 1).clamp(1, 3);
     } else if (context.age >= 40) {
       restSeconds = (restSeconds + 15);
-    }
-
-    // ── PROGRESSÃO: diminuir RIR ao longo das semanas ──
-    // Semana 1: base, Semana 2: -0.5 RIR, Semana 3: -1 RIR, Semana 4: -1 RIR
-    if (weekNumber >= 2 && weekNumber <= 4) {
-      final rirReduction = ((weekNumber - 1) * 0.5).floor();
-      rir = (rir - rirReduction).clamp(1, 3);
     }
 
     return IntensityTarget(
