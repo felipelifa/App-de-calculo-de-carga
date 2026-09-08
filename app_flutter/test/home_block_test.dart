@@ -43,6 +43,21 @@ void main() {
       }
     });
 
+    test('Nenhum exercício usa equipamento proibido (TRX, band, dumbbell, etc.)', () {
+      final prohibited = {
+        V2Equipment.suspension, V2Equipment.band, V2Equipment.dumbbell,
+        V2Equipment.barbell, V2Equipment.kettlebell, V2Equipment.cable,
+        V2Equipment.machine, V2Equipment.bench, V2Equipment.pullUpBar,
+        V2Equipment.smith,
+      };
+      for (final ex in exercises) {
+        for (final eq in ex.requiredEquipment) {
+          expect(prohibited, isNot(contains(eq)),
+            reason: '${ex.id} usa equipamento proibido: $eq');
+        }
+      }
+    });
+
     test('Nenhum ID duplicado', () {
       final ids = exercises.map((e) => e.id).toList();
       final uniqueIds = ids.toSet();
@@ -125,6 +140,20 @@ void main() {
         }
       }
     });
+
+    test('limitationRules.regressionExerciseIds apontam para IDs existentes', () {
+      final validIds = exercises.map((e) => e.id).toSet();
+      for (final ex in exercises) {
+        if (ex.limitationRules != null) {
+          for (final rule in ex.limitationRules!) {
+            for (final regId in rule.regressionExerciseIds) {
+              expect(validIds, contains(regId),
+                reason: '${ex.id} limitationRule referencia $regId que não existe');
+            }
+          }
+        }
+      }
+    });
   });
 
   group('Home Block - Padrões de Movimento', () {
@@ -136,6 +165,19 @@ void main() {
       expect(patterns, contains(V2MovementPattern.pushHorizontal));
       expect(patterns, contains(V2MovementPattern.coreAntiExtension));
       expect(patterns, contains(V2MovementPattern.coreAntiLateralFlexion));
+      expect(patterns, contains(V2MovementPattern.coreAntiRotation));
+      expect(patterns, contains(V2MovementPattern.coreFlexion));
+      expect(patterns, contains(V2MovementPattern.pushVertical));
+      expect(patterns, contains(V2MovementPattern.kneeFlexion));
+      expect(patterns, contains(V2MovementPattern.plantarFlexion));
+      expect(patterns, contains(V2MovementPattern.hipAbduction));
+      expect(patterns, contains(V2MovementPattern.hipAdduction));
+      expect(patterns, contains(V2MovementPattern.locomotion));
+      expect(patterns, contains(V2MovementPattern.balance));
+      expect(patterns, contains(V2MovementPattern.mobility));
+      expect(patterns, contains(V2MovementPattern.conditioning));
+      expect(patterns, contains(V2MovementPattern.power));
+      expect(patterns, contains(V2MovementPattern.isometric));
     });
 
     test('Exercícios de agachamento existem', () {

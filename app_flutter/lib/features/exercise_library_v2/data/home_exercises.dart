@@ -69,8 +69,8 @@ List<V2Exercise> createHomeExercises() {
       relatedExercises: const [
         V2Relationship(targetId: 'home_squat_002', type: V2RelationshipType.progression),
         V2Relationship(targetId: 'home_squat_003', type: V2RelationshipType.variation),
+        V2Relationship(targetId: 'home_squat_004', type: V2RelationshipType.variation),
         V2Relationship(targetId: 'home_squat_005', type: V2RelationshipType.variation),
-        V2Relationship(targetId: 'home_squat_006', type: V2RelationshipType.variation),
       ],
       limitationRules: const [
         V2LimitationRule(
@@ -230,7 +230,7 @@ List<V2Exercise> createHomeExercises() {
       ),
     ),
     V2Exercise(
-      id: 'home_squat_005',
+      id: 'home_squat_004',
       name: 'Agachamento com Salto',
       nameEn: 'Jump Squat',
       block: V2ExerciseBlock.home,
@@ -300,7 +300,7 @@ List<V2Exercise> createHomeExercises() {
       ),
     ),
     V2Exercise(
-      id: 'home_squat_006',
+      id: 'home_squat_005',
       name: 'Agachamento Sumo',
       nameEn: 'Sumo Squat',
       block: V2ExerciseBlock.home,
