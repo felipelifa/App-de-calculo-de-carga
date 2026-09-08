@@ -62,13 +62,13 @@ class TrainingStrategy {
 class TrainingStrategyEngine {
   const TrainingStrategyEngine();
 
-  TrainingStrategy determine(TrainingContext context) {
+  TrainingStrategy determine(TrainingContext context, {int weekNumber = 1}) {
     final goalPriority = _determineGoalPriority(context);
     final requiredPatterns = context.requiredPatterns;
     final prioritizedCapacities = context.prioritizedCapacities;
     final stimulusDistribution = _determineStimulusDistribution(context);
-    final volumeTarget = _determineVolumeTarget(context);
-    final intensityTarget = _determineIntensityTarget(context);
+    final volumeTarget = _determineVolumeTarget(context, weekNumber: weekNumber);
+    final intensityTarget = _determineIntensityTarget(context, weekNumber: weekNumber);
     final sessionStructure = _determineSessionStructure(context);
     final complexityLevel = _determineComplexityLevel(context);
 
@@ -252,7 +252,7 @@ class TrainingStrategyEngine {
 
   // ── Volume Target ──
 
-  VolumeTarget _determineVolumeTarget(TrainingContext context) {
+  VolumeTarget _determineVolumeTarget(TrainingContext context, {int weekNumber = 1}) {
     int maxExercises;
     int setsPerExercise;
 
@@ -305,8 +305,18 @@ class TrainingStrategyEngine {
 
     // Ajuste por sessão curta - usar volume target como limite principal
     if (context.shortSession) {
-      // Não exceder o volume target mesmo que o tempo permita mais
       maxExercises = maxExercises.clamp(3, 6);
+    }
+
+    // ── PROGRESSÃO: aumentar volume ao longo das semanas ──
+    // Semana 1: base, Semana 2: +1 exercício, Semana 3: +1 exercício, Semana 4: +1 exercício
+    if (weekNumber >= 2 && weekNumber <= 4) {
+      final progressionBonus = (weekNumber - 1).clamp(0, 2);
+      maxExercises = (maxExercises + progressionBonus).clamp(3, 8);
+      // Semana 4: adicionar 1 série por exercício
+      if (weekNumber == 4) {
+        setsPerExercise = (setsPerExercise + 1).clamp(2, 5);
+      }
     }
 
     return VolumeTarget(
@@ -317,7 +327,7 @@ class TrainingStrategyEngine {
 
   // ── Intensity Target ──
 
-  IntensityTarget _determineIntensityTarget(TrainingContext context) {
+  IntensityTarget _determineIntensityTarget(TrainingContext context, {int weekNumber = 1}) {
     int rir;
     int restSeconds;
 
@@ -374,6 +384,13 @@ class TrainingStrategyEngine {
       rir = (rir + 1).clamp(1, 3);
     } else if (context.age >= 40) {
       restSeconds = (restSeconds + 15);
+    }
+
+    // ── PROGRESSÃO: diminuir RIR ao longo das semanas ──
+    // Semana 1: base, Semana 2: -0.5 RIR, Semana 3: -1 RIR, Semana 4: -1 RIR
+    if (weekNumber >= 2 && weekNumber <= 4) {
+      final rirReduction = ((weekNumber - 1) * 0.5).floor();
+      rir = (rir - rirReduction).clamp(1, 3);
     }
 
     return IntensityTarget(

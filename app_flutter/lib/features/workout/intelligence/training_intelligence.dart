@@ -32,18 +32,26 @@ class TrainingIntelligence {
         _validator = const WorkoutValidator();
 
   /// Gera treino completo a partir do perfil do usuário.
-  GeneratedWorkout generateWorkout(UserTrainingProfile profile) {
-    debugPrint('TRAINING_INTELLIGENCE: Iniciando geração para ${profile.uid}');
+  ///
+  /// [weekNumber] permite progressão ao longo das semanas (1-4).
+  /// Semana 1 = base, Semana 4 = maior volume/intensidade.
+  GeneratedWorkout generateWorkout(
+    UserTrainingProfile profile, {
+    int weekNumber = 1,
+  }) {
+    debugPrint('TRAINING_INTELLIGENCE: Iniciando geração para ${profile.uid} '
+        '(semana $weekNumber)');
 
     // 1. Criar contexto
     final context = TrainingContext.fromProfile(profile);
     debugPrint('  Contexto: ${context.primaryGoal.name}, ${context.environment.name}, '
         '${context.availableDaysPerWeek} dias, ${context.sessionDurationMinutes}min');
 
-    // 2. Determinar estratégia
-    final strategy = _strategyEngine.determine(context);
+    // 2. Determinar estratégia (com progressão)
+    final strategy = _strategyEngine.determine(context, weekNumber: weekNumber);
     debugPrint('  Estratégia: ${strategy.goalPriority.primary.name}, '
-        'complexidade: ${strategy.complexityLevel.name}');
+        'complexidade: ${strategy.complexityLevel.name}, '
+        'semana: $weekNumber');
 
     // 3. Verificar se há exercícios disponíveis
     final library = V2ExerciseLibrary();
@@ -73,7 +81,6 @@ class TrainingIntelligence {
 
       if (!validation.isValid) {
         debugPrint('  Sessão ${i + 1} inválida: ${validation.summary}');
-        // TODO: Reconstruir sessão com fallback
       } else {
         debugPrint('  Sessão ${i + 1} válida: ${workout.sessions[i].exercises.length} exercícios');
       }
@@ -129,9 +136,9 @@ class TrainingIntelligence {
   }
 
   /// Acessa a estratégia para um perfil (para debug/testes).
-  TrainingStrategy getStrategy(UserTrainingProfile profile) {
+  TrainingStrategy getStrategy(UserTrainingProfile profile, {int weekNumber = 1}) {
     final context = TrainingContext.fromProfile(profile);
-    return _strategyEngine.determine(context);
+    return _strategyEngine.determine(context, weekNumber: weekNumber);
   }
 
   /// Acessa o blueprint para uma estratégia (para debug/testes).
