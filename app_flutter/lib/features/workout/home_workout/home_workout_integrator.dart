@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart';
 import '../workout_profile_model.dart';
 import '../prescribed_workout_model.dart';
 import '../../exercises/exercise_model.dart';
+import '../../exercise_library_v2/queries/relationship_resolver.dart';
+import '../../exercise_library_v2/models/v2_exercise.dart';
 import 'home_workout_engine.dart';
 import 'home_exercise_model.dart';
 import 'limitation_analyzer.dart';
@@ -23,7 +25,6 @@ class HomeWorkoutIntegrator {
   ///
   /// Prioriza V2 Home quando disponível. Fallback para V1.
   GeneratedWorkout generateHomeWorkout(WorkoutProfile profile) {
-    // ── TENTATIVA V2: Consulta V2ExerciseLibrary ──
     if (V2HomeSource.isAvailable) {
       debugPrint('V2_HOME: tentando gerar treino a partir da biblioteca V2...');
       try {
@@ -37,13 +38,12 @@ class HomeWorkoutIntegrator {
       debugPrint('V2_HOME: indisponível — usando motor V1.');
     }
 
-    // ── FALLBACK V1: Motor de casa legado ──
     debugPrint('V1_HOME: gerando treino via motor V1 legado.');
     return _generateFromV1(profile);
   }
 
   /// Gera treino a partir da V2ExerciseLibrary.
-  /// Seleciona exercícios V2 Home com base no perfil do usuário.
+  /// Usa V2EngineRules para prescrição, RelationshipResolver para diversidade.
   GeneratedWorkout _generateFromV2(WorkoutProfile profile) {
     final v2Exercises = V2HomeSource.queryHomeExercises(profile: profile);
 
@@ -54,10 +54,22 @@ class HomeWorkoutIntegrator {
       );
     }
 
-    // Seleciona exercícios para a sessão baseado na duração disponível
+    final v2Map = <String, ExerciseModel>{};
+    for (final ex in v2Exercises) {
+      v2Map[ex.id] = ex;
+    }
+
+    final resolver = RelationshipResolver(
+      v2Map.keys
+          .map((id) => V2HomeSource.getV2ById(id))
+          .whereType<V2Exercise>()
+          .toList(),
+    );
+
     final selectedExercises = _selectExercisesForSession(
       v2Exercises,
       profile,
+      resolver,
     );
 
     if (selectedExercises.isEmpty) {
@@ -67,54 +79,29 @@ class HomeWorkoutIntegrator {
       );
     }
 
-    // Calcula séries/reps baseado no perfil
     final prescribed = selectedExercises.map((exercise) {
+      final v2 = V2HomeSource.getV2ById(exercise.id);
+      final engineRules = v2?.engineRules;
+
       return PrescribedExercise(
         exercise: exercise,
         sets: _calculateSets(profile),
-        repsMin: _calculateRepsMin(exercise, profile),
-        repsMax: _calculateRepsMax(exercise, profile),
+        repsMin: engineRules?.repRangeMin ?? exercise.repRangeMin,
+        repsMax: engineRules?.repRangeMax ?? exercise.repRangeMax,
         rir: _calculateV2Rir(profile),
-        restSeconds: _calculateRest(exercise, profile),
+        restSeconds: engineRules?.defaultRestSeconds ?? _calculateRest(exercise, profile),
         sessionCues: exercise.cues,
-        progressionNote: _generateV2ProgressionNote(exercise, profile),
+        progressionNote: _generateV2ProgressionNote(exercise, profile, resolver),
         tempo: _tempo(profile),
         decisionReason: 'V2_HOME: selecionado via V2ExerciseLibrary.',
       );
     }).toList();
 
-    // Monta a sessão
-    final session = PrescribedSession(
-      id: 'home_v2_session_main',
-      name: 'Treino em Casa — V2',
-      objective: 'Treino funcional baseado em padrões de movimento (V2)',
-      estimatedDurationMinutes: profile.sessionDurationMinutes,
-      warmupInstructions: [
-        '5 minutos de mobilidade articular',
-        'Marcha no lugar por 2 minutos',
-        'Ativação de core: prancha leve por 30 segundos',
-      ],
-      exercises: prescribed,
-      progressionNote:
-          'Treino baseado em padrões de movimento (V2). '
-          'Progrida conforme dominar cada exercício.',
-    );
-
-    // Replica para múltiplos dias
     final sessionCount = profile.availableDaysPerWeek.clamp(2, 7);
-    final sessions = List<PrescribedSession>.generate(
+    final sessions = _generateVariedSessions(
+      prescribed,
       sessionCount,
-      (index) => index == 0
-          ? session
-          : PrescribedSession(
-              id: 'home_v2_session_${index + 1}',
-              name: 'Treino em Casa — V2 — Sessão ${index + 1}',
-              objective: session.objective,
-              estimatedDurationMinutes: session.estimatedDurationMinutes,
-              warmupInstructions: session.warmupInstructions,
-              exercises: List<PrescribedExercise>.from(session.exercises),
-              progressionNote: session.progressionNote,
-            ),
+      profile,
     );
 
     return GeneratedWorkout(
@@ -173,29 +160,39 @@ class HomeWorkoutIntegrator {
     return workout;
   }
 
-  /// Seleciona exercícios da lista V2 para a sessão.
-  /// Prioriza diversidade de padrões.
+  /// Seleciona exercícios para a sessão, evitando redundância via RelationshipResolver.
   List<ExerciseModel> _selectExercisesForSession(
     List<ExerciseModel> allExercises,
     WorkoutProfile profile,
+    RelationshipResolver resolver,
   ) {
-    // Agrupa por padrão de movimento
     final byPattern = <String, List<ExerciseModel>>{};
     for (final ex in allExercises) {
       byPattern.putIfAbsent(ex.movementPattern, () => []).add(ex);
     }
 
-    // Seleciona 1 exercício por padrão, respeitando a duração
     final maxExercises = _maxExercisesForDuration(profile.sessionDurationMinutes);
     final selected = <ExerciseModel>[];
+    final selectedIds = <String>{};
     final patterns = byPattern.keys.toList()..shuffle();
 
     for (final pattern in patterns) {
       if (selected.length >= maxExercises) break;
       final candidates = byPattern[pattern]!;
-      // Seleciona o mais adequado ao nível
       final best = _selectBestForLevel(candidates, profile);
-      if (best != null) selected.add(best);
+      if (best == null) continue;
+
+      bool conflicts = false;
+      for (final existing in selected) {
+        if (resolver.wouldConflict(existing.id, best.id)) {
+          conflicts = true;
+          break;
+        }
+      }
+      if (conflicts) continue;
+
+      selected.add(best);
+      selectedIds.add(best.id);
     }
 
     return selected;
@@ -208,7 +205,6 @@ class HomeWorkoutIntegrator {
   ) {
     if (candidates.isEmpty) return null;
 
-    // Mapeia dificuldade parascore numérico
     int difficultyScore(String d) {
       switch (d) {
         case 'beginner':
@@ -237,7 +233,6 @@ class HomeWorkoutIntegrator {
 
     final target = targetDifficulty(profile.experienceLevel);
 
-    // Ordena por proximidade com o nível alvo
     final sorted = List<ExerciseModel>.from(candidates)
       ..sort((a, b) {
         final diffA = (difficultyScore(a.difficulty) - target).abs();
@@ -246,6 +241,81 @@ class HomeWorkoutIntegrator {
       });
 
     return sorted.first;
+  }
+
+  /// Gera sessões com variação entre dias.
+  ///
+  /// Em vez de clonar a mesma sessão N vezes, rotaciona a ênfase
+  /// de padrões de movimento e reordena os exercícios.
+  List<PrescribedSession> _generateVariedSessions(
+    List<PrescribedExercise> basePrescribed,
+    int sessionCount,
+    WorkoutProfile profile,
+  ) {
+    final sessions = <PrescribedSession>[];
+
+    for (var i = 0; i < sessionCount; i++) {
+      final varied = _varySession(basePrescribed, i, sessionCount);
+      sessions.add(PrescribedSession(
+        id: 'home_v2_session_${i + 1}',
+        name: i == 0
+            ? 'Treino em Casa — V2'
+            : 'Treino em Casa — V2 — Sessão ${i + 1}',
+        objective: 'Treino funcional baseado em padrões de movimento (V2)',
+        estimatedDurationMinutes: profile.sessionDurationMinutes,
+        warmupInstructions: [
+          '5 minutos de mobilidade articular',
+          'Marcha no lugar por 2 minutos',
+          'Ativação de core: prancha leve por 30 segundos',
+        ],
+        exercises: varied,
+        progressionNote:
+            'Treino baseado em padrões de movimento (V2). '
+            'Progrida conforme dominar cada exercício.',
+      ));
+    }
+
+    return sessions;
+  }
+
+  /// Varia uma sessão base: rotaciona ordem e alterna repetições.
+  List<PrescribedExercise> _varySession(
+    List<PrescribedExercise> base,
+    int dayIndex,
+    int totalDays,
+  ) {
+    if (dayIndex == 0) return List.from(base);
+
+    final shifted = <PrescribedExercise>[];
+    final rotation = dayIndex % base.length;
+
+    for (var i = 0; i < base.length; i++) {
+      final srcIdx = (i + rotation) % base.length;
+      final src = base[srcIdx];
+
+      final repsAdjust = (dayIndex % 2 == 0) ? 1 : -1;
+      final newMin = (src.repsMin + repsAdjust).clamp(5, 20);
+      final newMax = (src.repsMax + repsAdjust).clamp(6, 25);
+      final adjustedMax = newMax < newMin ? newMin + 2 : newMax;
+
+      shifted.add(PrescribedExercise(
+        exercise: src.exercise,
+        sets: src.sets,
+        repsMin: newMin,
+        repsMax: adjustedMax,
+        rir: src.rir,
+        restSeconds: src.restSeconds,
+        tempo: src.tempo,
+        sessionCues: src.sessionCues,
+        progressionNote: src.progressionNote,
+        injuryNote: src.injuryNote,
+        defaultWeightKg: src.defaultWeightKg,
+        decisionReason: src.decisionReason,
+        selectionScore: src.selectionScore,
+      ));
+    }
+
+    return shifted;
   }
 
   int _maxExercisesForDuration(int minutes) {
@@ -267,14 +337,6 @@ class HomeWorkoutIntegrator {
       default:
         return 3;
     }
-  }
-
-  int _calculateRepsMin(ExerciseModel exercise, WorkoutProfile profile) {
-    return exercise.repRangeMin;
-  }
-
-  int _calculateRepsMax(ExerciseModel exercise, WorkoutProfile profile) {
-    return exercise.repRangeMax;
   }
 
   int _calculateV2Rir(WorkoutProfile profile) {
@@ -308,17 +370,35 @@ class HomeWorkoutIntegrator {
     }
   }
 
+  /// Gera nota de progressão usando RelationshipResolver.
   String _generateV2ProgressionNote(
     ExerciseModel exercise,
     WorkoutProfile profile,
+    RelationshipResolver resolver,
   ) {
-    if (exercise.regressionIds.isNotEmpty) {
-      return 'Exercício V2. Para regredir, use: ${exercise.regressionIds.first}';
+    final progressionChain = resolver.getProgressionChain(exercise.id);
+    if (progressionChain.length > 1) {
+      final next = progressionChain[1];
+      return 'Para progressão: ${next.name} (${next.id}).';
     }
+
+    final regressionChain = resolver.getRegressionChain(exercise.id);
+    if (regressionChain.length > 1) {
+      final prev = regressionChain[1];
+      return 'Para regressão: ${prev.name} (${prev.id}).';
+    }
+
+    final substitutes = resolver.getRelated(
+      exercise.id,
+    );
+    if (substitutes.isNotEmpty) {
+      final names = substitutes.take(2).map((s) => s.name).join(', ');
+      return 'Alternativas: $names.';
+    }
+
     return 'Exercício V2. Progrida conforme dominar.';
   }
 
-  // Analisa um exercício específico
   HomeExerciseAnalysis analyzeExercise({
     required String exerciseId,
     required WorkoutProfile profile,
@@ -341,7 +421,6 @@ class HomeWorkoutIntegrator {
     );
   }
 
-  // Processa feedback do usuário
   HomeFeedbackAnalysis processFeedback({
     required String exerciseId,
     required HomeFeedback feedback,
@@ -354,7 +433,6 @@ class HomeWorkoutIntegrator {
     return _engine.processFeedback(feedback: feedback, exercise: exercise);
   }
 
-  // Busca exercícios por padrão
   List<HomeExercise> getExercisesByPattern(
     HomeMovementPattern pattern, {
     List<String> availableEquipment = const [],
@@ -365,47 +443,38 @@ class HomeWorkoutIntegrator {
     );
   }
 
-  // Busca exercício por ID
   HomeExercise? getExerciseById(String id) {
     return _engine.getExerciseById(id);
   }
 
-  /// Resolve exercício de casa pelo ID.
-  /// Verifica V2 primeiro, depois V1.
   ExerciseModel? getExerciseModelById(String id) {
-    // Tenta V2 primeiro
     final v2Result = V2HomeSource.getById(id);
     if (v2Result != null) return v2Result;
 
-    // Fallback V1
     final exercise = _engine.getExerciseById(id);
     return exercise == null ? null : _convertToExerciseModel(exercise);
   }
 
-  // Busca regressão de um exercício
   HomeExercise? getRegression(String exerciseId) {
     final exercise = _engine.getExerciseById(exerciseId);
     if (exercise == null) return null;
     return _engine.getRegression(exercise);
   }
 
-  // Busca progressão de um exercício
   HomeExercise? getProgression(String exerciseId) {
     final exercise = _engine.getExerciseById(exerciseId);
     if (exercise == null) return null;
     return _engine.getProgression(exercise);
   }
 
-  // Busca alternativas de um exercício
   List<HomeExercise> getAlternatives(String exerciseId) {
     final exercise = _engine.getExerciseById(exerciseId);
     if (exercise == null) return [];
     return _engine.getAlternatives(exercise);
   }
 
-  // ── Métodos Privados ──────────────────────────────────────────
+  // ── Métodos Privados V1 ──────────────────────────────────────────
 
-  // Converte restrições de saúde para limitações do motor de casa
   List<HomeUserLimitation> _convertLimitations(WorkoutProfile profile) {
     final limitations = <HomeUserLimitation>[];
 
@@ -425,7 +494,6 @@ class HomeWorkoutIntegrator {
     return limitations;
   }
 
-  // Mapeia restrição de saúde para região do corpo
   HomeBodyRegion? _mapRestrictionToRegion(String restriction) {
     final restrictionLower = restriction.toLowerCase();
 
@@ -473,9 +541,7 @@ class HomeWorkoutIntegrator {
     return null;
   }
 
-  // Calcula capacidades baseadas no perfil
   Map<String, double> _calculateCapabilities(WorkoutProfile profile) {
-    // Capacidade baseada no nível de experiência
     double baseStrength;
     double baseBalance;
     double baseMobility;
@@ -502,13 +568,11 @@ class HomeWorkoutIntegrator {
         baseMobility = 0.5;
     }
 
-    // Ajusta baseado na idade
     final ageFactor = _ageFactor(profile.age);
     baseStrength *= ageFactor;
     baseBalance *= ageFactor;
     baseMobility *= ageFactor;
 
-    // Ajusta baseado em restrições de saúde
     final restrictionFactor = _restrictionFactor(profile.healthRestrictions);
     baseStrength *= restrictionFactor;
     baseBalance *= restrictionFactor;
@@ -521,7 +585,6 @@ class HomeWorkoutIntegrator {
     };
   }
 
-  // Fator de ajuste baseado na idade
   double _ageFactor(int age) {
     if (age < 30) return 1.0;
     if (age < 40) return 0.9;
@@ -531,7 +594,6 @@ class HomeWorkoutIntegrator {
     return 0.5;
   }
 
-  // Fator de ajuste baseado em restrições
   double _restrictionFactor(List<String> restrictions) {
     if (restrictions.isEmpty) return 1.0;
     if (restrictions.length == 1) return 0.8;
@@ -539,12 +601,10 @@ class HomeWorkoutIntegrator {
     return 0.5;
   }
 
-  // Converte treino de casa para o formato do sistema principal
   GeneratedWorkout _convertToGeneratedWorkout(
     HomeWorkout homeWorkout,
     WorkoutProfile profile,
   ) {
-    // Cria uma sessão principal
     final mainSession = PrescribedSession(
       id: 'home_session_main',
       name: 'Treino em Casa — Sem Equipamento',
@@ -603,7 +663,6 @@ class HomeWorkoutIntegrator {
     );
   }
 
-  // Converte exercício de casa para o modelo principal
   ExerciseModel _convertToExerciseModel(HomeExercise homeExercise) {
     return ExerciseModel(
       id: homeExercise.id,
@@ -612,7 +671,7 @@ class HomeWorkoutIntegrator {
       primaryMuscles: homeExercise.primaryMuscles,
       secondaryMuscles: homeExercise.secondaryMuscles,
       movementPattern: homeExercise.pattern.name,
-      equipment: const [], // Sem equipamento
+      equipment: const [],
       environment: const ['home'],
       category: homeExercise.strengthDemand > 0.6 ? 'compound' : 'isolation',
       difficulty: _mapDifficulty(homeExercise.difficulty),
@@ -647,7 +706,6 @@ class HomeWorkoutIntegrator {
     );
   }
 
-  // Mapeia dificuldade de casa para o modelo principal
   String _mapDifficulty(HomeDifficulty difficulty) {
     switch (difficulty) {
       case HomeDifficulty.level1:
@@ -661,7 +719,6 @@ class HomeWorkoutIntegrator {
     }
   }
 
-  // Calcula RIR baseado no exercício e nível
   int _calculateRir(HomeExercise exercise, String experienceLevel) {
     switch (experienceLevel) {
       case 'beginner':
@@ -675,7 +732,6 @@ class HomeWorkoutIntegrator {
     }
   }
 
-  // Gera nota de progressão para o exercício
   String _generateProgressionNote(HomeWorkoutExercise workoutExercise) {
     final analysis = workoutExercise.analysis;
 

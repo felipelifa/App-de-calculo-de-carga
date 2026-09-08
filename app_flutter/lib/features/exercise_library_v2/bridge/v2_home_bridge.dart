@@ -5,18 +5,48 @@ import '../enums/stability_type.dart';
 import '../enums/length_bias.dart';
 import '../enums/movement_pattern.dart';
 import '../enums/intensity.dart';
-import '../enums/exercise_category.dart';
+import '../enums/joint.dart';
 
 /// Converte V2Exercise → ExerciseModel para integração com o motor V1.
 ///
 /// O ID do ExerciseModel resultante é EXATAMENTE o V2Exercise.id,
 /// garantindo rastreabilidade V2 → prescrição → UI → histórico.
+///
+/// Preserva dados V2 essenciais via tags e campos do ExerciseModel.
+/// Para lookup reverso (V2Exercise original), use [V2HomeBridge.getV2Exercise].
 class V2HomeBridge {
   const V2HomeBridge._();
+
+  static final Map<String, V2Exercise> _v2Registry = {};
+
+  /// Registra um V2Exercise para lookup reverso.
+  static void register(V2Exercise v2) {
+    _v2Registry[v2.id] = v2;
+  }
+
+  /// Registra uma lista de V2Exercises.
+  static void registerAll(List<V2Exercise> exercises) {
+    for (final ex in exercises) {
+      _v2Registry[ex.id] = ex;
+    }
+  }
+
+  /// Lookup reverso: obtém o V2Exercise original a partir do ID.
+  static V2Exercise? getV2Exercise(String id) => _v2Registry[id];
+
+  /// Verifica se um ID pertence a um exercício V2 registrado.
+  static bool isV2Exercise(String id) => _v2Registry.containsKey(id);
+
+  /// Limpa o registro (para testes).
+  static void clearRegistry() => _v2Registry.clear();
+
+  /// Número de exercícios registrados.
+  static int get registeredCount => _v2Registry.length;
 
   /// Converte um V2Exercise para ExerciseModel.
   /// O ExerciseModel.id será igual ao V2Exercise.id.
   static ExerciseModel toExerciseModel(V2Exercise v2) {
+    register(v2);
     return ExerciseModel(
       id: v2.id,
       name: v2.name,
@@ -30,8 +60,8 @@ class V2HomeBridge {
       category: v2.category.name,
       difficulty: _mapDifficulty(v2.difficulty),
       restrictions: v2.relativeContraindications,
-      repRangeMin: _repRangeMin(v2),
-      repRangeMax: _repRangeMax(v2),
+      repRangeMin: v2.engineRules.repRangeMin,
+      repRangeMax: v2.engineRules.repRangeMax,
       isUnilateral: v2.laterality == 'unilateral',
       videoUrl: v2.videoUrl,
       cues: v2.cues,
@@ -39,10 +69,17 @@ class V2HomeBridge {
       substituteIds: v2.substituteIds,
       progressionIds: v2.progressionIds,
       regressionIds: v2.regressionIds,
-      tags: [...v2.tags, 'home', 'bodyweight', 'v2'],
-      spinalLoad: _intensityToDouble(v2.demands.stability),
-      shoulderStress: _regionStress(v2, 'shoulder'),
-      kneeStress: _regionStress(v2, 'knee'),
+      tags: [
+        ...v2.tags,
+        'home',
+        'bodyweight',
+        'v2',
+        'v2_pattern_${v2.pattern.name}',
+        'v2_difficulty_${v2.difficulty.name}',
+      ],
+      spinalLoad: _regionStress(v2, V2Joint.spine),
+      shoulderStress: _regionStress(v2, V2Joint.shoulder),
+      kneeStress: _regionStress(v2, V2Joint.knee),
       cnsLoad: _intensityToDouble(v2.demands.strength),
       stabilityType: _mapStabilityType(v2.stabilityType),
       lengthBias: _mapLengthBias(v2.lengthBias),
@@ -188,42 +225,19 @@ class V2HomeBridge {
     }
   }
 
-  // ── Estresse por região corporal ──
+  // ── Estresse por articulação (graduado) ──
 
-  static double _regionStress(V2Exercise v2, String region) {
-    final joints = v2.joints.map((j) => j.name).toList();
-    if (region == 'shoulder') {
-      return joints.any((j) => j.contains('shoulder') || j.contains('scapula'))
-          ? 0.5
-          : 0.0;
-    }
-    if (region == 'knee') {
-      return joints.any((j) => j.contains('knee')) ? 0.5 : 0.0;
-    }
-    return 0.0;
-  }
+  static double _regionStress(V2Exercise v2, V2Joint joint) {
+    final joints = v2.joints;
+    if (!joints.contains(joint)) return 0.0;
 
-  // ── Faixas de repetição baseadas na demanda ──
+    final idx = joints.indexOf(joint);
+  final total = joints.length;
+    if (total <= 1) return 0.5;
 
-  static int _repRangeMin(V2Exercise v2) {
-    if (v2.demands.strength == V2Intensity.high ||
-        v2.demands.strength == V2Intensity.veryHigh) {
-      return 5;
-    }
-    if (v2.category == V2ExerciseCategory.isolation) {
-      return 10;
-    }
-    return 8;
-  }
-
-  static int _repRangeMax(V2Exercise v2) {
-    if (v2.demands.strength == V2Intensity.high ||
-        v2.demands.strength == V2Intensity.veryHigh) {
-      return 8;
-    }
-    if (v2.category == V2ExerciseCategory.isolation) {
-      return 15;
-    }
-    return 12;
+    final position = idx / (total - 1);
+    if (position <= 0.33) return 0.75;
+    if (position <= 0.66) return 0.5;
+    return 0.25;
   }
 }

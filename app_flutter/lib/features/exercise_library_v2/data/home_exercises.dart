@@ -211,9 +211,18 @@ List<V2Exercise> createHomeExercises() {
       },
       relatedExercises: const [
         V2Relationship(targetId: 'home_squat_001', type: V2RelationshipType.variation),
+        V2Relationship(targetId: 'home_squat_005', type: V2RelationshipType.samePattern),
       ],
-      limitationRules: const [],
-      relevantLimitations: const [],
+      limitationRules: const [
+        V2LimitationRule(
+          joint: V2Joint.knee,
+          severity: V2LimitationSeverity.moderate,
+          symptoms: ['desconforto moderado'],
+          recommendedAdaptations: [V2AdaptationType.reduceAmplitude, V2AdaptationType.addStability],
+          regressionExerciseIds: ['home_squat_001'],
+        ),
+      ],
+      relevantLimitations: const ['knee_moderate'],
       cues: const [
         'Mantenha um pe apontado para frente e o outro para fora',
         'Descenda lateralmente mantendo o calcanhar do lado ativo no chão',
