@@ -2,6 +2,8 @@
 // Integrador do Motor de Casa com o Sistema Principal
 // ─────────────────────────────────────────────
 
+import 'package:flutter/foundation.dart';
+
 import '../workout_profile_model.dart';
 import '../prescribed_workout_model.dart';
 import '../../exercises/exercise_model.dart';
@@ -9,6 +11,7 @@ import 'home_workout_engine.dart';
 import 'home_exercise_model.dart';
 import 'limitation_analyzer.dart';
 import '../exercise_compatibility.dart';
+import 'v2_home_source.dart';
 
 class HomeWorkoutIntegrator {
   final HomeWorkoutEngine _engine;
@@ -16,15 +19,124 @@ class HomeWorkoutIntegrator {
   HomeWorkoutIntegrator({String? userId})
     : _engine = HomeWorkoutEngine(userId: userId);
 
-  // Gera um treino para casa sem equipamento
+  /// Gera um treino para casa sem equipamento.
+  ///
+  /// Prioriza V2 Home quando disponível. Fallback para V1.
   GeneratedWorkout generateHomeWorkout(WorkoutProfile profile) {
-    // Converte limitações do perfil para o formato do motor de casa
-    final limitations = _convertLimitations(profile);
+    // ── TENTATIVA V2: Consulta V2ExerciseLibrary ──
+    if (V2HomeSource.isAvailable) {
+      debugPrint('V2_HOME: tentando gerar treino a partir da biblioteca V2...');
+      try {
+        final workout = _generateFromV2(profile);
+        debugPrint('V2_HOME: treino gerado com sucesso via V2.');
+        return workout;
+      } catch (e) {
+        debugPrint('V2_HOME: falha na geração V2 ($e) — usando fallback V1.');
+      }
+    } else {
+      debugPrint('V2_HOME: indisponível — usando motor V1.');
+    }
 
-    // Calcula capacidades baseadas no perfil
+    // ── FALLBACK V1: Motor de casa legado ──
+    debugPrint('V1_HOME: gerando treino via motor V1 legado.');
+    return _generateFromV1(profile);
+  }
+
+  /// Gera treino a partir da V2ExerciseLibrary.
+  /// Seleciona exercícios V2 Home com base no perfil do usuário.
+  GeneratedWorkout _generateFromV2(WorkoutProfile profile) {
+    final v2Exercises = V2HomeSource.queryHomeExercises(profile: profile);
+
+    if (v2Exercises.isEmpty) {
+      throw StateError(
+        'V2_HOME_EMPTY: V2ExerciseLibrary retornou 0 exercícios Home '
+        'compatíveis com o perfil.',
+      );
+    }
+
+    // Seleciona exercícios para a sessão baseado na duração disponível
+    final selectedExercises = _selectExercisesForSession(
+      v2Exercises,
+      profile,
+    );
+
+    if (selectedExercises.isEmpty) {
+      throw StateError(
+        'V2_HOME_NO_SELECTION: nenhum exercício V2 selecionado '
+        'para a sessão.',
+      );
+    }
+
+    // Calcula séries/reps baseado no perfil
+    final prescribed = selectedExercises.map((exercise) {
+      return PrescribedExercise(
+        exercise: exercise,
+        sets: _calculateSets(profile),
+        repsMin: _calculateRepsMin(exercise, profile),
+        repsMax: _calculateRepsMax(exercise, profile),
+        rir: _calculateV2Rir(profile),
+        restSeconds: _calculateRest(exercise, profile),
+        sessionCues: exercise.cues,
+        progressionNote: _generateV2ProgressionNote(exercise, profile),
+        tempo: _tempo(profile),
+        decisionReason: 'V2_HOME: selecionado via V2ExerciseLibrary.',
+      );
+    }).toList();
+
+    // Monta a sessão
+    final session = PrescribedSession(
+      id: 'home_v2_session_main',
+      name: 'Treino em Casa — V2',
+      objective: 'Treino funcional baseado em padrões de movimento (V2)',
+      estimatedDurationMinutes: profile.sessionDurationMinutes,
+      warmupInstructions: [
+        '5 minutos de mobilidade articular',
+        'Marcha no lugar por 2 minutos',
+        'Ativação de core: prancha leve por 30 segundos',
+      ],
+      exercises: prescribed,
+      progressionNote:
+          'Treino baseado em padrões de movimento (V2). '
+          'Progrida conforme dominar cada exercício.',
+    );
+
+    // Replica para múltiplos dias
+    final sessionCount = profile.availableDaysPerWeek.clamp(2, 7);
+    final sessions = List<PrescribedSession>.generate(
+      sessionCount,
+      (index) => index == 0
+          ? session
+          : PrescribedSession(
+              id: 'home_v2_session_${index + 1}',
+              name: 'Treino em Casa — V2 — Sessão ${index + 1}',
+              objective: session.objective,
+              estimatedDurationMinutes: session.estimatedDurationMinutes,
+              warmupInstructions: session.warmupInstructions,
+              exercises: List<PrescribedExercise>.from(session.exercises),
+              progressionNote: session.progressionNote,
+            ),
+    );
+
+    return GeneratedWorkout(
+      id: 'home_v2_workout_${DateTime.now().millisecondsSinceEpoch}',
+      userId: profile.uid,
+      splitType: 'home_bodyweight',
+      periodizationModel: 'functional_patterns',
+      sessions: sessions,
+      mesocycleDurationWeeks: 4,
+      generatedAt: DateTime.now(),
+      planExplanation:
+          'Plano de treino em casa (V2) sem equipamento, '
+          'baseado em ${v2Exercises.length} exercícios da biblioteca V2. '
+          'Duração estimada: ${profile.sessionDurationMinutes} minutos.',
+    );
+  }
+
+  /// Gera treino a partir do motor V1 legado.
+  GeneratedWorkout _generateFromV1(WorkoutProfile profile) {
+    final limitations = _convertLimitations(profile);
     final capabilities = _calculateCapabilities(profile);
 
-    // Gera o treino
     final homeWorkout = _engine.generateWorkout(
       userId: profile.uid,
       availableMinutes: profile.sessionDurationMinutes,
@@ -44,7 +156,6 @@ class HomeWorkoutIntegrator {
       );
     }
 
-    // Converte para o formato do sistema principal
     final workout = _convertToGeneratedWorkout(homeWorkout, profile);
     final incompatible = workout.sessions
         .expand((session) => session.exercises)
@@ -60,6 +171,151 @@ class HomeWorkoutIntegrator {
       );
     }
     return workout;
+  }
+
+  /// Seleciona exercícios da lista V2 para a sessão.
+  /// Prioriza diversidade de padrões.
+  List<ExerciseModel> _selectExercisesForSession(
+    List<ExerciseModel> allExercises,
+    WorkoutProfile profile,
+  ) {
+    // Agrupa por padrão de movimento
+    final byPattern = <String, List<ExerciseModel>>{};
+    for (final ex in allExercises) {
+      byPattern.putIfAbsent(ex.movementPattern, () => []).add(ex);
+    }
+
+    // Seleciona 1 exercício por padrão, respeitando a duração
+    final maxExercises = _maxExercisesForDuration(profile.sessionDurationMinutes);
+    final selected = <ExerciseModel>[];
+    final patterns = byPattern.keys.toList()..shuffle();
+
+    for (final pattern in patterns) {
+      if (selected.length >= maxExercises) break;
+      final candidates = byPattern[pattern]!;
+      // Seleciona o mais adequado ao nível
+      final best = _selectBestForLevel(candidates, profile);
+      if (best != null) selected.add(best);
+    }
+
+    return selected;
+  }
+
+  /// Seleciona o melhor exercício para o nível do usuário.
+  ExerciseModel? _selectBestForLevel(
+    List<ExerciseModel> candidates,
+    WorkoutProfile profile,
+  ) {
+    if (candidates.isEmpty) return null;
+
+    // Mapeia dificuldade parascore numérico
+    int difficultyScore(String d) {
+      switch (d) {
+        case 'beginner':
+          return 1;
+        case 'intermediate':
+          return 2;
+        case 'advanced':
+          return 3;
+        default:
+          return 1;
+      }
+    }
+
+    int targetDifficulty(String level) {
+      switch (level) {
+        case 'beginner':
+          return 1;
+        case 'intermediate':
+          return 2;
+        case 'advanced':
+          return 3;
+        default:
+          return 1;
+      }
+    }
+
+    final target = targetDifficulty(profile.experienceLevel);
+
+    // Ordena por proximidade com o nível alvo
+    final sorted = List<ExerciseModel>.from(candidates)
+      ..sort((a, b) {
+        final diffA = (difficultyScore(a.difficulty) - target).abs();
+        final diffB = (difficultyScore(b.difficulty) - target).abs();
+        return diffA.compareTo(diffB);
+      });
+
+    return sorted.first;
+  }
+
+  int _maxExercisesForDuration(int minutes) {
+    if (minutes <= 20) return 4;
+    if (minutes <= 30) return 5;
+    if (minutes <= 45) return 6;
+    if (minutes <= 60) return 7;
+    return 8;
+  }
+
+  int _calculateSets(WorkoutProfile profile) {
+    switch (profile.experienceLevel) {
+      case 'beginner':
+        return 2;
+      case 'intermediate':
+        return 3;
+      case 'advanced':
+        return 4;
+      default:
+        return 3;
+    }
+  }
+
+  int _calculateRepsMin(ExerciseModel exercise, WorkoutProfile profile) {
+    return exercise.repRangeMin;
+  }
+
+  int _calculateRepsMax(ExerciseModel exercise, WorkoutProfile profile) {
+    return exercise.repRangeMax;
+  }
+
+  int _calculateV2Rir(WorkoutProfile profile) {
+    switch (profile.experienceLevel) {
+      case 'beginner':
+        return 3;
+      case 'intermediate':
+        return 2;
+      case 'advanced':
+        return 1;
+      default:
+        return 2;
+    }
+  }
+
+  int _calculateRest(ExerciseModel exercise, WorkoutProfile profile) {
+    if (exercise.category == 'compound') return 90;
+    return 60;
+  }
+
+  String _tempo(WorkoutProfile profile) {
+    switch (profile.experienceLevel) {
+      case 'beginner':
+        return '3-1-3';
+      case 'intermediate':
+        return '2-0-2';
+      case 'advanced':
+        return '2-1-2';
+      default:
+        return '2-0-2';
+    }
+  }
+
+  String _generateV2ProgressionNote(
+    ExerciseModel exercise,
+    WorkoutProfile profile,
+  ) {
+    if (exercise.regressionIds.isNotEmpty) {
+      return 'Exercício V2. Para regredir, use: ${exercise.regressionIds.first}';
+    }
+    return 'Exercício V2. Progrida conforme dominar.';
   }
 
   // Analisa um exercício específico
@@ -114,8 +370,14 @@ class HomeWorkoutIntegrator {
     return _engine.getExerciseById(id);
   }
 
-  // Resolve exercícios de casa no mesmo formato usado pelos treinos salvos.
+  /// Resolve exercício de casa pelo ID.
+  /// Verifica V2 primeiro, depois V1.
   ExerciseModel? getExerciseModelById(String id) {
+    // Tenta V2 primeiro
+    final v2Result = V2HomeSource.getById(id);
+    if (v2Result != null) return v2Result;
+
+    // Fallback V1
     final exercise = _engine.getExerciseById(id);
     return exercise == null ? null : _convertToExerciseModel(exercise);
   }

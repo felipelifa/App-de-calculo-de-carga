@@ -21,6 +21,7 @@ import 'features/workout/progression_provider.dart';
 import 'features/nutrition/nutrition_provider.dart';
 import 'features/workout/collective_profile_provider.dart';
 import 'features/workout/athlete_rank_provider.dart';
+import 'features/workout/home_workout/v2_home_source.dart';
 import 'shared/theme/app_theme.dart';
 
 void main() async {
@@ -35,6 +36,9 @@ void main() async {
   // Inicializar notificações locais
   await NotificationService.initialize();
   NotificationService.scheduleInactivityReminder();
+
+  // Inicializar biblioteca V2 Home (46 exercícios)
+  V2HomeSource.initialize();
 
   runApp(const WorkoutApp());
 }

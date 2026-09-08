@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'exercise_model.dart';
 import '../../core/data/exercise_library.dart';
 import '../../core/services/api_service.dart';
+import '../workout/home_workout/v2_home_source.dart';
 
 class ExerciseProvider extends ChangeNotifier {
   final ApiService _api;
@@ -96,6 +97,14 @@ class ExerciseProvider extends ChangeNotifier {
       byId[exercise.id] = exercise;
     }
 
+    // Inclui exercícios V2 Home quando disponíveis
+    if (V2HomeSource.isAvailable) {
+      final v2HomeExercises = V2HomeSource.getAllHomeAsExerciseModel();
+      for (final exercise in v2HomeExercises) {
+        byId[exercise.id] = exercise;
+      }
+    }
+
     _allExercises = byId.values
         .where((e) => !e.name.trim().endsWith('(1)'))
         .toList();
@@ -152,15 +161,22 @@ class ExerciseProvider extends ChangeNotifier {
 
   ExerciseModel? getById(String id) {
     if (id.isEmpty) return null;
+
+    // 1. Busca na lista interna (V1 + API + custom)
     try {
       return _allExercises.firstWhere((e) => e.id == id);
-    } catch (_) {
-      try {
-        return exerciseLibrary.firstWhere((e) => e.id == id);
-      } catch (_) {
-        return null;
-      }
-    }
+    } catch (_) {}
+
+    // 2. Busca na biblioteca local V1
+    try {
+      return exerciseLibrary.firstWhere((e) => e.id == id);
+    } catch (_) {}
+
+    // 3. Busca na V2ExerciseLibrary (Home V2)
+    final v2Result = V2HomeSource.getById(id);
+    if (v2Result != null) return v2Result;
+
+    return null;
   }
 
   Future<List<VolumeHistoryEntry>> getExerciseHistory(String exerciseId) async {
